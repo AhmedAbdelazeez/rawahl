@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المعلومات - شركة رواحل المشاعر</title>
+    <!-- تضمين مكتبة Tailwind CSS وخط كايرو والـ Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- مكتبة الشارتات المحدثة لضمان استقرار الرسم البياني -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-image: linear-gradient(rgba(248, 249, 250, 0.82), rgba(248, 249, 250, 0.82)), url('https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/slider10.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        
+        .bg-sidebar { background-color: #161616; }
+        .bg-sidebar-active { background-color: #D4B795; color: #322214 !important; box-shadow: 0 0 15px rgba(212, 183, 149, 0.4); }
+        
+        .text-teal-brand { color: #0B6A73; filter: drop-shadow(0 2px 4px rgba(11, 106, 115, 0.2)); }
+        .bg-teal-brand { background-color: #0B6A73; box-shadow: 0 4px 10px rgba(11, 106, 115, 0.3); }
+        .text-gold-brand { color: #C5A880; }
+        
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            border-color: #0B6A73;
+            box-shadow: 0 15px 30px -5px rgba(11, 106, 115, 0.15);
+        }
+        
+        .bg-amber-light-card { background-color: rgba(253, 251, 247, 0.95); border: 1px solid #D4B795; }
+        .progress-bar-bg { background-color: #E9ECEF; }
+
+        /* ================= شريط الأخبار اللانهائي الدائري والمثبت 100% ================= */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: #161616;
+            border-bottom: 3px solid #D4B795;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            direction: ltr !important; 
+        }
+        
+        .ticker-container {
+            display: flex;
+            width: max-content;
+            animation: ticker-loop 30s linear infinite;
+        }
+
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            direction: rtl !important; 
+        }
+        
+        .ticker__item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 3.5rem; 
+        }
+        
+        @keyframes ticker-loop {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+        
+        .ticker-wrap:hover .ticker-container {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="text-slate-900 antialiased selection:bg-[#0B6A73] selection:text-white">
+
+    <!-- ================= شريط أخبار الـ KPIs اللانهائي الحقيقي ================= -->
+    <div class="ticker-wrap py-3.5 text-white text-xs font-bold">
+        <div class="ticker-container">
+            <div class="ticker">
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-square-poll-vertical animate-pulse ml-1.5"></i> الأداء العام:</span> معدل إنجاز جميع القطاعات يسجل <span class="text-teal-brand font-black">76%</span> لشهر مايو.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-chart-line ml-1.5"></i> نمو الإيرادات:</span> حققنا نسبة نمو <span class="text-emerald-400 font-black">20%</span> من أصل 25% المستهدفة استراتيجياً.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-money-bill-trend-up ml-1.5"></i> هامش EBITDA:</span> الأداء التشغيلي المالي ممتاز ويسجل <span class="text-emerald-400 font-black">34.5%</span> (مستهدف 35%).</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-bus-simple ml-1.5"></i> جاهزية الأسطول:</span> جاهزية حافلات ومجموعات التشغيل ترتفع لـ <span class="text-teal-brand font-black">92%</span> (إجمالي 1,240 مركبة).</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-star-half-stroke ml-1.5"></i> رضا العملاء NPS:</span> نقاط قياس التوصية تسجل <span class="text-teal-brand font-black">52 نقطة</span> بزيادة إيجابية مستمرة قدرها +4 نقاط.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-clock-rotate-left ml-1.5"></i> جودة المواعيد:</span> نسبة الالتزام بجدول رحلات النقل والتوصيل بلغت <span class="text-emerald-400 font-black">94.8%</span>.</div>
+            </div>
+            <div class="ticker" aria-hidden="true">
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-square-poll-vertical animate-pulse ml-1.5"></i> الأداء العام:</span> معدل إنجاز جميع القطاعات يسجل <span class="text-teal-brand font-black">76%</span> لشهر مايو.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-chart-line ml-1.5"></i> نمو الإيرادات:</span> حققنا نسبة نمو <span class="text-emerald-400 font-black">20%</span> من أصل 25% المستهدفة استراتيجياً.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-money-bill-trend-up ml-1.5"></i> هامش EBITDA:</span> الأداء التشغيلي المالي ممتاز ويسجل <span class="text-emerald-400 font-black">34.5%</span> (مستهدف 35%).</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-bus-simple ml-1.5"></i> جاهزية الأسطول:</span> جاهزية حافلات ومجموعات التشغيل ترتفع لـ <span class="text-teal-brand font-black">92%</span> (إجمالي 1,240 مركبة).</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-star-half-stroke ml-1.5"></i> رضا العملاء NPS:</span> نقاط قياس التوصية تسجل <span class="text-teal-brand font-black">52 نقطة</span> بزيادة إيجابية مستمرة قدرها +4 نقاط.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-clock-rotate-left ml-1.5"></i> جودة المواعيد:</span> نسبة الالتزام بجدول رحلات النقل والتوصيل بلغت <span class="text-emerald-400 font-black">94.8%</span>.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex min-h-screen">
+        
+        <!-- ================= القائمة الجانبية (Sidebar) ================= -->
+        <aside class="w-72 bg-sidebar text-neutral-400 p-5 flex flex-col justify-between hidden lg:flex border-l border-neutral-900 shrink-0">
+            <div>
+                <div class="flex flex-col items-center text-center mt-2 mb-4 bg-black/30 p-3 rounded-xl border border-neutral-800">
+                    <img src="https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/logo.png" alt="شركة رواحل المشاعر" class="w-24 h-auto object-contain mb-1">
+                    <h2 class="text-white text-xs font-bold tracking-wide mt-1">شركة رواحل المشاعر</h2>
+                    <span class="text-[8px] text-neutral-400 block tracking-wider font-semibold mt-0.5">RAWAHEL AL MASHAER CO.</span>
+                </div>
+
+                <nav class="space-y-1 overflow-y-auto max-h-[65vh] pr-1">
+                    <a href="#" class="flex items-center justify-between px-4 py-2.5 bg-sidebar-active rounded-xl text-xs font-black shadow-md transition-all">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-table-columns text-base"></i>
+                            <span>لوحة المعلومات</span>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="flex items-center justify-between px-4 py-2.5 bg-white text-neutral-900 rounded-xl text-xs font-black shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-chart-bar text-teal-brand text-base"></i>
+                            <span class="text-teal-brand">الخلاصة والتحليل العلوي</span>
+                        </div>
+                        <span class="w-1.5 h-4 bg-teal-brand rounded-full"></span>
+                    </a>
+
+                    <!-- تم تعديل المسمى من "مدير" إلى "إدارة" هنا برغبتك -->
+                    <div class="pt-3 pb-1 px-4 text-[9px] font-black text-gold-brand uppercase tracking-wider border-t border-neutral-800/40 mt-2">إدارات التشغيل الأساسية</div>
+                    
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-umbrella-beach text-teal-brand text-sm w-5"></i>
+                        <span>إدارة السياحة</span>
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-gears text-teal-brand text-sm w-5"></i>
+                        <span>إدارة العمليات</span>
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-comments-dollar text-teal-brand text-sm w-5"></i>
+                        <span>إدارة التجاري</span>
+                    </a>
+
+                    <div class="pt-3 pb-1 px-4 text-[9px] font-black text-neutral-500 uppercase tracking-wider border-t border-neutral-800/40 mt-2">كافة إدارات الشركة الحالية</div>
+                    
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-neutral-400 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-semibold transition-all">
+                        <i class="fa-solid fa-wallet text-base w-5"></i>
+                        <span>الإدارة المالية</span>
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-neutral-400 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-semibold transition-all">
+                        <i class="fa-solid fa-coins text-base w-5"></i>
+                        <span>الإدارة التجارية</span>
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-neutral-400 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-semibold transition-all">
+                        <i class="fa-solid fa-bus text-base w-5"></i>
+                        <span>العمليات والأسطول</span>
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-neutral-400 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-semibold transition-all">
+                        <i class="fa-solid fa-handshake-angle text-base w-5"></i>
+                        <span>الإدارات المساندة و HSE</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="space-y-1 border-t border-neutral-900 pt-3">
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-xs text-neutral-400 hover:text-white transition-all">
+                    <i class="fa-regular fa-bell text-base w-5"></i>
+                    <span>الإشعارات</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-xs text-neutral-400 hover:text-white transition-all">
+                    <i class="fa-solid fa-gear text-base w-5"></i>
+                    <span>الإعدادات</span>
+                </a>
+                <div class="text-[9px] text-neutral-600 text-center pt-2 font-mono">نظام رواحل القياسي المعتمد © 2026</div>
+            </div>
+        </aside>
+
+        <!-- ================= محتوى لوحة التحكم الرئيسي ================= -->
+        <main class="flex-1 p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+            
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200/60 shadow-sm">
+                <div>
+                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">لوحة الأداء والمؤشرات العامة</h1>
+                </div>
+                
+                <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
+                    <div class="relative w-64 hidden md:block">
+                        <input type="text" placeholder="ابحث هنا..." class="w-full bg-white border border-slate-200 rounded-full py-1.5 pr-4 pl-10 text-xs focus:outline-none focus:border-[#0B6A73] text-right">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="text-left sm:text-right">
+                            <h4 class="text-xs font-black text-slate-900">أحمد خالد العساف</h4>
+                            <span class="text-[10px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md font-bold mt-0.5 inline-block">رئيس قسم الإدارة</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden bg-amber-200 flex items-center justify-center text-amber-900 font-bold text-xs">أ خ</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+                <!-- الكارت الرئيسي الكبير مع الدليل التعريفي المطور مثل image_d2e663.png -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between gap-6 lg:col-span-7">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-6 w-full">
+                        <div class="space-y-4 flex-1 text-right">
+                            <h3 class="text-lg font-black text-slate-900 leading-snug">نظرة شاملة على مؤشرات الأداء<br><span class="text-teal-brand font-black">الرئيسية لجميع الإدارات التشغيلية</span></h3>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-[10px] bg-teal-50 text-[#0B6A73] px-2.5 py-1 rounded-md font-bold flex items-center gap-1 border border-teal-500/10">
+                                    <i class="fa-regular fa-calendar text-xs"></i> مايو 2026
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- المؤشر الدائري -->
+                        <div class="relative w-28 h-28 flex items-center justify-center shrink-0">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-100" stroke-width="3.2" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-[#0B6A73] drop-shadow-[0_0_3px_rgba(11,106,115,0.3)]" stroke-dasharray="76, 100" stroke-width="3.2" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute flex flex-col items-center justify-center">
+                                <span class="text-2xl font-black text-slate-900 tracking-tight">76%</span>
+                                <span class="text-[8px] text-slate-400 font-bold">معدل الأداء</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= اللوحة التعريفية للألوان (Legend) المماثلة للصورة المرفقة ================= -->
+                    <div class="flex items-center justify-center gap-6 pt-4 border-t border-slate-100 w-full text-[11px] font-bold">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3.5 h-3.5 rounded-full bg-[#0B6A73] shadow-sm"></span>
+                            <span class="text-slate-700">ممتاز (75% - 100%)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3.5 h-3.5 rounded-full bg-[#D4B795] shadow-sm"></span>
+                            <span class="text-slate-700">جيد (50% - 74%)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3.5 h-3.5 rounded-full bg-red-500 shadow-sm"></span>
+                            <span class="text-slate-700">ضعيف (أقل من 50%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الثلاث كروت المستطيلة الصغيرة الملاصقة للكبير -->
+                <div class="grid grid-cols-3 gap-3 lg:col-span-5">
+                    <div class="bg-amber-light-card p-4 rounded-2xl flex flex-col justify-between shadow-sm">
+                        <span class="text-[10px] text-slate-500 font-bold">إجمالي الإيرادات</span>
+                        <div>
+                            <span class="text-xl font-black text-slate-900 block leading-tight">142.5M</span>
+                            <span class="text-[8px] text-slate-400">ريال سعودي</span>
+                        </div>
+                        <span class="text-[9px] text-emerald-600 font-bold flex items-center gap-0.5 mt-2"><i class="fa-solid fa-caret-up"></i> 14.2%+</span>
+                    </div>
+
+                    <div class="bg-amber-light-card p-4 rounded-2xl flex flex-col justify-between shadow-sm">
+                        <span class="text-[10px] text-slate-500 font-bold">الأهداف الاستراتيجية</span>
+                        <div>
+                            <span class="text-xl font-black text-slate-900 block">81%</span>
+                            <span class="text-[8px] text-slate-400">نسبة التحقيق</span>
+                        </div>
+                        <span class="text-[9px] text-amber-700 font-bold flex items-center gap-1 mt-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span> المستهدف: 85%</span>
+                    </div>
+
+                    <div class="bg-amber-light-card p-4 rounded-2xl flex flex-col justify-between shadow-sm">
+                        <span class="text-[10px] text-slate-500 font-bold">جاهزية الأسطول</span>
+                        <div>
+                            <span class="text-xl font-black text-slate-900 block">92%</span>
+                            <span class="text-[8px] text-slate-400">من 1,240 مركبة</span>
+                        </div>
+                        <span class="text-[9px] text-emerald-600 font-bold flex items-center gap-0.5 mt-2"><i class="fa-solid fa-circle-check"></i> مستقر</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- صف الـ 4 كروت التفاعلية العريضة البارزة بالكامل -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+                <div class="glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-black text-slate-900">معدل نمو الإيرادات</span>
+                            <span class="text-[11px] text-slate-500 mt-0.5 font-bold">20%</span>
+                        </div>
+                        <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center text-xs shadow-sm"><i class="fa-solid fa-chart-line"></i></div>
+                    </div>
+                    <div class="w-full progress-bar-bg h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-[#0B6A73] h-full rounded-full" style="width: 80%"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-[10px] font-bold">
+                        <span class="text-slate-500">إنجاز 80%</span>
+                        <span class="text-emerald-700 flex items-center gap-0.5"><i class="fa-solid fa-arrow-trend-up"></i> 3.2%+</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-black text-slate-900">هامش EBITDA</span>
+                            <span class="text-[11px] text-slate-500 mt-0.5 font-bold">34.5%</span>
+                        </div>
+                        <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center text-xs shadow-sm"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
+                    <div class="w-full progress-bar-bg h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-[#0B6A73] h-full rounded-full" style="width: 98%"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-[10px] font-bold">
+                        <span class="text-slate-500">إنجاز 98.5%</span>
+                        <span class="text-emerald-700 flex items-center gap-0.5"><i class="fa-solid fa-arrow-trend-up"></i> 3.2%+</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-black text-slate-900">نسبة الاحتفاظ بالعملاء</span>
+                            <span class="text-[11px] text-slate-500 mt-0.5 font-bold">74%</span>
+                        </div>
+                        <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center text-xs shadow-sm"><i class="fa-solid fa-users-gear"></i></div>
+                    </div>
+                    <div class="w-full progress-bar-bg h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-slate-400 h-full rounded-full" style="width: 87%"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-[10px] font-bold">
+                        <span class="text-slate-500">إنجاز 87%</span>
+                        <span class="text-red-600 flex items-center gap-0.5"><i class="fa-solid fa-arrow-trend-down"></i> 2.1%-</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-black text-slate-900">صافي نقاط التوصية NPS</span>
+                            <span class="text-[11px] text-slate-500 mt-0.5 font-bold">52</span>
+                        </div>
+                        <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center text-xs shadow-sm"><i class="fa-solid fa-star"></i></div>
+                    </div>
+                    <div class="w-full progress-bar-bg h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-[#0B6A73] h-full rounded-full" style="width: 74%"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-[10px] font-bold">
+                        <span class="text-slate-500">إنجاز 74%</span>
+                        <span class="text-emerald-700 flex items-center gap-0.5"><i class="fa-solid fa-plus"></i> 4+ نقاط</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم الرسوم البيانية المزدوجة -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+                <div class="glass-card p-6 rounded-2xl lg:col-span-7">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-bold text-slate-900">مقارنة الإيرادات الشهرية الفعلية بالمستهدفة</h3>
+                    </div>
+                    <div class="h-64 w-full relative">
+                        <canvas id="revenueTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-amber-light-card border border-amber-200/40 p-6 rounded-2xl lg:col-span-5 flex flex-col justify-between shadow-sm">
+                    <div class="mb-2">
+                        <h3 class="text-sm font-bold text-slate-900">أداء الإدارات الحالية</h3>
+                    </div>
+                    <div class="h-64 w-full relative">
+                        <canvas id="departmentsPerformanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- جدول النشاطات التشغيلية الأخيرة كاملاً -->
+            <section class="bg-sidebar rounded-2xl p-6 text-white shadow-xl border border-neutral-800">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-sm font-bold flex items-center gap-2 text-white">
+                        <span class="w-1.5 h-4 bg-amber-500 rounded-full"></span>
+                        النشاطات والعمليات التشغيلية الأخيرة
+                    </h3>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-xs">
+                        <thead>
+                            <tr class="text-neutral-500 border-b border-neutral-800 pb-3">
+                                <th class="pb-3 font-semibold text-gold-brand">الوقت</th>
+                                <th class="pb-3 font-semibold text-gold-brand">النشاط</th>
+                                <th class="pb-3 font-semibold text-gold-brand">المستخدم</th>
+                                <th class="pb-3 font-semibold text-center text-gold-brand">الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-neutral-800/40">
+                            <tr class="hover:bg-neutral-900 transition-all">
+                                <td class="py-3.5 text-neutral-400 font-mono">09:42 ص</td>
+                                <td class="py-3.5 font-medium text-neutral-200">تحديث حالة أسطول النقل لموسم الحج 1447هـ.</td>
+                                <td class="py-3.5 text-neutral-300 font-semibold">أحمد القرني</td>
+                                <td class="py-3.5 text-center">
+                                    <span class="px-2.5 py-1 rounded-md bg-emerald-950/80 text-emerald-400 font-bold text-[10px] border border-emerald-900/50">مكتمل</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-neutral-900 transition-all">
+                                <td class="py-3.5 text-neutral-400 font-mono">08:15 ص</td>
+                                <td class="py-3.5 font-medium text-neutral-200">تحديث نسبة إشغال الحافلات التشغيلية بقطاع السياحة إلى 92%</td>
+                                <td class="py-3.5 text-neutral-300 font-semibold">فاطمة الشهري</td>
+                                <td class="py-3.5 text-center">
+                                    <span class="px-2.5 py-1 rounded-md bg-amber-950/80 text-amber-400 font-bold text-[10px] border border-amber-900/50">قيد المعالجة</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- كود الجافا سكريبت لبناء ورسم الشارتات -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctxTrend = document.getElementById('revenueTrendChart').getContext('2d');
+            new Chart(ctxTrend, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو'],
+                    datasets: [
+                        {
+                            label: 'الفعلي',
+                            data: [20, 24, 12, 30, 32],
+                            borderColor: '#0B6A73',
+                            backgroundColor: 'transparent',
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointBackgroundColor: '#0B6A73'
+                        },
+                        {
+                            label: 'المستهدف',
+                            data: [13, 23, 42, 12, 23],
+                            borderColor: '#C5A880',
+                            backgroundColor: 'transparent',
+                            tension: 0.4,
+                            borderWidth: 2,
+                            pointBackgroundColor: '#C5A880'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { labels: { font: { family: 'Cairo' } } }
+                }
+            });
+
+            const ctxDeps = document.getElementById('departmentsPerformanceChart').getContext('2d');
+            new Chart(ctxDeps, {
+                type: 'bar',
+                data: {
+                    labels: ['المالية', 'السلامة', 'التجارية', 'العمليات', 'الأسطول'],
+                    datasets: [{
+                        data: [75, 49, 65, 100, 80],
+                        backgroundColor: ['#0B6A73', '#D4B795', '#0B6A73', '#0B6A73', '#0B6A73'],
+                        borderRadius: 4,
+                        barThickness: 14
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

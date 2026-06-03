@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المؤشرات الذكية - شركة رواحل المشاعر</title>
+    <!-- Tailwind CSS للتنسيق العصري والمودرن -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts - Cairo الخط العربي المعتمد احترافياً -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js للرسوم البيانية المتقدمة والأعمدة والمخطط الدائري -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- AOS Library للأنيميشن الاحترافي عند التمرير وسكرول الصفحة -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-image: linear-gradient(rgba(240, 242, 245, 0.72), rgba(240, 242, 245, 0.72)), url('https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/slider10.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        .bg-sidebar { background-color: #111111; }
+        .bg-sidebar-active { 
+            background: linear-gradient(135deg, #D4B795 0%, #B08E66 100%); 
+            color: #2d1e11 !important; 
+            box-shadow: 0 4px 15px rgba(212, 183, 149, 0.5); 
+        }
+        
+        .text-teal-brand { color: #009688; filter: drop-shadow(0 2px 8px rgba(0, 150, 136, 0.25)); }
+        .bg-teal-brand { background-color: #009688; box-shadow: 0 4px 15px rgba(0, 150, 136, 0.35); }
+        .text-gold-brand { color: #D4B795; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+
+        /* glassmorphism components with glowing effects */
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(212, 183, 149, 0.35);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            border-color: #009688;
+            box-shadow: 0 15px 35px rgba(0, 150, 136, 0.2), 0 0 15px rgba(0, 150, 136, 0.1);
+        }
+        
+        .bg-amber-light-card { 
+            background-color: rgba(254, 252, 249, 0.98); 
+            border: 2px solid rgba(212, 183, 149, 0.85); 
+            box-shadow: 0 4px 15px rgba(212, 183, 149, 0.12);
+        }
+
+        /* ticker animations */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: #111111;
+            border-bottom: 3px solid #D4B795;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+            direction: ltr !important; 
+        }
+        .ticker-container {
+            display: flex;
+            width: max-content;
+            animation: ticker-loop 35s linear infinite;
+        }
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            direction: rtl !important; 
+        }
+        .ticker__item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 3rem; 
+        }
+        @keyframes ticker-loop {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .ticker-wrap:hover .ticker-container {
+            animation-play-state: paused;
+        }
+
+        /* progress bar metallic shine */
+        @keyframes shined {
+            0% { background-position: -200px 0; }
+            100% { background-position: 200px 0; }
+        }
+        .progress-shine-overlay {
+            background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200px 100%;
+            animation: shined 3s infinite linear;
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4B795;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #009688;
+        }
+    </style>
+</head>
+<body class="text-slate-950 antialiased selection:bg-[#009688] selection:text-white">
+
+    <!-- ================= شريط أخبار الـ KPIs اللانهائي الحقيقي ================= -->
+    <div class="ticker-wrap py-3.5 text-white text-xs font-bold">
+        <div class="ticker-container">
+            <div class="ticker">
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-square-poll-vertical animate-pulse ml-1.5"></i> الأداء العام لشركة رواحل:</span> معدل إنجاز جميع القطاعات يسجل <span class="text-[#009688] font-black" id="ticker-total-perf">76%</span> لشهر مايو.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-chart-line ml-1.5"></i> نمو الإيرادات:</span> حققنا نسبة نمو <span class="text-emerald-400 font-black" id="ticker-rev-growth">20%</span> من أصل 25% المستهدفة.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-money-bill-trend-up ml-1.5"></i> هامش EBITDA التشغيلي:</span> أداء مالي متزن ويسجل <span class="text-emerald-400 font-black" id="ticker-ebitda">34.5%</span>.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-bus-simple ml-1.5"></i> جاهزية الأسطول الحالية:</span> جاهزية حافلات التشغيل ترتفع لـ <span class="text-[#009688] font-black" id="ticker-fleet-ready">92%</span> (إجمالي 1,240 حافلة).</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-star-half-stroke ml-1.5"></i> رضا العملاء NPS:</span> نقاط قياس رضا ضيوف الرحمن تسجل <span class="text-[#009688] font-black" id="ticker-nps">52 نقطة</span> بزيادة مستمرة.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-clock-rotate-left ml-1.5"></i> الالتزام بالخطة التشغيلية:</span> نسبة الالتزام بجدول رحلات النقل والتوصيل بلغت <span class="text-emerald-400 font-black" id="ticker-ops-plan">94.8%</span>.</div>
+            </div>
+            <div class="ticker" aria-hidden="true">
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-square-poll-vertical animate-pulse ml-1.5"></i> الأداء العام لشركة رواحل:</span> معدل إنجاز جميع القطاعات يسجل <span class="text-[#009688] font-black" id="ticker-total-perf-dup">76%</span> لشهر مايو.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-chart-line ml-1.5"></i> نمو الإيرادات:</span> حققنا نسبة نمو <span class="text-emerald-400 font-black" id="ticker-rev-growth-dup">20%</span> من أصل 25% المستهدفة.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-money-bill-trend-up ml-1.5"></i> هامش EBITDA التشغيلي:</span> أداء مالي متزن ويسجل <span class="text-emerald-400 font-black" id="ticker-ebitda-dup">34.5%</span>.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-bus-simple ml-1.5"></i> جاهزية الأسطول الحالية:</span> جاهزية حافلات التشغيل ترتفع لـ <span class="text-[#009688] font-black" id="ticker-fleet-ready-dup">92%</span>.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-star-half-stroke ml-1.5"></i> رضا العملاء NPS:</span> نقاط قياس رضا ضيوف الرحمن تسجل <span class="text-[#009688] font-black" id="ticker-nps-dup">52 نقطة</span> بزيادة مستمرة.</div>
+                <div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-clock-rotate-left ml-1.5"></i> الالتزام بالخطة التشغيلية:</span> نسبة الالتزام بجدول رحلات النقل والتوصيل بلغت <span class="text-emerald-400 font-black" id="ticker-ops-plan-dup">94.8%</span>.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex min-h-screen">
+        <!-- ================= القائمة الجانبية (Sidebar) ================= -->
+        <aside class="w-72 bg-sidebar text-neutral-400 p-5 flex flex-col justify-between hidden lg:flex border-l-2 border-[#D4B795]/50 shrink-0">
+            <div>
+                <!-- الشعار المطور المعتمد لشركة رواحل -->
+                <div class="flex flex-col items-center text-center mt-2 mb-6 bg-black/50 p-4 rounded-xl border border-neutral-800 shadow-inner">
+                    <img src="https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/logo.png" alt="شركة رواحل المشاعر" class="w-24 h-auto object-contain mb-1 filter drop-shadow-md">
+                    <h2 class="text-white text-xs font-black tracking-wide mt-1">شركة رواحل المشاعر</h2>
+                    <span class="text-[8px] text-[#D4B795] block tracking-wider font-bold mt-0.5">RAWAHEL AL MASHAER CO.</span>
+                </div>
+
+                <nav class="space-y-1">
+                    <a href="#general-read" class="flex items-center justify-between px-4 py-2.5 bg-sidebar-active rounded-xl text-xs font-black shadow-md transition-all">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-table-columns text-base"></i>
+                            <span>لوحة المعلومات والأعلام</span>
+                        </div>
+                    </a>
+                    
+                    <a href="#finance-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-wallet text-[#009688] text-sm w-5"></i>
+                        <span>الإدارة المالية</span>
+                    </a>
+                    
+                    <a href="#commercial-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-chart-line text-[#009688] text-sm w-5"></i>
+                        <span>الإدارة التجارية</span>
+                    </a>
+                    
+                    <a href="#ops-fleet-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-bus text-[#009688] text-sm w-5"></i>
+                        <span>العمليات والأسطول</span>
+                    </a>
+
+                    <a href="#support-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-handshake-angle text-[#009688] text-sm w-5"></i>
+                        <span>الإدارات المساندة و HSE</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="space-y-1 border-t border-neutral-900 pt-3">
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-xs text-neutral-400 hover:text-white transition-all">
+                    <i class="fa-regular fa-bell text-base w-5"></i>
+                    <span>الإشعارات الفورية</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-xs text-neutral-400 hover:text-white transition-all">
+                    <i class="fa-solid fa-gear text-base w-5"></i>
+                    <span>إعدادات النظام</span>
+                </a>
+                <div class="text-[9px] text-neutral-600 text-center pt-2 font-mono">نظام رواحل القياسي المعتمد © 2026</div>
+            </div>
+        </aside>
+
+        <!-- ================= المحتوى الرئيسي للملف المطور ================= -->
+        <main class="flex-1 p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+            
+            <!-- الهيدر العلوي المطور بالكامل -->
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-white/95 backdrop-blur-md p-4 rounded-2xl border-2 border-[#D4B795]/40 shadow-md">
+                <div>
+                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">نظام مراقبة الأداء بالأعلام والمطابقة الذكية</h1>
+                    <p class="text-xs text-slate-600 mt-1 font-bold">مزامنة تفاعلية لقيم المؤشرات مع خاصية التبويب والتعمق التفصيلي (Drill-Down).</p>
+                </div>
+                
+                <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
+                    <button onclick="simulateKpiData()" class="bg-[#009688] hover:bg-[#00796b] text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-[#009688]/30 transition-all active:scale-95 cursor-pointer">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                        <span>تحديث وفحص الأعلام</span>
+                    </button>
+
+                    <!-- الملف الشخصي للمدير غسان عراقي (يمكن النقر عليه لفتح المودال المنبثق) -->
+                    <div onclick="openProfileModal()" class="flex items-center gap-3 border-r-2 border-slate-200 pr-4 cursor-pointer hover:opacity-80 transition-opacity">
+                        <div class="text-left sm:text-right">
+                            <div class="flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-info text-[10px] text-[#009688]"></i>
+                                <h4 class="text-xs font-black text-slate-900">غسان عراقي</h4>
+                            </div>
+                            <span class="text-[9px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md font-black mt-0.5 inline-block">المدير العام (CEO)</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full border-2 border-[#D4B795] shadow-md overflow-hidden bg-amber-200 flex items-center justify-center text-neutral-900 font-black text-xs">غ ع</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ================= أولاً: الخلاصة والتحليل العلوي بالأعلام ================= -->
+            <section id="general-read" class="mb-8" data-aos="fade-up">
+                <div class="bg-gradient-to-r from-slate-950 via-[#1e293b] to-slate-950 rounded-3xl p-6 text-white shadow-xl mb-6 border-2 border-[#D4B795]/50">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div class="space-y-3 flex-1 text-right">
+                            <span class="bg-[#009688]/30 text-teal-300 text-[10px] px-3 py-1 rounded-full font-bold border border-teal-500/20">نظرة عامة على الأداء الموحد</span>
+                            <h2 class="text-lg font-black mt-1">مصفوفة إحصاء الأعلام لجميع مؤشرات شركة رواحل</h2>
+                            <p class="text-slate-300 text-xs leading-relaxed font-semibold">اضغط على أي بطاقة مؤشر في الأسفل للتعمق وعرض تفاصيله ورسمه البياني الخاص بشكل فوري.</p>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-4 bg-black/40 p-4 rounded-2xl border border-neutral-800 justify-center">
+                            <div class="text-center px-4">
+                                <span class="block text-2xl font-black text-white" id="count-total">16</span>
+                                <span class="text-[9px] text-[#D4B795] font-black">إجمالي المؤشرات</span>
+                            </div>
+                            <div class="border-r border-neutral-800"></div>
+                            <div class="text-center px-4">
+                                <span class="block text-2xl font-black text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.4)]" id="count-excellent">0</span>
+                                <span class="text-[9px] text-[#D4B795] font-black">ممتاز 🟢</span>
+                            </div>
+                            <div class="border-r border-neutral-800"></div>
+                            <div class="text-center px-4">
+                                <span class="block text-2xl font-black text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.4)]" id="count-good">0</span>
+                                <span class="text-[9px] text-[#D4B795] font-black">جيد 🟡</span>
+                            </div>
+                            <div class="border-r border-neutral-800"></div>
+                            <div class="text-center px-4">
+                                <span class="block text-2xl font-black text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]" id="count-bad">0</span>
+                                <span class="text-[9px] text-[#D4B795] font-black">ضعيف 🔴</span>
+                            </div>
+                        </div>
+
+                        <!-- المؤشر الدائري للأداء العام -->
+                        <div class="relative w-24 h-24 flex items-center justify-center shrink-0">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-800" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path id="radial-progress-path" class="text-[#009688] drop-shadow-[0_0_5px_rgba(0,150,136,0.6)]" stroke-dasharray="76, 100" stroke-width="3.2" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute flex flex-col items-center justify-center">
+                                <span class="text-xl font-black text-white" id="radial-progress-val">76%</span>
+                                <span class="text-[7px] text-[#D4B795] font-bold">متوسط الأداء</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- مساحة الرسوم البيانية الكبرى -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8" data-aos="fade-up">
+                    <div class="glass-card p-5 rounded-2xl lg:col-span-2">
+                        <h3 class="text-xs font-bold text-slate-800 mb-4"><i class="fa-solid fa-chart-bar text-[#009688] ml-2"></i>تحليل ومقارنة الأداء الفعلي بالمستهدف الأساسي</h3>
+                        <div class="h-64"><canvas id="barChartActualTarget"></canvas></div>
+                    </div>
+                    <div class="bg-amber-light-card p-5 rounded-2xl flex flex-col justify-between shadow-md">
+                        <h3 class="text-xs font-bold text-slate-800 mb-2"><i class="fa-solid fa-flag text-[#D4B795] ml-2"></i>توزيع مؤشرات التقييم الحالية (الأعلام)</h3>
+                        <div class="h-48 flex items-center justify-center"><canvas id="doughnutFlagsChart"></canvas></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ثانياً: مجموعات بطاقات الأداء التفصيلية ================= -->
+            
+            <!-- مجموعة 1: الإدارة المالية -->
+            <section id="finance-group" class="mb-8" data-aos="fade-up">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
+                    <h3 class="text-xs font-black text-slate-800">مؤشرات الأداء المالي</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- إجمالي الإيرادات ومعدل النمو -->
+                    <div onclick="openDrilldown('rev-growth')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-slate-500">إجمالي الإيرادات ومعدل النمو</span>
+                            <span id="flag-rev-growth" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-2xl font-black text-[#009688]" id="val-rev-growth">0M</span>
+                                <span class="text-[9px] text-slate-500 font-bold" id="target-rev-growth">المستهدف: 25%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                                <div id="bar-rev-growth" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px]"></i> اضغط لعرض المسارات الأكثر ربحية
+                        </div>
+                    </div>
+                    <!-- هامش EBITDA -->
+                    <div onclick="openDrilldown('ebitda')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-slate-500">هامش EBITDA</span>
+                            <span id="flag-ebitda" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-2xl font-black text-slate-800" id="val-ebitda">0%</span>
+                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 35%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                                <div id="bar-ebitda" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض مصاريف التشغيل والمخاطر
+                        </div>
+                    </div>
+                    <!-- التدفق النقدي التشغيلي -->
+                    <div onclick="openDrilldown('cashflow')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-slate-500">التدفق النقدي التشغيلي</span>
+                            <span id="flag-cashflow" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-xl font-black text-slate-800" id="val-cashflow">0M</span>
+                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 50M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                                <div id="bar-cashflow" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض تفاصيل التحصيل اليومي
+                        </div>
+                    </div>
+                    <!-- العائد على الأصول ROA -->
+                    <div onclick="openDrilldown('roa')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-slate-500">العائد على الأصول ROA</span>
+                            <span id="flag-roa" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-2xl font-black text-slate-800" id="val-roa">0%</span>
+                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 12%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                                <div id="bar-roa" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض كفاءة تشغيل الأصول
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- مجموعة 2: الإدارة التجارية -->
+            <section id="commercial-group" class="mb-8" data-aos="fade-up">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
+                    <h3 class="text-xs font-black text-slate-800">مؤشرات الأداء التجاري والعملاء</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- نسبة الاحتفاظ بالعملاء -->
+                    <div onclick="openDrilldown('cust-ret')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-slate-500">نسبة الاحتفاظ بالعملاء</span>
+                            <span id="flag-cust-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-2xl font-black text-slate-800" id="val-cust-ret">0%</span>
+                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 85%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                                <div id="bar-cust-ret" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض تفاصيل العقود والولاء
+                        </div>
+                    </div>
+                    <!-- صافي نقاط التوصية NPS -->
+                    <div onclick="openDrilldown('nps')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40 bg-gradient-to-br from-white via-white to-amber-50/20 border-2 border-amber-300">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-slate-900">صافي نقاط التوصية NPS (رضا العملاء)</span>
+                            <span id="flag-nps" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-2xl font-black text-slate-800" id="val-nps">0</span>
+                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 70</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                                <div id="bar-nps" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض تقييم الخدمة 10% والتأخيرات 10%
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- مجموعة 3: العمليات والأسطول -->
+            <section id="ops-fleet-group" class="mb-8" data-aos="fade-up">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
+                    <h3 class="text-xs font-black text-slate-800">مؤشرات العمليات وأسطول الحافلات</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- نسبة الالتزام بالخطة التشغيلية -->
+                    <div onclick="openDrilldown('ops-plan')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-slate-500">الالتزام بالخطة التشغيلية</span>
+                            <span id="flag-ops-plan" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-2xl font-black text-slate-800" id="val-ops-plan">0%</span>
+                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 90%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                                <div id="bar-ops-plan" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض مخطط التزام رحلات الحافلات
+                        </div>
+                    </div>
+                    <!-- نسبة جاهزية الأسطول -->
+                    <div onclick="openDrilldown('fleet-ready')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-slate-500">نسبة جاهزية الأسطول</span>
+                            <span id="flag-fleet-ready" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-2xl font-black text-slate-800" id="val-fleet-ready">0%</span>
+                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 95%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                                <div id="bar-fleet-ready" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر للتعمق في حالة حافلات الصيانة
+                        </div>
+                    </div>
+                    <!-- نسبة استغلال الأسطول -->
+                    <div onclick="openDrilldown('fleet-util')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-slate-500">نسبة استغلال الأسطول</span>
+                            <span id="flag-fleet-util" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-2xl font-black text-slate-800" id="val-fleet-util">0%</span>
+                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 85%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                                <div id="bar-fleet-util" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض كثافة تشغيل مقاعد الرحلات
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- مجموعة 4: الإدارات المساندة والدعم والاستراتيجية -->
+            <section id="support-group" class="mb-8" data-aos="fade-up">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
+                    <h3 class="text-xs font-black text-slate-800">مؤشرات الموارد البشرية، الـ HSE، والتحول الاستراتيجي</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- الموارد البشرية والتقنية -->
+                    <div class="glass-card p-5 rounded-2xl space-y-4">
+                        <div class="flex justify-between border-b border-slate-100 pb-2 items-center">
+                            <span class="text-[11px] font-black text-[#009688]">الموارد البشرية و IT</span>
+                            <i class="fa-solid fa-laptop-code text-slate-300"></i>
+                        </div>
+                        <div onclick="openDrilldown('hr-ret')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
+                            <div><span class="text-[10px] text-slate-500 block font-bold">معدل الاحتفاظ بالموظفين</span><span class="text-md font-black" id="val-hr-ret">0%</span></div>
+                            <span id="flag-hr-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div onclick="openDrilldown('it-autom')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
+                            <div><span class="text-[10px] text-slate-500 block font-bold">أتمتة الأنظمة التقنية</span><span class="text-md font-black" id="val-it-autom">0%</span></div>
+                            <span id="flag-it-autom" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                    </div>
+
+                    <!-- السلامة والصحة المهنية HSE والتدقيق (مؤشرات عكسية) -->
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex justify-between border-b border-slate-100 pb-2 items-center">
+                            <span class="text-[11px] font-black text-amber-700">السلامة HSE والتدقيق</span>
+                            <i class="fa-solid fa-shield-halved text-slate-300"></i>
+                        </div>
+                        <div onclick="openDrilldown('hse-ltifr')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1 rounded-lg transition-colors">
+                            <div><span class="text-[10px] text-slate-500 block font-bold">معدل الحوادث LTIFR</span><span class="text-md font-black text-slate-800" id="val-hse-ltifr">0.0</span></div>
+                            <span id="flag-hse-ltifr" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div onclick="openDrilldown('hse-accidents')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1 rounded-lg transition-colors">
+                            <div><span class="text-[10px] text-slate-500 block font-bold">حوادث جسيمة (مستهدف 0)</span><span class="text-md font-black text-red-600" id="val-hse-accidents">0</span></div>
+                            <span id="flag-hse-accidents" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div onclick="openDrilldown('audit-comp')" class="flex justify-between items-center border-t border-slate-50 pt-2 cursor-pointer hover:bg-slate-100 p-1 rounded-lg transition-colors">
+                            <div><span class="text-[10px] text-slate-500 block font-bold">نسبة الامتثال للسياسات</span><span class="text-md font-black text-slate-800" id="val-audit-comp">0%</span></div>
+                            <span id="flag-audit-comp" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                    </div>
+
+                    <!-- الاستراتيجية والأداء العام -->
+                    <div class="glass-card p-5 rounded-2xl space-y-4">
+                        <div class="flex justify-between border-b border-slate-100 pb-2 items-center">
+                            <span class="text-[11px] font-black text-purple-700">الاستراتيجية والمشاريع</span>
+                            <i class="fa-solid fa-bullseye text-slate-300"></i>
+                        </div>
+                        <div onclick="openDrilldown('strat-goals')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
+                            <div><span class="text-[10px] text-slate-500 block font-bold">أهداف استراتيجية عامة</span><span class="text-md font-black" id="val-strat-goals">0%</span></div>
+                            <span id="flag-strat-goals" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div onclick="openDrilldown('strat-init')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
+                            <div><span class="text-[10px] text-slate-500 block font-bold">إنجاز مبادرات PMO</span><span class="text-md font-black" id="val-strat-init">0%</span></div>
+                            <span id="flag-strat-init" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- جدول النشاطات والعمليات التشغيلية الأخيرة كاملاً -->
+            <section class="bg-sidebar rounded-2xl p-6 text-white shadow-xl border-2 border-[#D4B795]/50" data-aos="fade-up">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xs font-black flex items-center gap-2 text-white">
+                        <span class="w-1.5 h-4 bg-amber-500 rounded-full"></span>
+                        النشاطات والعمليات التشغيلية الأخيرة بالأسطول
+                    </h3>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-xs">
+                        <thead>
+                            <tr class="text-neutral-500 border-b border-neutral-800 pb-3">
+                                <th class="pb-3 font-bold text-gold-brand">الوقت</th>
+                                <th class="pb-3 font-bold text-gold-brand">تفاصيل العملية التشغيلية للأسطول</th>
+                                <th class="pb-3 font-bold text-gold-brand">المستخدم المسؤول</th>
+                                <th class="pb-3 font-bold text-center text-gold-brand">حالة الفحص</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-neutral-800/40">
+                            <tr class="hover:bg-neutral-900 transition-all">
+                                <td class="py-3.5 text-neutral-400 font-mono">09:42 ص</td>
+                                <td class="py-3.5 font-medium text-neutral-200">تحديث حالة أسطول الحافلات لموسم الحج 1447هـ وتجهيز التصاريح.</td>
+                                <td class="py-3.5 text-neutral-300 font-bold">مدير الأسطول (Admin)</td>
+                                <td class="py-3.5 text-center">
+                                    <span class="px-2.5 py-1 rounded-md bg-emerald-950/80 text-emerald-400 font-bold text-[10px] border border-emerald-900/50">مكتمل</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-neutral-900 transition-all">
+                                <td class="py-3.5 text-neutral-400 font-mono">08:15 ص</td>
+                                <td class="py-3.5 font-medium text-neutral-200">تحديث نسبة إشغال حافلات السياحة وعقود النقل لـ 92%</td>
+                                <td class="py-3.5 text-neutral-300 font-bold">مشرف العمليات (Admin)</td>
+                                <td class="py-3.5 text-center">
+                                    <span class="px-2.5 py-1 rounded-md bg-amber-950/80 text-amber-400 font-bold text-[10px] border border-amber-900/50">قيد المراجعة</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ================= لوحة التعمق والـ Popup Modal المطور ================= -->
+    <div id="drilldownModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <!-- الأوفرلاي الخلفية المعتمة والمغشاة -->
+        <div id="modalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-md opacity-0 transition-opacity duration-300" onclick="closeDrilldown()"></div>
+        
+        <!-- صندوق المودال المنبثق -->
+        <div id="modalBox" class="bg-white/98 backdrop-blur-md w-full max-w-2xl rounded-3xl border-2 border-[#D4B795] shadow-2xl overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col max-h-[85vh] z-10">
+            <!-- هيدر المودال المنبثق -->
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-[#111111] via-[#242424] to-[#111111] text-white">
+                <div>
+                    <h3 id="drawerTitle" class="text-sm font-black text-white flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#D4B795] animate-pulse"></span>
+                        <span id="modalHeaderTitle">تفاصيل مؤشر الأداء</span>
+                    </h3>
+                    <p id="drawerSubtitle" class="text-[9px] text-neutral-400 mt-1 font-bold">التحليل التفصيلي والمسارات</p>
+                </div>
+                <button onclick="closeDrilldown()" class="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+            </div>
+            
+            <!-- جسم المودال المنبثق -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6 text-right">
+                <!-- الكارت الرئيسي للقيم -->
+                <div class="bg-gradient-to-l from-amber-50/60 to-white border-2 border-[#D4B795]/50 p-5 rounded-2xl flex items-center justify-between shadow-xs">
+                    <div>
+                        <span class="text-[10px] text-slate-500 font-bold block">القيمة الحالية المسجلة</span>
+                        <span id="drawerCurrentVal" class="text-3xl font-black text-[#009688] block mt-1 drop-shadow-sm">0%</span>
+                        <span id="drawerTargetVal" class="text-[9px] text-slate-400 block mt-0.5 font-bold">المستهدف: 0%</span>
+                    </div>
+                    <div id="drawerStatusFlag" class="text-[10px] font-bold px-3 py-1 rounded-full shadow-2xs">--</div>
+                </div>
+
+                <!-- المؤشرات الفرعية التابعة -->
+                <div>
+                    <h4 class="text-xs font-black text-slate-800 mb-3 flex items-center gap-1.5 border-b border-slate-100 pb-1.5">
+                        <span class="w-1.5 h-3.5 bg-[#009688] rounded-full"></span>
+                        تحليل المؤشرات والمسارات التابعة (Sub-KPIs)
+                    </h4>
+                    <div id="drawerSubKpis" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- يتم حقن المؤشرات الفرعية هنا بواسطة JS -->
+                    </div>
+                </div>
+
+                <!-- الرسم البياني للـ Drilldown -->
+                <div>
+                    <h4 class="text-xs font-black text-slate-800 mb-3 flex items-center gap-1.5 border-b border-slate-100 pb-1.5">
+                        <span class="w-1.5 h-3.5 bg-[#009688] rounded-full"></span>
+                        المخطط البياني الموزع للمسارات والقطاعات
+                    </h4>
+                    <div class="h-60 bg-slate-50 rounded-2xl p-3 border border-slate-100 flex items-center justify-center relative">
+                        <canvas id="drawerChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- التوصيات والإجراءات التصحيحية -->
+                <div class="bg-blue-50 border border-blue-200/50 p-4 rounded-xl">
+                    <h5 class="text-[10px] font-black text-blue-900 flex items-center gap-1.5 mb-1.5">
+                        <i class="fa-solid fa-circle-info text-blue-700"></i>
+                        توصيات الإجراءات التشغيلية
+                    </h5>
+                    <p id="drawerNotes" class="text-[10px] text-blue-800 leading-relaxed font-semibold">
+                        تحليل الفجوة يشير إلى ضرورة اتخاذ إجراءات فورية لمعالجة الانحراف عن المستهدف التشغيلي.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= لوحة معلومات الملف الشخصي المنبثقة ================= -->
+    <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <!-- الأوفرلاي الخلفية -->
+        <div id="profileModalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-md opacity-0 transition-opacity duration-300" onclick="closeProfileModal()"></div>
+        
+        <!-- صندوق بطاقة الـ CEO المنبثقة -->
+        <div id="profileModalBox" class="bg-white/98 backdrop-blur-md w-full max-w-xs rounded-3xl border-2 border-[#D4B795] shadow-2xl overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col p-6 z-10 text-center relative text-right">
+            <!-- زر الإغلاق -->
+            <button onclick="closeProfileModal()" class="absolute top-4 left-4 w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-xs"></i>
+            </button>
+            
+            <!-- الصورة الرمزية للـ CEO -->
+            <div class="w-16 h-16 rounded-full border-2 border-[#D4B795] bg-gradient-to-tr from-amber-100 to-amber-200 flex items-center justify-center text-neutral-900 font-black text-lg mx-auto shadow-md mb-3">
+                غ ع
+            </div>
+            
+            <!-- تفاصيل الاسم والمسمى -->
+            <h4 class="text-sm font-black text-slate-900 text-center mb-1">غسان عراقي</h4>
+            <span class="text-[9px] bg-amber-100 text-amber-900 px-3 py-0.5 rounded-full font-black mx-auto inline-block mb-4 shadow-3xs text-center">المدير العام والتنفيذي (CEO)</span>
+            
+            <!-- تفاصيل الحساب -->
+            <div class="border-t border-slate-100 pt-4 space-y-2.5 text-[10px] text-slate-700 font-bold">
+                <div class="flex justify-between">
+                    <span class="text-slate-400">البريد الإلكتروني:</span>
+                    <span>g.iraqi@rawahel.com.sa</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">الصلاحيات البرمجية:</span>
+                    <span class="text-[#009688] font-black">إدارة كاملة للنظام (Full Admin)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تفعيل سكريبت الحسابات والرسوم البيانية -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // تشغيل أنيميشن التمرير مع حماية الأخطاء
+        try {
+            AOS.init({ duration: 800, once: true });
+        } catch (e) {
+            console.warn("AOS animation library could not be loaded:", e);
+        }
+
+        // هيكلية البيانات للمؤشرات الفرعية والمسارات التابعة (Drill Down Engine)
+        const kpiSubKpis = {
+            'rev-growth': {
+                title: 'إجمالي الإيرادات وتحليل مسارات النقل الأكثر ربحية',
+                subtitle: 'التحليل المالي - تفصيل المسارات والرحلات الأكثر جذباً للأموال',
+                notes: 'مسار مكة-المدينة VIP ومسار قطار الحرمين هما الأكثر دراً للأموال بالشركة. نوصي بتكثيف الرحلات الإضافية وتوجيه الحافلات الفاخرة لهما لرفع المداخيل.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'مسار مكة - المدينة (VIP)', value: '65M ر.س', target: '60M ر.س', flag: 'excellent' },
+                    { name: 'مسار قطار الحرمين - المشاعر المقدسة', value: '38M ر.س', target: '35M ر.س', flag: 'excellent' },
+                    { name: 'مسار مطار جدة - مكة كلاسيك', value: '24.5M ر.س', target: '30M ر.س', flag: 'bad' },
+                    { name: 'مسار النقل السياحي الموحد', value: '15M ر.س', target: '17M ر.س', flag: 'good' }
+                ],
+                chartLabels: ['مكة-المدينة VIP', 'قطار الحرمين-المشاعر', 'مطار جدة-مكة', 'النقل السياحي الموحد'],
+                chartData: (val) => [65, 38, 24.5, 15]
+            },
+            'ebitda': {
+                title: 'هامش EBITDA',
+                subtitle: 'الكفاءة التشغيلية والربحية قبل الضرائب والهلاك',
+                notes: 'التحكم في التكاليف التشغيلية المباشرة وحساب مصروف المحروقات للرحلات بشكل مؤتمت يساهم مباشرة في الحفاظ على استقرار هامش EBITDA.',
+                chartType: 'doughnut',
+                subKpis: (val) => [
+                    { name: 'كفاءة تشغيل الرحلات الدائرية', value: '94%', target: '95%', flag: 'good' },
+                    { name: 'ترشيد كلفة وقود أسطول النقل', value: Math.round(val * 2.6) + '%', target: '95%', flag: 'excellent' },
+                    { name: 'تكاليف الصيانة الدورية المخططة', value: '4.8M ر.س', target: '5.0M ر.س', flag: 'excellent' }
+                ],
+                chartLabels: ['تكلفة السائقين', 'مصروف الوقود', 'الصيانة والورش', 'مصاريف إدارية'],
+                chartData: (val) => [45, 25, 20, 10]
+            },
+            'cashflow': {
+                title: 'التدفق النقدي التشغيلي',
+                subtitle: 'مراقبة السيولة النقدية والمقبوضات',
+                notes: 'أولوية قصوى لتقليص فترات الذمم المدينة من وكلاء السياحة الخارجيين لتسريع دورة النقد في حسابات الشركة.',
+                chartType: 'line',
+                subKpis: (val) => [
+                    { name: 'فترة تحصيل الذمم المدينة (أيام)', value: '42 يوم', target: '30 يوم', flag: 'bad' },
+                    { name: 'التدفقات النقدية الداخلة للمحفظة', value: val + 'M ر.س', target: '50M ر.س', flag: val >= 40 ? 'good' : 'bad' }
+                ],
+                chartLabels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'],
+                chartData: (val) => [Math.round(val * 0.2), Math.round(val * 0.5), Math.round(val * 0.8), val]
+            },
+            'roa': {
+                title: 'العائد على الأصول ROA',
+                subtitle: 'ربحية تشغيل أسطول المركبات والحافلات',
+                notes: 'الاستغلال الأمثل للحافلات الاحتياطية وإدخالها في رحلات السياحة القصيرة يرفع عائد تشغيل أصول الأسطول بشكل فوري.',
+                chartType: 'polarArea',
+                subKpis: (val) => [
+                    { name: 'عائد أسطول الحافلات السياحية', value: Math.round(val * 1.2) + '%', target: '15%', flag: 'excellent' },
+                    { name: 'عائد حافلات النقل التجاري والمدرسي', value: Math.round(val * 0.8) + '%', target: '10%', flag: 'good' }
+                ],
+                chartLabels: ['الحافلات الفاخرة', 'حافلات النقل العام', 'الأراضي والورش'],
+                chartData: (val) => [Math.round(val * 1.2), Math.round(val * 0.8), 3]
+            },
+            'cust-ret': {
+                title: 'نسبة الاحتفاظ بالعملاء',
+                subtitle: 'مؤشرات ولاء العملاء وتجديد العقود التجارية',
+                notes: 'نسبة ولاء وكلاء العمرة مستقرة وإيجابية جداً نتيجة جودة حافلات النقل والالتزام بالبرامج. يجب صياغة عقود طويلة الأجل.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'نسبة تجديد عقود شركات العمرة', value: Math.round(val * 1.04) + '%', target: '90%', flag: 'excellent' },
+                    { name: 'رضا بعثات الحج الخارجية', value: Math.round(val * 0.96) + '%', target: '85%', flag: 'excellent' }
+                ],
+                chartLabels: ['شركات السياحة', 'مؤسسات الطوافة', 'الجهات الحكومية'],
+                chartData: (val) => [Math.round(val * 1.02), Math.round(val * 0.97), Math.round(val * 0.85)]
+            },
+            'nps': {
+                title: 'صافي نقاط التوصية NPS',
+                subtitle: 'مؤشرات رضا العملاء وجودة الخدمة لضيوف الرحمن',
+                notes: 'يوجد تدني واضح في تقييم أداء خدمة العملاء وحل الشكاوى وتأخير الرحلات والحافلات، وتعد هذه النقطة ذات أولوية قصوى للمعالجة الفورية وتعديل مسار الأسطول.',
+                chartType: 'radar',
+                subKpis: (val) => [
+                    { name: 'نسبه خدمه العملاء الفورية', value: '10%', target: '50%', flag: 'bad' }, // Explicitly requested sub-kpi 1
+                    { name: 'نسبة تأخر الأسطول / الرحلات اليومية', value: '10%', target: '5%', flag: 'bad' }, // Explicitly requested sub-kpi 2
+                    { name: 'معدل تقييم نظافة الحافلة', value: '94%', target: '95%', flag: 'good' },
+                    { name: 'سرعة الاستجابة لشكاوى الركاب', value: '12%', target: '80%', flag: 'bad' }
+                ],
+                chartLabels: ['خدمة العملاء (10%)', 'تأخير الرحلات (10%)', 'نظافة الحافلات (94%)', 'سرعة حل الشكاوى (12%)', 'راحة المقاعد'],
+                chartData: (val) => [10, 10, 94, 12, 70]
+            },
+            'ops-plan': {
+                title: 'نسبة الالتزام بالخطة التشغيلية',
+                subtitle: 'مطابقة جدولة الرحلات الفعلية بالخطط الأساسية',
+                notes: 'الأداء التشغيلي منضبط ويسجل نسب ممتازة. نقوم بتحديث نظام الجدولة الذكي لتلافي الازدحامات المرورية حول المشاعر المقدسة.',
+                chartType: 'line',
+                subKpis: (val) => [
+                    { name: 'نسبة مطابقة مسارات الرحلات للحافلات', value: Math.round(val * 1.01) + '%', target: '95%', flag: 'excellent' },
+                    { name: 'انضباط جدول ورديات حركة السائقين', value: Math.round(val * 0.99) + '%', target: '90%', flag: 'excellent' }
+                ],
+                chartLabels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'],
+                chartData: (val) => [val - 5, val - 2, val + 1, val]
+            },
+            'fleet-ready': {
+                title: 'نسبة جاهزية الأسطول',
+                subtitle: 'الصيانة الوقائية والأعطال وحالة الحافلات',
+                notes: 'متابعة حية لصيانة 1,240 حافلة بورشة رواحل الرئيسية بمكة المكرمة للتأكد من الجاهزية الكاملة لمواسم الحج.',
+                chartType: 'doughnut',
+                subKpis: (val) => [
+                    { name: 'حافلات جاهزة للعمل الفوري', value: Math.round(1240 * (val/100)) + ' حافلة', target: '1178 حافلة', flag: 'excellent' },
+                    { name: 'حافلات في الصيانة الدورية الدائرية', value: Math.round(1240 * (1 - val/100) * 0.6) + ' حافلة', target: 'أقل من 30', flag: 'good' },
+                    { name: 'حافلات في صيانة الأعطال الطارئة', value: Math.round(1240 * (1 - val/100) * 0.4) + ' حافلة', target: 'أقل من 20', flag: 'excellent' }
+                ],
+                chartLabels: ['جاهزية تامة للتشغيل', 'صيانة وقائية دورية', 'صيانة أعطال طارئة'],
+                chartData: (val) => [val, Math.round((100-val)*0.6), Math.round((100-val)*0.4)]
+            },
+            'fleet-util': {
+                title: 'نسبة استغلال الأسطول',
+                subtitle: 'معدلات ساعات تشغيل الحافلة في اليوم',
+                notes: 'معدل الاستغلال ممتاز ويصل لذروته بموسمي رمضان وموسم الحج. نقوم بتوزيع الحافلات السياحية لخدمة المطارات لتوازن الكثافة.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'متوسط ساعات التشغيل اليومي للحافلة', value: '14.2 ساعة', target: '16 ساعة', flag: 'good' },
+                    { name: 'معدل إشغال المقاعد الفعلي بالرحلات', value: Math.round(val * 1.05) + '%', target: '80%', flag: 'excellent' }
+                ],
+                chartLabels: ['حج وعمرة', 'نقل سياحي', 'عقود جهات حكومية', 'حافلات مساندة'],
+                chartData: (val) => [98, val - 5, val - 15, 45]
+            },
+            'hr-ret': {
+                title: 'معدل الاحتفاظ بالموظفين',
+                subtitle: 'الموارد البشرية وكفاءة الكوادر والعمالة',
+                notes: 'استقرار في الكوادر الفنية ومهندسي ورش صيانة الحافلات. نعمل على حوافز موسمية للسائقين لتعزيز الإنتاجية.',
+                chartType: 'polarArea',
+                subKpis: (val) => [
+                    { name: 'معدل بقاء سائقي النقل الثقيل', value: Math.round(val * 0.98) + '%', target: '90%', flag: 'excellent' },
+                    { name: 'معدل بقاء الإداريين والمهندسين', value: Math.round(val * 1.01) + '%', target: '95%', flag: 'excellent' }
+                ],
+                chartLabels: ['فنيو صيانة ورش', 'سائقو حافلات', 'إداريون ومالية', 'تقنيو تشغيل'],
+                chartData: (val) => [94, Math.round(val * 0.94), Math.round(val * 0.98), 92]
+            },
+            'it-autom': {
+                title: 'نسبة الأتمتة المنجزة',
+                subtitle: 'التحول الرقمي وإدارة أسطول النقل إلكترونياً',
+                notes: 'أتمتة جدولة الرحلات وتطبيق تتبع الحافلات والـ GPS يساهم في رصد التأخيرات والمخالفات ومراقبة الاستهلاك بشكل دقيق.',
+                chartType: 'line',
+                subKpis: (val) => [
+                    { name: 'أتمتة جدولة حركة الأسطول الفوري', value: Math.round(val * 1.1) + '%', target: '90%', flag: 'excellent' },
+                    { name: 'أتمتة طلب الصيانة الوقائية بالورش', value: Math.round(val * 0.85) + '%', target: '80%', flag: 'good' }
+                ],
+                chartLabels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو'],
+                chartData: (val) => [val - 15, val - 10, val - 5, val, Math.min(val + 5, 100)]
+            },
+            'hse-ltifr': {
+                title: 'معدل الحوادث LTIFR',
+                subtitle: 'الصحة والسلامة المهنية والبيئة',
+                notes: 'معدل حوادث العمل والإصابات منخفض جداً والحمد لله بفضل الالتزام الصارم بتعليمات المرور والسلامة المهنية والورش.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'معدل الحوادث لكل مليون ساعة عمل', value: val, target: 'أقل من 1.5', flag: val <= 1.5 ? 'excellent' : 'bad' },
+                    { name: 'ساعات العمل الآمنة بدون إصابات', value: '450K ساعة', target: '500K ساعة', flag: 'good' }
+                ],
+                chartLabels: ['الربع 1', 'الربع 2', 'الربع 3', 'الربع 4'],
+                chartData: (val) => [val + 0.2, val + 0.1, val - 0.1, val]
+            },
+            'hse-accidents': {
+                title: 'عدد الحوادث الجسيمة',
+                subtitle: 'إدارة السلامة والصحة المهنية HSE (مستهدف 0)',
+                notes: 'لم يتم تسجيل أي حادث جسيم للحافلات على الطرق السريعة بحمد الله. نلتزم بفحص السائقين وصلاحية كوابح الحافلات.',
+                chartType: 'doughnut',
+                subKpis: (val) => [
+                    { name: 'عدد الحوادث الجسيمة المسجلة', value: val, target: '0 حوادث', flag: val === 0 ? 'excellent' : 'bad' },
+                    { name: 'مخالفات السرعة وتجاوز السرعة المرورية', value: 'صفرية', target: 'صفر مخالفات', flag: 'excellent' }
+                ],
+                chartLabels: ['حوادث مسجلة', 'رحلات آمنة مكتملة'],
+                chartData: (val) => [val, 100 - val]
+            },
+            'audit-comp': {
+                title: 'نسبة الامتثال للسياسات',
+                subtitle: 'التدقيق والالتزام بمعايير نقابة السيارات والجهات المنظمة',
+                notes: 'مطابقة ممتازة لشروط التشغيل والتراخيص لحافلات الشركة لضمان سلاسة حركة نقل ضيوف الرحمن.',
+                chartType: 'radar',
+                subKpis: (val) => [
+                    { name: 'مطابقة معايير النقابة العامة للسيارات', value: Math.round(val * 1.02) + '%', target: '95%', flag: 'excellent' },
+                    { name: 'الامتثال لأنظمة تراخيص الحافلات والمرور', value: Math.round(val * 0.98) + '%', target: '90%', flag: 'excellent' }
+                ],
+                chartLabels: ['لوائح الحج والعمرة', 'معايير المرور والصلاحية', 'التراخيص البلدية', 'متمتلكات السلامة'],
+                chartData: (val) => [val, val - 2, Math.min(val + 3, 100), val - 4]
+            },
+            'strat-goals': {
+                title: 'تحقيق الأهداف الاستراتيجية',
+                subtitle: 'إشراف مكتب إدارة المشاريع PMO ورؤية رواحل',
+                notes: 'نسير بخطة نمو متسارعة لرفع الحصة السوقية للشركة وتوطين الوظائف والتحول الرقمي الكامل للعمليات والورش.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'التوسع الجغرافي للتشغيل بالمملكة', value: Math.round(val * 1.04) + '%', target: '80%', flag: 'excellent' },
+                    { name: 'تطبيق الرقابة الرقمية على الأسطول بالكامل', value: Math.round(val * 0.96) + '%', target: '90%', flag: 'excellent' }
+                ],
+                chartLabels: ['توسيع الحصة السوقية', 'التحول الرقمي للورش', 'توطين السائقين', 'كفاءة الاستهلاك'],
+                chartData: (val) => [Math.round(val * 0.9), Math.round(val * 1.03), Math.round(val * 0.82), Math.round(val * 1.05)]
+            },
+            'strat-init': {
+                title: 'نسبة إنجاز المبادرات',
+                subtitle: 'مبادرات مكتب PMO للتحول الاستراتيجي والميداني',
+                notes: 'المبادرات الخمس المعتمدة تتقدم بنسب جيدة وتساهم في إحداث نقلة نوعية للتشغيل وخدمات حجاج البر.',
+                chartType: 'line',
+                subKpis: (val) => [
+                    { name: 'مبادرة رقمنة ورش الصيانة وحجز القطع', value: Math.round(val * 1.05) + '%', target: '85%', flag: 'excellent' },
+                    { name: 'مبادرة صديقة البيئة للحافلات الخضراء', value: Math.round(val * 0.8) + '%', target: '90%', flag: 'good' }
+                ],
+                chartLabels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو'],
+                chartData: (val) => [val - 20, val - 12, val - 5, val - 2, val]
+            }
+        };
+
+        let mixedChart = null, flagsPieChart = null, drawerChartInstance = null;
+        let activeKpiKey = null;
+
+        // دالة فحص وتعيين الأعلام الملونة اللامعة والملفتة
+        function assignFlagAndStyle(flagId, value, target, isInverse = false) {
+            const el = document.getElementById(flagId);
+            if (!el) return 'excellent';
+            
+            let achievementRatio = isInverse ? (target / (value || 0.1)) * 100 : (value / target) * 100;
+            if(isInverse && value <= target) achievementRatio = 100;
+
+            if (achievementRatio >= 95) {
+                el.innerText = "🟢 ممتاز";
+                el.className = "text-[9px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/35 shadow-[0_0_10px_rgba(16,185,129,0.3)] animate-pulse";
+                return 'excellent';
+            } else if (achievementRatio >= 75) {
+                el.innerText = "🟡 جيد";
+                el.className = "text-[9px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/35 shadow-[0_0_10px_rgba(245,158,11,0.3)]";
+                return 'good';
+            } else {
+                el.innerText = "🔴 ضعيف";
+                el.className = "text-[9px] font-black px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-500 border border-red-500/35 shadow-[0_0_10px_rgba(239,68,68,0.3)] animate-pulse";
+                return 'bad';
+            }
+        }
+
+        // دالة فتح نافذة الـ Drilldown والتعمق (centered modal popup)
+        function openDrilldown(kpiKey) {
+            activeKpiKey = kpiKey;
+            
+            // تهيئة المودال قبل إظهاره
+            try {
+                updateDrawerContent();
+            } catch (e) {
+                console.error("Error updating drawer content:", e);
+            }
+            
+            const modal = document.getElementById('drilldownModal');
+            const overlay = document.getElementById('modalOverlay');
+            const box = document.getElementById('modalBox');
+            
+            if (modal && overlay && box) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    box.classList.remove('scale-90', 'opacity-0');
+                    box.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            }
+        }
+
+        // إغلاق نافذة التعمق (centered modal popup)
+        function closeDrilldown() {
+            const modal = document.getElementById('drilldownModal');
+            const overlay = document.getElementById('modalOverlay');
+            const box = document.getElementById('modalBox');
+            
+            if (modal && overlay && box) {
+                box.classList.remove('scale-100', 'opacity-100');
+                box.classList.add('scale-90', 'opacity-0');
+                overlay.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    activeKpiKey = null;
+                }, 300);
+            }
+        }
+
+        // تحديث محتويات نافذة التعمق بناء على الـ KPI الفعال
+        function updateDrawerContent() {
+            if (!activeKpiKey || !kpiSubKpis[activeKpiKey]) return;
+            
+            const kpiInfo = kpiSubKpis[activeKpiKey];
+            const valEl = document.getElementById(`val-${activeKpiKey}`);
+            const flagEl = document.getElementById(`flag-${activeKpiKey}`);
+            
+            const currentValStr = valEl ? valEl.innerText : "0%";
+            
+            // استخراج القيم العددية لحساب النسب الفرعية
+            const currentValNum = parseFloat(currentValStr.replace(/[^0-9.]/g, '')) || 0;
+            
+            // 1. تعبئة النصوص الرئيسية بالنافذة المنبثقة
+            const drawerTitleEl = document.getElementById('drawerTitle');
+            if (drawerTitleEl) drawerTitleEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-[#D4B795] animate-pulse"></span>` + kpiInfo.title;
+            
+            const drawerSubtitleEl = document.getElementById('drawerSubtitle');
+            if (drawerSubtitleEl) drawerSubtitleEl.innerText = kpiInfo.subtitle;
+            
+            const drawerCurrentValEl = document.getElementById('drawerCurrentVal');
+            if (drawerCurrentValEl) drawerCurrentValEl.innerText = currentValStr;
+            
+            const drawerNotesEl = document.getElementById('drawerNotes');
+            if (drawerNotesEl) drawerNotesEl.innerText = kpiInfo.notes;
+            
+            // مطابقة المستهدف المعروض
+            let targetText = "0%";
+            if (activeKpiKey === 'rev-growth') targetText = "150M ر.س (نمو 25%)";
+            else if (activeKpiKey === 'ebitda') targetText = "35%";
+            else if (activeKpiKey === 'cashflow') targetText = "50M";
+            else if (activeKpiKey === 'roa') targetText = "12%";
+            else if (activeKpiKey === 'cust-ret') targetText = "85%";
+            else if (activeKpiKey === 'nps') targetText = "70";
+            else if (activeKpiKey === 'ops-plan') targetText = "90%";
+            else if (activeKpiKey === 'fleet-ready') targetText = "95%";
+            else if (activeKpiKey === 'fleet-util') targetText = "85%";
+            else if (activeKpiKey === 'hr-ret') targetText = "90%";
+            else if (activeKpiKey === 'it-autom') targetText = "80%";
+            else if (activeKpiKey === 'hse-ltifr') targetText = "1.5";
+            else if (activeKpiKey === 'hse-accidents') targetText = "0";
+            else if (activeKpiKey === 'audit-comp') targetText = "95%";
+            else if (activeKpiKey === 'strat-goals') targetText = "85%";
+            else if (activeKpiKey === 'strat-init') targetText = "90%";
+            
+            const drawerTargetValEl = document.getElementById('drawerTargetVal');
+            if (drawerTargetValEl) drawerTargetValEl.innerText = "المستهدف المطلوب: " + targetText;
+            
+            // تعيين العلم بالنافذة
+            const statusEl = document.getElementById('drawerStatusFlag');
+            if (statusEl && flagEl) {
+                statusEl.innerText = flagEl.innerText;
+                statusEl.className = flagEl.className + " text-[9px] font-bold px-3 py-1 rounded-full shadow-xs animate-none";
+            }
+
+            // 2. معالجة وحقن المؤشرات الفرعية التابعة Sub-KPIs
+            const subKpisList = kpiInfo.subKpis(currentValNum);
+            const subKpiContainer = document.getElementById('drawerSubKpis');
+            if (subKpiContainer) {
+                subKpiContainer.innerHTML = '';
+                
+                subKpisList.forEach(sub => {
+                    let badgeClass = "bg-slate-100 text-slate-700";
+                    let badgeIcon = "⚪";
+                    if (sub.flag === 'excellent') {
+                        badgeClass = "bg-emerald-500/10 text-emerald-500 border border-emerald-500/35 shadow-[0_0_8px_rgba(16,185,129,0.25)]";
+                        badgeIcon = "🟢 ممتاز";
+                    } else if (sub.flag === 'good') {
+                        badgeClass = "bg-amber-500/10 text-amber-600 border border-amber-500/35 shadow-[0_0_8px_rgba(245,158,11,0.25)]";
+                        badgeIcon = "🟡 جيد";
+                    } else if (sub.flag === 'bad') {
+                        badgeClass = "bg-red-500/10 text-red-500 border border-red-500/35 shadow-[0_0_8px_rgba(239,68,68,0.25)]";
+                        badgeIcon = "🔴 ضعيف";
+                    }
+                    
+                    const itemHtml = `
+                        <div class="bg-white p-3.5 rounded-xl border-2 border-slate-100 flex items-center justify-between shadow-2xs hover:shadow-xs transition-shadow">
+                            <div>
+                                <span class="text-[10px] font-black text-slate-800 block">${sub.name}</span>
+                                <span class="text-[9px] text-slate-500 font-bold block mt-0.5">المستهدف: ${sub.target}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-black text-slate-900">${sub.value}</span>
+                                <span class="text-[8px] font-black px-2 py-0.5 rounded-full ${badgeClass}">${badgeIcon}</span>
+                            </div>
+                        </div>
+                    `;
+                    subKpiContainer.innerHTML += itemHtml;
+                });
+            }
+
+            // 3. بناء وتحديث الرسم البياني الفرعي المخصص (Sub Chart.js Generator)
+            if (typeof Chart !== 'undefined') {
+                const canvasEl = document.getElementById('drawerChart');
+                if (canvasEl) {
+                    try {
+                        if (drawerChartInstance) {
+                            drawerChartInstance.destroy();
+                        }
+                        
+                        const ctxDrawer = canvasEl.getContext('2d');
+                        drawerChartInstance = new Chart(ctxDrawer, {
+                            type: kpiInfo.chartType,
+                            data: {
+                                labels: kpiInfo.chartLabels,
+                                datasets: [{
+                                    label: kpiInfo.title,
+                                    data: kpiInfo.chartData(currentValNum),
+                                    backgroundColor: kpiInfo.chartType === 'doughnut' ? 
+                                        ['#009688', '#D4B795', '#ef4444', '#94a3b8'] : 'rgba(0, 150, 136, 0.25)',
+                                    borderColor: '#009688',
+                                    borderWidth: 2.5,
+                                    fill: true
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: { 
+                                        display: kpiInfo.chartType === 'doughnut' || kpiInfo.chartType === 'polarArea',
+                                        position: 'bottom',
+                                        labels: { font: { family: 'Cairo', size: 9, weight: 'bold' } } 
+                                    }
+                                },
+                                scales: kpiInfo.chartType !== 'doughnut' && kpiInfo.chartType !== 'polarArea' && kpiInfo.chartType !== 'radar' ? {
+                                    y: { beginAtZero: true },
+                                    x: { ticks: { font: { family: 'Cairo', size: 9, weight: 'bold' } } }
+                                } : undefined
+                            }
+                        });
+                    } catch (e) {
+                        console.error("Error creating drawerChart:", e);
+                    }
+                }
+            }
+        }
+
+        // دالة مساعدة لتحديث نصوص الواجهة والتحقق الآمن
+        function safeSetText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = text;
+        }
+
+        // دالة مساعدة لتحديث شريط التقدم والتحقق الآمن
+        function safeSetWidth(id, widthPct) {
+            const el = document.getElementById(id);
+            if (el) el.style.width = widthPct + '%';
+        }
+
+        // توليد الأرقام ومطابقتها وعرض الأعلام وقيمها المزامنة
+        function simulateKpiData() {
+            // 1. توليد القيم العشوائية للاختبار (معدلات تحاكي الواقع وتطابق v2 dashboard.xlsx)
+            const revGrowthNum = Math.floor(Math.random() * 15) + 12; // 12% to 27%
+            const ebitda = Math.floor(Math.random() * 12) + 25; // 25% to 37%
+            const cashflow = Math.floor(Math.random() * 20) + 32; // 32M to 52M
+            const roa = Math.floor(Math.random() * 6) + 7; // 7% to 13%
+            const custRet = Math.floor(Math.random() * 16) + 75; // 75% to 91%
+            const nps = Math.floor(Math.random() * 25) + 40; // 40 to 65
+            const opsPlan = Math.floor(Math.random() * 12) + 84; // 84% to 96%
+            const fleetReady = Math.floor(Math.random() * 11) + 87; // 87% to 98%
+            const fleetUtil = Math.floor(Math.random() * 15) + 75; // 75% to 90%
+            const hrRet = Math.floor(Math.random() * 10) + 84; // 84% to 94%
+            const itAutom = Math.floor(Math.random() * 25) + 65; // 65% to 90%
+            const ltifr = parseFloat((Math.random() * 1.8).toFixed(1)); // 0.0 to 1.8
+            const accidents = Math.random() > 0.85 ? 1 : 0; // 0 or 1
+            const auditComp = Math.floor(Math.random() * 10) + 88; // 88% to 98%
+            const stratGoals = Math.floor(Math.random() * 15) + 76; // 76% to 91%
+            const stratInit = Math.floor(Math.random() * 16) + 75; // 75% to 91%
+
+            // حساب الإيراد الإجمالي الحقيقي المعادل بالنسبة المئوية للنمو
+            const baseRevenue = 118.75; // المداخيل الأساسية
+            const currentRevenue = parseFloat((baseRevenue * (1 + revGrowthNum / 100)).toFixed(1));
+
+            // 2. حقن القيم داخل خلايا الـ HTML لتحديث الواجهة الفوري
+            safeSetText('val-rev-growth', currentRevenue + 'M ر.س');
+            safeSetText('target-rev-growth', 'المستهدف: 150M ر.س (نمو 25%)');
+            safeSetText('val-ebitda', ebitda + '%');
+            safeSetText('val-cashflow', cashflow + 'M');
+            safeSetText('val-roa', roa + '%');
+            safeSetText('val-cust-ret', custRet + '%');
+            safeSetText('val-nps', nps);
+            safeSetText('val-ops-plan', opsPlan + '%');
+            safeSetText('val-fleet-ready', fleetReady + '%');
+            safeSetText('val-fleet-util', fleetUtil + '%');
+            safeSetText('val-hr-ret', hrRet + '%');
+            safeSetText('val-it-autom', itAutom + '%');
+            safeSetText('val-hse-ltifr', ltifr);
+            safeSetText('val-hse-accidents', accidents);
+            safeSetText('val-audit-comp', auditComp + '%');
+            safeSetText('val-strat-goals', stratGoals + '%');
+            safeSetText('val-strat-init', stratInit + '%');
+
+            // تحديث أشرطة التقدم المرئية تحت كل مؤشر رئيسي
+            safeSetWidth('bar-rev-growth', Math.min(currentRevenue / 150 * 100, 100));
+            safeSetWidth('bar-ebitda', Math.min(ebitda / 35 * 100, 100));
+            safeSetWidth('bar-cashflow', Math.min(cashflow / 50 * 100, 100));
+            safeSetWidth('bar-roa', Math.min(roa / 12 * 100, 100));
+            safeSetWidth('bar-cust-ret', Math.min(custRet / 85 * 100, 100));
+            safeSetWidth('bar-nps', Math.min(nps / 70 * 100, 100));
+            safeSetWidth('bar-ops-plan', Math.min(opsPlan / 90 * 100, 100));
+            safeSetWidth('bar-fleet-ready', Math.min(fleetReady / 95 * 100, 100));
+            safeSetWidth('bar-fleet-util', Math.min(fleetUtil / 85 * 100, 100));
+
+            // تعيين ألوان شريط التقدم بناء على العلم (أحمر / برتقالي / أخضر)
+            const updateBarColor = (barId, flagType) => {
+                const el = document.getElementById(barId);
+                if(!el) return;
+                el.className = "h-full transition-all duration-500 rounded-full relative " + 
+                    (flagType === 'excellent' ? 'bg-emerald-500' : (flagType === 'good' ? 'bg-amber-500' : 'bg-red-500'));
+            };
+
+            // 3. احتساب الأعلام وإعطاء النتيجة الإحصائية لمنطقة (الملخص العام) في الأعلى
+            let flagCounter = { excellent: 0, good: 0, bad: 0 };
+
+            // نحتسب العلم للإيرادات بناء على النسبة الفعلية
+            flagCounter[assignFlagAndStyle('flag-rev-growth', currentRevenue, 150)]++;
+            flagCounter[assignFlagAndStyle('flag-ebitda', ebitda, 35)]++;
+            flagCounter[assignFlagAndStyle('flag-cashflow', cashflow, 50)]++;
+            flagCounter[assignFlagAndStyle('flag-roa', roa, 12)]++;
+            flagCounter[assignFlagAndStyle('flag-cust-ret', custRet, 85)]++;
+            flagCounter[assignFlagAndStyle('flag-nps', nps, 70)]++;
+            flagCounter[assignFlagAndStyle('flag-ops-plan', opsPlan, 90)]++;
+            flagCounter[assignFlagAndStyle('flag-fleet-ready', fleetReady, 95)]++;
+            flagCounter[assignFlagAndStyle('flag-fleet-util', fleetUtil, 85)]++;
+            flagCounter[assignFlagAndStyle('flag-hr-ret', hrRet, 90)]++;
+            flagCounter[assignFlagAndStyle('flag-it-autom', itAutom, 80)]++;
+            flagCounter[assignFlagAndStyle('flag-hse-ltifr', ltifr, 1.5, true)]++; // مؤشر عكسي
+            flagCounter[assignFlagAndStyle('flag-hse-accidents', accidents, 0, true)]++; // مؤشر عكسي
+            flagCounter[assignFlagAndStyle('flag-audit-comp', auditComp, 95)]++;
+            flagCounter[assignFlagAndStyle('flag-strat-goals', stratGoals, 85)]++;
+            flagCounter[assignFlagAndStyle('flag-strat-init', stratInit, 90)]++;
+
+            // تطبيق ألوان شريط التقدم بعد معرفة العلم الفردي
+            updateBarColor('bar-rev-growth', assignFlagAndStyle('flag-rev-growth', currentRevenue, 150));
+            updateBarColor('bar-ebitda', assignFlagAndStyle('flag-ebitda', ebitda, 35));
+            updateBarColor('bar-cashflow', assignFlagAndStyle('flag-cashflow', cashflow, 50));
+            updateBarColor('bar-roa', assignFlagAndStyle('flag-roa', roa, 12));
+            updateBarColor('bar-cust-ret', assignFlagAndStyle('flag-cust-ret', custRet, 85));
+            updateBarColor('bar-nps', assignFlagAndStyle('flag-nps', nps, 70));
+            updateBarColor('bar-ops-plan', assignFlagAndStyle('flag-ops-plan', opsPlan, 90));
+            updateBarColor('bar-fleet-ready', assignFlagAndStyle('flag-fleet-ready', fleetReady, 95));
+            updateBarColor('bar-fleet-util', assignFlagAndStyle('flag-fleet-util', fleetUtil, 85));
+
+            // عرض الأرقام المجمعة في كروت الملخص العلوي
+            safeSetText('count-excellent', flagCounter.excellent);
+            safeSetText('count-good', flagCounter.good);
+            safeSetText('count-bad', flagCounter.bad);
+
+            // الأداء العام
+            const avgPerf = Math.round(
+                ((currentRevenue/150) + (ebitda/35) + (cashflow/50) + (roa/12) + (custRet/85) + 
+                (nps/70) + (opsPlan/90) + (fleetReady/95) + (fleetUtil/85) + (hrRet/90) + 
+                (itAutom/80) + (auditComp/95) + (stratGoals/85) + (stratInit/90)) / 14 * 100
+            );
+            const clampedPerf = Math.min(Math.max(avgPerf, 30), 100);
+            
+            safeSetText('radial-progress-val', clampedPerf + '%');
+            const radialPath = document.getElementById('radial-progress-path');
+            if (radialPath) radialPath.setAttribute('stroke-dasharray', `${clampedPerf}, 100`);
+
+            // تحديث نصوص الشريط الإخباري
+            safeSetText('ticker-total-perf', clampedPerf + '%');
+            safeSetText('ticker-total-perf-dup', clampedPerf + '%');
+            safeSetText('ticker-rev-growth', currentRevenue + 'M ر.س');
+            safeSetText('ticker-rev-growth-dup', currentRevenue + 'M ر.س');
+            safeSetText('ticker-ebitda', ebitda + '%');
+            safeSetText('ticker-ebitda-dup', ebitda + '%');
+            safeSetText('ticker-fleet-ready', fleetReady + '%');
+            safeSetText('ticker-fleet-ready-dup', fleetReady + '%');
+            safeSetText('ticker-nps', nps + ' نقطة');
+            safeSetText('ticker-nps-dup', nps + ' نقطة');
+            safeSetText('ticker-ops-plan', opsPlan + '%');
+            safeSetText('ticker-ops-plan-dup', opsPlan + '%');
+
+            // 4. تحديث الرسوم البيانية الكبرى
+            if (typeof Chart !== 'undefined') {
+                if (mixedChart) {
+                    try {
+                        mixedChart.data.datasets[0].data = [currentRevenue / 1.5, ebitda, custRet, opsPlan, fleetReady, stratGoals];
+                        mixedChart.update();
+                    } catch (e) { console.error(e); }
+                }
+
+                if (flagsPieChart) {
+                    try {
+                        flagsPieChart.data.datasets[0].data = [flagCounter.excellent, flagCounter.good, flagCounter.bad];
+                        flagsPieChart.update();
+                    } catch (e) { console.error(e); }
+                }
+            }
+
+            // 5. تحديث المودال النشط بالبيانات فورياً
+            if (activeKpiKey) {
+                try {
+                    updateDrawerContent();
+                } catch (e) { console.error(e); }
+            }
+        }
+
+        // بناء وتجهيز مخططات الرسوم البيانية الكبرى عند التحميل
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Bar Chart
+            if (typeof Chart !== 'undefined') {
+                try {
+                    const ctxBar = document.getElementById('barChartActualTarget').getContext('2d');
+                    mixedChart = new Chart(ctxBar, {
+                        type: 'bar',
+                        data: {
+                            labels: ['إجمالي الإيرادات %', 'هامش EBITDA %', 'الاحتفاظ بالعملاء %', 'الخطة التشغيلية %', 'جاهزية الأسطول %', 'الأهداف الاستراتيجية %'],
+                            datasets: [
+                                { label: 'الأداء الفعلي الحالي (Actual)', data: [0, 0, 0, 0, 0, 0], backgroundColor: '#009688', borderRadius: 6 },
+                                { label: 'المستهدف الأساسي (Target)', data: [100, 35, 85, 90, 95, 85], backgroundColor: '#D4B795', borderRadius: 6 }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { labels: { font: { family: 'Cairo', size: 10, weight: 'bold' } } } },
+                            scales: { 
+                                y: { beginAtZero: true, max: 100 }, 
+                                x: { ticks: { font: { family: 'Cairo', size: 9, weight: 'bold' } } } 
+                            }
+                        }
+                    });
+                } catch (e) {
+                    console.error("Error creating mixedChart:", e);
+                }
+
+                // 2. Pie Chart
+                try {
+                    const ctxPie = document.getElementById('doughnutFlagsChart').getContext('2d');
+                    flagsPieChart = new Chart(ctxPie, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['ممتاز 🟢', 'جيد 🟡', 'ضعيف 🔴'],
+                            datasets: [{ data: [0, 0, 0], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'] }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'bottom', labels: { font: { family: 'Cairo', size: 9, weight: 'bold' } } } }
+                        }
+                    });
+                } catch (e) {
+                    console.error("Error creating flagsPieChart:", e);
+                }
+            }
+
+            // 3. تعبئة البيانات الافتراضية
+            try {
+                simulateKpiData();
+            } catch (e) {
+                console.error("Error running initial simulateKpiData:", e);
+            }
+        });
+
+        // دوال فتح وإغلاق نافذة الملف الشخصي لـ CEO
+        function openProfileModal() {
+            const modal = document.getElementById('profileModal');
+            const overlay = document.getElementById('profileModalOverlay');
+            const box = document.getElementById('profileModalBox');
+            
+            if (modal && overlay && box) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    box.classList.remove('scale-90', 'opacity-0');
+                    box.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            }
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profileModal');
+            const overlay = document.getElementById('profileModalOverlay');
+            const box = document.getElementById('profileModalBox');
+            
+            if (modal && overlay && box) {
+                box.classList.remove('scale-100', 'opacity-100');
+                box.classList.add('scale-90', 'opacity-0');
+                overlay.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
