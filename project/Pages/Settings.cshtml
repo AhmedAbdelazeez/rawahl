@@ -1,0 +1,568 @@
+@page
+@model SettingsModel
+@{
+    Layout = null;
+    ViewData["Title"] = "إعدادات مستهدفات مؤشرات الأداء - شركة رواحل المشاعر";
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <!-- Tailwind CSS للتنسيق العصري والمودرن -->
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@4"></script>
+    <!-- Google Fonts - Cairo الخط العربي المعتمد احترافياً -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Library للأنيميشن الاحترافي عند التمرير وسكرول الصفحة -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-image: linear-gradient(rgba(240, 242, 245, 0.72), rgba(240, 242, 245, 0.72)), url('https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/slider10.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        .bg-sidebar { background-color: #111111; }
+        .bg-sidebar-active { 
+            background: linear-gradient(135deg, #D4B795 0%, #B08E66 100%); 
+            color: #2d1e11 !important; 
+            box-shadow: 0 4px 15px rgba(212, 183, 149, 0.5); 
+        }
+        
+        .text-teal-brand { color: #009688; filter: drop-shadow(0 2px 8px rgba(0, 150, 136, 0.25)); }
+        .bg-teal-brand { background-color: #009688; box-shadow: 0 4px 15px rgba(0, 150, 136, 0.35); }
+        .text-gold-brand { color: #D4B795; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+
+        /* glassmorphism components with glowing effects */
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(212, 183, 149, 0.35);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4B795;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #009688;
+        }
+
+        /* custom range slider */
+        input[type=range] {
+            accent-color: #009688;
+        }
+    </style>
+</head>
+<body class="text-slate-950 antialiased selection:bg-[#009688] selection:text-white">
+
+    <div class="flex min-h-screen">
+        <!-- ================= القائمة الجانبية (Sidebar) ================= -->
+        <aside class="w-72 bg-sidebar text-neutral-400 p-5 flex flex-col justify-between hidden lg:flex border-l-2 border-[#D4B795]/50 shrink-0">
+            <div>
+                <!-- الشعار المطور المعتمد لشركة رواحل -->
+                <div class="flex flex-col items-center text-center mt-2 mb-6 bg-black/50 p-4 rounded-xl border border-neutral-800 shadow-inner">
+                    <img src="https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/logo.png" alt="شركة رواحل المشاعر" class="w-24 h-auto object-contain mb-1 filter drop-shadow-md">
+                    <h2 class="text-white text-xs font-black tracking-wide mt-1">شركة رواحل المشاعر</h2>
+                    <span class="text-[8px] text-[#D4B795] block tracking-wider font-bold mt-0.5">RAWAHEL AL MASHAER CO.</span>
+                </div>
+
+                <nav class="space-y-1">
+                    <a href="/Index" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-table-columns text-[#009688] text-sm w-5"></i>
+                        <span>لوحة التحكم والأعلام</span>
+                    </a>
+                    
+                    <a href="/Index#finance-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-wallet text-[#009688] text-sm w-5"></i>
+                        <span>الإدارة المالية</span>
+                    </a>
+                    
+                    <a href="/Index#commercial-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-chart-line text-[#009688] text-sm w-5"></i>
+                        <span>الإدارة التجارية</span>
+                    </a>
+                    
+                    <a href="/Index#ops-fleet-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-bus text-[#009688] text-sm w-5"></i>
+                        <span>العمليات والأسطول</span>
+                    </a>
+
+                    <a href="/Index#support-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-handshake-angle text-[#009688] text-sm w-5"></i>
+                        <span>الإدارات المساندة و HSE</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="space-y-1 border-t border-neutral-900 pt-3">
+                <a href="/Settings" class="flex items-center justify-between px-4 py-2.5 bg-sidebar-active rounded-xl text-xs font-black shadow-md transition-all">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-gear text-base"></i>
+                        <span>إعدادات النظام</span>
+                    </div>
+                </a>
+                <div class="text-[9px] text-neutral-600 text-center pt-2 font-mono">نظام رواحل القياسي المعتمد © 2026</div>
+            </div>
+        </aside>
+
+        <!-- ================= المحتوى الرئيسي ================= -->
+        <main class="flex-1 p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+            
+            <!-- الهيدر العلوي -->
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-white/95 backdrop-blur-md p-4 rounded-2xl border-2 border-[#D4B795]/40 shadow-md">
+                <div>
+                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">إعدادات أهداف مؤشرات الأداء (KPIs Targets)</h1>
+                    <p class="text-xs text-slate-600 mt-1 font-bold">تحديد المستهدفات لكل إدارة وتحديث لوحة المؤشرات تلقائياً وبألوان الأعلام الذكية.</p>
+                </div>
+                
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <a href="/Index" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg transition-all active:scale-95 cursor-pointer">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span>العودة للوحة الأداء</span>
+                    </a>
+                </div>
+            </header>
+
+            <!-- تبويبات الفئات بالتصميم الزجاجي المبتكر -->
+            <section class="mb-6" data-aos="fade-up">
+                <div class="bg-white/80 backdrop-blur-md p-2 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-2">
+                    <button onclick="switchCategory('finance')" id="tab-finance" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-wallet text-sm"></i>
+                        <span>الإدارة المالية</span>
+                    </button>
+                    <button onclick="switchCategory('commercial')" id="tab-commercial" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-chart-line text-sm"></i>
+                        <span>الإدارة التجارية والعملاء</span>
+                    </button>
+                    <button onclick="switchCategory('ops')" id="tab-ops" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-bus text-sm"></i>
+                        <span>العمليات وأسطول الحافلات</span>
+                    </button>
+                    <button onclick="switchCategory('support')" id="tab-support" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-laptop-code text-sm"></i>
+                        <span>الموارد البشرية والتقنية</span>
+                    </button>
+                    <button onclick="switchCategory('hse')" id="tab-hse" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-shield-halved text-sm"></i>
+                        <span>HSE والتدقيق والامتثال</span>
+                    </button>
+                    <button onclick="switchCategory('strategy')" id="tab-strategy" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-bullseye text-sm"></i>
+                        <span>الاستراتيجية والمشاريع PMO</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- محتوى المؤشرات لكل قسم -->
+            <section id="kpi-settings-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" data-aos="fade-up">
+                <!-- سيتم ملؤه ديناميكياً بواسطة الجافاسكريبت -->
+            </section>
+
+            <!-- شريط العمليات السفلي الثابت (حفظ وإلغاء وتصفير) -->
+            <footer class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-900 p-5 rounded-2xl border-2 border-[#D4B795]/50 shadow-xl" data-aos="fade-up">
+                <div class="text-right">
+                    <h3 class="text-sm font-black text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        حفظ ومزامنة المستهدفات
+                    </h3>
+                    <p class="text-[10px] text-neutral-400 font-bold mt-1">تأكد من حفظ التعديلات ليتم تطبيقها على الرسوم البيانية والأعلام فورياً بلوحة الأداء.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="resetToDefaults()" class="bg-neutral-800 border border-neutral-700 hover:bg-neutral-700 text-neutral-300 hover:text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>إعادة ضبط المصنع</span>
+                    </button>
+                    <button onclick="saveTargets()" class="bg-[#009688] hover:bg-[#00796b] text-white px-6 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-[#009688]/30 transition-all cursor-pointer">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>حفظ ومزامنة الإعدادات</span>
+                    </button>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- مودال نجاح الحفظ المنبثق -->
+    <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div id="successModalOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 opacity-0"></div>
+        <div id="successModalBox" class="relative bg-white rounded-3xl p-8 border-2 border-[#D4B795] shadow-2xl max-w-sm w-full mx-4 text-center transform scale-90 opacity-0 transition-all duration-300">
+            <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-[#009688] text-3xl">
+                <i class="fa-solid fa-circle-check animate-bounce"></i>
+            </div>
+            <h3 class="text-lg font-black text-slate-900 mb-2">تم الحفظ بنجاح!</h3>
+            <p class="text-xs text-slate-600 font-bold mb-6">تم تحديث الأهداف بنجاح ومزامنتها مع لوحة مؤشرات الأداء الحية.</p>
+            <button onclick="closeSuccessModal()" class="w-full bg-slate-950 hover:bg-slate-900 text-white py-3 rounded-xl text-xs font-black shadow-md transition-all active:scale-95 cursor-pointer">
+                حسنًا، اذهب للوحة الأداء
+            </button>
+        </div>
+    </div>
+
+    <!-- تفعيل سكريبت AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        try {
+            AOS.init({ duration: 800, once: true });
+        } catch (e) {
+            console.warn("AOS library failed to initialize");
+        }
+
+        // 1. تعريف فئات ومؤشرات الأداء وتفاصيلها الحسابية وقيمها
+        const kpiDefinition = {
+            'finance': {
+                title: 'الإدارة المالية',
+                kpis: [
+                    { key: 'rev-growth', name: 'إجمالي الإيرادات ومعدل النمو', unit: 'M ر.س', min: 100, max: 200, step: 1, default: 150, desc: 'إيراد شركة رواحل المستهدف بالأرقام الإجمالية بناء على عقود مواسم الحج والعمرة.' },
+                    { key: 'ebitda', name: 'هامش EBITDA التشغيلي', unit: '%', min: 10, max: 60, step: 0.5, default: 35, desc: 'الكفاءة التشغيلية والربحية قبل الضرائب وهلاك الحافلات.' },
+                    { key: 'cashflow', name: 'التدفق النقدي التشغيلي', unit: 'M ر.س', min: 20, max: 100, step: 1, default: 50, desc: 'مراقبة السيولة النقدية والمقبوضات الفورية المستهدفة بالشركة.' },
+                    { key: 'roa', name: 'العائد على الأصول ROA', unit: '%', min: 5, max: 30, step: 0.5, default: 12, desc: 'كفاءة ربحية تشغيل أصول ورش الأسطول والحافلات.' }
+                ]
+            },
+            'commercial': {
+                title: 'الإدارة التجارية والعملاء',
+                kpis: [
+                    { key: 'cust-ret', name: 'نسبة الاحتفاظ بالعملاء', unit: '%', min: 50, max: 100, step: 1, default: 85, desc: 'معدل تجديد عقود شركات العمرة ومؤسسات الطوافة والحج السياحي.' },
+                    { key: 'nps', name: 'صافي نقاط التوصية NPS (رضا العملاء)', unit: 'نقطة', min: 30, max: 100, step: 1, default: 70, desc: 'معدل رضا ضيوف الرحمن والركاب عن جودة الحافلات والخدمات.' }
+                ]
+            },
+            'ops': {
+                title: 'العمليات وأسطول الحافلات',
+                kpis: [
+                    { key: 'ops-plan', name: 'الالتزام بالخطة التشغيلية', unit: '%', min: 70, max: 100, step: 0.5, default: 90, desc: 'انضباط حافلات الرحلات بجدول المواعيد والوردية المحددة للرحلة.' },
+                    { key: 'fleet-ready', name: 'نسبة جاهزية الأسطول للعمل', unit: '%', min: 80, max: 100, step: 0.5, default: 95, desc: 'معدل الحافلات الجاهزة للتشغيل الفوري من إجمالي الأسطول البالغ 1,240 حافلة.' },
+                    { key: 'fleet-util', name: 'نسبة استغلال أسطول مقاعد الحافلات', unit: '%', min: 50, max: 100, step: 1, default: 85, desc: 'كثافة إشغال المقاعد بالرحلات والمسارات التشغيلية.' }
+                ]
+            },
+            'support': {
+                title: 'الموارد البشرية والتقنية',
+                kpis: [
+                    { key: 'hr-ret', name: 'معدل الاحتفاظ بالموظفين', unit: '%', min: 60, max: 100, step: 1, default: 90, desc: 'استقرار الكوادر الفنية ومهندسي ورش صيانة الحافلات وسائقي النقل الثقيل.' },
+                    { key: 'it-autom', name: 'أتمتة الأنظمة والتحول الرقمي', unit: '%', min: 40, max: 100, step: 1, default: 80, desc: 'أتمتة الجدولة الذكية للرحلات وتطبيق الـ GPS لمراقبة وتتبع الأسطول.' }
+                ]
+            },
+            'hse': {
+                title: 'السلامة والصحة المهنية والتدقيق',
+                kpis: [
+                    { key: 'hse-ltifr', name: 'معدل الحوادث LTIFR', unit: 'مستهدف حد أقصى', min: 0.5, max: 5.0, step: 0.1, default: 1.5, desc: 'معدل الحوادث لكل مليون ساعة عمل بالشركة (مؤشر عكسي: الأقل هو الأفضل).', isInverse: true },
+                    { key: 'hse-accidents', name: 'حوادث جسيمة للحافلات', unit: 'حادث', min: 0, max: 5, step: 1, default: 0, desc: 'عدد حوادث الطريق الجسيمة للحافلات بمواسم الحج والتشغيل (مؤشر عكسي).', isInverse: true },
+                    { key: 'audit-comp', name: 'نسبة الامتثال للسياسات والنظام', unit: '%', min: 70, max: 100, step: 0.5, default: 95, desc: 'مطابقة شروط نقابة السيارات والبلدية لضمان سلامة التراخيص.' }
+                ]
+            },
+            'strategy': {
+                title: 'الاستراتيجية والمشاريع PMO',
+                kpis: [
+                    { key: 'strat-goals', name: 'تحقيق الأهداف الاستراتيجية العامة', unit: '%', min: 60, max: 100, step: 1, default: 85, desc: 'معدل التوسع الجغرافي للتشغيل بالمملكة وزيادة الحصة السوقية.' },
+                    { key: 'strat-init', name: 'نسبة إنجاز المبادرات لمكتب PMO', unit: '%', min: 50, max: 100, step: 1, default: 90, desc: 'إنجاز المبادرات الكبرى المعتمدة لتطوير وتحسين حركة النقل.' }
+                ]
+            }
+        };
+
+        // 2. قيم الأداء الفعلي الفوري في النظام (لتوضيح تأثير الهدف الجديد على الأعلام)
+        const actualValues = {
+            'rev-growth': 142.5, 
+            'ebitda': 34.5,
+            'cashflow': 48.0,
+            'roa': 10.5,
+            'cust-ret': 88.0,
+            'nps': 55.0,
+            'ops-plan': 92.5,
+            'fleet-ready': 92.0,
+            'fleet-util': 80.0,
+            'hr-ret': 89.0,
+            'it-autom': 78.0,
+            'hse-ltifr': 1.2,
+            'hse-accidents': 0,
+            'audit-comp': 91.0,
+            'strat-goals': 82.0,
+            'strat-init': 85.0
+        };
+
+        let currentActiveCategory = 'finance';
+        let currentTargets = {};
+
+        // تحميل المستهدفات الحالية من localStorage أو استخدام الافتراضيات
+        function initTargets() {
+            const saved = localStorage.getItem('kpi_targets');
+            if (saved) {
+                try {
+                    currentTargets = JSON.parse(saved);
+                } catch (e) {
+                    console.error(e);
+                    useDefaultTargets();
+                }
+            } else {
+                useDefaultTargets();
+            }
+            
+            // التحقق من اكتمال الكائنات لضمان خلوها من النقص
+            Object.keys(kpiDefinition).forEach(cat => {
+                kpiDefinition[cat].kpis.forEach(kpi => {
+                    if (currentTargets[kpi.key] === undefined) {
+                        currentTargets[kpi.key] = kpi.default;
+                    }
+                });
+            });
+        }
+
+        function useDefaultTargets() {
+            currentTargets = {};
+            Object.keys(kpiDefinition).forEach(cat => {
+                kpiDefinition[cat].kpis.forEach(kpi => {
+                    currentTargets[kpi.key] = kpi.default;
+                });
+            });
+        }
+
+        // حساب وتقييم الأعلام بناء على الهدف المدخل والفعلي
+        function calculateFlag(key, targetVal, isInverse = false) {
+            const actual = actualValues[key];
+            if (actual === undefined) return { label: '🟢 ممتاز', badgeClass: 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/35' };
+            
+            let achievementRatio = isInverse ? (targetVal / (actual || 0.1)) * 100 : (actual / targetVal) * 100;
+            if (isInverse && actual <= targetVal) achievementRatio = 100;
+
+            if (achievementRatio >= 95) {
+                return { label: '🟢 ممتاز', badgeClass: 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/35 shadow-[0_0_10px_rgba(16,185,129,0.2)]' };
+            } else if (achievementRatio >= 75) {
+                return { label: '🟡 جيد', badgeClass: 'bg-amber-500/10 text-amber-600 border border-amber-500/35 shadow-[0_0_10px_rgba(245,158,11,0.2)]' };
+            } else {
+                return { label: '🔴 ضعيف', badgeClass: 'bg-red-500/10 text-red-500 border border-red-500/35 shadow-[0_0_10px_rgba(239,68,68,0.2)]' };
+            }
+        }
+
+        // تبديل القسم النشط بالتبويبات
+        function switchCategory(catKey) {
+            currentActiveCategory = catKey;
+            
+            // تحديث حالة الأزرار البصرية
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-sidebar-active', 'text-white');
+                btn.classList.add('bg-white/80', 'text-neutral-600');
+            });
+            
+            const activeBtn = document.getElementById(`tab-${catKey}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-white/80', 'text-neutral-600');
+                activeBtn.classList.add('bg-sidebar-active', 'text-white');
+            }
+
+            renderKpis();
+        }
+
+        // حقن وبناء مؤشرات القسم النشط بالصفحة
+        function renderKpis() {
+            const container = document.getElementById('kpi-settings-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+            const category = kpiDefinition[currentActiveCategory];
+
+            category.kpis.forEach(kpi => {
+                const targetVal = currentTargets[kpi.key];
+                const actualVal = actualValues[kpi.key];
+                const flag = calculateFlag(kpi.key, targetVal, kpi.isInverse);
+
+                // بناء كرت المؤشر المطور
+                const kpiHtml = `
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between shadow-md relative overflow-hidden" data-aos="fade-up">
+                        <!-- الخلفية المتوهجة الخفيفة عند الزاوية -->
+                        <div class="absolute -top-10 -left-10 w-24 h-24 rounded-full bg-[#009688]/5 filter blur-xl"></div>
+                        
+                        <div>
+                            <!-- الهيدر والاسم والعلم الحالي -->
+                            <div class="flex justify-between items-start gap-2 mb-3 border-b border-slate-100 pb-3">
+                                <div>
+                                    <h4 class="text-xs font-black text-slate-800">${kpi.name}</h4>
+                                    <p class="text-[9px] text-slate-500 font-bold mt-1 leading-relaxed">${kpi.desc}</p>
+                                </div>
+                                <div class="flex flex-col items-end gap-1.5 shrink-0">
+                                    <span id="preview-badge-${kpi.key}" class="text-[9px] font-black px-2.5 py-0.5 rounded-full ${flag.badgeClass}">
+                                        ${flag.label}
+                                    </span>
+                                    <span class="text-[8px] text-slate-400 font-bold">القيمة الحالية: ${actualVal}${kpi.unit === 'مستهدف حد أقصى' ? '' : ' ' + kpi.unit}</span>
+                                </div>
+                            </div>
+
+                            <!-- الإدخال والتحكم الرقمي -->
+                            <div class="my-5">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-[9px] text-slate-400 font-bold">تعديل المستهدف المطلوب:</span>
+                                    <div class="flex items-center gap-1.5 bg-slate-100 px-3 py-1 rounded-xl border border-slate-200">
+                                        <input type="number" 
+                                               id="num-input-${kpi.key}" 
+                                               value="${targetVal}" 
+                                               min="${kpi.min}" 
+                                               max="${kpi.max}" 
+                                               step="${kpi.step}"
+                                               oninput="syncInput('${kpi.key}', this.value, 'range')"
+                                               class="w-16 bg-transparent text-right font-black text-slate-900 border-none outline-hidden focus:ring-0 text-xs p-0" />
+                                        <span class="text-[9px] font-bold text-slate-500">${kpi.unit}</span>
+                                    </div>
+                                </div>
+
+                                <!-- شريط التمرير المطور -->
+                                <div class="flex items-center gap-3">
+                                    <span class="text-[9px] font-bold text-slate-400 font-mono">${kpi.min}</span>
+                                    <input type="range" 
+                                           id="range-input-${kpi.key}" 
+                                           value="${targetVal}" 
+                                           min="${kpi.min}" 
+                                           max="${kpi.max}" 
+                                           step="${kpi.step}" 
+                                           oninput="syncInput('${kpi.key}', this.value, 'num')"
+                                           class="flex-1 cursor-pointer" />
+                                    <span class="text-[9px] font-bold text-slate-400 font-mono">${kpi.max}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- التوصيات والخيارات المسبقة المساعدة -->
+                        <div class="flex justify-between items-center border-t border-slate-100 pt-3 text-[9px] font-bold text-slate-400">
+                            <span>التوصية: ضبط هدف متوازن لرفع الأداء</span>
+                            <div class="flex gap-2">
+                                <button onclick="setPreset('${kpi.key}', ${kpi.default})" class="hover:text-[#009688] transition-colors cursor-pointer">الافتراضي</button>
+                                ${kpi.key !== 'hse-accidents' ? `
+                                    <button onclick="setPreset('${kpi.key}', ${Math.round(kpi.default * 1.1)})" class="hover:text-[#009688] transition-colors cursor-pointer">+10%</button>
+                                    <button onclick="setPreset('${kpi.key}', ${Math.round(kpi.default * 0.9)})" class="hover:text-[#009688] transition-colors cursor-pointer">-10%</button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += kpiHtml;
+            });
+        }
+
+        // مزامنة حقل الأرقام والمنزلق
+        function syncInput(key, val, targetType) {
+            const numVal = parseFloat(val);
+            if (isNaN(numVal)) return;
+
+            currentTargets[key] = numVal;
+
+            // تحديث الحقل المقابل
+            if (targetType === 'range') {
+                const rangeEl = document.getElementById(`range-input-${key}`);
+                if (rangeEl) rangeEl.value = numVal;
+            } else {
+                const numEl = document.getElementById(`num-input-${key}`);
+                if (numEl) numEl.value = numVal;
+            }
+
+            // تحديث العلم الفوري بالمعاينة
+            const kpi = findKpiDef(key);
+            if (kpi) {
+                const flag = calculateFlag(key, numVal, kpi.isInverse);
+                const badge = document.getElementById(`preview-badge-${key}`);
+                if (badge) {
+                    badge.innerText = flag.label;
+                    badge.className = `text-[9px] font-black px-2.5 py-0.5 rounded-full ${flag.badgeClass}`;
+                }
+            }
+        }
+
+        // تطبيق قيمة سريعة مسبقة
+        function setPreset(key, val) {
+            currentTargets[key] = val;
+            
+            const numEl = document.getElementById(`num-input-${key}`);
+            const rangeEl = document.getElementById(`range-input-${key}`);
+            
+            if (numEl) numEl.value = val;
+            if (rangeEl) rangeEl.value = val;
+
+            // تحديث العلم الفوري بالمعاينة
+            const kpi = findKpiDef(key);
+            if (kpi) {
+                const flag = calculateFlag(key, val, kpi.isInverse);
+                const badge = document.getElementById(`preview-badge-${key}`);
+                if (badge) {
+                    badge.innerText = flag.label;
+                    badge.className = `text-[9px] font-black px-2.5 py-0.5 rounded-full ${flag.badgeClass}`;
+                }
+            }
+        }
+
+        function findKpiDef(key) {
+            let found = null;
+            Object.keys(kpiDefinition).forEach(cat => {
+                kpiDefinition[cat].kpis.forEach(kpi => {
+                    if (kpi.key === key) found = kpi;
+                });
+            });
+            return found;
+        }
+
+        // حفظ الأهداف الحالية إلى localStorage
+        function saveTargets() {
+            localStorage.setItem('kpi_targets', JSON.stringify(currentTargets));
+            openSuccessModal();
+        }
+
+        // تصفير الأهداف وإرجاعها الافتراضية
+        function resetToDefaults() {
+            useDefaultTargets();
+            renderKpis();
+            // ومزامنتها مباشرة لحفظها
+            localStorage.setItem('kpi_targets', JSON.stringify(currentTargets));
+        }
+
+        // التحكم بمودال النجاح
+        function openSuccessModal() {
+            const modal = document.getElementById('successModal');
+            const overlay = document.getElementById('successModalOverlay');
+            const box = document.getElementById('successModalBox');
+            
+            if (modal && overlay && box) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    box.classList.remove('scale-90', 'opacity-0');
+                    box.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            }
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('successModal');
+            const overlay = document.getElementById('successModalOverlay');
+            const box = document.getElementById('successModalBox');
+            
+            if (modal && overlay && box) {
+                box.classList.remove('scale-100', 'opacity-100');
+                box.classList.add('scale-90', 'opacity-0');
+                overlay.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    // التوجيه للوحة الرئيسية
+                    window.location.href = '/Index';
+                }, 300);
+            }
+        }
+
+        // بدء تشغيل الصفحة
+        document.addEventListener("DOMContentLoaded", function() {
+            initTargets();
+            switchCategory('finance');
+        });
+    </script>
+</body>
+</html>

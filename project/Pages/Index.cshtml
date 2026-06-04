@@ -192,7 +192,7 @@
                     <i class="fa-regular fa-bell text-base w-5"></i>
                     <span>الإشعارات الفورية</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-2 text-xs text-neutral-400 hover:text-white transition-all">
+                <a href="/Settings" class="flex items-center gap-3 px-4 py-2 text-xs text-neutral-400 hover:text-white transition-all">
                     <i class="fa-solid fa-gear text-base w-5"></i>
                     <span>إعدادات النظام</span>
                 </a>
@@ -728,6 +728,41 @@
             console.warn("AOS animation library could not be loaded:", e);
         }
 
+        // الأهداف والمستهدفات الافتراضية للنظام
+        const defaultTargets = {
+            'rev-growth': 150,
+            'ebitda': 35,
+            'cashflow': 50,
+            'roa': 12,
+            'cust-ret': 85,
+            'nps': 70,
+            'ops-plan': 90,
+            'fleet-ready': 95,
+            'fleet-util': 85,
+            'hr-ret': 90,
+            'it-autom': 80,
+            'hse-ltifr': 1.5,
+            'hse-accidents': 0,
+            'audit-comp': 95,
+            'strat-goals': 85,
+            'strat-init': 90
+        };
+
+        // تحميل الأهداف من localStorage أو استخدام الافتراضية
+        const kpiTargets = { ...defaultTargets };
+        function loadTargets() {
+            const saved = localStorage.getItem('kpi_targets');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    Object.assign(kpiTargets, parsed);
+                } catch (e) {
+                    console.error("Error loading targets from localStorage:", e);
+                }
+            }
+        }
+        loadTargets();
+
         // هيكلية البيانات للمؤشرات الفرعية والمسارات التابعة (Drill Down Engine)
         const kpiSubKpis = {
             'rev-growth': {
@@ -1030,24 +1065,25 @@
             const drawerNotesEl = document.getElementById('drawerNotes');
             if (drawerNotesEl) drawerNotesEl.innerText = kpiInfo.notes;
             
-            // مطابقة المستهدف المعروض
+            // مطابقة المستهدف المعروض ديناميكياً
             let targetText = "0%";
-            if (activeKpiKey === 'rev-growth') targetText = "150M ر.س (نمو 25%)";
-            else if (activeKpiKey === 'ebitda') targetText = "35%";
-            else if (activeKpiKey === 'cashflow') targetText = "50M";
-            else if (activeKpiKey === 'roa') targetText = "12%";
-            else if (activeKpiKey === 'cust-ret') targetText = "85%";
-            else if (activeKpiKey === 'nps') targetText = "70";
-            else if (activeKpiKey === 'ops-plan') targetText = "90%";
-            else if (activeKpiKey === 'fleet-ready') targetText = "95%";
-            else if (activeKpiKey === 'fleet-util') targetText = "85%";
-            else if (activeKpiKey === 'hr-ret') targetText = "90%";
-            else if (activeKpiKey === 'it-autom') targetText = "80%";
-            else if (activeKpiKey === 'hse-ltifr') targetText = "1.5";
-            else if (activeKpiKey === 'hse-accidents') targetText = "0";
-            else if (activeKpiKey === 'audit-comp') targetText = "95%";
-            else if (activeKpiKey === 'strat-goals') targetText = "85%";
-            else if (activeKpiKey === 'strat-init') targetText = "90%";
+            const targetVal = kpiTargets[activeKpiKey];
+            if (activeKpiKey === 'rev-growth') targetText = `${targetVal}M ر.س (نمو ${Math.round((targetVal - 118.75) / 118.75 * 100)}%)`;
+            else if (activeKpiKey === 'ebitda') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'cashflow') targetText = `${targetVal}M`;
+            else if (activeKpiKey === 'roa') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'cust-ret') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'nps') targetText = `${targetVal}`;
+            else if (activeKpiKey === 'ops-plan') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'fleet-ready') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'fleet-util') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'hr-ret') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'it-autom') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'hse-ltifr') targetText = `${targetVal}`;
+            else if (activeKpiKey === 'hse-accidents') targetText = `${targetVal}`;
+            else if (activeKpiKey === 'audit-comp') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'strat-goals') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'strat-init') targetText = `${targetVal}%`;
             
             const drawerTargetValEl = document.getElementById('drawerTargetVal');
             if (drawerTargetValEl) drawerTargetValEl.innerText = "المستهدف المطلوب: " + targetText;
@@ -1198,15 +1234,15 @@
             safeSetText('val-strat-init', stratInit + '%');
 
             // تحديث أشرطة التقدم المرئية تحت كل مؤشر رئيسي
-            safeSetWidth('bar-rev-growth', Math.min(currentRevenue / 150 * 100, 100));
-            safeSetWidth('bar-ebitda', Math.min(ebitda / 35 * 100, 100));
-            safeSetWidth('bar-cashflow', Math.min(cashflow / 50 * 100, 100));
-            safeSetWidth('bar-roa', Math.min(roa / 12 * 100, 100));
-            safeSetWidth('bar-cust-ret', Math.min(custRet / 85 * 100, 100));
-            safeSetWidth('bar-nps', Math.min(nps / 70 * 100, 100));
-            safeSetWidth('bar-ops-plan', Math.min(opsPlan / 90 * 100, 100));
-            safeSetWidth('bar-fleet-ready', Math.min(fleetReady / 95 * 100, 100));
-            safeSetWidth('bar-fleet-util', Math.min(fleetUtil / 85 * 100, 100));
+            safeSetWidth('bar-rev-growth', Math.min(currentRevenue / kpiTargets['rev-growth'] * 100, 100));
+            safeSetWidth('bar-ebitda', Math.min(ebitda / kpiTargets['ebitda'] * 100, 100));
+            safeSetWidth('bar-cashflow', Math.min(cashflow / kpiTargets['cashflow'] * 100, 100));
+            safeSetWidth('bar-roa', Math.min(roa / kpiTargets['roa'] * 100, 100));
+            safeSetWidth('bar-cust-ret', Math.min(custRet / kpiTargets['cust-ret'] * 100, 100));
+            safeSetWidth('bar-nps', Math.min(nps / kpiTargets['nps'] * 100, 100));
+            safeSetWidth('bar-ops-plan', Math.min(opsPlan / kpiTargets['ops-plan'] * 100, 100));
+            safeSetWidth('bar-fleet-ready', Math.min(fleetReady / kpiTargets['fleet-ready'] * 100, 100));
+            safeSetWidth('bar-fleet-util', Math.min(fleetUtil / kpiTargets['fleet-util'] * 100, 100));
 
             // تعيين ألوان شريط التقدم بناء على العلم (أحمر / برتقالي / أخضر)
             const updateBarColor = (barId, flagType) => {
@@ -1220,33 +1256,33 @@
             let flagCounter = { excellent: 0, good: 0, bad: 0 };
 
             // نحتسب العلم للإيرادات بناء على النسبة الفعلية
-            flagCounter[assignFlagAndStyle('flag-rev-growth', currentRevenue, 150)]++;
-            flagCounter[assignFlagAndStyle('flag-ebitda', ebitda, 35)]++;
-            flagCounter[assignFlagAndStyle('flag-cashflow', cashflow, 50)]++;
-            flagCounter[assignFlagAndStyle('flag-roa', roa, 12)]++;
-            flagCounter[assignFlagAndStyle('flag-cust-ret', custRet, 85)]++;
-            flagCounter[assignFlagAndStyle('flag-nps', nps, 70)]++;
-            flagCounter[assignFlagAndStyle('flag-ops-plan', opsPlan, 90)]++;
-            flagCounter[assignFlagAndStyle('flag-fleet-ready', fleetReady, 95)]++;
-            flagCounter[assignFlagAndStyle('flag-fleet-util', fleetUtil, 85)]++;
-            flagCounter[assignFlagAndStyle('flag-hr-ret', hrRet, 90)]++;
-            flagCounter[assignFlagAndStyle('flag-it-autom', itAutom, 80)]++;
-            flagCounter[assignFlagAndStyle('flag-hse-ltifr', ltifr, 1.5, true)]++; // مؤشر عكسي
-            flagCounter[assignFlagAndStyle('flag-hse-accidents', accidents, 0, true)]++; // مؤشر عكسي
-            flagCounter[assignFlagAndStyle('flag-audit-comp', auditComp, 95)]++;
-            flagCounter[assignFlagAndStyle('flag-strat-goals', stratGoals, 85)]++;
-            flagCounter[assignFlagAndStyle('flag-strat-init', stratInit, 90)]++;
+            flagCounter[assignFlagAndStyle('flag-rev-growth', currentRevenue, kpiTargets['rev-growth'])]++;
+            flagCounter[assignFlagAndStyle('flag-ebitda', ebitda, kpiTargets['ebitda'])]++;
+            flagCounter[assignFlagAndStyle('flag-cashflow', cashflow, kpiTargets['cashflow'])]++;
+            flagCounter[assignFlagAndStyle('flag-roa', roa, kpiTargets['roa'])]++;
+            flagCounter[assignFlagAndStyle('flag-cust-ret', custRet, kpiTargets['cust-ret'])]++;
+            flagCounter[assignFlagAndStyle('flag-nps', nps, kpiTargets['nps'])]++;
+            flagCounter[assignFlagAndStyle('flag-ops-plan', opsPlan, kpiTargets['ops-plan'])]++;
+            flagCounter[assignFlagAndStyle('flag-fleet-ready', fleetReady, kpiTargets['fleet-ready'])]++;
+            flagCounter[assignFlagAndStyle('flag-fleet-util', fleetUtil, kpiTargets['fleet-util'])]++;
+            flagCounter[assignFlagAndStyle('flag-hr-ret', hrRet, kpiTargets['hr-ret'])]++;
+            flagCounter[assignFlagAndStyle('flag-it-autom', itAutom, kpiTargets['it-autom'])]++;
+            flagCounter[assignFlagAndStyle('flag-hse-ltifr', ltifr, kpiTargets['hse-ltifr'], true)]++; // مؤشر عكسي
+            flagCounter[assignFlagAndStyle('flag-hse-accidents', accidents, kpiTargets['hse-accidents'], true)]++; // مؤشر عكسي
+            flagCounter[assignFlagAndStyle('flag-audit-comp', auditComp, kpiTargets['audit-comp'])]++;
+            flagCounter[assignFlagAndStyle('flag-strat-goals', stratGoals, kpiTargets['strat-goals'])]++;
+            flagCounter[assignFlagAndStyle('flag-strat-init', stratInit, kpiTargets['strat-init'])]++;
 
             // تطبيق ألوان شريط التقدم بعد معرفة العلم الفردي
-            updateBarColor('bar-rev-growth', assignFlagAndStyle('flag-rev-growth', currentRevenue, 150));
-            updateBarColor('bar-ebitda', assignFlagAndStyle('flag-ebitda', ebitda, 35));
-            updateBarColor('bar-cashflow', assignFlagAndStyle('flag-cashflow', cashflow, 50));
-            updateBarColor('bar-roa', assignFlagAndStyle('flag-roa', roa, 12));
-            updateBarColor('bar-cust-ret', assignFlagAndStyle('flag-cust-ret', custRet, 85));
-            updateBarColor('bar-nps', assignFlagAndStyle('flag-nps', nps, 70));
-            updateBarColor('bar-ops-plan', assignFlagAndStyle('flag-ops-plan', opsPlan, 90));
-            updateBarColor('bar-fleet-ready', assignFlagAndStyle('flag-fleet-ready', fleetReady, 95));
-            updateBarColor('bar-fleet-util', assignFlagAndStyle('flag-fleet-util', fleetUtil, 85));
+            updateBarColor('bar-rev-growth', assignFlagAndStyle('flag-rev-growth', currentRevenue, kpiTargets['rev-growth']));
+            updateBarColor('bar-ebitda', assignFlagAndStyle('flag-ebitda', ebitda, kpiTargets['ebitda']));
+            updateBarColor('bar-cashflow', assignFlagAndStyle('flag-cashflow', cashflow, kpiTargets['cashflow']));
+            updateBarColor('bar-roa', assignFlagAndStyle('flag-roa', roa, kpiTargets['roa']));
+            updateBarColor('bar-cust-ret', assignFlagAndStyle('flag-cust-ret', custRet, kpiTargets['cust-ret']));
+            updateBarColor('bar-nps', assignFlagAndStyle('flag-nps', nps, kpiTargets['nps']));
+            updateBarColor('bar-ops-plan', assignFlagAndStyle('flag-ops-plan', opsPlan, kpiTargets['ops-plan']));
+            updateBarColor('bar-fleet-ready', assignFlagAndStyle('flag-fleet-ready', fleetReady, kpiTargets['fleet-ready']));
+            updateBarColor('bar-fleet-util', assignFlagAndStyle('flag-fleet-util', fleetUtil, kpiTargets['fleet-util']));
 
             // عرض الأرقام المجمعة في كروت الملخص العلوي
             safeSetText('count-excellent', flagCounter.excellent);
@@ -1255,9 +1291,9 @@
 
             // الأداء العام
             const avgPerf = Math.round(
-                ((currentRevenue/150) + (ebitda/35) + (cashflow/50) + (roa/12) + (custRet/85) + 
-                (nps/70) + (opsPlan/90) + (fleetReady/95) + (fleetUtil/85) + (hrRet/90) + 
-                (itAutom/80) + (auditComp/95) + (stratGoals/85) + (stratInit/90)) / 14 * 100
+                ((currentRevenue/kpiTargets['rev-growth']) + (ebitda/kpiTargets['ebitda']) + (cashflow/kpiTargets['cashflow']) + (roa/kpiTargets['roa']) + (custRet/kpiTargets['cust-ret']) + 
+                (nps/kpiTargets['nps']) + (opsPlan/kpiTargets['ops-plan']) + (fleetReady/kpiTargets['fleet-ready']) + (fleetUtil/kpiTargets['fleet-util']) + (hrRet/kpiTargets['hr-ret']) + 
+                (itAutom/kpiTargets['it-autom']) + (auditComp/kpiTargets['audit-comp']) + (stratGoals/kpiTargets['strat-goals']) + (stratInit/kpiTargets['strat-init'])) / 14 * 100
             );
             const clampedPerf = Math.min(Math.max(avgPerf, 30), 100);
             
@@ -1283,7 +1319,22 @@
             if (typeof Chart !== 'undefined') {
                 if (mixedChart) {
                     try {
-                        mixedChart.data.datasets[0].data = [currentRevenue / 1.5, ebitda, custRet, opsPlan, fleetReady, stratGoals];
+                        mixedChart.data.datasets[0].data = [
+                            currentRevenue / kpiTargets['rev-growth'] * 100,
+                            ebitda,
+                            custRet,
+                            opsPlan,
+                            fleetReady,
+                            stratGoals
+                        ];
+                        mixedChart.data.datasets[1].data = [
+                            100,
+                            kpiTargets['ebitda'],
+                            kpiTargets['cust-ret'],
+                            kpiTargets['ops-plan'],
+                            kpiTargets['fleet-ready'],
+                            kpiTargets['strat-goals']
+                        ];
                         mixedChart.update();
                     } catch (e) { console.error(e); }
                 }
@@ -1316,7 +1367,19 @@
                             labels: ['إجمالي الإيرادات %', 'هامش EBITDA %', 'الاحتفاظ بالعملاء %', 'الخطة التشغيلية %', 'جاهزية الأسطول %', 'الأهداف الاستراتيجية %'],
                             datasets: [
                                 { label: 'الأداء الفعلي الحالي (Actual)', data: [0, 0, 0, 0, 0, 0], backgroundColor: '#009688', borderRadius: 6 },
-                                { label: 'المستهدف الأساسي (Target)', data: [100, 35, 85, 90, 95, 85], backgroundColor: '#D4B795', borderRadius: 6 }
+                                { 
+                                    label: 'المستهدف الأساسي (Target)', 
+                                    data: [
+                                        100, 
+                                        kpiTargets['ebitda'], 
+                                        kpiTargets['cust-ret'], 
+                                        kpiTargets['ops-plan'], 
+                                        kpiTargets['fleet-ready'], 
+                                        kpiTargets['strat-goals']
+                                    ], 
+                                    backgroundColor: '#D4B795', 
+                                    borderRadius: 6 
+                                }
                             ]
                         },
                         options: {
