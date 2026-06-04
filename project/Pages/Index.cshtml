@@ -18,57 +18,60 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js للرسوم البيانية المتقدمة والأعمدة والمخطط الدائري -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- AOS Library للأنيميشن الاحترافي عند التمرير وسكرول الصفحة -->
+    <!-- AOS Library للأنيميشن الاحترافي -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background-image: linear-gradient(rgba(240, 242, 245, 0.72), rgba(240, 242, 245, 0.72)), url('https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/slider10.png');
+            background-image: linear-gradient(rgba(9, 13, 22, 0.94), rgba(9, 13, 22, 0.94)), url('https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/slider10.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
+            color: #f1f5f9;
         }
 
-        .bg-sidebar { background-color: #111111; }
+        .bg-sidebar { background-color: #0c0f17; }
         .bg-sidebar-active { 
             background: linear-gradient(135deg, #D4B795 0%, #B08E66 100%); 
-            color: #2d1e11 !important; 
-            box-shadow: 0 4px 15px rgba(212, 183, 149, 0.5); 
+            color: #111827 !important; 
+            box-shadow: 0 4px 20px rgba(212, 183, 149, 0.4); 
         }
         
-        .text-teal-brand { color: #009688; filter: drop-shadow(0 2px 8px rgba(0, 150, 136, 0.25)); }
-        .bg-teal-brand { background-color: #009688; box-shadow: 0 4px 15px rgba(0, 150, 136, 0.35); }
-        .text-gold-brand { color: #D4B795; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+        .text-teal-brand { color: #00bfa5; filter: drop-shadow(0 2px 8px rgba(0, 191, 165, 0.35)); }
+        .bg-teal-brand { background-color: #009688; box-shadow: 0 4px 15px rgba(0, 150, 136, 0.4); }
+        .text-gold-brand { color: #D4B795; text-shadow: 0 2px 6px rgba(212, 183, 149, 0.25); }
 
         /* glassmorphism components with glowing effects */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(212, 183, 149, 0.35);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            background-color: rgba(17, 24, 39, 0.72);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 183, 149, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.42);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #f8fafc;
         }
         .glass-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            border-color: #009688;
-            box-shadow: 0 15px 35px rgba(0, 150, 136, 0.2), 0 0 15px rgba(0, 150, 136, 0.1);
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(0, 191, 165, 0.65);
+            box-shadow: 0 15px 35px rgba(0, 191, 165, 0.22), 0 0 20px rgba(0, 191, 165, 0.12);
         }
         
         .bg-amber-light-card { 
-            background-color: rgba(254, 252, 249, 0.98); 
-            border: 2px solid rgba(212, 183, 149, 0.85); 
-            box-shadow: 0 4px 15px rgba(212, 183, 149, 0.12);
+            background-color: rgba(28, 25, 23, 0.78); 
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 183, 149, 0.45); 
+            box-shadow: 0 8px 32px 0 rgba(212, 183, 149, 0.15);
+            color: #f8fafc;
         }
 
         /* ticker animations */
         .ticker-wrap {
             width: 100%;
             overflow: hidden;
-            background: #111111;
-            border-bottom: 3px solid #D4B795;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+            background: #090d16;
+            border-bottom: 2px solid rgba(212, 183, 149, 0.45);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
             direction: ltr !important; 
         }
         .ticker-container {
@@ -111,14 +114,38 @@
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(241, 245, 249, 0.5);
+            background: rgba(15, 23, 42, 0.8);
         }
         ::-webkit-scrollbar-thumb {
             background: #D4B795;
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #009688;
+            background: #00bfa5;
+        }
+
+        /* glowing LED indicators */
+        @@keyframes pulse-glow-teal {
+            0%, 100% { box-shadow: 0 0 6px rgba(16, 185, 129, 0.35); }
+            50% { box-shadow: 0 0 16px rgba(16, 185, 129, 0.65); }
+        }
+        @@keyframes pulse-glow-red {
+            0%, 100% { box-shadow: 0 0 6px rgba(239, 68, 68, 0.35); }
+            50% { box-shadow: 0 0 16px rgba(239, 68, 68, 0.65); }
+        }
+        .glow-pulse-teal {
+            animation: pulse-glow-teal 2.2s infinite ease-in-out;
+        }
+        .glow-pulse-red {
+            animation: pulse-glow-red 2.2s infinite ease-in-out;
+        }
+
+        @@keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
         }
     </style>
 </head>
@@ -204,72 +231,88 @@
         <main class="flex-1 p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
             
             <!-- الهيدر العلوي المطور بالكامل -->
-            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-white/95 backdrop-blur-md p-4 rounded-2xl border-2 border-[#D4B795]/40 shadow-md">
-                <div>
-                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">نظام مراقبة الأداء بالأعلام والمطابقة الذكية (ASP.NET Core)</h1>
-                    <p class="text-xs text-slate-600 mt-1 font-bold">لوحة تفاعلية متصلة بالـ PageModel لعرض وتحديث البيانات الحية والتعمق التفصيلي.</p>
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-slate-900/60 backdrop-blur-md p-5 rounded-2xl border border-[#D4B795]/20 shadow-2xl relative overflow-hidden">
+                <!-- شريط خلفي مضيء للديكور -->
+                <div class="absolute -right-20 -top-20 w-48 h-48 bg-[#009688]/10 rounded-full blur-3xl"></div>
+                <div class="absolute -left-20 -bottom-20 w-48 h-48 bg-[#D4B795]/10 rounded-full blur-3xl"></div>
+
+                <div class="relative z-10">
+                    <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
+                        <span class="w-2 h-6 bg-gradient-to-b from-[#009688] to-[#D4B795] rounded-full inline-block"></span>
+                        <span class="bg-gradient-to-r from-white via-slate-200 to-[#D4B795] bg-clip-text text-transparent">نظام مراقبة الأداء بالأعلام والمطابقة الذكية</span>
+                    </h1>
+                    <p class="text-xs text-[#D4B795] mt-1.5 font-bold flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        لوحة تفاعلية حية متصلة بقاعدة البيانات ومطابقة بالـ PageModel (C# Backend)
+                    </p>
                 </div>
                 
-                <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
-                    <button onclick="simulateKpiData()" class="bg-[#009688] hover:bg-[#00796b] text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-[#009688]/30 transition-all active:scale-95 cursor-pointer">
-                        <i class="fa-solid fa-arrows-rotate"></i>
+                <div class="flex items-center gap-4 w-full sm:w-auto justify-end relative z-10">
+                    <button onclick="simulateKpiData()" class="bg-gradient-to-r from-[#009688] to-[#007b70] hover:from-[#007b70] hover:to-[#005f56] text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-[#009688]/20 hover:shadow-[#009688]/40 transition-all active:scale-95 cursor-pointer border border-[#009688]/30">
+                        <i class="fa-solid fa-arrows-rotate animate-spin-slow"></i>
                         <span>تحديث وفحص الأعلام</span>
                     </button>
 
                     <!-- الملف الشخصي للمدير غسان عراقي (يمكن النقر عليه لفتح المودال المنبثق) -->
-                    <div onclick="openProfileModal()" class="flex items-center gap-3 border-r-2 border-slate-200 pr-4 cursor-pointer hover:opacity-80 transition-opacity">
+                    <div onclick="openProfileModal()" class="flex items-center gap-3 border-r border-slate-700/80 pr-4 cursor-pointer hover:opacity-80 transition-opacity">
                         <div class="text-left sm:text-right">
-                            <div class="flex items-center gap-1.5">
-                                <i class="fa-solid fa-circle-info text-[10px] text-[#009688]"></i>
-                                <h4 class="text-xs font-black text-slate-900">غسان عراقي</h4>
+                            <div class="flex items-center gap-1.5 justify-end">
+                                <i class="fa-solid fa-circle-info text-[10px] text-[#D4B795]"></i>
+                                <h4 class="text-xs font-black text-slate-100">غسان عراقي</h4>
                             </div>
-                            <span class="text-[9px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md font-black mt-0.5 inline-block">المدير العام (CEO)</span>
+                            <span class="text-[9px] bg-gradient-to-r from-[#D4B795]/20 to-[#B08E66]/20 border border-[#D4B795]/30 text-[#D4B795] px-2.5 py-0.5 rounded-md font-black mt-1 inline-block">المدير العام (CEO)</span>
                         </div>
-                        <div class="w-10 h-10 rounded-full border-2 border-[#D4B795] shadow-md overflow-hidden bg-amber-200 flex items-center justify-center text-neutral-900 font-black text-xs">غ ع</div>
+                        <div class="w-10 h-10 rounded-full border-2 border-[#D4B795] shadow-lg shadow-[#D4B795]/20 overflow-hidden bg-[#0c101b] flex items-center justify-center text-[#D4B795] font-black text-xs transition-transform hover:scale-105 active:scale-95">غ ع</div>
                     </div>
                 </div>
             </header>
 
             <!-- ================= أولاً: الخلاصة والتحليل العلوي بالأعلام ================= -->
             <section id="general-read" class="mb-8" data-aos="fade-up">
-                <div class="bg-gradient-to-r from-slate-950 via-[#1e293b] to-slate-950 rounded-3xl p-6 text-white shadow-xl mb-6 border-2 border-[#D4B795]/50">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div class="space-y-3 flex-1 text-right">
-                            <span class="bg-[#009688]/30 text-teal-300 text-[10px] px-3 py-1 rounded-full font-bold border border-teal-500/20">نظرة عامة على الأداء الموحد</span>
-                            <h2 class="text-lg font-black mt-1">مصفوفة إحصاء الأعلام لجميع مؤشرات شركة رواحل</h2>
-                            <p class="text-slate-300 text-xs leading-relaxed font-semibold">اضغط على أي بطاقة مؤشر في الأسفل للتعمق وعرض تفاصيله ورسمه البياني الخاص بشكل فوري.</p>
+                <div class="bg-gradient-to-r from-[#0d1321] via-[#162035] to-[#0d1321] rounded-3xl p-6 text-white shadow-2xl mb-6 border border-[#D4B795]/30 relative overflow-hidden">
+                    <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#009688]/5 rounded-full blur-3xl"></div>
+                    
+                    <div class="flex flex-col lg:flex-row justify-between items-center gap-6 relative z-10">
+                        <div class="space-y-2 flex-1 text-right">
+                            <span class="bg-[#009688]/20 text-[#00bfa5] text-[10px] px-3.5 py-1 rounded-full font-bold border border-[#009688]/30">نظرة عامة على الأداء الموحد</span>
+                            <h2 class="text-xl font-black mt-2 text-white">مصفوفة إحصاء الأعلام لجميع مؤشرات شركة رواحل</h2>
+                            <p class="text-slate-400 text-xs leading-relaxed font-semibold">اضغط على أي بطاقة مؤشر في الأسفل للتعمق وعرض تفاصيله ورسمه البياني الخاص بشكل فوري.</p>
                         </div>
                         
-                        <div class="flex flex-wrap gap-4 bg-black/40 p-4 rounded-2xl border border-neutral-800 justify-center">
+                        <!-- عدادات المؤشرات بتصميم LED راقي ومضيء -->
+                        <div class="flex flex-wrap gap-3 bg-black/45 p-4 rounded-2xl border border-slate-700/40 justify-center">
                             <div class="text-center px-4">
-                                <span class="block text-2xl font-black text-white" id="count-total">16</span>
+                                <span class="block text-2xl font-black text-slate-100" id="count-total">16</span>
                                 <span class="text-[9px] text-[#D4B795] font-black">إجمالي المؤشرات</span>
                             </div>
-                            <div class="border-r border-neutral-800"></div>
-                            <div class="text-center px-4">
-                                <span class="block text-2xl font-black text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.4)]" id="count-excellent">0</span>
-                                <span class="text-[9px] text-[#D4B795] font-black">ممتاز 🟢</span>
+                            <div class="w-[1px] h-10 bg-slate-800"></div>
+                            
+                            <div class="text-center px-4 flex flex-col items-center">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 text-xl font-black border border-emerald-500/30 glow-pulse-teal" id="count-excellent">0</span>
+                                <span class="text-[9px] text-slate-300 font-bold mt-1">ممتاز 🟢</span>
                             </div>
-                            <div class="border-r border-neutral-800"></div>
-                            <div class="text-center px-4">
-                                <span class="block text-2xl font-black text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.4)]" id="count-good">0</span>
-                                <span class="text-[9px] text-[#D4B795] font-black">جيد 🟡</span>
+                            <div class="w-[1px] h-10 bg-slate-800"></div>
+                            
+                            <div class="text-center px-4 flex flex-col items-center">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-amber-500/10 text-amber-400 text-xl font-black border border-amber-500/30" id="count-good">0</span>
+                                <span class="text-[9px] text-slate-300 font-bold mt-1">جيد 🟡</span>
                             </div>
-                            <div class="border-r border-neutral-800"></div>
-                            <div class="text-center px-4">
-                                <span class="block text-2xl font-black text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]" id="count-bad">0</span>
-                                <span class="text-[9px] text-[#D4B795] font-black">ضعيف 🔴</span>
+                            <div class="w-[1px] h-10 bg-slate-800"></div>
+                            
+                            <div class="text-center px-4 flex flex-col items-center">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-red-500/10 text-red-400 text-xl font-black border border-red-500/30 glow-pulse-red" id="count-bad">0</span>
+                                <span class="text-[9px] text-slate-300 font-bold mt-1">ضعيف 🔴</span>
                             </div>
                         </div>
 
                         <!-- المؤشر الدائري للأداء العام -->
-                        <div class="relative w-24 h-24 flex items-center justify-center shrink-0">
+                        <div class="relative w-24 h-24 flex items-center justify-center shrink-0 bg-slate-900/40 rounded-full p-1 border border-slate-700/30 shadow-inner">
                             <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                                <path class="text-slate-800" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path id="radial-progress-path" class="text-[#009688] drop-shadow-[0_0_5px_rgba(0,150,136,0.6)]" stroke-dasharray="76, 100" stroke-width="3.2" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-slate-800/80" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path id="radial-progress-path" class="text-[#009688] drop-shadow-[0_0_8px_rgba(0,150,136,0.7)]" stroke-dasharray="76, 100" stroke-width="3.2" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                             </svg>
                             <div class="absolute flex flex-col items-center justify-center">
-                                <span class="text-xl font-black text-white" id="radial-progress-val">76%</span>
+                                <span class="text-xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" id="radial-progress-val">76%</span>
                                 <span class="text-[7px] text-[#D4B795] font-bold">متوسط الأداء</span>
                             </div>
                         </div>
@@ -279,11 +322,11 @@
                 <!-- مساحة الرسوم البيانية الكبرى -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8" data-aos="fade-up">
                     <div class="glass-card p-5 rounded-2xl lg:col-span-2">
-                        <h3 class="text-xs font-bold text-slate-800 mb-4"><i class="fa-solid fa-chart-bar text-[#009688] ml-2"></i>تحليل ومقارنة الأداء الفعلي بالمستهدف الأساسي</h3>
+                        <h3 class="text-xs font-bold text-slate-200 mb-4"><i class="fa-solid fa-chart-bar text-[#00bfa5] ml-2"></i>تحليل ومقارنة الأداء الفعلي بالمستهدف الأساسي</h3>
                         <div class="h-64"><canvas id="barChartActualTarget"></canvas></div>
                     </div>
                     <div class="bg-amber-light-card p-5 rounded-2xl flex flex-col justify-between shadow-md">
-                        <h3 class="text-xs font-bold text-slate-800 mb-2"><i class="fa-solid fa-flag text-[#D4B795] ml-2"></i>توزيع مؤشرات التقييم الحالية (الأعلام)</h3>
+                        <h3 class="text-xs font-bold text-slate-200 mb-2"><i class="fa-solid fa-flag text-[#D4B795] ml-2"></i>توزيع مؤشرات التقييم الحالية (الأعلام)</h3>
                         <div class="h-48 flex items-center justify-center"><canvas id="doughnutFlagsChart"></canvas></div>
                     </div>
                 </div>
@@ -293,92 +336,92 @@
             
             <!-- مجموعة 1: الإدارة المالية -->
             <section id="finance-group" class="mb-8" data-aos="fade-up">
-                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-800/60 pb-2">
                     <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
-                    <h3 class="text-xs font-black text-slate-800">مؤشرات الأداء المالي</h3>
+                    <h3 class="text-xs font-black text-slate-200">مؤشرات الأداء المالي</h3>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <!-- إجمالي الإيرادات ومعدل النمو -->
                     <div onclick="openDrilldown('rev-growth')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-[11px] font-black text-slate-500">إجمالي الإيرادات ومعدل النمو</span>
+                            <span class="text-[11px] font-black text-[#D4B795]">إجمالي الإيرادات ومعدل النمو</span>
                             <span id="flag-rev-growth" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                         <div class="my-2">
                             <div class="flex justify-between items-baseline mb-1">
-                                <span class="text-2xl font-black text-[#009688]" id="val-rev-growth">@Model.TotalRevenue M ر.س</span>
-                                <span class="text-[9px] text-slate-500 font-bold" id="target-rev-growth">المستهدف: 25%</span>
+                                <span class="text-2xl font-black text-white" id="val-rev-growth">@Model.TotalRevenue M ر.س</span>
+                                <span class="text-[9px] text-slate-400 font-bold" id="target-rev-growth">المستهدف: 25%</span>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
                                 <div id="bar-rev-growth" class="h-full transition-all duration-500 relative">
                                     <div class="absolute inset-0 progress-shine-overlay"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black">
                             <i class="fa-solid fa-chevron-left text-[8px]"></i> اضغط لعرض المسارات الأكثر ربحية
                         </div>
                     </div>
                     <!-- هامش EBITDA -->
                     <div onclick="openDrilldown('ebitda')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-[11px] font-black text-slate-500">هامش EBITDA</span>
+                            <span class="text-[11px] font-black text-[#D4B795]">هامش EBITDA</span>
                             <span id="flag-ebitda" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                         <div class="my-2">
                             <div class="flex justify-between items-baseline mb-1">
-                                <span class="text-2xl font-black text-slate-800" id="val-ebitda">@Model.Ebitda%</span>
-                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 35%</span>
+                                <span class="text-2xl font-black text-white" id="val-ebitda">@Model.Ebitda%</span>
+                                <span class="text-[9px] text-slate-400 font-bold">المستهدف: 35%</span>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
                                 <div id="bar-ebitda" class="h-full transition-all duration-500 relative">
                                     <div class="absolute inset-0 progress-shine-overlay"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black">
                             <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض مصاريف التشغيل والمخاطر
                         </div>
                     </div>
                     <!-- التدفق النقدي التشغيلي -->
                     <div onclick="openDrilldown('cashflow')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-[11px] font-black text-slate-500">التدفق النقدي التشغيلي</span>
+                            <span class="text-[11px] font-black text-[#D4B795]">التدفق النقدي التشغيلي</span>
                             <span id="flag-cashflow" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                         <div class="my-2">
                             <div class="flex justify-between items-baseline mb-1">
-                                <span class="text-xl font-black text-slate-800" id="val-cashflow">@Model.CashFlow M</span>
-                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 50M</span>
+                                <span class="text-xl font-black text-white" id="val-cashflow">@Model.CashFlow M</span>
+                                <span class="text-[9px] text-slate-400 font-bold">المستهدف: 50M</span>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
                                 <div id="bar-cashflow" class="h-full transition-all duration-500 relative">
                                     <div class="absolute inset-0 progress-shine-overlay"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black">
                             <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض تفاصيل التحصيل اليومي
                         </div>
                     </div>
                     <!-- العائد على الأصول ROA -->
                     <div onclick="openDrilldown('roa')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-[11px] font-black text-slate-500">العائد على الأصول ROA</span>
+                            <span class="text-[11px] font-black text-[#D4B795]">العائد على الأصول ROA</span>
                             <span id="flag-roa" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                         <div class="my-2">
                             <div class="flex justify-between items-baseline mb-1">
-                                <span class="text-2xl font-black text-slate-800" id="val-roa">@Model.Roa%</span>
-                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 12%</span>
+                                <span class="text-2xl font-black text-white" id="val-roa">@Model.Roa%</span>
+                                <span class="text-[9px] text-slate-400 font-bold">المستهدف: 12%</span>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
                                 <div id="bar-roa" class="h-full transition-all duration-500 relative">
                                     <div class="absolute inset-0 progress-shine-overlay"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black">
                             <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض كفاءة تشغيل الأصول
                         </div>
                     </div>
@@ -387,50 +430,51 @@
 
             <!-- مجموعة 2: الإدارة التجارية -->
             <section id="commercial-group" class="mb-8" data-aos="fade-up">
-                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-800/60 pb-2">
                     <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
-                    <h3 class="text-xs font-black text-slate-800">مؤشرات الأداء التجاري والعملاء</h3>
+                    <h3 class="text-xs font-black text-slate-200">مؤشرات الأداء التجاري والعملاء</h3>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- نسبة الاحتفاظ بالعملاء -->
                     <div onclick="openDrilldown('cust-ret')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-[11px] font-black text-slate-500">نسبة الاحتفاظ بالعملاء</span>
+                            <span class="text-[11px] font-black text-[#D4B795]">نسبة الاحتفاظ بالعملاء</span>
                             <span id="flag-cust-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                         <div class="my-2">
                             <div class="flex justify-between items-baseline mb-1">
-                                <span class="text-2xl font-black text-slate-800" id="val-cust-ret">@Model.CustRetention%</span>
-                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 85%</span>
+                                <span class="text-2xl font-black text-white" id="val-cust-ret">@Model.CustRetention%</span>
+                                <span class="text-[9px] text-slate-400 font-bold">المستهدف: 85%</span>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
                                 <div id="bar-cust-ret" class="h-full transition-all duration-500 relative">
                                     <div class="absolute inset-0 progress-shine-overlay"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black">
                             <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض تفاصيل العقود والولاء
                         </div>
                     </div>
                     <!-- صافي نقاط التوصية NPS -->
-                    <div onclick="openDrilldown('nps')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40 bg-gradient-to-br from-white via-white to-amber-50/20 border-2 border-amber-300">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-[11px] font-black text-slate-900">صافي نقاط التوصية NPS (رضا العملاء)</span>
+                    <div onclick="openDrilldown('nps')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40 bg-gradient-to-br from-[#1b1c2e] via-[#0f172a] to-[#0f172a] border border-[#D4B795]/50 shadow-[0_0_20px_rgba(212,183,149,0.15)] relative overflow-hidden">
+                        <div class="absolute -right-16 -top-16 w-32 h-32 bg-[#D4B795]/5 rounded-full blur-2xl"></div>
+                        <div class="flex justify-between items-start mb-2 relative z-10">
+                            <span class="text-[11px] font-black text-[#D4B795]">صافي نقاط التوصية NPS (رضا العملاء)</span>
                             <span id="flag-nps" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
-                        <div class="my-2">
+                        <div class="my-2 relative z-10">
                             <div class="flex justify-between items-baseline mb-1">
-                                <span class="text-2xl font-black text-slate-800" id="val-nps">@Model.Nps</span>
-                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 70</span>
+                                <span class="text-2xl font-black text-white animate-pulse" id="val-nps">@Model.Nps</span>
+                                <span class="text-[9px] text-slate-400 font-bold">المستهدف: 70</span>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
                                 <div id="bar-nps" class="h-full transition-all duration-500 relative">
                                     <div class="absolute inset-0 progress-shine-overlay"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black relative z-10">
                             <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض تقييم الخدمة 10% والتأخيرات 10%
                         </div>
                     </div>
@@ -439,71 +483,71 @@
 
             <!-- مجموعة 3: العمليات والأسطول -->
             <section id="ops-fleet-group" class="mb-8" data-aos="fade-up">
-                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-800/60 pb-2">
                     <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
-                    <h3 class="text-xs font-black text-slate-800">مؤشرات العمليات وأسطول الحافلات</h3>
+                    <h3 class="text-xs font-black text-slate-200">مؤشرات العمليات وأسطول الحافلات</h3>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- نسبة الالتزام بالخطة التشغيلية -->
                     <div onclick="openDrilldown('ops-plan')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-[11px] font-black text-slate-500">الالتزام بالخطة التشغيلية</span>
+                            <span class="text-[11px] font-black text-[#D4B795]">الالتزام بالخطة التشغيلية</span>
                             <span id="flag-ops-plan" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                         <div class="my-2">
                             <div class="flex justify-between items-baseline mb-1">
-                                <span class="text-2xl font-black text-slate-800" id="val-ops-plan">@Model.OpsPlan%</span>
-                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 90%</span>
+                                <span class="text-2xl font-black text-white" id="val-ops-plan">@Model.OpsPlan%</span>
+                                <span class="text-[9px] text-slate-400 font-bold">المستهدف: 90%</span>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
                                 <div id="bar-ops-plan" class="h-full transition-all duration-500 relative">
                                     <div class="absolute inset-0 progress-shine-overlay"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black">
                             <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض مخطط التزام رحلات الحافلات
                         </div>
                     </div>
                     <!-- نسبة جاهزية الأسطول -->
                     <div onclick="openDrilldown('fleet-ready')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-[11px] font-black text-slate-500">نسبة جاهزية الأسطول</span>
+                            <span class="text-[11px] font-black text-[#D4B795]">نسبة جاهزية الأسطول</span>
                             <span id="flag-fleet-ready" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                         <div class="my-2">
                             <div class="flex justify-between items-baseline mb-1">
-                                <span class="text-2xl font-black text-slate-800" id="val-fleet-ready">@Model.FleetReady%</span>
-                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 95%</span>
+                                <span class="text-2xl font-black text-white" id="val-fleet-ready">@Model.FleetReady%</span>
+                                <span class="text-[9px] text-slate-400 font-bold">المستهدف: 95%</span>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
                                 <div id="bar-fleet-ready" class="h-full transition-all duration-500 relative">
                                     <div class="absolute inset-0 progress-shine-overlay"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black">
                             <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر للتعمق في حالة حافلات الصيانة
                         </div>
                     </div>
                     <!-- نسبة استغلال الأسطول -->
                     <div onclick="openDrilldown('fleet-util')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-[11px] font-black text-slate-500">نسبة استغلال الأسطول</span>
+                            <span class="text-[11px] font-black text-[#D4B795]">نسبة استغلال الأسطول</span>
                             <span id="flag-fleet-util" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                         <div class="my-2">
                             <div class="flex justify-between items-baseline mb-1">
-                                <span class="text-2xl font-black text-slate-800" id="val-fleet-util">@Model.FleetUtil%</span>
-                                <span class="text-[9px] text-slate-500 font-bold">المستهدف: 85%</span>
+                                <span class="text-2xl font-black text-white" id="val-fleet-util">@Model.FleetUtil%</span>
+                                <span class="text-[9px] text-slate-400 font-bold">المستهدف: 85%</span>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden relative">
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
                                 <div id="bar-fleet-util" class="h-full transition-all duration-500 relative">
                                     <div class="absolute inset-0 progress-shine-overlay"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[9px] text-[#009688] flex items-center gap-1 font-black">
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black">
                             <i class="fa-solid fa-chevron-left text-[8px]"></i> انقر لعرض كثافة تشغيل مقاعد الرحلات
                         </div>
                     </div>
@@ -512,59 +556,59 @@
 
             <!-- مجموعة 4: الإدارات المساندة والدعم والاستراتيجية -->
             <section id="support-group" class="mb-8" data-aos="fade-up">
-                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-800/60 pb-2">
                     <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
-                    <h3 class="text-xs font-black text-slate-800">مؤشرات الموارد البشرية، الـ HSE، والتحول الاستراتيجي</h3>
+                    <h3 class="text-xs font-black text-slate-200">مؤشرات الموارد البشرية، الـ HSE، والتحول الاستراتيجي</h3>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- الموارد البشرية والتقنية -->
                     <div class="glass-card p-5 rounded-2xl space-y-4">
-                        <div class="flex justify-between border-b border-slate-100 pb-2 items-center">
-                            <span class="text-[11px] font-black text-[#009688]">الموارد البشرية و IT</span>
-                            <i class="fa-solid fa-laptop-code text-slate-300"></i>
+                        <div class="flex justify-between border-b border-slate-800/40 pb-2 items-center">
+                            <span class="text-[11px] font-black text-teal-400">الموارد البشرية و IT</span>
+                            <i class="fa-solid fa-laptop-code text-slate-400"></i>
                         </div>
-                        <div onclick="openDrilldown('hr-ret')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
-                            <div><span class="text-[10px] text-slate-500 block font-bold">معدل الاحتفاظ بالموظفين</span><span class="text-md font-black" id="val-hr-ret">@Model.HrRetention%</span></div>
+                        <div onclick="openDrilldown('hr-ret')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold">معدل الاحتفاظ بالموظفين</span><span class="text-md font-black text-white" id="val-hr-ret">@Model.HrRetention%</span></div>
                             <span id="flag-hr-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
-                        <div onclick="openDrilldown('it-autom')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
-                            <div><span class="text-[10px] text-slate-500 block font-bold">أتمتة الأنظمة التقنية</span><span class="text-md font-black" id="val-it-autom">@Model.ItAutomation%</span></div>
+                        <div onclick="openDrilldown('it-autom')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold">أتمتة الأنظمة التقنية</span><span class="text-md font-black text-white" id="val-it-autom">@Model.ItAutomation%</span></div>
                             <span id="flag-it-autom" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                     </div>
 
                     <!-- السلامة والصحة المهنية HSE والتدقيق (مؤشرات عكسية) -->
                     <div class="glass-card p-5 rounded-2xl space-y-3">
-                        <div class="flex justify-between border-b border-slate-100 pb-2 items-center">
-                            <span class="text-[11px] font-black text-amber-700">السلامة HSE والتدقيق</span>
-                            <i class="fa-solid fa-shield-halved text-slate-300"></i>
+                        <div class="flex justify-between border-b border-slate-800/40 pb-2 items-center">
+                            <span class="text-[11px] font-black text-amber-500">السلامة HSE والتدقيق</span>
+                            <i class="fa-solid fa-shield-halved text-slate-400"></i>
                         </div>
-                        <div onclick="openDrilldown('hse-ltifr')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1 rounded-lg transition-colors">
-                            <div><span class="text-[10px] text-slate-500 block font-bold">معدل الحوادث LTIFR</span><span class="text-md font-black text-slate-800" id="val-hse-ltifr">@Model.Ltifr</span></div>
+                        <div onclick="openDrilldown('hse-ltifr')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold">معدل الحوادث LTIFR</span><span class="text-md font-black text-slate-200" id="val-hse-ltifr">@Model.Ltifr</span></div>
                             <span id="flag-hse-ltifr" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
-                        <div onclick="openDrilldown('hse-accidents')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1 rounded-lg transition-colors">
-                            <div><span class="text-[10px] text-slate-500 block font-bold">حوادث جسيمة (مستهدف 0)</span><span class="text-md font-black text-red-600" id="val-hse-accidents">@Model.Accidents</span></div>
+                        <div onclick="openDrilldown('hse-accidents')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold">حوادث جسيمة (مستهدف 0)</span><span class="text-md font-black text-red-400" id="val-hse-accidents">@Model.Accidents</span></div>
                             <span id="flag-hse-accidents" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
-                        <div onclick="openDrilldown('audit-comp')" class="flex justify-between items-center border-t border-slate-50 pt-2 cursor-pointer hover:bg-slate-100 p-1 rounded-lg transition-colors">
-                            <div><span class="text-[10px] text-slate-500 block font-bold">نسبة الامتثال للسياسات</span><span class="text-md font-black text-slate-800" id="val-audit-comp">@Model.AuditCompliance%</span></div>
+                        <div onclick="openDrilldown('audit-comp')" class="flex justify-between items-center border-t border-slate-800 pt-2 cursor-pointer hover:bg-neutral-800/40 p-1 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold">نسبة الامتثال للسياسات</span><span class="text-md font-black text-slate-200" id="val-audit-comp">@Model.AuditCompliance%</span></div>
                             <span id="flag-audit-comp" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                     </div>
 
                     <!-- الاستراتيجية والأداء العام -->
                     <div class="glass-card p-5 rounded-2xl space-y-4">
-                        <div class="flex justify-between border-b border-slate-100 pb-2 items-center">
-                            <span class="text-[11px] font-black text-purple-700">الاستراتيجية والمشاريع</span>
-                            <i class="fa-solid fa-bullseye text-slate-300"></i>
+                        <div class="flex justify-between border-b border-slate-800/40 pb-2 items-center">
+                            <span class="text-[11px] font-black text-purple-400">الاستراتيجية والمشاريع</span>
+                            <i class="fa-solid fa-bullseye text-slate-400"></i>
                         </div>
-                        <div onclick="openDrilldown('strat-goals')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
-                            <div><span class="text-[10px] text-slate-500 block font-bold">أهداف استراتيجية عامة</span><span class="text-md font-black" id="val-strat-goals">@Model.StrategicGoals%</span></div>
+                        <div onclick="openDrilldown('strat-goals')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold">أهداف استراتيجية عامة</span><span class="text-md font-black text-white" id="val-strat-goals">@Model.StrategicGoals%</span></div>
                             <span id="flag-strat-goals" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
-                        <div onclick="openDrilldown('strat-init')" class="flex justify-between items-center cursor-pointer hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
-                            <div><span class="text-[10px] text-slate-500 block font-bold">إنجاز مبادرات PMO</span><span class="text-md font-black" id="val-strat-init">@Model.StrategicInitiatives%</span></div>
+                        <div onclick="openDrilldown('strat-init')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold">إنجاز مبادرات PMO</span><span class="text-md font-black text-white" id="val-strat-init">@Model.StrategicInitiatives%</span></div>
                             <span id="flag-strat-init" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                     </div>
@@ -620,15 +664,15 @@
         <div id="modalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-md opacity-0 transition-opacity duration-300" onclick="closeDrilldown()"></div>
         
         <!-- صندوق المودال المنبثق -->
-        <div id="modalBox" class="bg-white/98 backdrop-blur-md w-full max-w-2xl rounded-3xl border-2 border-[#D4B795] shadow-2xl overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col max-h-[85vh] z-10">
+        <div id="modalBox" class="bg-[#0f172a]/95 backdrop-blur-xl w-full max-w-2xl rounded-3xl border border-[#D4B795]/50 shadow-[0_0_50px_rgba(212,183,149,0.25)] overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col max-h-[85vh] z-10 text-white">
             <!-- هيدر المودال المنبثق -->
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-[#111111] via-[#242424] to-[#111111] text-white">
+            <div class="p-6 border-b border-slate-800/80 flex justify-between items-center bg-gradient-to-r from-neutral-950 via-[#1e293b] to-neutral-950 text-white">
                 <div>
                     <h3 id="drawerTitle" class="text-sm font-black text-white flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-[#D4B795] animate-pulse"></span>
                         <span id="modalHeaderTitle">تفاصيل مؤشر الأداء</span>
                     </h3>
-                    <p id="drawerSubtitle" class="text-[9px] text-neutral-400 mt-1 font-bold">التحليل التفصيلي والمسارات</p>
+                    <p id="drawerSubtitle" class="text-[9px] text-[#D4B795] mt-1 font-bold">التحليل التفصيلي والمسارات</p>
                 </div>
                 <button onclick="closeDrilldown()" class="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 flex items-center justify-center transition-colors">
                     <i class="fa-solid fa-xmark text-xs"></i>
@@ -638,18 +682,18 @@
             <!-- جسم المودال المنبثق -->
             <div class="flex-1 overflow-y-auto p-6 space-y-6 text-right">
                 <!-- الكارت الرئيسي للقيم -->
-                <div class="bg-gradient-to-l from-amber-50/60 to-white border-2 border-[#D4B795]/50 p-5 rounded-2xl flex items-center justify-between shadow-xs">
+                <div class="bg-gradient-to-l from-[#1e1b18] via-[#111827] to-[#1e1b18] border border-[#D4B795]/40 p-5 rounded-2xl flex items-center justify-between shadow-md">
                     <div>
-                        <span class="text-[10px] text-slate-500 font-bold block">القيمة الحالية المسجلة</span>
-                        <span id="drawerCurrentVal" class="text-3xl font-black text-[#009688] block mt-1 drop-shadow-sm">0%</span>
-                        <span id="drawerTargetVal" class="text-[9px] text-slate-400 block mt-0.5 font-bold">المستهدف: 0%</span>
+                        <span class="text-[10px] text-slate-400 font-bold block">القيمة الحالية المسجلة</span>
+                        <span id="drawerCurrentVal" class="text-3xl font-black text-[#00bfa5] block mt-1 drop-shadow-sm font-mono">0%</span>
+                        <span id="drawerTargetVal" class="text-[9px] text-[#D4B795]/90 block mt-0.5 font-bold">المستهدف: 0%</span>
                     </div>
                     <div id="drawerStatusFlag" class="text-[10px] font-bold px-3 py-1 rounded-full shadow-2xs">--</div>
                 </div>
 
                 <!-- المؤشرات الفرعية التابعة -->
                 <div>
-                    <h4 class="text-xs font-black text-slate-800 mb-3 flex items-center gap-1.5 border-b border-slate-100 pb-1.5">
+                    <h4 class="text-xs font-black text-slate-200 mb-3 flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
                         <span class="w-1.5 h-3.5 bg-[#009688] rounded-full"></span>
                         تحليل المؤشرات والمسارات التابعة (Sub-KPIs)
                     </h4>
@@ -660,22 +704,22 @@
 
                 <!-- الرسم البياني للـ Drilldown -->
                 <div>
-                    <h4 class="text-xs font-black text-slate-800 mb-3 flex items-center gap-1.5 border-b border-slate-100 pb-1.5">
+                    <h4 class="text-xs font-black text-slate-200 mb-3 flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
                         <span class="w-1.5 h-3.5 bg-[#009688] rounded-full"></span>
                         المخطط البياني الموزع للمسارات والقطاعات
                     </h4>
-                    <div class="h-60 bg-slate-50 rounded-2xl p-3 border border-slate-100 flex items-center justify-center relative">
+                    <div class="h-60 bg-[#0c101b] rounded-2xl p-4 border border-[#D4B795]/20 flex items-center justify-center relative shadow-inner">
                         <canvas id="drawerChart"></canvas>
                     </div>
                 </div>
 
                 <!-- التوصيات والإجراءات التصحيحية -->
-                <div class="bg-blue-50 border border-blue-200/50 p-4 rounded-xl">
-                    <h5 class="text-[10px] font-black text-blue-900 flex items-center gap-1.5 mb-1.5">
-                        <i class="fa-solid fa-circle-info text-blue-700"></i>
+                <div class="bg-blue-950/40 border border-blue-900/40 p-4 rounded-xl">
+                    <h5 class="text-[10px] font-black text-blue-300 flex items-center gap-1.5 mb-1.5">
+                        <i class="fa-solid fa-circle-info text-blue-400"></i>
                         توصيات الإجراءات التشغيلية
                     </h5>
-                    <p id="drawerNotes" class="text-[10px] text-blue-800 leading-relaxed font-semibold">
+                    <p id="drawerNotes" class="text-[10px] text-blue-200 leading-relaxed font-semibold">
                         تحليل الفجوة يشير إلى ضرورة اتخاذ إجراءات فورية لمعالجة الانحراف عن المستهدف التشغيلي.
                     </p>
                 </div>
@@ -689,30 +733,30 @@
         <div id="profileModalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-md opacity-0 transition-opacity duration-300" onclick="closeProfileModal()"></div>
         
         <!-- صندوق بطاقة الـ CEO المنبثقة -->
-        <div id="profileModalBox" class="bg-white/98 backdrop-blur-md w-full max-w-xs rounded-3xl border-2 border-[#D4B795] shadow-2xl overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col p-6 z-10 text-center relative text-right">
+        <div id="profileModalBox" class="bg-[#0f172a]/95 backdrop-blur-xl w-full max-w-xs rounded-3xl border border-[#D4B795]/50 shadow-[0_0_30px_rgba(212,183,149,0.2)] overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col p-6 z-10 text-center relative text-right text-white">
             <!-- زر الإغلاق -->
-            <button onclick="closeProfileModal()" class="absolute top-4 left-4 w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
+            <button onclick="closeProfileModal()" class="absolute top-4 left-4 w-6 h-6 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition-colors cursor-pointer border border-slate-700/30">
                 <i class="fa-solid fa-xmark text-xs"></i>
             </button>
             
             <!-- الصورة الرمزية للـ CEO -->
-            <div class="w-16 h-16 rounded-full border-2 border-[#D4B795] bg-gradient-to-tr from-amber-100 to-amber-200 flex items-center justify-center text-neutral-900 font-black text-lg mx-auto shadow-md mb-3">
+            <div class="w-16 h-16 rounded-full border-2 border-[#D4B795] bg-gradient-to-tr from-[#D4B795]/30 to-[#B08E66]/30 flex items-center justify-center text-[#D4B795] font-black text-lg mx-auto shadow-md mb-3">
                 غ ع
             </div>
             
             <!-- تفاصيل الاسم والمسمى -->
-            <h4 class="text-sm font-black text-slate-900 text-center mb-1">غسان عراقي</h4>
-            <span class="text-[9px] bg-amber-100 text-amber-900 px-3 py-0.5 rounded-full font-black mx-auto inline-block mb-4 shadow-3xs text-center">المدير العام والتنفيذي (CEO)</span>
+            <h4 class="text-sm font-black text-slate-100 text-center mb-1">غسان عراقي</h4>
+            <span class="text-[9px] bg-[#D4B795]/20 border border-[#D4B795]/30 text-[#D4B795] px-3 py-0.5 rounded-full font-black mx-auto inline-block mb-4 shadow-3xs text-center">المدير العام والتنفيذي (CEO)</span>
             
             <!-- تفاصيل الحساب -->
-            <div class="border-t border-slate-100 pt-4 space-y-2.5 text-[10px] text-slate-700 font-bold">
+            <div class="border-t border-slate-800/80 pt-4 space-y-2.5 text-[10px] text-slate-300 font-bold">
                 <div class="flex justify-between">
-                    <span class="text-slate-400">البريد الإلكتروني:</span>
-                    <span>g.iraqi@rawahel.com.sa</span>
+                    <span class="text-slate-500">البريد الإلكتروني:</span>
+                    <span class="font-mono text-slate-200">g.iraqi@rawahel.com.sa</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-slate-400">الصلاحيات البرمجية:</span>
-                    <span class="text-[#009688] font-black">إدارة كاملة للنظام (Full Admin)</span>
+                    <span class="text-slate-500">الصلاحيات البرمجية:</span>
+                    <span class="text-[#00bfa5] font-black">إدارة كاملة للنظام (Full Admin)</span>
                 </div>
             </div>
         </div>
@@ -1116,13 +1160,13 @@
                     }
                     
                     const itemHtml = `
-                        <div class="bg-white p-3.5 rounded-xl border-2 border-slate-100 flex items-center justify-between shadow-2xs hover:shadow-xs transition-shadow">
+                        <div class="bg-[#1e293b]/50 p-3.5 rounded-xl border border-slate-800 flex items-center justify-between shadow-md hover:border-[#D4B795]/30 transition-all">
                             <div>
-                                <span class="text-[10px] font-black text-slate-800 block">${sub.name}</span>
-                                <span class="text-[9px] text-slate-500 font-bold block mt-0.5">المستهدف: ${sub.target}</span>
+                                <span class="text-[10px] font-black text-slate-200 block">${sub.name}</span>
+                                <span class="text-[9px] text-slate-400 font-bold block mt-0.5">المستهدف: ${sub.target}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="text-xs font-black text-slate-900">${sub.value}</span>
+                                <span class="text-xs font-black text-white font-mono">${sub.value}</span>
                                 <span class="text-[8px] font-black px-2 py-0.5 rounded-full ${badgeClass}">${badgeIcon}</span>
                             </div>
                         </div>
@@ -1149,8 +1193,8 @@
                                     label: kpiInfo.title,
                                     data: kpiInfo.chartData(currentValNum),
                                     backgroundColor: kpiInfo.chartType === 'doughnut' ? 
-                                        ['#009688', '#D4B795', '#ef4444', '#94a3b8'] : 'rgba(0, 150, 136, 0.25)',
-                                    borderColor: '#009688',
+                                        ['#00bfa5', '#ffe0b2', '#ff5252', '#7c4dff'] : 'rgba(0, 191, 165, 0.2)',
+                                    borderColor: '#00bfa5',
                                     borderWidth: 2.5,
                                     fill: true
                                 }]
@@ -1162,13 +1206,42 @@
                                     legend: { 
                                         display: kpiInfo.chartType === 'doughnut' || kpiInfo.chartType === 'polarArea',
                                         position: 'bottom',
-                                        labels: { font: { family: 'Cairo', size: 9, weight: 'bold' } } 
+                                        labels: { 
+                                            color: '#e2e8f0',
+                                            font: { family: 'Cairo', size: 9, weight: 'bold' } 
+                                        } 
                                     }
                                 },
                                 scales: kpiInfo.chartType !== 'doughnut' && kpiInfo.chartType !== 'polarArea' && kpiInfo.chartType !== 'radar' ? {
-                                    y: { beginAtZero: true },
-                                    x: { ticks: { font: { family: 'Cairo', size: 9, weight: 'bold' } } }
-                                } : undefined
+                                    y: { 
+                                        grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                                        ticks: {
+                                            color: '#cbd5e1',
+                                            font: { family: 'Cairo', size: 9, weight: 'bold' }
+                                        }
+                                    },
+                                    x: { 
+                                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                        ticks: {
+                                            color: '#cbd5e1',
+                                            font: { family: 'Cairo', size: 9, weight: 'bold' }
+                                        }
+                                    }
+                                } : (kpiInfo.chartType === 'radar' ? {
+                                    r: {
+                                        angleLines: { color: 'rgba(255, 255, 255, 0.15)' },
+                                        grid: { color: 'rgba(255, 255, 255, 0.15)' },
+                                        pointLabels: {
+                                            color: '#cbd5e1',
+                                            font: { family: 'Cairo', size: 8, weight: 'bold' }
+                                        },
+                                        ticks: {
+                                            backdropColor: 'transparent',
+                                            color: '#cbd5e1',
+                                            font: { family: 'Cairo', size: 8 }
+                                        }
+                                    }
+                                } : undefined)
                             }
                         });
                     } catch (e) {
@@ -1361,12 +1434,22 @@
             if (typeof Chart !== 'undefined') {
                 try {
                     const ctxBar = document.getElementById('barChartActualTarget').getContext('2d');
+                    
+                    // Create linear gradients for a premium glow look
+                    const actualGradient = ctxBar.createLinearGradient(0, 0, 0, 300);
+                    actualGradient.addColorStop(0, '#00bfa5'); // bright neon teal
+                    actualGradient.addColorStop(1, '#005f54'); // deep teal
+                    
+                    const targetGradient = ctxBar.createLinearGradient(0, 0, 0, 300);
+                    targetGradient.addColorStop(0, '#ffe0b2'); // bright gold
+                    targetGradient.addColorStop(1, '#664d30'); // deep bronze/gold
+                    
                     mixedChart = new Chart(ctxBar, {
                         type: 'bar',
                         data: {
                             labels: ['إجمالي الإيرادات %', 'هامش EBITDA %', 'الاحتفاظ بالعملاء %', 'الخطة التشغيلية %', 'جاهزية الأسطول %', 'الأهداف الاستراتيجية %'],
                             datasets: [
-                                { label: 'الأداء الفعلي الحالي (Actual)', data: [0, 0, 0, 0, 0, 0], backgroundColor: '#009688', borderRadius: 6 },
+                                { label: 'الأداء الفعلي الحالي (Actual)', data: [0, 0, 0, 0, 0, 0], backgroundColor: actualGradient, borderRadius: 6 },
                                 { 
                                     label: 'المستهدف الأساسي (Target)', 
                                     data: [
@@ -1377,7 +1460,7 @@
                                         kpiTargets['fleet-ready'], 
                                         kpiTargets['strat-goals']
                                     ], 
-                                    backgroundColor: '#D4B795', 
+                                    backgroundColor: targetGradient, 
                                     borderRadius: 6 
                                 }
                             ]
@@ -1385,10 +1468,31 @@
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            plugins: { legend: { labels: { font: { family: 'Cairo', size: 10, weight: 'bold' } } } },
+                            plugins: { 
+                                legend: { 
+                                    labels: { 
+                                        color: '#e2e8f0',
+                                        font: { family: 'Cairo', size: 10, weight: 'bold' } 
+                                    } 
+                                } 
+                            },
                             scales: { 
-                                y: { beginAtZero: true, max: 100 }, 
-                                x: { ticks: { font: { family: 'Cairo', size: 9, weight: 'bold' } } } 
+                                y: { 
+                                    beginAtZero: true, 
+                                    max: 100,
+                                    grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                                    ticks: {
+                                        color: '#cbd5e1',
+                                        font: { family: 'Cairo', size: 9, weight: 'bold' }
+                                    }
+                                }, 
+                                x: { 
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                    ticks: { 
+                                        color: '#cbd5e1',
+                                        font: { family: 'Cairo', size: 9, weight: 'bold' } 
+                                    } 
+                                } 
                             }
                         }
                     });
@@ -1403,12 +1507,20 @@
                         type: 'doughnut',
                         data: {
                             labels: ['ممتاز 🟢', 'جيد 🟡', 'ضعيف 🔴'],
-                            datasets: [{ data: [0, 0, 0], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'] }]
+                            datasets: [{ data: [0, 0, 0], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'], borderWidth: 1, borderColor: '#0f172a' }]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            plugins: { legend: { position: 'bottom', labels: { font: { family: 'Cairo', size: 9, weight: 'bold' } } } }
+                            plugins: { 
+                                legend: { 
+                                    position: 'bottom', 
+                                    labels: { 
+                                        color: '#e2e8f0',
+                                        font: { family: 'Cairo', size: 9, weight: 'bold' } 
+                                    } 
+                                } 
+                            }
                         }
                     });
                 } catch (e) {
