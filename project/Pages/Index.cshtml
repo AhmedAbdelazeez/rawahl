@@ -269,6 +269,11 @@
                         <span data-i18n="sidebar-ops">العمليات والأسطول</span>
                     </a>
 
+                    <a href="#strategy-perf-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-bullseye text-[#009688] text-sm w-5"></i>
+                        <span data-i18n="sidebar-strategy-perf">الاستراتيجية والأداء</span>
+                    </a>
+
                     <a href="#support-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
                         <i class="fa-solid fa-handshake-angle text-[#009688] text-sm w-5"></i>
                         <span data-i18n="sidebar-support">الإدارات المساندة و HSE</span>
@@ -350,7 +355,7 @@
                         <!-- عدادات المؤشرات بتصميم LED راقي ومضيء -->
                         <div class="flex flex-wrap gap-3 bg-black/45 p-4 rounded-2xl border border-slate-700/40 justify-center">
                             <div class="text-center px-4">
-                                <span class="block text-2xl font-black text-slate-100" id="count-total">16</span>
+                                <span class="block text-2xl font-black text-slate-100" id="count-total">22</span>
                                 <span class="text-[9px] text-[#D4B795] font-black" data-i18n="summary-total">إجمالي المؤشرات</span>
                             </div>
                             <div class="w-[1px] h-10 bg-slate-800"></div>
@@ -502,7 +507,7 @@
                     <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
                     <h3 class="text-xs font-black text-slate-200" data-i18n="group-commercial-title">مؤشرات الأداء التجاري والعملاء</h3>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- نسبة الاحتفاظ بالعملاء -->
                     <div onclick="openDrilldown('cust-ret')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
@@ -544,6 +549,27 @@
                         </div>
                         <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black relative z-10">
                             <i class="fa-solid fa-chevron-left text-[8px] rtl:rotate-0 ltr:rotate-180"></i> <span data-i18n="card-nps-desc">انقر لعرض تقييم الخدمة 10% والتأخيرات 10%</span>
+                        </div>
+                    </div>
+                    <!-- عدد العقود الاستراتيجية الجديدة -->
+                    <div onclick="openDrilldown('new-contracts')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-black text-[#D4B795]" data-i18n="card-new-contracts-title">عدد العقود الاستراتيجية الجديدة</span>
+                            <span id="flag-new-contracts" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div class="my-2">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-2xl font-black text-white" id="val-new-contracts">@Model.NewContracts</span>
+                                <span class="text-[9px] text-slate-400 font-bold" id="target-new-contracts">المستهدف: 15</span>
+                            </div>
+                            <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden relative border border-slate-700/30">
+                                <div id="bar-new-contracts" class="h-full transition-all duration-500 relative">
+                                    <div class="absolute inset-0 progress-shine-overlay"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-[#00bfa5] flex items-center gap-1 font-black">
+                            <i class="fa-solid fa-chevron-left text-[8px] rtl:rotate-0 ltr:rotate-180"></i> <span data-i18n="card-new-contracts-desc">انقر لعرض تفاصيل العقود الجديدة والشركاء</span>
                         </div>
                     </div>
                 </div>
@@ -622,17 +648,17 @@
                 </div>
             </section>
 
-            <!-- مجموعة 4: الإدارات المساندة والدعم والاستراتيجية -->
+            <!-- مجموعة 4: الإدارات المساندة والدعم والتحول الرقمي -->
             <section id="support-group" class="mb-8" data-aos="fade-up">
                 <div class="flex items-center gap-2 mb-4 border-b border-slate-800/60 pb-2">
                     <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
-                    <h3 class="text-xs font-black text-slate-200" data-i18n="group-support-title">مؤشرات الموارد البشرية، الـ HSE، والتحول الاستراتيجي</h3>
+                    <h3 class="text-xs font-black text-slate-200" data-i18n="group-support-title">مؤشرات الموارد البشرية، الـ HSE، والتحول الرقمي</h3>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- الموارد البشرية والتقنية -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- الموارد البشرية والتحول الرقمي -->
                     <div class="glass-card p-5 rounded-2xl space-y-4">
                         <div class="flex justify-between border-b border-slate-800/40 pb-2 items-center">
-                            <span class="text-[11px] font-black text-teal-400" data-i18n="support-hr-title">الموارد البشرية و IT</span>
+                            <span class="text-[11px] font-black text-teal-400" data-i18n="support-hr-title">الموارد البشرية والتحول الرقمي</span>
                             <i class="fa-solid fa-laptop-code text-slate-400"></i>
                         </div>
                         <div onclick="openDrilldown('hr-ret')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
@@ -640,8 +666,16 @@
                             <span id="flag-hr-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                         <div onclick="openDrilldown('it-autom')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
-                            <div><span class="text-[10px] text-slate-400 block font-bold" data-i18n="val-it-autom-label">أتمتة الأنظمة التقنية</span><span class="text-md font-black text-white" id="val-it-autom">@Model.ItAutomation%</span></div>
+                            <div><span class="text-[10px] text-slate-400 block font-bold" data-i18n="val-it-autom-label">تنفيذ مشاريع التحول الرقمي</span><span class="text-md font-black text-white" id="val-it-autom">@Model.ItAutomation%</span></div>
                             <span id="flag-it-autom" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div onclick="openDrilldown('critical-succession')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold" data-i18n="val-critical-succession-label">نسبة الوظائف الحرجة المغطاة بخطط الإحلال</span><span class="text-md font-black text-white" id="val-critical-succession">@Model.CriticalSuccession%</span></div>
+                            <span id="flag-critical-succession" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div onclick="openDrilldown('saudization')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold" data-i18n="val-saudization-label">نسبة السعوده </span><span class="text-md font-black text-white" id="val-saudization">@Model.Saudization%</span></div>
+                            <span id="flag-saudization" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                     </div>
 
@@ -664,8 +698,17 @@
                             <span id="flag-audit-comp" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    <!-- الاستراتيجية والأداء العام -->
+            <!-- مجموعة 5: الاستراتيجية والأداء -->
+            <section id="strategy-perf-group" class="mb-8" data-aos="fade-up">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-800/60 pb-2">
+                    <span class="w-1.5 h-4 bg-[#009688] rounded-full"></span>
+                    <h3 class="text-xs font-black text-slate-200" data-i18n="group-strategy-perf-title">مؤشرات الاستراتيجية والأداء</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- الاستراتيجية والمشاريع -->
                     <div class="glass-card p-5 rounded-2xl space-y-4">
                         <div class="flex justify-between border-b border-slate-800/40 pb-2 items-center">
                             <span class="text-[11px] font-black text-purple-400" data-i18n="support-strategy-title">الاستراتيجية والمشاريع</span>
@@ -678,6 +721,26 @@
                         <div onclick="openDrilldown('strat-init')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
                             <div><span class="text-[10px] text-slate-400 block font-bold" data-i18n="val-strat-init-label">إنجاز مبادرات PMO</span><span class="text-md font-black text-white" id="val-strat-init">@Model.StrategicInitiatives%</span></div>
                             <span id="flag-strat-init" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                    </div>
+
+                    <!-- إدارة المخاطر والحوكمة -->
+                    <div class="glass-card p-5 rounded-2xl space-y-4">
+                        <div class="flex justify-between border-b border-slate-800/40 pb-2 items-center">
+                            <span class="text-[11px] font-black text-teal-400" data-i18n="support-risk-gov-title">إدارة المخاطر والحوكمة</span>
+                            <i class="fa-solid fa-shield-halved text-slate-400"></i>
+                        </div>
+                        <div onclick="openDrilldown('risk-handling')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold" data-i18n="val-risk-handling-label">نسبة معالجة المخاطر المؤسسية</span><span class="text-md font-black text-white" id="val-risk-handling">@Model.RiskHandling%</span></div>
+                            <span id="flag-risk-handling" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div onclick="openDrilldown('gov-maturity')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold" data-i18n="val-gov-maturity-label">نسبة تطبيق متطلبات الحوكمة المؤسسية</span><span class="text-md font-black text-white" id="val-gov-maturity">@Model.GovMaturity%</span></div>
+                            <span id="flag-gov-maturity" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+                        </div>
+                        <div onclick="openDrilldown('strat-goals-achieve')" class="flex justify-between items-center cursor-pointer hover:bg-neutral-800/40 p-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-800">
+                            <div><span class="text-[10px] text-slate-400 block font-bold" data-i18n="val-strat-goals-achieve-label">نسبة تحقيق الأهداف الاستراتيجية</span><span class="text-md font-black text-white" id="val-strat-goals-achieve">@Model.StratGoalsAchieve%</span></div>
+                            <span id="flag-strat-goals-achieve" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
                         </div>
                     </div>
                 </div>
@@ -853,11 +916,17 @@
             'fleet-util': 85,
             'hr-ret': 90,
             'it-autom': 80,
+            'critical-succession': 80,
+            'saudization': 35,
+            'new-contracts': 15,
             'hse-ltifr': 1.5,
             'hse-accidents': 0,
             'audit-comp': 95,
             'strat-goals': 85,
-            'strat-init': 90
+            'strat-init': 90,
+            'risk-handling': 90,
+            'gov-maturity': 95,
+            'strat-goals-achieve': 85
         };
 
         // تحميل الأهداف من localStorage أو استخدام الافتراضية
@@ -956,17 +1025,27 @@
                 'target-fleet-util': 'المستهدف: 85%',
                 'card-fleet-util-desc': 'انقر لعرض كثافة تشغيل مقاعد الرحلات',
                 // Support, HSE & Strategic
-                'group-support-title': 'مؤشرات الموارد البشرية، الـ HSE، والتحول الاستراتيجي',
-                'support-hr-title': 'الموارد البشرية و IT',
+                'sidebar-strategy-perf': 'الاستراتيجية والأداء',
+                'group-strategy-perf-title': 'مؤشرات الاستراتيجية والأداء',
+                'group-support-title': 'مؤشرات الموارد البشرية، الـ HSE، والتحول الرقمي',
+                'support-hr-title': 'الموارد البشرية والتحول الرقمي',
                 'val-hr-ret-label': 'معدل الاحتفاظ بالموظفين',
-                'val-it-autom-label': 'أتمتة الأنظمة التقنية',
+                'val-it-autom-label': 'تنفيذ مشاريع التحول الرقمي',
+                'val-critical-succession-label': 'نسبة الوظائف الحرجة المغطاة بخطط الإحلال',
+                'val-saudization-label': 'نسبة السعوده ',
                 'support-hse-title': 'السلامة HSE والتدقيق',
                 'val-hse-ltifr-label': 'معدل الحوادث LTIFR',
                 'val-hse-accidents-label': 'حوادث جسيمة (مستهدف 0)',
                 'val-audit-comp-label': 'نسبة الامتثال للسياسات',
                 'support-strategy-title': 'الاستراتيجية والمشاريع',
+                'support-risk-gov-title': 'إدارة المخاطر والحوكمة',
                 'val-strat-goals-label': 'أهداف استراتيجية عامة',
                 'val-strat-init-label': 'إنجاز مبادرات PMO',
+                'val-risk-handling-label': 'نسبة معالجة المخاطر المؤسسية',
+                'val-gov-maturity-label': 'نسبة تطبيق متطلبات الحوكمة المؤسسية',
+                'val-strat-goals-achieve-label': 'نسبة تحقيق الأهداف الاستراتيجية',
+                'card-new-contracts-title': 'عدد العقود الاستراتيجية الجديدة',
+                'card-new-contracts-desc': 'انقر لعرض تفاصيل العقود الجديدة والشركاء',
                 // Table
                 'table-section-title': 'النشاطات والعمليات التشغيلية الأخيرة بالأسطول',
                 'th-time': 'الوقت',
@@ -1074,17 +1153,27 @@
                 'target-fleet-util': 'Target: 85%',
                 'card-fleet-util-desc': 'Click to view trip seat occupancy intensity',
                 // Support, HSE & Strategic
-                'group-support-title': 'HR, HSE, and Strategic Transformation Indicators',
-                'support-hr-title': 'Human Resources & IT',
+                'sidebar-strategy-perf': 'Strategy & Performance',
+                'group-strategy-perf-title': 'Strategy & Performance Indicators',
+                'group-support-title': 'HR, HSE, and Digital Transformation Indicators',
+                'support-hr-title': 'Human Resources & Digital Transformation',
                 'val-hr-ret-label': 'Employee Retention Rate',
-                'val-it-autom-label': 'IT Systems Automation',
+                'val-it-autom-label': 'Digital Transformation Projects',
+                'val-critical-succession-label': 'Critical Succession Plan Rate',
+                'val-saudization-label': 'Saudization Percentage',
                 'support-hse-title': 'HSE Safety & Auditing',
                 'val-hse-ltifr-label': 'LTIFR Accident Rate',
                 'val-hse-accidents-label': 'Serious Accidents (Target 0)',
                 'val-audit-comp-label': 'Policy Compliance Rate',
                 'support-strategy-title': 'Strategy & Projects',
+                'support-risk-gov-title': 'Risk Management & Governance',
                 'val-strat-goals-label': 'General Strategic Goals',
                 'val-strat-init-label': 'PMO Initiatives Completion',
+                'val-risk-handling-label': 'Corporate Risk Treatment Rate',
+                'val-gov-maturity-label': 'Corporate Governance Implementation Rate',
+                'val-strat-goals-achieve-label': 'Strategic Goals Achievement Rate',
+                'card-new-contracts-title': 'New Strategic Contracts Count',
+                'card-new-contracts-desc': 'Click to view new contracts and partners details',
                 // Table
                 'table-section-title': 'Recent Fleet Operational Activities & Transactions',
                 'th-time': 'Time',
@@ -1319,6 +1408,78 @@
                 ],
                 chartLabels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو'],
                 chartData: (val) => [val - 20, val - 12, val - 5, val - 2, val]
+            },
+            'critical-succession': {
+                title: 'نسبة الوظائف الحرجة المغطاة بخطط الإحلال',
+                subtitle: 'الموارد البشرية - استدامة القدرات المؤسسية وتغطية المراكز القيادية',
+                notes: 'نعمل على تحديد وتدريب الكفاءات البديلة للوظائف القيادية والتشغيلية لضمان استمرارية الأعمال دون انقطاع.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'الوظائف القيادية (المدراء)', value: Math.round(val * 0.95) + '%', target: '90%', flag: 'good' },
+                    { name: 'الوظائف التشغيلية الحرجة', value: Math.round(val * 1.05) + '%', target: '80%', flag: 'excellent' }
+                ],
+                chartLabels: ['وظائف قيادية', 'وظائف تشغيلية', 'فنيو صيانة', 'مالية وتقنية'],
+                chartData: (val) => [Math.round(val * 0.95), Math.round(val * 1.05), 85, 78]
+            },
+            'saudization': {
+                title: 'نسبة السعودة والتوطين',
+                subtitle: 'الامتثال لأنظمة وزارة الموارد البشرية والتوطين الفعال بالقطاعات',
+                notes: 'الشركة ملتزمة بنسب السعودة المطلوبة في نطاقات، وتعمل على استقطاب وتأهيل الكوادر الوطنية لشغل الوظائف الفنية والإدارية.',
+                chartType: 'doughnut',
+                subKpis: (val) => [
+                    { name: 'نسبة السعودة في الإدارة العامة', value: '88%', target: '85%', flag: 'excellent' },
+                    { name: 'نسبة السعودة في قطاع التشغيل والسائقين', value: Math.round(val * 0.9) + '%', target: '35%', flag: 'excellent' }
+                ],
+                chartLabels: ['موظفون سعوديون', 'موظفون غير سعوديين'],
+                chartData: (val) => [val, 100 - val]
+            },
+            'new-contracts': {
+                title: 'عدد العقود الاستراتيجية الجديدة',
+                subtitle: 'النشاط التجاري وتوسيع محفظة العملاء والشركاء',
+                notes: 'تم توقيع عقود استراتيجية جديدة مع وكالات عمرة دولية وجهات حكومية لتقديم خدمات النقل المتميز لمواسم الحج والعمرة.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'عقود شركات العمرة الدولية', value: Math.round(val * 0.6) + ' عقود', target: '8 عقود', flag: 'good' },
+                    { name: 'عقود نقل حكومية ومواسم', value: Math.round(val * 0.4) + ' عقود', target: '7 عقود', flag: 'good' }
+                ],
+                chartLabels: ['عقود عمرة', 'عقود موسمية', 'عقود نقل عام', 'عقود سياحية'],
+                chartData: (val) => [Math.round(val * 0.5), Math.round(val * 0.3), Math.round(val * 0.1), Math.round(val * 0.1)]
+            },
+            'risk-handling': {
+                title: 'نسبة معالجة المخاطر المؤسسية',
+                subtitle: 'إدارة المخاطر - متابعة وتنفيذ خطط الاستجابة للمخاطر المعتمدة',
+                notes: 'نعمل على تحديد المخاطر التشغيلية والمالية ومتابعة خطط الاستجابة لضمان استقرار العمليات وحماية الأصول.',
+                chartType: 'line',
+                subKpis: (val) => [
+                    { name: 'المخاطر التشغيلية والمعالجة', value: Math.round(val * 1.02) + '%', target: '90%', flag: 'excellent' },
+                    { name: 'المخاطر المالية والالتزامات', value: Math.round(val * 0.98) + '%', target: '90%', flag: 'excellent' }
+                ],
+                chartLabels: ['مخاطر تشغيلية', 'مخاطر مالية', 'مخاطر تقنية', 'مخاطر بشرية'],
+                chartData: (val) => [Math.round(val * 1.02), Math.round(val * 0.98), 85, 90]
+            },
+            'gov-maturity': {
+                title: 'نسبة تطبيق متطلبات الحوكمة المؤسسية',
+                subtitle: 'تعزيز الحوكمة والامتثال للأنظمة واللوائح المعتمدة بالشركة',
+                notes: 'تطبيق متطلبات الحوكمة يساهم في تعزيز ثقة الشركاء والشفافية في اتخاذ القرار والالتزام التام بالتعليمات التنظيمية.',
+                chartType: 'radar',
+                subKpis: (val) => [
+                    { name: 'حوكمة مجلس الإدارة واللجان', value: Math.round(val * 1.01) + '%', target: '95%', flag: 'excellent' },
+                    { name: 'الشفافية والإفصاح والتقارير', value: Math.round(val * 0.99) + '%', target: '95%', flag: 'excellent' }
+                ],
+                chartLabels: ['حوكمة مجلس الإدارة', 'الشفافية والإفصاح', 'إدارة الرقابة', 'أنظمة الالتزام'],
+                chartData: (val) => [Math.round(val * 1.01), Math.round(val * 0.99), 88, 92]
+            },
+            'strat-goals-achieve': {
+                title: 'نسبة تحقيق الأهداف الاستراتيجية',
+                subtitle: 'متابعة مؤشرات الأداء الاستراتيجي ومطابقتها برؤية الشركة',
+                notes: 'نسير بخطى ثابتة لتحقيق الأهداف الاستراتيجية المعتمدة لزيادة الكفاءة التشغيلية والنمو المستدام.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'أهداف النمو والتوسع التجاري', value: Math.round(val * 1.03) + '%', target: '85%', flag: 'excellent' },
+                    { name: 'أهداف الكفاءة والتحول الرقمي', value: Math.round(val * 0.97) + '%', target: '85%', flag: 'excellent' }
+                ],
+                chartLabels: ['النمو التجاري', 'الكفاءة والرقمنة', 'الامتثال والسلامة', 'استدامة الكوادر'],
+                chartData: (val) => [Math.round(val * 1.03), Math.round(val * 0.97), 90, 88]
             }
         };
 
@@ -1526,6 +1687,78 @@
                 ],
                 chartLabels: ['January', 'February', 'March', 'April', 'May'],
                 chartData: (val) => [val - 20, val - 12, val - 5, val - 2, val]
+            },
+            'critical-succession': {
+                title: 'Critical Positions Succession Plan Rate',
+                subtitle: 'HR - Institutional capacity sustainability and leadership readiness',
+                notes: 'We identify and train successors for key leadership and operational positions to guarantee business continuity without disruption.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'Leadership Positions (Managers)', value: Math.round(val * 0.95) + '%', target: '90%', flag: 'good' },
+                    { name: 'Critical Operational Roles', value: Math.round(val * 1.05) + '%', target: '80%', flag: 'excellent' }
+                ],
+                chartLabels: ['Leadership Roles', 'Operational Roles', 'Maintenance Techs', 'Finance & IT'],
+                chartData: (val) => [Math.round(val * 0.95), Math.round(val * 1.05), 85, 78]
+            },
+            'saudization': {
+                title: 'Saudization & Nationalization Rate',
+                subtitle: 'Compliance with Ministry of HR regulations & effective placement',
+                notes: 'The company commits to the required Saudization brackets in Nitaqat, attracting and qualifying national talents for technical and admin roles.',
+                chartType: 'doughnut',
+                subKpis: (val) => [
+                    { name: 'Saudization in General Administration', value: '88%', target: '85%', flag: 'excellent' },
+                    { name: 'Saudization in Operations & Drivers', value: Math.round(val * 0.9) + '%', target: '35%', flag: 'excellent' }
+                ],
+                chartLabels: ['Saudi Employees', 'Non-Saudi Employees'],
+                chartData: (val) => [val, 100 - val]
+            },
+            'new-contracts': {
+                title: 'Number of New Strategic Contracts',
+                subtitle: 'Commercial activity & client portfolio expansion',
+                notes: 'New strategic agreements signed with international Umrah agencies and government entities to provide premium transport services.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'International Umrah Agencies Contracts', value: Math.round(val * 0.6) + ' Contracts', target: '8 Contracts', flag: 'good' },
+                    { name: 'Govt & Seasonal Transport Contracts', value: Math.round(val * 0.4) + ' Contracts', target: '7 Contracts', flag: 'good' }
+                ],
+                chartLabels: ['Umrah Contracts', 'Seasonal Contracts', 'Public Transit', 'Tourism Contracts'],
+                chartData: (val) => [Math.round(val * 0.5), Math.round(val * 0.3), Math.round(val * 0.1), Math.round(val * 0.1)]
+            },
+            'risk-handling': {
+                title: 'Corporate Risk Treatment Rate',
+                subtitle: 'Risk Management - Tracking and executing approved risk response plans',
+                notes: 'We identify operational and financial risks and track response plans to ensure operational stability and asset protection.',
+                chartType: 'line',
+                subKpis: (val) => [
+                    { name: 'Operational Risks Treatment', value: Math.round(val * 1.02) + '%', target: '90%', flag: 'excellent' },
+                    { name: 'Financial Risks & Obligations', value: Math.round(val * 0.98) + '%', target: '90%', flag: 'excellent' }
+                ],
+                chartLabels: ['Operational Risks', 'Financial Risks', 'Technical Risks', 'Human Risks'],
+                chartData: (val) => [Math.round(val * 1.02), Math.round(val * 0.98), 85, 90]
+            },
+            'gov-maturity': {
+                title: 'Corporate Governance Implementation Rate',
+                subtitle: 'Strengthening governance and compliance with company regulations',
+                notes: 'Implementing governance requirements boosts partners trust, transparency in decision-making, and compliance with regulations.',
+                chartType: 'radar',
+                subKpis: (val) => [
+                    { name: 'Board of Directors & Committees Governance', value: Math.round(val * 1.01) + '%', target: '95%', flag: 'excellent' },
+                    { name: 'Transparency, Disclosure & Reporting', value: Math.round(val * 0.99) + '%', target: '95%', flag: 'excellent' }
+                ],
+                chartLabels: ['Board Governance', 'Transparency & Disclosure', 'Control Management', 'Compliance Systems'],
+                chartData: (val) => [Math.round(val * 1.01), Math.round(val * 0.99), 88, 92]
+            },
+            'strat-goals-achieve': {
+                title: 'Strategic Goals Achievement Rate',
+                subtitle: 'Tracking strategic performance metrics and aligning with company vision',
+                notes: 'We are moving steadily towards achieving approved strategic goals to increase operational efficiency and sustainable growth.',
+                chartType: 'bar',
+                subKpis: (val) => [
+                    { name: 'Growth & Commercial Expansion Goals', value: Math.round(val * 1.03) + '%', target: '85%', flag: 'excellent' },
+                    { name: 'Efficiency & Digital Transformation Goals', value: Math.round(val * 0.97) + '%', target: '85%', flag: 'excellent' }
+                ],
+                chartLabels: ['Commercial Growth', 'Efficiency & Digitization', 'Compliance & Safety', 'Workforce Sustainability'],
+                chartData: (val) => [Math.round(val * 1.03), Math.round(val * 0.97), 90, 88]
             }
         };
 
@@ -1649,11 +1882,17 @@
             else if (activeKpiKey === 'fleet-util') targetText = `${targetVal}%`;
             else if (activeKpiKey === 'hr-ret') targetText = `${targetVal}%`;
             else if (activeKpiKey === 'it-autom') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'critical-succession') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'saudization') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'new-contracts') targetText = `${targetVal}`;
             else if (activeKpiKey === 'hse-ltifr') targetText = `${targetVal}`;
             else if (activeKpiKey === 'hse-accidents') targetText = `${targetVal}`;
             else if (activeKpiKey === 'audit-comp') targetText = `${targetVal}%`;
             else if (activeKpiKey === 'strat-goals') targetText = `${targetVal}%`;
             else if (activeKpiKey === 'strat-init') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'risk-handling') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'gov-maturity') targetText = `${targetVal}%`;
+            else if (activeKpiKey === 'strat-goals-achieve') targetText = `${targetVal}%`;
             
             const drawerTargetValEl = document.getElementById('drawerTargetVal');
             if (drawerTargetValEl) drawerTargetValEl.innerText = targetLabel + targetText;
@@ -1862,11 +2101,17 @@
             const fleetUtil = useActualData ? @Model.FleetUtil : (Math.floor(Math.random() * 15) + 75);
             const hrRet = useActualData ? @Model.HrRetention : (Math.floor(Math.random() * 10) + 84);
             const itAutom = useActualData ? @Model.ItAutomation : (Math.floor(Math.random() * 25) + 65);
+            const criticalSuccession = useActualData ? @Model.CriticalSuccession : (Math.floor(Math.random() * 10) + 80);
+            const saudization = useActualData ? @Model.Saudization : (Math.floor(Math.random() * 10) + 35);
+            const newContracts = useActualData ? @Model.NewContracts : (Math.floor(Math.random() * 6) + 12);
             const ltifr = useActualData ? @Model.Ltifr : parseFloat((Math.random() * 1.8).toFixed(1));
             const accidents = useActualData ? @Model.Accidents : (Math.random() > 0.85 ? 1 : 0);
             const auditComp = useActualData ? @Model.AuditCompliance : (Math.floor(Math.random() * 10) + 88);
             const stratGoals = useActualData ? @Model.StrategicGoals : (Math.floor(Math.random() * 15) + 76);
             const stratInit = useActualData ? @Model.StrategicInitiatives : (Math.floor(Math.random() * 16) + 75);
+            const riskHandling = useActualData ? @Model.RiskHandling : (Math.floor(Math.random() * 10) + 85);
+            const govMaturity = useActualData ? @Model.GovMaturity : (Math.floor(Math.random() * 8) + 88);
+            const stratGoalsAchieve = useActualData ? @Model.StratGoalsAchieve : (Math.floor(Math.random() * 10) + 82);
 
             // حساب الإيراد الإجمالي الحقيقي المعادل بالنسبة المئوية للنمو
             const baseRevenue = 118.75; // المداخيل الأساسية
@@ -1894,11 +2139,18 @@
             safeSetText('val-fleet-util', fleetUtil + '%');
             safeSetText('val-hr-ret', hrRet + '%');
             safeSetText('val-it-autom', itAutom + '%');
+            safeSetText('val-critical-succession', criticalSuccession + '%');
+            safeSetText('val-saudization', saudization + '%');
+            safeSetText('val-new-contracts', newContracts);
+            safeSetText('target-new-contracts', targetTextLabel + kpiTargets['new-contracts']);
             safeSetText('val-hse-ltifr', ltifr);
             safeSetText('val-hse-accidents', accidents);
             safeSetText('val-audit-comp', auditComp + '%');
             safeSetText('val-strat-goals', stratGoals + '%');
             safeSetText('val-strat-init', stratInit + '%');
+            safeSetText('val-risk-handling', riskHandling + '%');
+            safeSetText('val-gov-maturity', govMaturity + '%');
+            safeSetText('val-strat-goals-achieve', stratGoalsAchieve + '%');
 
             // تحديث أشرطة التقدم المرئية تحت كل مؤشر رئيسي
             safeSetWidth('bar-rev-growth', Math.min(currentRevenue / kpiTargets['rev-growth'] * 100, 100));
@@ -1910,6 +2162,7 @@
             safeSetWidth('bar-ops-plan', Math.min(opsPlan / kpiTargets['ops-plan'] * 100, 100));
             safeSetWidth('bar-fleet-ready', Math.min(fleetReady / kpiTargets['fleet-ready'] * 100, 100));
             safeSetWidth('bar-fleet-util', Math.min(fleetUtil / kpiTargets['fleet-util'] * 100, 100));
+            safeSetWidth('bar-new-contracts', Math.min(newContracts / kpiTargets['new-contracts'] * 100, 100));
 
             // تعيين ألوان شريط التقدم بناء على العلم (أحمر / برتقالي / أخضر)
             const updateBarColor = (barId, flagType) => {
@@ -1934,11 +2187,17 @@
             flagCounter[assignFlagAndStyle('flag-fleet-util', fleetUtil, kpiTargets['fleet-util'])]++;
             flagCounter[assignFlagAndStyle('flag-hr-ret', hrRet, kpiTargets['hr-ret'])]++;
             flagCounter[assignFlagAndStyle('flag-it-autom', itAutom, kpiTargets['it-autom'])]++;
+            flagCounter[assignFlagAndStyle('flag-critical-succession', criticalSuccession, kpiTargets['critical-succession'])]++;
+            flagCounter[assignFlagAndStyle('flag-saudization', saudization, kpiTargets['saudization'])]++;
+            flagCounter[assignFlagAndStyle('flag-new-contracts', newContracts, kpiTargets['new-contracts'])]++;
             flagCounter[assignFlagAndStyle('flag-hse-ltifr', ltifr, kpiTargets['hse-ltifr'], true)]++; // مؤشر عكسي
             flagCounter[assignFlagAndStyle('flag-hse-accidents', accidents, kpiTargets['hse-accidents'], true)]++; // مؤشر عكسي
             flagCounter[assignFlagAndStyle('flag-audit-comp', auditComp, kpiTargets['audit-comp'])]++;
             flagCounter[assignFlagAndStyle('flag-strat-goals', stratGoals, kpiTargets['strat-goals'])]++;
             flagCounter[assignFlagAndStyle('flag-strat-init', stratInit, kpiTargets['strat-init'])]++;
+            flagCounter[assignFlagAndStyle('flag-risk-handling', riskHandling, kpiTargets['risk-handling'])]++;
+            flagCounter[assignFlagAndStyle('flag-gov-maturity', govMaturity, kpiTargets['gov-maturity'])]++;
+            flagCounter[assignFlagAndStyle('flag-strat-goals-achieve', stratGoalsAchieve, kpiTargets['strat-goals-achieve'])]++;
 
             // تطبيق ألوان شريط التقدم بعد معرفة العلم الفردي
             updateBarColor('bar-rev-growth', assignFlagAndStyle('flag-rev-growth', currentRevenue, kpiTargets['rev-growth']));
@@ -1950,6 +2209,7 @@
             updateBarColor('bar-ops-plan', assignFlagAndStyle('flag-ops-plan', opsPlan, kpiTargets['ops-plan']));
             updateBarColor('bar-fleet-ready', assignFlagAndStyle('flag-fleet-ready', fleetReady, kpiTargets['fleet-ready']));
             updateBarColor('bar-fleet-util', assignFlagAndStyle('flag-fleet-util', fleetUtil, kpiTargets['fleet-util']));
+            updateBarColor('bar-new-contracts', assignFlagAndStyle('flag-new-contracts', newContracts, kpiTargets['new-contracts']));
 
             // عرض الأرقام المجمعة في كروت الملخص العلوي
             safeSetText('count-excellent', flagCounter.excellent);
@@ -1960,7 +2220,9 @@
             const avgPerf = Math.round(
                 ((currentRevenue/kpiTargets['rev-growth']) + (ebitda/kpiTargets['ebitda']) + (cashflow/kpiTargets['cashflow']) + (roa/kpiTargets['roa']) + (custRet/kpiTargets['cust-ret']) + 
                 (nps/kpiTargets['nps']) + (opsPlan/kpiTargets['ops-plan']) + (fleetReady/kpiTargets['fleet-ready']) + (fleetUtil/kpiTargets['fleet-util']) + (hrRet/kpiTargets['hr-ret']) + 
-                (itAutom/kpiTargets['it-autom']) + (auditComp/kpiTargets['audit-comp']) + (stratGoals/kpiTargets['strat-goals']) + (stratInit/kpiTargets['strat-init'])) / 14 * 100
+                (itAutom/kpiTargets['it-autom']) + (auditComp/kpiTargets['audit-comp']) + (stratGoals/kpiTargets['strat-goals']) + (stratInit/kpiTargets['strat-init']) +
+                (criticalSuccession/kpiTargets['critical-succession']) + (saudization/kpiTargets['saudization']) + (newContracts/kpiTargets['new-contracts']) +
+                (riskHandling/kpiTargets['risk-handling']) + (govMaturity/kpiTargets['gov-maturity']) + (stratGoalsAchieve/kpiTargets['strat-goals-achieve'])) / 20 * 100
             );
             const clampedPerf = Math.min(Math.max(avgPerf, 30), 100);
             

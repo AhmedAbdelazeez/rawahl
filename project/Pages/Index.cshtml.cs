@@ -20,6 +20,8 @@ namespace project.Pages
         public double CustRetention { get; set; } = 88.0; // %
         [BindProperty]
         public double Nps { get; set; } = 55.0; // نقاط
+        [BindProperty]
+        public double NewContracts { get; set; } = 12.0; // عقود
 
         // ================= العمليات وأسطول الحافلات =================
         [BindProperty]
@@ -35,6 +37,10 @@ namespace project.Pages
         [BindProperty]
         public double ItAutomation { get; set; } = 78.0; // %
         [BindProperty]
+        public double CriticalSuccession { get; set; } = 82.0; // %
+        [BindProperty]
+        public double Saudization { get; set; } = 38.5; // %
+        [BindProperty]
         public double Ltifr { get; set; } = 1.2; 
         [BindProperty]
         public int Accidents { get; set; } = 0;
@@ -44,6 +50,12 @@ namespace project.Pages
         public double StrategicGoals { get; set; } = 82.0; // %
         [BindProperty]
         public double StrategicInitiatives { get; set; } = 85.0; // %
+        [BindProperty]
+        public double RiskHandling { get; set; } = 88.0; // %
+        [BindProperty]
+        public double GovMaturity { get; set; } = 90.0; // %
+        [BindProperty]
+        public double StratGoalsAchieve { get; set; } = 85.0; // %
 
         // ================= تفاصيل مسارات الإيرادات (Drill-Down) =================
         [BindProperty]
