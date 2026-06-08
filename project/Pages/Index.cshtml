@@ -306,7 +306,7 @@
                 <div class="relative z-10">
                     <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
                         <span class="w-2 h-6 bg-gradient-to-b from-[#009688] to-[#D4B795] rounded-full inline-block"></span>
-                        <span class="bg-gradient-to-r from-white via-slate-200 to-[#D4B795] bg-clip-text text-transparent" data-i18n="header-title">نظام مراقبة الأداء بالأعلام والمطابقة الذكية</span>
+                        <span class="bg-gradient-to-r from-white via-slate-200 to-[#D4B795] bg-clip-text text-transparent" data-i18n="header-title">نظام مراقبة الأداء لشركة رواحل</span>
                     </h1>
                     <p class="text-xs text-[#D4B795] mt-1.5 font-bold flex items-center gap-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
@@ -348,32 +348,32 @@
                     <div class="flex flex-col lg:flex-row justify-between items-center gap-6 relative z-10">
                         <div class="space-y-2 flex-1 text-start">
                             <span class="bg-[#009688]/20 text-[#00bfa5] text-[10px] px-3.5 py-1 rounded-full font-bold border border-[#009688]/30" data-i18n="summary-badge">نظرة عامة على الأداء الموحد</span>
-                            <h2 class="text-xl font-black mt-2 text-white" data-i18n="summary-title">مصفوفة إحصاء الأعلام لجميع مؤشرات شركة رواحل</h2>
+                            <h2 class="text-xl font-black mt-2 text-white" data-i18n="summary-title">مصفوفة مؤشرات الأداء لشركة رواحل</h2>
                             <p class="text-slate-400 text-xs leading-relaxed font-semibold" data-i18n="summary-desc">اضغط على أي بطاقة مؤشر في الأسفل للتعمق وعرض تفاصيله ورسمه البياني الخاص بشكل فوري.</p>
                         </div>
                         
                         <!-- عدادات المؤشرات بتصميم LED راقي ومضيء -->
-                        <div class="flex flex-wrap gap-3 bg-black/45 p-4 rounded-2xl border border-slate-700/40 justify-center">
-                            <div class="text-center px-4">
+                        <div class="flex flex-wrap gap-3 bg-black/45 p-4 rounded-2xl border border-slate-700/40 justify-center select-none">
+                            <div onclick="openKpiGroupModal('all')" class="text-center px-4 cursor-pointer hover:scale-105 transition-transform active:scale-95">
                                 <span class="block text-2xl font-black text-slate-100" id="count-total">22</span>
                                 <span class="text-[9px] text-[#D4B795] font-black" data-i18n="summary-total">إجمالي المؤشرات</span>
                             </div>
                             <div class="w-[1px] h-10 bg-slate-800"></div>
                             
-                            <div class="text-center px-4 flex flex-col items-center">
+                            <div onclick="openKpiGroupModal('excellent')" class="text-center px-4 flex flex-col items-center cursor-pointer hover:scale-105 transition-transform active:scale-95">
                                 <span class="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 text-xl font-black border border-emerald-500/30 glow-pulse-teal" id="count-excellent">0</span>
                                 <span class="text-[9px] text-slate-300 font-bold mt-1" data-i18n="summary-excellent">ممتاز 🟢</span>
                             </div>
                             <div class="w-[1px] h-10 bg-slate-800"></div>
                             
-                            <div class="text-center px-4 flex flex-col items-center">
+                            <div onclick="openKpiGroupModal('good')" class="text-center px-4 flex flex-col items-center cursor-pointer hover:scale-105 transition-transform active:scale-95">
                                 <span class="flex items-center justify-center w-10 h-10 rounded-full bg-amber-500/10 text-amber-400 text-xl font-black border border-amber-500/30" id="count-good">0</span>
                                 <span class="text-[9px] text-slate-300 font-bold mt-1" data-i18n="summary-good">جيد 🟡</span>
                             </div>
                             <div class="w-[1px] h-10 bg-slate-800"></div>
                             
-                            <div class="text-center px-4 flex flex-col items-center">
-                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-red-500/10 text-red-400 text-xl font-black border border-red-500/30 glow-pulse-red" id="count-bad">0</span>
+                            <div onclick="openKpiGroupModal('bad')" class="text-center px-4 flex flex-col items-center cursor-pointer hover:scale-105 transition-transform active:scale-95">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-red-500/10 text-red-400 text-xl font-black border border-red-500/35 glow-pulse-red" id="count-bad">0</span>
                                 <span class="text-[9px] text-slate-300 font-bold mt-1" data-i18n="summary-bad">ضعيف 🔴</span>
                             </div>
                         </div>
@@ -858,6 +858,36 @@
         </div>
     </div>
 
+    <!-- ================= لوحة تفاصيل مجموعة الأعلام (Group Drilldown Modal) ================= -->
+    <div id="kpiGroupModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <!-- الأوفرلاي الخلفية المعتمة والمغشاة -->
+        <div id="kpiGroupOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-md opacity-0 transition-opacity duration-300" onclick="closeKpiGroupModal()"></div>
+        
+        <!-- صندوق المودال المنبثق -->
+        <div id="kpiGroupBox" class="bg-[#0f172a]/95 backdrop-blur-xl w-full max-w-lg rounded-3xl border border-[#D4B795]/50 shadow-[0_0_50px_rgba(212,183,149,0.25)] overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col max-h-[75vh] z-10 text-white">
+            <!-- هيدر المودال المنبثق -->
+            <div class="p-5 border-b border-slate-800/80 flex justify-between items-center bg-gradient-to-r from-neutral-950 via-[#1e293b] to-neutral-950 text-white">
+                <div>
+                    <h3 id="kpiGroupTitle" class="text-sm font-black text-white flex items-center gap-2">
+                        <span id="kpiGroupIndicator" class="w-2.5 h-2.5 rounded-full bg-[#D4B795] animate-pulse"></span>
+                        <span id="kpiGroupHeaderTitle">مؤشرات الأداء</span>
+                    </h3>
+                    <p id="kpiGroupSubtitle" class="text-[9px] text-[#D4B795] mt-1 font-bold">عرض المؤشرات التابعة لهذه الفئة</p>
+                </div>
+                <button onclick="closeKpiGroupModal()" class="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+            </div>
+            
+            <!-- جسم المودال المنبثق -->
+            <div class="flex-1 overflow-y-auto p-5 space-y-4 text-start">
+                <div id="kpiGroupList" class="space-y-2">
+                    <!-- يتم حقن قائمة المؤشرات هنا بواسطة JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= لوحة معلومات الملف الشخصي المنبثقة ================= -->
     <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
         <!-- الأوفرلاي الخلفية -->
@@ -959,7 +989,7 @@
                 'sidebar-settings': 'إعدادات النظام',
                 'sidebar-copyright': 'نظام رواحل القياسي المعتمد © 2026',
                 // Header
-                'header-title': 'نظام مراقبة الأداء بالأعلام والمطابقة الذكية',
+                'header-title': 'نظام مراقبة الأداء لشركة رواحل',
                 'header-subtitle': 'لوحة تفاعلية حية متصلة بقاعدة البيانات ومطابقة بالـ PageModel (C# Backend)',
                 'header-btn-simulate': 'تحديث وفحص الأعلام',
                 'header-ceo-name': 'غسان عراقي',
@@ -983,7 +1013,7 @@
                 'ticker-ops-desc': 'نسبة الالتزام بجدول رحلات النقل والتوصيل بلغت',
                 // Summary/Overview
                 'summary-badge': 'نظرة عامة على الأداء الموحد',
-                'summary-title': 'مصفوفة إحصاء الأعلام لجميع مؤشرات شركة رواحل',
+                'summary-title': 'مصفوفة مؤشرات الأداء لشركة رواحل',
                 'summary-desc': 'اضغط على أي بطاقة مؤشر في الأسفل للتعمج وعرض تفاصيله ورسمه البياني الخاص بشكل فوري.',
                 'summary-total': 'إجمالي المؤشرات',
                 'summary-excellent': 'ممتاز 🟢',
@@ -1087,7 +1117,7 @@
                 'sidebar-settings': 'System Settings',
                 'sidebar-copyright': 'Rawahel Standard Approved System © 2026',
                 // Header
-                'header-title': 'Performance Monitoring via Flags & Smart Alignment',
+                'header-title': 'Performance Monitoring System for Rawahel Co.',
                 'header-subtitle': 'Live interactive dashboard connected to DB and aligned with PageModel (C# Backend)',
                 'header-btn-simulate': 'Update & Check Flags',
                 'header-ceo-name': 'Ghassan Iraqi',
@@ -1111,7 +1141,7 @@
                 'ticker-ops-desc': 'Bus transport route schedule commitment reached',
                 // Summary/Overview
                 'summary-badge': 'Unified Performance Overview',
-                'summary-title': 'Flag Counts Matrix for All Rawahel KPIs',
+                'summary-title': 'Performance Indicators Matrix for Rawahel Co.',
                 'summary-desc': 'Click on any KPI card below to drill down and instantly view its details and custom chart.',
                 'summary-total': 'Total KPIs',
                 'summary-excellent': 'Excellent 🟢',
@@ -1766,6 +1796,7 @@
 
         let mixedChart = null, flagsPieChart = null, drawerChartInstance = null;
         let activeKpiKey = null;
+        const kpiCurrentFlags = {};
 
         // دالة فحص وتعيين الأعلام الملونة اللامعة والملفتة
         function assignFlagAndStyle(flagId, value, target, isInverse = false) {
@@ -1831,6 +1862,157 @@
                 setTimeout(() => {
                     modal.classList.add('hidden');
                     activeKpiKey = null;
+                }, 300);
+            }
+        }
+
+        // فتح نافذة تفاصيل مجموعة الأعلام والتعمق المجموعي
+        function openKpiGroupModal(flagType) {
+            const isEn = document.documentElement.lang === 'en';
+            let title = '';
+            let indicatorClass = '';
+
+            if (flagType === 'all') {
+                title = isEn ? 'All Performance Indicators' : 'جميع مؤشرات الأداء';
+                indicatorClass = 'bg-blue-500';
+            } else if (flagType === 'excellent') {
+                title = isEn ? 'Excellent Performance KPIs 🟢' : 'مؤشرات الأداء الممتاز 🟢';
+                indicatorClass = 'bg-emerald-500 glow-pulse-teal';
+            } else if (flagType === 'good') {
+                title = isEn ? 'Good Performance KPIs 🟡' : 'مؤشرات الأداء الجيد 🟡';
+                indicatorClass = 'bg-amber-500';
+            } else if (flagType === 'bad') {
+                title = isEn ? 'Poor Performance KPIs 🔴' : 'مؤشرات الأداء الضعيف 🔴';
+                indicatorClass = 'bg-red-500 glow-pulse-red';
+            }
+
+            const indicator = document.getElementById('kpiGroupIndicator');
+            if (indicator) {
+                indicator.className = `w-2.5 h-2.5 rounded-full ${indicatorClass}`;
+            }
+
+            const headerTitle = document.getElementById('kpiGroupHeaderTitle');
+            if (headerTitle) {
+                headerTitle.innerText = title;
+            }
+
+            // Build combined list of matching main and sub KPIs
+            const matchedItems = [];
+
+            Object.keys(kpiSubKpis).forEach(key => {
+                const kpiInfo = kpiSubKpis[key];
+                const mainFlag = kpiCurrentFlags[key];
+
+                // Get main KPI current value
+                const valEl = document.getElementById(`val-${key}`);
+                const currentValStr = valEl ? valEl.innerText : "--";
+                const currentValNum = parseFloat(currentValStr.replace(/[^0-9.]/g, '')) || 0;
+
+                // 1. Add main KPI if flag matches
+                if (flagType === 'all' || mainFlag === flagType) {
+                    matchedItems.push({
+                        parentKey: key,
+                        isSubKpi: false,
+                        title: kpiInfo.title,
+                        subtitle: kpiInfo.subtitle,
+                        value: currentValStr,
+                        flag: mainFlag
+                    });
+                }
+
+                // 2. Add sub-KPIs if flag matches
+                const subKpisList = kpiInfo.subKpis(currentValNum);
+                subKpisList.forEach(sub => {
+                    if (flagType === 'all' || sub.flag === flagType) {
+                        matchedItems.push({
+                            parentKey: key,
+                            isSubKpi: true,
+                            title: sub.name,
+                            subtitle: isEn ? `Sub-KPI of: ${kpiInfo.title}` : `مؤشر فرعي لـ: ${kpiInfo.title}`,
+                            value: sub.value,
+                            flag: sub.flag
+                        });
+                    }
+                });
+            });
+
+            const groupSubtitle = document.getElementById('kpiGroupSubtitle');
+            if (groupSubtitle) {
+                groupSubtitle.innerText = isEn ? `Showing ${matchedItems.length} KPIs in this category` : `تم العثور على ${matchedItems.length} مؤشر أداء`;
+            }
+
+            const listContainer = document.getElementById('kpiGroupList');
+            if (listContainer) {
+                listContainer.innerHTML = '';
+                if (matchedItems.length === 0) {
+                    listContainer.innerHTML = `<div class="text-center text-xs text-slate-500 py-6">${isEn ? 'No KPIs found in this category.' : 'لا توجد مؤشرات في هذه الفئة حالياً.'}</div>`;
+                } else {
+                    matchedItems.forEach(item => {
+                        let badgeClass = "bg-slate-100 text-slate-700";
+                        let badgeIcon = "⚪";
+                        if (item.flag === 'excellent') {
+                            badgeClass = "bg-emerald-500/10 text-emerald-500 border border-emerald-500/35";
+                            badgeIcon = isEn ? "🟢 Excellent" : "🟢 ممتاز";
+                        } else if (item.flag === 'good') {
+                            badgeClass = "bg-amber-500/10 text-amber-600 border border-amber-500/35";
+                            badgeIcon = isEn ? "🟡 Good" : "🟡 جيد";
+                        } else if (item.flag === 'bad') {
+                            badgeClass = "bg-red-500/10 text-red-500 border border-red-500/35";
+                            badgeIcon = isEn ? "🔴 Poor" : "🔴 ضعيف";
+                        }
+
+                        const arrowIcon = item.isSubKpi ? `<span class="text-[#D4B795] font-black me-1">↳</span>` : '';
+                        const typeBadge = item.isSubKpi ? 
+                            `<span class="text-[8px] bg-[#D4B795]/10 text-[#D4B795] border border-[#D4B795]/20 px-1.5 py-0.2 rounded font-bold">${isEn ? 'Sub-KPI' : 'مؤشر فرعي'}</span>` : '';
+
+                        const itemHtml = `
+                            <div onclick="closeKpiGroupModal(); setTimeout(() => openDrilldown('${item.parentKey}'), 100)" class="bg-[#1e293b]/70 p-3.5 rounded-xl border border-slate-800 flex items-center justify-between shadow-md hover:border-[#D4B795]/50 transition-all cursor-pointer">
+                                <div class="text-start">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        ${arrowIcon}
+                                        <span class="text-xs font-black text-slate-200 block">${item.title}</span>
+                                        ${typeBadge}
+                                    </div>
+                                    <span class="text-[9px] text-slate-400 font-bold block mt-0.5">${item.subtitle}</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm font-black text-white font-mono">${item.value}</span>
+                                    <span class="text-[9px] font-black px-2 py-0.5 rounded-full ${badgeClass}">${badgeIcon}</span>
+                                </div>
+                            </div>
+                        `;
+                        listContainer.innerHTML += itemHtml;
+                    });
+                }
+            }
+
+            const modal = document.getElementById('kpiGroupModal');
+            const overlay = document.getElementById('kpiGroupOverlay');
+            const box = document.getElementById('kpiGroupBox');
+            
+            if (modal && overlay && box) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    box.classList.remove('scale-90', 'opacity-0');
+                    box.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            }
+        }
+
+        // إغلاق نافذة مجموعة الأعلام
+        function closeKpiGroupModal() {
+            const modal = document.getElementById('kpiGroupModal');
+            const overlay = document.getElementById('kpiGroupOverlay');
+            const box = document.getElementById('kpiGroupBox');
+            
+            if (modal && overlay && box) {
+                box.classList.remove('scale-100', 'opacity-100');
+                box.classList.add('scale-90', 'opacity-0');
+                overlay.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    modal.classList.add('hidden');
                 }, 300);
             }
         }
@@ -2175,46 +2357,105 @@
             // 3. احتساب الأعلام وإعطاء النتيجة الإحصائية لمنطقة (الملخص العام) في الأعلى
             let flagCounter = { excellent: 0, good: 0, bad: 0 };
 
-            // نحتسب العلم للإيرادات بناء على النسبة الفعلية
-            flagCounter[assignFlagAndStyle('flag-rev-growth', currentRevenue, kpiTargets['rev-growth'])]++;
-            flagCounter[assignFlagAndStyle('flag-ebitda', ebitda, kpiTargets['ebitda'])]++;
-            flagCounter[assignFlagAndStyle('flag-cashflow', cashflow, kpiTargets['cashflow'])]++;
-            flagCounter[assignFlagAndStyle('flag-roa', roa, kpiTargets['roa'])]++;
-            flagCounter[assignFlagAndStyle('flag-cust-ret', custRet, kpiTargets['cust-ret'])]++;
-            flagCounter[assignFlagAndStyle('flag-nps', nps, kpiTargets['nps'])]++;
-            flagCounter[assignFlagAndStyle('flag-ops-plan', opsPlan, kpiTargets['ops-plan'])]++;
-            flagCounter[assignFlagAndStyle('flag-fleet-ready', fleetReady, kpiTargets['fleet-ready'])]++;
-            flagCounter[assignFlagAndStyle('flag-fleet-util', fleetUtil, kpiTargets['fleet-util'])]++;
-            flagCounter[assignFlagAndStyle('flag-hr-ret', hrRet, kpiTargets['hr-ret'])]++;
-            flagCounter[assignFlagAndStyle('flag-it-autom', itAutom, kpiTargets['it-autom'])]++;
-            flagCounter[assignFlagAndStyle('flag-critical-succession', criticalSuccession, kpiTargets['critical-succession'])]++;
-            flagCounter[assignFlagAndStyle('flag-saudization', saudization, kpiTargets['saudization'])]++;
-            flagCounter[assignFlagAndStyle('flag-new-contracts', newContracts, kpiTargets['new-contracts'])]++;
-            flagCounter[assignFlagAndStyle('flag-hse-ltifr', ltifr, kpiTargets['hse-ltifr'], true)]++; // مؤشر عكسي
-            flagCounter[assignFlagAndStyle('flag-hse-accidents', accidents, kpiTargets['hse-accidents'], true)]++; // مؤشر عكسي
-            flagCounter[assignFlagAndStyle('flag-audit-comp', auditComp, kpiTargets['audit-comp'])]++;
-            flagCounter[assignFlagAndStyle('flag-strat-goals', stratGoals, kpiTargets['strat-goals'])]++;
-            flagCounter[assignFlagAndStyle('flag-strat-init', stratInit, kpiTargets['strat-init'])]++;
-            flagCounter[assignFlagAndStyle('flag-risk-handling', riskHandling, kpiTargets['risk-handling'])]++;
-            flagCounter[assignFlagAndStyle('flag-gov-maturity', govMaturity, kpiTargets['gov-maturity'])]++;
-            flagCounter[assignFlagAndStyle('flag-strat-goals-achieve', stratGoalsAchieve, kpiTargets['strat-goals-achieve'])]++;
+            // نحتسب العلم ونحفظه للتعمق المجموعي
+            kpiCurrentFlags['rev-growth'] = assignFlagAndStyle('flag-rev-growth', currentRevenue, kpiTargets['rev-growth']);
+            flagCounter[kpiCurrentFlags['rev-growth']]++;
+
+            kpiCurrentFlags['ebitda'] = assignFlagAndStyle('flag-ebitda', ebitda, kpiTargets['ebitda']);
+            flagCounter[kpiCurrentFlags['ebitda']]++;
+
+            kpiCurrentFlags['cashflow'] = assignFlagAndStyle('flag-cashflow', cashflow, kpiTargets['cashflow']);
+            flagCounter[kpiCurrentFlags['cashflow']]++;
+
+            kpiCurrentFlags['roa'] = assignFlagAndStyle('flag-roa', roa, kpiTargets['roa']);
+            flagCounter[kpiCurrentFlags['roa']]++;
+
+            kpiCurrentFlags['cust-ret'] = assignFlagAndStyle('flag-cust-ret', custRet, kpiTargets['cust-ret']);
+            flagCounter[kpiCurrentFlags['cust-ret']]++;
+
+            kpiCurrentFlags['nps'] = assignFlagAndStyle('flag-nps', nps, kpiTargets['nps']);
+            flagCounter[kpiCurrentFlags['nps']]++;
+
+            kpiCurrentFlags['ops-plan'] = assignFlagAndStyle('flag-ops-plan', opsPlan, kpiTargets['ops-plan']);
+            flagCounter[kpiCurrentFlags['ops-plan']]++;
+
+            kpiCurrentFlags['fleet-ready'] = assignFlagAndStyle('flag-fleet-ready', fleetReady, kpiTargets['fleet-ready']);
+            flagCounter[kpiCurrentFlags['fleet-ready']]++;
+
+            kpiCurrentFlags['fleet-util'] = assignFlagAndStyle('flag-fleet-util', fleetUtil, kpiTargets['fleet-util']);
+            flagCounter[kpiCurrentFlags['fleet-util']]++;
+
+            kpiCurrentFlags['hr-ret'] = assignFlagAndStyle('flag-hr-ret', hrRet, kpiTargets['hr-ret']);
+            flagCounter[kpiCurrentFlags['hr-ret']]++;
+
+            kpiCurrentFlags['it-autom'] = assignFlagAndStyle('flag-it-autom', itAutom, kpiTargets['it-autom']);
+            flagCounter[kpiCurrentFlags['it-autom']]++;
+
+            kpiCurrentFlags['critical-succession'] = assignFlagAndStyle('flag-critical-succession', criticalSuccession, kpiTargets['critical-succession']);
+            flagCounter[kpiCurrentFlags['critical-succession']]++;
+
+            kpiCurrentFlags['saudization'] = assignFlagAndStyle('flag-saudization', saudization, kpiTargets['saudization']);
+            flagCounter[kpiCurrentFlags['saudization']]++;
+
+            kpiCurrentFlags['new-contracts'] = assignFlagAndStyle('flag-new-contracts', newContracts, kpiTargets['new-contracts']);
+            flagCounter[kpiCurrentFlags['new-contracts']]++;
+
+            kpiCurrentFlags['hse-ltifr'] = assignFlagAndStyle('flag-hse-ltifr', ltifr, kpiTargets['hse-ltifr'], true);
+            flagCounter[kpiCurrentFlags['hse-ltifr']]++;
+
+            kpiCurrentFlags['hse-accidents'] = assignFlagAndStyle('flag-hse-accidents', accidents, kpiTargets['hse-accidents'], true);
+            flagCounter[kpiCurrentFlags['hse-accidents']]++;
+
+            kpiCurrentFlags['audit-comp'] = assignFlagAndStyle('flag-audit-comp', auditComp, kpiTargets['audit-comp']);
+            flagCounter[kpiCurrentFlags['audit-comp']]++;
+
+            kpiCurrentFlags['strat-goals'] = assignFlagAndStyle('flag-strat-goals', stratGoals, kpiTargets['strat-goals']);
+            flagCounter[kpiCurrentFlags['strat-goals']]++;
+
+            kpiCurrentFlags['strat-init'] = assignFlagAndStyle('flag-strat-init', stratInit, kpiTargets['strat-init']);
+            flagCounter[kpiCurrentFlags['strat-init']]++;
+
+            kpiCurrentFlags['risk-handling'] = assignFlagAndStyle('flag-risk-handling', riskHandling, kpiTargets['risk-handling']);
+            flagCounter[kpiCurrentFlags['risk-handling']]++;
+
+            kpiCurrentFlags['gov-maturity'] = assignFlagAndStyle('flag-gov-maturity', govMaturity, kpiTargets['gov-maturity']);
+            flagCounter[kpiCurrentFlags['gov-maturity']]++;
+
+            kpiCurrentFlags['strat-goals-achieve'] = assignFlagAndStyle('flag-strat-goals-achieve', stratGoalsAchieve, kpiTargets['strat-goals-achieve']);
+            flagCounter[kpiCurrentFlags['strat-goals-achieve']]++;
 
             // تطبيق ألوان شريط التقدم بعد معرفة العلم الفردي
-            updateBarColor('bar-rev-growth', assignFlagAndStyle('flag-rev-growth', currentRevenue, kpiTargets['rev-growth']));
-            updateBarColor('bar-ebitda', assignFlagAndStyle('flag-ebitda', ebitda, kpiTargets['ebitda']));
-            updateBarColor('bar-cashflow', assignFlagAndStyle('flag-cashflow', cashflow, kpiTargets['cashflow']));
-            updateBarColor('bar-roa', assignFlagAndStyle('flag-roa', roa, kpiTargets['roa']));
-            updateBarColor('bar-cust-ret', assignFlagAndStyle('flag-cust-ret', custRet, kpiTargets['cust-ret']));
-            updateBarColor('bar-nps', assignFlagAndStyle('flag-nps', nps, kpiTargets['nps']));
-            updateBarColor('bar-ops-plan', assignFlagAndStyle('flag-ops-plan', opsPlan, kpiTargets['ops-plan']));
-            updateBarColor('bar-fleet-ready', assignFlagAndStyle('flag-fleet-ready', fleetReady, kpiTargets['fleet-ready']));
-            updateBarColor('bar-fleet-util', assignFlagAndStyle('flag-fleet-util', fleetUtil, kpiTargets['fleet-util']));
-            updateBarColor('bar-new-contracts', assignFlagAndStyle('flag-new-contracts', newContracts, kpiTargets['new-contracts']));
+            updateBarColor('bar-rev-growth', kpiCurrentFlags['rev-growth']);
+            updateBarColor('bar-ebitda', kpiCurrentFlags['ebitda']);
+            updateBarColor('bar-cashflow', kpiCurrentFlags['cashflow']);
+            updateBarColor('bar-roa', kpiCurrentFlags['roa']);
+            updateBarColor('bar-cust-ret', kpiCurrentFlags['cust-ret']);
+            updateBarColor('bar-nps', kpiCurrentFlags['nps']);
+            updateBarColor('bar-ops-plan', kpiCurrentFlags['ops-plan']);
+            updateBarColor('bar-fleet-ready', kpiCurrentFlags['fleet-ready']);
+            updateBarColor('bar-fleet-util', kpiCurrentFlags['fleet-util']);
+            updateBarColor('bar-new-contracts', kpiCurrentFlags['new-contracts']);
+
+            // احتساب أعلام المؤشرات الفرعية التابعة وإضافتها لعدادات الملخص العام
+            Object.keys(kpiSubKpis).forEach(key => {
+                const valEl = document.getElementById(`val-${key}`);
+                if (valEl) {
+                    const currentValStr = valEl.innerText;
+                    const currentValNum = parseFloat(currentValStr.replace(/[^0-9.]/g, '')) || 0;
+                    const subList = kpiSubKpis[key].subKpis(currentValNum);
+                    subList.forEach(sub => {
+                        if (sub.flag && flagCounter[sub.flag] !== undefined) {
+                            flagCounter[sub.flag]++;
+                        }
+                    });
+                }
+            });
 
             // عرض الأرقام المجمعة في كروت الملخص العلوي
             safeSetText('count-excellent', flagCounter.excellent);
             safeSetText('count-good', flagCounter.good);
             safeSetText('count-bad', flagCounter.bad);
+            safeSetText('count-total', flagCounter.excellent + flagCounter.good + flagCounter.bad);
 
             // الأداء العام
             const avgPerf = Math.round(
