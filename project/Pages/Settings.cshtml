@@ -12,41 +12,102 @@
     <title>@ViewData["Title"]</title>
     <!-- Tailwind CSS للتنسيق العصري والمودرن -->
     <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@4"></script>
-    <!-- Google Fonts - Cairo الخط العربي المعتمد احترافياً -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Google Fonts - IBM Plex Sans Arabic, Tajawal & Cairo الخط العربي المعتمد احترافياً و Outfit للإنجليزية -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;650;700&family=Tajawal:wght@300;400;500;700;850;900&family=Cairo:wght@300;400;600;700;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- AOS Library للأنيميشن الاحترافي عند التمرير وسكرول الصفحة -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
+        /* Load IBM Plex Sans Arabic as primary, Tajawal/Cairo as fallback */
+        body, button, input, select, textarea, span, h1, h2, h3, h4, h5, h6, p, div, a {
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        html[dir="ltr"] body, html[dir="ltr"] button, html[dir="ltr"] input, html[dir="ltr"] select, html[dir="ltr"] textarea, html[dir="ltr"] span, html[dir="ltr"] h1, html[dir="ltr"] h2, html[dir="ltr"] h3, html[dir="ltr"] h4, html[dir="ltr"] h5, html[dir="ltr"] h6, html[dir="ltr"] p, html[dir="ltr"] div, html[dir="ltr"] a {
+            font-family: 'Outfit', sans-serif;
+        }
+
         body {
-            font-family: 'Cairo', sans-serif;
-            background-image: linear-gradient(rgba(240, 242, 245, 0.72), rgba(240, 242, 245, 0.72)), url('https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/slider10.png');
+            background-image: linear-gradient(rgba(250, 249, 246, 0.98), rgba(250, 249, 246, 0.98)), url('https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/slider10.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
+            color: #0f172a;
         }
 
-        .bg-sidebar { background-color: #111111; }
+        .bg-sidebar { background-color: #ffffff; }
         .bg-sidebar-active { 
-            background: linear-gradient(135deg, #D4B795 0%, #B08E66 100%); 
-            color: #2d1e11 !important; 
-            box-shadow: 0 4px 15px rgba(212, 183, 149, 0.5); 
+            background: linear-gradient(135deg, #ca9b29 0%, #a87919 100%); 
+            color: #ffffff !important; 
+            box-shadow: 0 4px 15px rgba(202, 155, 41, 0.3); 
         }
         
-        .text-teal-brand { color: #009688; filter: drop-shadow(0 2px 8px rgba(0, 150, 136, 0.25)); }
-        .bg-teal-brand { background-color: #009688; box-shadow: 0 4px 15px rgba(0, 150, 136, 0.35); }
-        .text-gold-brand { color: #D4B795; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+        .text-gold-brand { color: #ca9b29; }
+        .bg-gold-brand { background-color: #ca9b29; }
 
         /* glassmorphism components with glowing effects */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(212, 183, 149, 0.35);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #ffffff;
+            border: 1px solid rgba(202, 155, 41, 0.25);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease-in-out;
+            color: #334155;
+        }
+        .glass-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(202, 155, 41, 0.5);
+            box-shadow: 0 10px 30px rgba(202, 155, 41, 0.12);
+        }
+
+        /* Scale settings cards */
+        #kpi-settings-container .glass-card {
+            min-height: 15rem !important;
+            height: auto !important;
+            padding: 2rem !important;
+            border-radius: 1.5rem !important;
+        }
+        #kpi-settings-container .glass-card h4 {
+            font-size: 1rem !important; /* text-base, was text-xs */
+            font-weight: 950 !important;
+        }
+        #kpi-settings-container .glass-card p {
+            font-size: 0.825rem !important; /* text-xs/sm, was text-[9px] */
+            font-weight: 500 !important;
+            line-height: 1.5 !important;
+        }
+        #kpi-settings-container .glass-card label {
+            font-size: 0.825rem !important; /* text-xs, was text-[9px] */
+            font-weight: 850 !important;
+        }
+        #kpi-settings-container .glass-card input[type="number"] {
+            font-size: 0.95rem !important; /* text-sm, was text-xs */
+            padding: 0.625rem !important;
+            border-radius: 0.75rem !important;
+        }
+        #kpi-settings-container .glass-card .text-\[8px\] {
+            font-size: 0.775rem !important; /* text-xs, was text-[8px] */
+            padding: 0.625rem !important;
+            border-radius: 0.75rem !important;
+        }
+        #kpi-settings-container .glass-card span[id^="preview-badge-"] {
+            font-size: 0.8rem !important; /* text-xs */
+            padding: 0.35rem 0.75rem !important;
+        }
+        
+        /* Sidebar Text Scaling */
+        aside nav a {
+            font-size: 0.875rem !important; /* text-sm */
+            padding-top: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+        }
+        aside nav .pt-3 {
+            font-size: 0.75rem !important; /* text-xs */
+        }
+        aside .text-\[9px\] {
+            font-size: 0.75rem !important;
         }
         
         /* custom scrollbar */
@@ -55,86 +116,126 @@
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(241, 245, 249, 0.5);
+            background: rgba(240, 240, 240, 0.8);
         }
         ::-webkit-scrollbar-thumb {
-            background: #D4B795;
+            background: #ca9b29;
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #009688;
+            background: #e5b842;
         }
 
         /* custom range slider */
         input[type=range] {
-            accent-color: #009688;
+            accent-color: #ca9b29;
+        }
+
+        /* Premium Sidebar Navbar Navigation */
+        aside a {
+            font-size: 0.9rem !important; /* Larger text size, about 14.4px */
+            font-weight: 700 !important; /* Bold */
+            padding: 0.75rem 1rem !important; /* Spacing */
+            margin-bottom: 0.35rem !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.85rem !important;
+            border-radius: 0.75rem !important; /* Rounded corners */
+            color: #334155 !important; /* Slate 700 */
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        aside a i {
+            color: #ca9b29 !important; /* Gold icons in inactive state */
+            font-size: 1.1rem !important; /* Larger icons for scanning */
+            width: 1.5rem !important;
+            text-align: center !important;
+            transition: color 0.25s ease !important;
+        }
+        aside a:hover {
+            background-color: #fafaf9 !important; /* Soft warm grey background */
+            color: #ca9b29 !important; /* Hover text in gold */
+        }
+        aside a:hover i {
+            color: #ca9b29 !important; /* Keep hover icon gold */
+        }
+        
+        /* Active Link State */
+        aside a.bg-sidebar-active {
+            background: linear-gradient(135deg, #ca9b29 0%, #a87919 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(202, 155, 41, 0.3) !important;
+            font-weight: 850 !important;
+        }
+        aside a.bg-sidebar-active i {
+            color: #ffffff !important; /* Force white icon when active */
         }
     </style>
 </head>
-<body class="text-slate-950 antialiased selection:bg-[#009688] selection:text-white">
+<body class="antialiased selection:bg-[#ca9b29] selection:text-white">
 
     <div class="flex min-h-screen">
         <!-- ================= القائمة الجانبية (Sidebar) ================= -->
-        <aside class="w-72 bg-sidebar text-neutral-400 p-5 flex flex-col justify-between hidden lg:flex border-l-2 border-[#D4B795]/50 shrink-0">
+        <aside class="w-72 bg-sidebar text-slate-600 p-5 flex flex-col justify-between hidden lg:flex border-l-2 border-[#ca9b29]/40 shrink-0 shadow-sm">
             <div>
                 <!-- الشعار المطور المعتمد لشركة رواحل -->
-                <div class="flex flex-col items-center text-center mt-2 mb-6 bg-black/50 p-4 rounded-xl border border-neutral-800 shadow-inner">
-                    <img src="https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/logo.png" alt="شركة رواحل المشاعر" class="w-24 h-auto object-contain mb-1 filter drop-shadow-md">
-                    <h2 class="text-white text-xs font-black tracking-wide mt-1">شركة رواحل المشاعر</h2>
-                    <span class="text-[8px] text-[#D4B795] block tracking-wider font-bold mt-0.5">RAWAHEL AL MASHAER CO.</span>
+                <div class="flex flex-col items-center text-center mt-2 mb-6 bg-white border border-[#ca9b29]/30 p-4 rounded-xl shadow-xs">
+                    <img src="https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/logo.png" alt="شركة رواحل المشاعر" class="w-24 h-auto object-contain mb-1 filter drop-shadow-sm">
+                    <h2 class="text-slate-800 text-xs font-black tracking-wide mt-1">شركة رواحل المشاعر</h2>
+                    <span class="text-[8px] text-[#ca9b29] block tracking-wider font-bold mt-0.5">RAWAHEL AL MASHAER CO.</span>
                 </div>
 
-                <nav class="space-y-1">
-                    <a href="/Index" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
-                        <i class="fa-solid fa-table-columns text-[#009688] text-sm w-5"></i>
+                <nav class="space-y-1.5">
+                    <a href="/Index">
+                        <i class="fa-solid fa-table-columns"></i>
                         <span>لوحة التحكم والأعلام</span>
                     </a>
                     
-                    <a href="/Index#finance-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
-                        <i class="fa-solid fa-wallet text-[#009688] text-sm w-5"></i>
+                    <a href="/Index#finance-group">
+                        <i class="fa-solid fa-wallet"></i>
                         <span>الإدارة المالية</span>
                     </a>
                     
-                    <a href="/Index#commercial-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
-                        <i class="fa-solid fa-chart-line text-[#009688] text-sm w-5"></i>
+                    <a href="/Index#commercial-group">
+                        <i class="fa-solid fa-chart-line"></i>
                         <span>الإدارة التجارية</span>
                     </a>
                     
-                    <a href="/Index#ops-fleet-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
-                        <i class="fa-solid fa-bus text-[#009688] text-sm w-5"></i>
+                    <a href="/Index#ops-fleet-group">
+                        <i class="fa-solid fa-bus"></i>
                         <span>العمليات والأسطول</span>
                     </a>
 
-                    <a href="/Index#support-group" class="flex items-center gap-3 px-4 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl text-xs font-bold transition-all">
-                        <i class="fa-solid fa-handshake-angle text-[#009688] text-sm w-5"></i>
-                        <span>الإدارات المساندة و HSE</span>
+                    <a href="/Index#support-group">
+                        <i class="fa-solid fa-handshake-angle"></i>
+                        <span>إدارات المساندة و HSE</span>
                     </a>
                 </nav>
             </div>
 
-            <div class="space-y-1 border-t border-neutral-900 pt-3">
-                <a href="/Settings" class="flex items-center justify-between px-4 py-2.5 bg-sidebar-active rounded-xl text-xs font-black shadow-md transition-all">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-gear text-base"></i>
-                        <span>إعدادات النظام</span>
-                    </div>
+            <div class="space-y-1 border-t border-slate-100 pt-3">
+                <a href="/Settings" class="bg-sidebar-active">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>إعدادات المستهدفات</span>
                 </a>
-                <div class="text-[9px] text-neutral-600 text-center pt-2 font-mono">نظام رواحل القياسي المعتمد © 2026</div>
+                <div class="text-[9px] text-slate-400 text-center pt-2 font-mono">نظام رواحل القياسي المعتمد © 2026</div>
             </div>
         </aside>
 
         <!-- ================= المحتوى الرئيسي ================= -->
-        <main class="flex-1 p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+        <main class="flex-1 p-6 lg:p-10 xl:p-12 overflow-y-auto max-w-[1600px] mx-auto w-full">
             
             <!-- الهيدر العلوي -->
-            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-white/95 backdrop-blur-md p-4 rounded-2xl border-2 border-[#D4B795]/40 shadow-md">
-                <div>
-                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">إعدادات أهداف مؤشرات الأداء (KPIs Targets)</h1>
-                    <p class="text-xs text-slate-600 mt-1 font-bold">تحديد المستهدفات لكل إدارة وتحديث لوحة المؤشرات تلقائياً وبألوان الأعلام الذكية.</p>
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-white p-5 rounded-2xl border border-[#ca9b29]/20 shadow-xs relative overflow-hidden">
+                <div class="text-right">
+                    <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="w-2 h-6 bg-gradient-to-b from-[#ca9b29] to-[#a87919] rounded-full inline-block"></span>
+                        <span class="bg-gradient-to-r from-slate-900 via-slate-800 to-[#ca9b29] bg-clip-text text-transparent">إعدادات أهداف ونطاقات المؤشرات (KPIs Ranges)</span>
+                    </h1>
+                    <p class="text-xs text-[#ca9b29] mt-1.5 font-bold">تحديد مستهدفات ونطاقات التقييم (ممتاز / جيد / ضعيف) لتحديث لوحة التحكم والأعلام dynamically.</p>
                 </div>
                 
                 <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                    <a href="/Index" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg transition-all active:scale-95 cursor-pointer">
+                    <a href="/Index" class="bg-gradient-to-r from-[#ca9b29] to-[#a87919] text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-sm hover:opacity-95 transition-all active:scale-95 cursor-pointer">
                         <i class="fa-solid fa-arrow-right"></i>
                         <span>العودة للوحة الأداء</span>
                     </a>
@@ -143,7 +244,7 @@
 
             <!-- تبويبات الفئات بالتصميم الزجاجي المبتكر -->
             <section class="mb-6" data-aos="fade-up">
-                <div class="bg-white/80 backdrop-blur-md p-2 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-2">
+                <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-xs flex flex-wrap gap-2">
                     <button onclick="switchCategory('finance')" id="tab-finance" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
                         <i class="fa-solid fa-wallet text-sm"></i>
                         <span>الإدارة المالية</span>
@@ -162,7 +263,7 @@
                     </button>
                     <button onclick="switchCategory('hse')" id="tab-hse" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
                         <i class="fa-solid fa-shield-halved text-sm"></i>
-                        <span>HSE والتدقيق والامتثال</span>
+                        <span>HSE والامتثال والتدقيق</span>
                     </button>
                     <button onclick="switchCategory('strategy')" id="tab-strategy" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
                         <i class="fa-solid fa-bullseye text-sm"></i>
@@ -177,22 +278,22 @@
             </section>
 
             <!-- شريط العمليات السفلي الثابت (حفظ وإلغاء وتصفير) -->
-            <footer class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-900 p-5 rounded-2xl border-2 border-[#D4B795]/50 shadow-xl" data-aos="fade-up">
+            <footer class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm" data-aos="fade-up">
                 <div class="text-right">
-                    <h3 class="text-sm font-black text-white flex items-center gap-2">
+                    <h3 class="text-sm font-black text-slate-800 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        حفظ ومزامنة المستهدفات
+                        حفظ ومزامنة نطاقات ومستهدفات الأداء
                     </h3>
-                    <p class="text-[10px] text-neutral-400 font-bold mt-1">تأكد من حفظ التعديلات ليتم تطبيقها على الرسوم البيانية والأعلام فورياً بلوحة الأداء.</p>
+                    <p class="text-[10px] text-slate-500 font-bold mt-1">سيتم تطبيق التحديثات على الأعلام الملونة وأشرطة التقدم والتقارير التنفيذية فور الحفظ.</p>
                 </div>
                 <div class="flex flex-wrap gap-3">
-                    <button onclick="resetToDefaults()" class="bg-neutral-800 border border-neutral-700 hover:bg-neutral-700 text-neutral-300 hover:text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+                    <button onclick="resetToDefaults()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer border border-slate-200">
                         <i class="fa-solid fa-rotate-left"></i>
-                        <span>إعادة ضبط المصنع</span>
+                        <span>إعادة ضبط المستهدفات</span>
                     </button>
-                    <button onclick="saveTargets()" class="bg-[#009688] hover:bg-[#00796b] text-white px-6 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-[#009688]/30 transition-all cursor-pointer">
+                    <button onclick="saveTargets()" class="bg-gradient-to-r from-[#ca9b29] to-[#a87919] text-white px-6 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-xs transition-all cursor-pointer hover:opacity-95">
                         <i class="fa-solid fa-floppy-disk"></i>
-                        <span>حفظ ومزامنة الإعدادات</span>
+                        <span>حفظ ومزامنة النطاقات</span>
                     </button>
                 </div>
             </footer>
@@ -203,13 +304,13 @@
     <!-- مودال نجاح الحفظ المنبثق -->
     <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
         <div id="successModalOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 opacity-0"></div>
-        <div id="successModalBox" class="relative bg-white rounded-3xl p-8 border-2 border-[#D4B795] shadow-2xl max-w-sm w-full mx-4 text-center transform scale-90 opacity-0 transition-all duration-300">
-            <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-[#009688] text-3xl">
+        <div id="successModalBox" class="relative bg-white rounded-3xl p-8 border border-[#ca9b29] shadow-2xl max-w-sm w-full mx-4 text-center transform scale-90 opacity-0 transition-all duration-300">
+            <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 text-3xl">
                 <i class="fa-solid fa-circle-check animate-bounce"></i>
             </div>
-            <h3 class="text-lg font-black text-slate-900 mb-2">تم الحفظ بنجاح!</h3>
-            <p class="text-xs text-slate-600 font-bold mb-6">تم تحديث الأهداف بنجاح ومزامنتها مع لوحة مؤشرات الأداء الحية.</p>
-            <button onclick="closeSuccessModal()" class="w-full bg-slate-950 hover:bg-slate-900 text-white py-3 rounded-xl text-xs font-black shadow-md transition-all active:scale-95 cursor-pointer">
+            <h3 class="text-lg font-black text-slate-800 mb-2">تم الحفظ بنجاح!</h3>
+            <p class="text-xs text-slate-600 font-bold mb-6">تم تحديث الأهداف والنطاقات للـ 22 مؤشراً، ومزامنتها مع شاشات الأداء والرسوم البيانية.</p>
+            <button onclick="closeSuccessModal()" class="w-full bg-gradient-to-r from-[#ca9b29] to-[#a87919] text-white py-3 rounded-xl text-xs font-black shadow-md transition-all active:scale-95 cursor-pointer">
                 حسنًا، اذهب للوحة الأداء
             </button>
         </div>
@@ -224,57 +325,62 @@
             console.warn("AOS library failed to initialize");
         }
 
-        // 1. تعريف فئات ومؤشرات الأداء وتفاصيلها الحسابية وقيمها
+        // 1. تعريف 22 مؤشراً للأداء في شركة رواحل بالكامل
         const kpiDefinition = {
             'finance': {
                 title: 'الإدارة المالية',
                 kpis: [
-                    { key: 'rev-growth', name: 'إجمالي الإيرادات ومعدل النمو', unit: 'M ر.س', min: 100, max: 200, step: 1, default: 150, desc: 'إيراد شركة رواحل المستهدف بالأرقام الإجمالية بناء على عقود مواسم الحج والعمرة.' },
-                    { key: 'ebitda', name: 'هامش EBITDA التشغيلي', unit: '%', min: 10, max: 60, step: 0.5, default: 35, desc: 'الكفاءة التشغيلية والربحية قبل الضرائب وهلاك الحافلات.' },
-                    { key: 'cashflow', name: 'التدفق النقدي التشغيلي', unit: 'M ر.س', min: 20, max: 100, step: 1, default: 50, desc: 'مراقبة السيولة النقدية والمقبوضات الفورية المستهدفة بالشركة.' },
-                    { key: 'roa', name: 'العائد على الأصول ROA', unit: '%', min: 5, max: 30, step: 0.5, default: 12, desc: 'كفاءة ربحية تشغيل أصول ورش الأسطول والحافلات.' }
+                    { key: 'rev-growth', name: 'إجمالي الإيرادات ومعدل النمو', unit: 'M ر.س', min: 100, max: 200, step: 0.5, default: 150, defaultExc: 142.5, defaultGood: 112.5, desc: 'إجمالي إيرادات شركة رواحل المحققة من كافة عقود التشغيل.' },
+                    { key: 'ebitda', name: 'هامش EBITDA التشغيلي', unit: '%', min: 10, max: 60, step: 0.5, default: 35, defaultExc: 33.25, defaultGood: 26.25, desc: 'هامش الربحية التشغيلية قبل احتساب الفوائد والإهلاك والضرائب.' },
+                    { key: 'cashflow', name: 'التدفق النقدي التشغيلي', unit: 'M', min: 20, max: 100, step: 0.5, default: 50, defaultExc: 47.5, defaultGood: 37.5, desc: 'السيولة النقدية المتدفقة من الأنشطة التشغيلية والتحصيل.' },
+                    { key: 'roa', name: 'العائد على الأصول ROA', unit: '%', min: 3, max: 25, step: 0.1, default: 12, defaultExc: 11.4, defaultGood: 9.0, desc: 'كفاءة تشغيل حافلات وورش أصول شركة رواحل لتحقيق الربح.' }
                 ]
             },
             'commercial': {
                 title: 'الإدارة التجارية والعملاء',
                 kpis: [
-                    { key: 'cust-ret', name: 'نسبة الاحتفاظ بالعملاء', unit: '%', min: 50, max: 100, step: 1, default: 85, desc: 'معدل تجديد عقود شركات العمرة ومؤسسات الطوافة والحج السياحي.' },
-                    { key: 'nps', name: 'صافي نقاط التوصية NPS (رضا العملاء)', unit: 'نقطة', min: 30, max: 100, step: 1, default: 70, desc: 'معدل رضا ضيوف الرحمن والركاب عن جودة الحافلات والخدمات.' }
+                    { key: 'cust-ret', name: 'نسبة الاحتفاظ بالعملاء', unit: '%', min: 50, max: 100, step: 0.5, default: 85, defaultExc: 80.75, defaultGood: 63.75, desc: 'معدل بقاء وتجديد العقود مع شركات السياحة وبعثات الحج الخارجية.' },
+                    { key: 'nps', name: 'صافي نقاط التوصية NPS (رضا العملاء)', unit: 'نقطة', min: 30, max: 100, step: 1, default: 70, defaultExc: 66.5, defaultGood: 52.5, desc: 'نقاط رضا ضيوف الرحمن والركاب عن نظافة وراحة الحافلات وحل المشاكل.' },
+                    { key: 'new-contracts', name: 'عدد العقود الاستراتيجية الجديدة', unit: 'عقد', min: 2, max: 30, step: 1, default: 15, defaultExc: 14.25, defaultGood: 11.25, desc: 'العقود الاستراتيجية الجديدة المبرمة مع وكلاء السياحة والنقل العام.' }
                 ]
             },
             'ops': {
                 title: 'العمليات وأسطول الحافلات',
                 kpis: [
-                    { key: 'ops-plan', name: 'الالتزام بالخطة التشغيلية', unit: '%', min: 70, max: 100, step: 0.5, default: 90, desc: 'انضباط حافلات الرحلات بجدول المواعيد والوردية المحددة للرحلة.' },
-                    { key: 'fleet-ready', name: 'نسبة جاهزية الأسطول للعمل', unit: '%', min: 80, max: 100, step: 0.5, default: 95, desc: 'معدل الحافلات الجاهزة للتشغيل الفوري من إجمالي الأسطول البالغ 1,240 حافلة.' },
-                    { key: 'fleet-util', name: 'نسبة استغلال أسطول مقاعد الحافلات', unit: '%', min: 50, max: 100, step: 1, default: 85, desc: 'كثافة إشغال المقاعد بالرحلات والمسارات التشغيلية.' }
+                    { key: 'ops-plan', name: 'الالتزام بالخطة التشغيلية', unit: '%', min: 70, max: 100, step: 0.5, default: 90, defaultExc: 85.5, defaultGood: 67.5, desc: 'نسبة مطابقة مسارات وجداول رحلات الحافلات بالخطة المعتمدة.' },
+                    { key: 'fleet-ready', name: 'نسبة جاهزية أسطول الحافلات للتشغيل', unit: '%', min: 80, max: 100, step: 0.5, default: 95, defaultExc: 90.25, defaultGood: 71.25, desc: 'معدل الحافلات الجاهزة للحركة الفورية من إجمالي 1,240 حافلة.' },
+                    { key: 'fleet-util', name: 'نسبة استغلال أسطول مقاعد الحافلات', unit: '%', min: 50, max: 100, step: 0.5, default: 85, defaultExc: 80.75, defaultGood: 63.75, desc: 'كفاءة ملء المقاعد للحافلات في رحلات الحج والعمرة والتعاقدات.' }
                 ]
             },
             'support': {
-                title: 'الموارد البشرية والتقنية',
+                title: 'الموارد البشرية والتقنية والمسانده',
                 kpis: [
-                    { key: 'hr-ret', name: 'معدل الاحتفاظ بالموظفين', unit: '%', min: 60, max: 100, step: 1, default: 90, desc: 'استقرار الكوادر الفنية ومهندسي ورش صيانة الحافلات وسائقي النقل الثقيل.' },
-                    { key: 'it-autom', name: 'أتمتة الأنظمة والتحول الرقمي', unit: '%', min: 40, max: 100, step: 1, default: 80, desc: 'أتمتة الجدولة الذكية للرحلات وتطبيق الـ GPS لمراقبة وتتبع الأسطول.' }
+                    { key: 'hr-ret', name: 'معدل الاحتفاظ بالموظفين الكوادر', unit: '%', min: 60, max: 100, step: 0.5, default: 90, defaultExc: 85.5, defaultGood: 67.5, desc: 'بقائ سائقي الحافلات وفنيي ورش صيانة المركبات في الخدمة.' },
+                    { key: 'it-autom', name: 'تنفيذ مشاريع التحول الرقمي وأتمتة الورش', unit: '%', min: 40, max: 100, step: 0.5, default: 80, defaultExc: 76.0, defaultGood: 60.0, desc: 'معدل التحول الرقمي للمهام ونظام الجدولة الفورية وتتبع GPS.' },
+                    { key: 'critical-succession', name: 'خطط الإحلال والتعاقب للوظائف الحرجة', unit: '%', min: 50, max: 100, step: 0.5, default: 80, defaultExc: 76.0, defaultGood: 60.0, desc: 'نسبة الوظائف الحيوية والقيادية المغطاة بكوادر بديلة جاهزة.' },
+                    { key: 'saudization', name: 'نسبة التوطين والسعوده بالشركة', unit: '%', min: 10, max: 70, step: 0.5, default: 35, defaultExc: 33.25, defaultGood: 26.25, desc: 'نسبة الكوادر الوطنية السعودية المسجلة في نطاقات وزارة الموارد البشرية.' }
                 ]
             },
             'hse': {
-                title: 'السلامة والصحة المهنية والتدقيق',
+                title: 'HSE والسلامة والامتثال',
                 kpis: [
-                    { key: 'hse-ltifr', name: 'معدل الحوادث LTIFR', unit: 'مستهدف حد أقصى', min: 0.5, max: 5.0, step: 0.1, default: 1.5, desc: 'معدل الحوادث لكل مليون ساعة عمل بالشركة (مؤشر عكسي: الأقل هو الأفضل).', isInverse: true },
-                    { key: 'hse-accidents', name: 'حوادث جسيمة للحافلات', unit: 'حادث', min: 0, max: 5, step: 1, default: 0, desc: 'عدد حوادث الطريق الجسيمة للحافلات بمواسم الحج والتشغيل (مؤشر عكسي).', isInverse: true },
-                    { key: 'audit-comp', name: 'نسبة الامتثال للسياسات والنظام', unit: '%', min: 70, max: 100, step: 0.5, default: 95, desc: 'مطابقة شروط نقابة السيارات والبلدية لضمان سلامة التراخيص.' }
+                    { key: 'hse-ltifr', name: 'معدل حوادث العمل LTIFR', unit: 'إصابة/مليون ساعة', min: 0.2, max: 5.0, step: 0.1, default: 1.5, defaultExc: 1.5, defaultGood: 2.0, desc: 'معدل الإصابات المهنية المانعة عن العمل لكل مليون ساعة (مؤشر عكسي: الأقل هو الأفضل).', isInverse: true },
+                    { key: 'hse-accidents', name: 'حوادث جسيمة للحافلات بالطرق', unit: 'حادث', min: 0, max: 5, step: 1, default: 0, defaultExc: 0, defaultGood: 1, desc: 'عدد حوادث التصادم أو الانقلاب الجسيمة المسجلة للحافلات (مؤشر عكسي).', isInverse: true },
+                    { key: 'audit-comp', name: 'نسبة الامتثال للسياسات والتراخيص', unit: '%', min: 70, max: 100, step: 0.5, default: 95, defaultExc: 90.25, defaultGood: 71.25, desc: 'الالتزام بمتطلبات نقابة السيارات، الفحص الفني، والتراخيص المخططة.' }
                 ]
             },
             'strategy': {
-                title: 'الاستراتيجية والمشاريع PMO',
+                title: 'الاستراتيجية والمشاريع PMO والحوكمة',
                 kpis: [
-                    { key: 'strat-goals', name: 'تحقيق الأهداف الاستراتيجية العامة', unit: '%', min: 60, max: 100, step: 1, default: 85, desc: 'معدل التوسع الجغرافي للتشغيل بالمملكة وزيادة الحصة السوقية.' },
-                    { key: 'strat-init', name: 'نسبة إنجاز المبادرات لمكتب PMO', unit: '%', min: 50, max: 100, step: 1, default: 90, desc: 'إنجاز المبادرات الكبرى المعتمدة لتطوير وتحسين حركة النقل.' }
+                    { key: 'strat-goals', name: 'تحقيق أهداف الاستراتيجية والتوسع', unit: '%', min: 50, max: 100, step: 0.5, default: 85, defaultExc: 80.75, defaultGood: 63.75, desc: 'نسبة تحقيق أهداف الخطة الخمسية للتوسع الجغرافي وزيادة الحصة السوقية.' },
+                    { key: 'strat-init', name: 'معدل إنجاز مبادرات مكتب PMO', unit: '%', min: 50, max: 100, step: 0.5, default: 90, defaultExc: 85.5, defaultGood: 67.5, desc: 'نسبة إنجاز مشاريع التحول المؤسسي وتجهيز البنى التحتية.' },
+                    { key: 'risk-handling', name: 'نسبة معالجة المخاطر المؤسسية', unit: '%', min: 60, max: 100, step: 0.5, default: 90, defaultExc: 85.5, defaultGood: 67.5, desc: 'تنفيذ خطط الاستجابة للمخاطر المالية والتشغيلية المعتمدة.' },
+                    { key: 'gov-maturity', name: 'مستوى تطبيق حوكمة الشركات', unit: '%', min: 65, max: 100, step: 0.5, default: 95, defaultExc: 90.25, defaultGood: 71.25, desc: 'مستوى نضج الحوكمة والشفافية وتوزيع صلاحيات اللجان الإدارية.' },
+                    { key: 'strat-goals-achieve', name: 'نسبة تحقيق الأهداف الاستراتيجية الموحدة', unit: '%', min: 50, max: 100, step: 0.5, default: 85, defaultExc: 80.75, defaultGood: 63.75, desc: 'المعدل الكلي لإنجاز أهداف الهيئة الإدارية والتطويرية للشركة.' }
                 ]
             }
         };
 
-        // 2. قيم الأداء الفعلي الفوري في النظام (لتوضيح تأثير الهدف الجديد على الأعلام)
         const actualValues = {
             'rev-growth': 142.5, 
             'ebitda': 34.5,
@@ -282,91 +388,112 @@
             'roa': 10.5,
             'cust-ret': 88.0,
             'nps': 55.0,
+            'new-contracts': 12,
             'ops-plan': 92.5,
             'fleet-ready': 92.0,
             'fleet-util': 80.0,
             'hr-ret': 89.0,
             'it-autom': 78.0,
+            'critical-succession': 82.0,
+            'saudization': 38.5,
             'hse-ltifr': 1.2,
             'hse-accidents': 0,
             'audit-comp': 91.0,
             'strat-goals': 82.0,
-            'strat-init': 85.0
+            'strat-init': 85.0,
+            'risk-handling': 88.0,
+            'gov-maturity': 90.0,
+            'strat-goals-achieve': 85.0
         };
 
         let currentActiveCategory = 'finance';
-        let currentTargets = {};
+        let currentSettings = {};
 
-        // تحميل المستهدفات الحالية من localStorage أو استخدام الافتراضيات
-        function initTargets() {
-            const saved = localStorage.getItem('kpi_targets');
+        const defaultSettings = {
+            'rev-growth': { target: 150, excellentMin: 142.5, goodMin: 112.5 },
+            'ebitda': { target: 35, excellentMin: 33.25, goodMin: 26.25 },
+            'cashflow': { target: 50, excellentMin: 47.5, goodMin: 37.5 },
+            'roa': { target: 12, excellentMin: 11.4, goodMin: 9.0 },
+            'cust-ret': { target: 85, excellentMin: 80.75, goodMin: 63.75 },
+            'nps': { target: 70, excellentMin: 66.5, goodMin: 52.5 },
+            'new-contracts': { target: 15, excellentMin: 14.25, goodMin: 11.25 },
+            'ops-plan': { target: 90, excellentMin: 85.5, goodMin: 67.5 },
+            'fleet-ready': { target: 95, excellentMin: 90.25, goodMin: 71.25 },
+            'fleet-util': { target: 85, excellentMin: 80.75, goodMin: 63.75 },
+            'hr-ret': { target: 90, excellentMin: 85.5, goodMin: 67.5 },
+            'it-autom': { target: 80, excellentMin: 76.0, goodMin: 60.0 },
+            'critical-succession': { target: 80, excellentMin: 76.0, goodMin: 60.0 },
+            'saudization': { target: 35, excellentMin: 33.25, goodMin: 26.25 },
+            'hse-ltifr': { target: 1.5, excellentMax: 1.5, goodMax: 2.0 },
+            'hse-accidents': { target: 0, excellentMax: 0, goodMax: 1 },
+            'audit-comp': { target: 95, excellentMin: 90.25, goodMin: 71.25 },
+            'strat-goals': { target: 85, excellentMin: 80.75, goodMin: 63.75 },
+            'strat-init': { target: 90, excellentMin: 85.5, goodMin: 67.5 },
+            'risk-handling': { target: 90, excellentMin: 85.5, goodMin: 67.5 },
+            'gov-maturity': { target: 95, excellentMin: 90.25, goodMin: 71.25 },
+            'strat-goals-achieve': { target: 85, excellentMin: 80.75, goodMin: 63.75 }
+        };
+
+        function initSettings() {
+            const saved = localStorage.getItem('kpi_settings');
             if (saved) {
                 try {
-                    currentTargets = JSON.parse(saved);
+                    currentSettings = JSON.parse(saved);
                 } catch (e) {
                     console.error(e);
-                    useDefaultTargets();
+                    currentSettings = JSON.parse(JSON.stringify(defaultSettings));
                 }
             } else {
-                useDefaultTargets();
+                currentSettings = JSON.parse(JSON.stringify(defaultSettings));
             }
             
-            // التحقق من اكتمال الكائنات لضمان خلوها من النقص
-            Object.keys(kpiDefinition).forEach(cat => {
-                kpiDefinition[cat].kpis.forEach(kpi => {
-                    if (currentTargets[kpi.key] === undefined) {
-                        currentTargets[kpi.key] = kpi.default;
-                    }
-                });
+            Object.keys(defaultSettings).forEach(key => {
+                if (!currentSettings[key]) {
+                    currentSettings[key] = { ...defaultSettings[key] };
+                }
             });
         }
 
-        function useDefaultTargets() {
-            currentTargets = {};
-            Object.keys(kpiDefinition).forEach(cat => {
-                kpiDefinition[cat].kpis.forEach(kpi => {
-                    currentTargets[kpi.key] = kpi.default;
-                });
-            });
-        }
-
-        // حساب وتقييم الأعلام بناء على الهدف المدخل والفعلي
-        function calculateFlag(key, targetVal, isInverse = false) {
-            const actual = actualValues[key];
-            if (actual === undefined) return { label: '🟢 ممتاز', badgeClass: 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/35' };
+        function calculateFlag(key, actual, isInverse) {
+            const config = currentSettings[key];
+            if (!config) return { label: '🟢 ممتاز', badgeClass: 'bg-emerald-100 text-emerald-700 border border-emerald-200' };
             
-            let achievementRatio = isInverse ? (targetVal / (actual || 0.1)) * 100 : (actual / targetVal) * 100;
-            if (isInverse && actual <= targetVal) achievementRatio = 100;
-
-            if (achievementRatio >= 95) {
-                return { label: '🟢 ممتاز', badgeClass: 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/35 shadow-[0_0_10px_rgba(16,185,129,0.2)]' };
-            } else if (achievementRatio >= 75) {
-                return { label: '🟡 جيد', badgeClass: 'bg-amber-500/10 text-amber-600 border border-amber-500/35 shadow-[0_0_10px_rgba(245,158,11,0.2)]' };
+            if (isInverse) {
+                if (actual <= config.excellentMax) {
+                    return { label: '🟢 ممتاز', badgeClass: 'bg-emerald-100 text-emerald-700 border border-emerald-200' };
+                } else if (actual <= config.goodMax) {
+                    return { label: '🟡 جيد', badgeClass: 'bg-amber-100 text-amber-700 border border-amber-200' };
+                } else {
+                    return { label: '🔴 ضعيف', badgeClass: 'bg-rose-100 text-rose-700 border border-rose-200' };
+                }
             } else {
-                return { label: '🔴 ضعيف', badgeClass: 'bg-red-500/10 text-red-500 border border-red-500/35 shadow-[0_0_10px_rgba(239,68,68,0.2)]' };
+                if (actual >= config.excellentMin) {
+                    return { label: '🟢 ممتاز', badgeClass: 'bg-emerald-100 text-emerald-700 border border-emerald-200' };
+                } else if (actual >= config.goodMin) {
+                    return { label: '🟡 جيد', badgeClass: 'bg-amber-100 text-amber-700 border border-amber-200' };
+                } else {
+                    return { label: '🔴 ضعيف', badgeClass: 'bg-rose-100 text-rose-700 border border-rose-200' };
+                }
             }
         }
 
-        // تبديل القسم النشط بالتبويبات
         function switchCategory(catKey) {
             currentActiveCategory = catKey;
             
-            // تحديث حالة الأزرار البصرية
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('bg-sidebar-active', 'text-white');
-                btn.classList.add('bg-white/80', 'text-neutral-600');
+                btn.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
             });
             
             const activeBtn = document.getElementById(`tab-${catKey}`);
             if (activeBtn) {
-                activeBtn.classList.remove('bg-white/80', 'text-neutral-600');
-                activeBtn.classList.add('bg-sidebar-active', 'text-white');
+                activeBtn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+                activeBtn.classList.add('bg-sidebar-active');
             }
 
             renderKpis();
         }
 
-        // حقن وبناء مؤشرات القسم النشط بالصفحة
         function renderKpis() {
             const container = document.getElementById('kpi-settings-container');
             if (!container) return;
@@ -375,20 +502,20 @@
             const category = kpiDefinition[currentActiveCategory];
 
             category.kpis.forEach(kpi => {
-                const targetVal = currentTargets[kpi.key];
+                const config = currentSettings[kpi.key];
                 const actualVal = actualValues[kpi.key];
-                const flag = calculateFlag(kpi.key, targetVal, kpi.isInverse);
+                const flag = calculateFlag(kpi.key, actualVal, kpi.isInverse);
 
-                // بناء كرت المؤشر المطور
+                const excellentVal = kpi.isInverse ? config.excellentMax : config.excellentMin;
+                const goodVal = kpi.isInverse ? config.goodMax : config.goodMin;
+
                 const kpiHtml = `
-                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between shadow-md relative overflow-hidden" data-aos="fade-up">
-                        <!-- الخلفية المتوهجة الخفيفة عند الزاوية -->
-                        <div class="absolute -top-10 -left-10 w-24 h-24 rounded-full bg-[#009688]/5 filter blur-xl"></div>
+                    <div class="glass-card p-5 rounded-2xl flex flex-col justify-between relative overflow-hidden text-slate-700" data-aos="fade-up">
+                        <div class="absolute -top-10 -left-10 w-24 h-24 bg-[#ca9b29]/5 rounded-full blur-xl"></div>
                         
                         <div>
-                            <!-- الهيدر والاسم والعلم الحالي -->
                             <div class="flex justify-between items-start gap-2 mb-3 border-b border-slate-100 pb-3">
-                                <div>
+                                <div class="text-start">
                                     <h4 class="text-xs font-black text-slate-800">${kpi.name}</h4>
                                     <p class="text-[9px] text-slate-500 font-bold mt-1 leading-relaxed">${kpi.desc}</p>
                                 </div>
@@ -396,52 +523,53 @@
                                     <span id="preview-badge-${kpi.key}" class="text-[9px] font-black px-2.5 py-0.5 rounded-full ${flag.badgeClass}">
                                         ${flag.label}
                                     </span>
-                                    <span class="text-[8px] text-slate-400 font-bold">القيمة الحالية: ${actualVal}${kpi.unit === 'مستهدف حد أقصى' ? '' : ' ' + kpi.unit}</span>
+                                    <span class="text-[8px] text-slate-400 font-bold">الحالي: ${actualVal}${kpi.unit}</span>
                                 </div>
                             </div>
 
-                            <!-- الإدخال والتحكم الرقمي -->
-                            <div class="my-5">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-[9px] text-slate-400 font-bold">تعديل المستهدف المطلوب:</span>
-                                    <div class="flex items-center gap-1.5 bg-slate-100 px-3 py-1 rounded-xl border border-slate-200">
-                                        <input type="number" 
-                                               id="num-input-${kpi.key}" 
-                                               value="${targetVal}" 
-                                               min="${kpi.min}" 
-                                               max="${kpi.max}" 
-                                               step="${kpi.step}"
-                                               oninput="syncInput('${kpi.key}', this.value, 'range')"
-                                               class="w-16 bg-transparent text-right font-black text-slate-900 border-none outline-hidden focus:ring-0 text-xs p-0" />
-                                        <span class="text-[9px] font-bold text-slate-500">${kpi.unit}</span>
-                                    </div>
+                            <div class="grid grid-cols-3 gap-2 my-4">
+                                <div class="flex flex-col gap-1 text-start">
+                                    <label class="text-[9px] text-slate-500 font-black">المستهدف (${kpi.unit}):</label>
+                                    <input type="number" 
+                                           id="input-target-${kpi.key}" 
+                                           value="${config.target}" 
+                                           step="${kpi.step}"
+                                           oninput="updateKpiSetting('${kpi.key}', 'target', this.value)"
+                                           class="bg-white border border-slate-200 text-center font-bold text-slate-800 text-xs p-2 rounded-xl focus:border-[#ca9b29] outline-hidden" />
+                                </div>
+                                
+                                <div class="flex flex-col gap-1 text-start">
+                                    <label class="text-[9px] text-emerald-600 font-black">${kpi.isInverse ? 'ممتاز (أقل من/يساوي):' : 'ممتاز (أكبر من/يساوي):'}</label>
+                                    <input type="number" 
+                                           id="input-excellent-${kpi.key}" 
+                                           value="${excellentVal}" 
+                                           step="${kpi.step}"
+                                           oninput="updateKpiSetting('${kpi.key}', '${kpi.isInverse ? 'excellentMax' : 'excellentMin'}', this.value)"
+                                           class="bg-white border border-emerald-200 text-center font-bold text-emerald-700 text-xs p-2 rounded-xl focus:border-emerald-500 outline-hidden" />
                                 </div>
 
-                                <!-- شريط التمرير المطور -->
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[9px] font-bold text-slate-400 font-mono">${kpi.min}</span>
-                                    <input type="range" 
-                                           id="range-input-${kpi.key}" 
-                                           value="${targetVal}" 
-                                           min="${kpi.min}" 
-                                           max="${kpi.max}" 
-                                           step="${kpi.step}" 
-                                           oninput="syncInput('${kpi.key}', this.value, 'num')"
-                                           class="flex-1 cursor-pointer" />
-                                    <span class="text-[9px] font-bold text-slate-400 font-mono">${kpi.max}</span>
+                                <div class="flex flex-col gap-1 text-start">
+                                    <label class="text-[9px] text-amber-600 font-black">${kpi.isInverse ? 'جيد (أقل من/يساوي):' : 'جيد (أكبر من/يساوي):'}</label>
+                                    <input type="number" 
+                                           id="input-good-${kpi.key}" 
+                                           value="${goodVal}" 
+                                           step="${kpi.step}"
+                                           oninput="updateKpiSetting('${kpi.key}', '${kpi.isInverse ? 'goodMax' : 'goodMin'}', this.value)"
+                                           class="bg-white border border-amber-200 text-center font-bold text-amber-700 text-xs p-2 rounded-xl focus:border-amber-500 outline-hidden" />
                                 </div>
+                            </div>
+
+                            <div class="text-[8px] font-black border rounded-lg p-2 text-center mt-2.5 text-rose-700 bg-rose-50 border-rose-200">
+                                <span>ضعيف 🔴: يتم حسابه تلقائياً لأي قيمة ${kpi.isInverse ? 'أكبر من' : 'أقل من'} </span>
+                                <span id="label-bad-${kpi.key}" class="font-bold font-mono text-sm mx-1">${goodVal}</span>
+                                <span>${kpi.unit}</span>
                             </div>
                         </div>
 
-                        <!-- التوصيات والخيارات المسبقة المساعدة -->
-                        <div class="flex justify-between items-center border-t border-slate-100 pt-3 text-[9px] font-bold text-slate-400">
-                            <span>التوصية: ضبط هدف متوازن لرفع الأداء</span>
+                        <div class="flex justify-between items-center border-t border-slate-100 pt-3 text-[9px] font-bold text-slate-400 mt-3.5">
+                            <span>كفاءة تصنيف النطاق: نشطة ومطابقة</span>
                             <div class="flex gap-2">
-                                <button onclick="setPreset('${kpi.key}', ${kpi.default})" class="hover:text-[#009688] transition-colors cursor-pointer">الافتراضي</button>
-                                ${kpi.key !== 'hse-accidents' ? `
-                                    <button onclick="setPreset('${kpi.key}', ${Math.round(kpi.default * 1.1)})" class="hover:text-[#009688] transition-colors cursor-pointer">+10%</button>
-                                    <button onclick="setPreset('${kpi.key}', ${Math.round(kpi.default * 0.9)})" class="hover:text-[#009688] transition-colors cursor-pointer">-10%</button>
-                                ` : ''}
+                                <button onclick="setPreset('${kpi.key}')" class="hover:text-[#ca9b29] transition-colors cursor-pointer"><i class="fa-solid fa-rotate-left me-1"></i>الافتراضي</button>
                             </div>
                         </div>
                     </div>
@@ -450,26 +578,27 @@
             });
         }
 
-        // مزامنة حقل الأرقام والمنزلق
-        function syncInput(key, val, targetType) {
-            const numVal = parseFloat(val);
-            if (isNaN(numVal)) return;
+        function updateKpiSetting(key, field, value) {
+            const valNum = parseFloat(value);
+            if (isNaN(valNum)) return;
 
-            currentTargets[key] = numVal;
+            currentSettings[key][field] = valNum;
 
-            // تحديث الحقل المقابل
-            if (targetType === 'range') {
-                const rangeEl = document.getElementById(`range-input-${key}`);
-                if (rangeEl) rangeEl.value = numVal;
-            } else {
-                const numEl = document.getElementById(`num-input-${key}`);
-                if (numEl) numEl.value = numVal;
+            if (field === 'goodMin' || field === 'goodMax') {
+                const badLabel = document.getElementById(`label-bad-${key}`);
+                if (badLabel) badLabel.innerText = valNum;
             }
 
-            // تحديث العلم الفوري بالمعاينة
-            const kpi = findKpiDef(key);
+            const actual = actualValues[key];
+            let kpi = null;
+            Object.keys(kpiDefinition).forEach(cat => {
+                kpiDefinition[cat].kpis.forEach(item => {
+                    if (item.key === key) kpi = item;
+                });
+            });
+
             if (kpi) {
-                const flag = calculateFlag(key, numVal, kpi.isInverse);
+                const flag = calculateFlag(key, actual, kpi.isInverse);
                 const badge = document.getElementById(`preview-badge-${key}`);
                 if (badge) {
                     badge.innerText = flag.label;
@@ -478,25 +607,29 @@
             }
         }
 
-        // تطبيق قيمة سريعة مسبقة
-        function setPreset(key, val) {
-            currentTargets[key] = val;
+        function setPreset(key) {
+            currentSettings[key] = { ...defaultSettings[key] };
             
-            const numEl = document.getElementById(`num-input-${key}`);
-            const rangeEl = document.getElementById(`range-input-${key}`);
-            
-            if (numEl) numEl.value = val;
-            if (rangeEl) rangeEl.value = val;
-
-            // تحديث العلم الفوري بالمعاينة
             const kpi = findKpiDef(key);
-            if (kpi) {
-                const flag = calculateFlag(key, val, kpi.isInverse);
-                const badge = document.getElementById(`preview-badge-${key}`);
-                if (badge) {
-                    badge.innerText = flag.label;
-                    badge.className = `text-[9px] font-black px-2.5 py-0.5 rounded-full ${flag.badgeClass}`;
-                }
+            const isInverse = kpi ? kpi.isInverse : false;
+            
+            const targetInput = document.getElementById(`input-target-${key}`);
+            const excellentInput = document.getElementById(`input-excellent-${key}`);
+            const goodInput = document.getElementById(`input-good-${key}`);
+            
+            if (targetInput) targetInput.value = currentSettings[key].target;
+            if (excellentInput) excellentInput.value = isInverse ? currentSettings[key].excellentMax : currentSettings[key].excellentMin;
+            if (goodInput) goodInput.value = isInverse ? currentSettings[key].goodMax : currentSettings[key].goodMin;
+
+            const badLabel = document.getElementById(`label-bad-${key}`);
+            if (badLabel) badLabel.innerText = isInverse ? currentSettings[key].goodMax : currentSettings[key].goodMin;
+
+            const actual = actualValues[key];
+            const flag = calculateFlag(key, actual, isInverse);
+            const badge = document.getElementById(`preview-badge-${key}`);
+            if (badge) {
+                badge.innerText = flag.label;
+                badge.className = `text-[9px] font-black px-2.5 py-0.5 rounded-full ${flag.badgeClass}`;
             }
         }
 
@@ -510,21 +643,28 @@
             return found;
         }
 
-        // حفظ الأهداف الحالية إلى localStorage
         function saveTargets() {
-            localStorage.setItem('kpi_targets', JSON.stringify(currentTargets));
+            const compatTargets = {};
+            Object.keys(currentSettings).forEach(key => {
+                compatTargets[key] = currentSettings[key].target;
+            });
+            localStorage.setItem('kpi_targets', JSON.stringify(compatTargets));
+            localStorage.setItem('kpi_settings', JSON.stringify(currentSettings));
             openSuccessModal();
         }
 
-        // تصفير الأهداف وإرجاعها الافتراضية
         function resetToDefaults() {
-            useDefaultTargets();
+            currentSettings = JSON.parse(JSON.stringify(defaultSettings));
             renderKpis();
-            // ومزامنتها مباشرة لحفظها
-            localStorage.setItem('kpi_targets', JSON.stringify(currentTargets));
+            
+            const compatTargets = {};
+            Object.keys(currentSettings).forEach(key => {
+                compatTargets[key] = currentSettings[key].target;
+            });
+            localStorage.setItem('kpi_targets', JSON.stringify(compatTargets));
+            localStorage.setItem('kpi_settings', JSON.stringify(currentSettings));
         }
 
-        // التحكم بمودال النجاح
         function openSuccessModal() {
             const modal = document.getElementById('successModal');
             const overlay = document.getElementById('successModalOverlay');
@@ -552,15 +692,13 @@
                 
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                    // التوجيه للوحة الرئيسية
                     window.location.href = '/Index';
                 }, 300);
             }
         }
 
-        // بدء تشغيل الصفحة
         document.addEventListener("DOMContentLoaded", function() {
-            initTargets();
+            initSettings();
             switchCategory('finance');
         });
     </script>
