@@ -430,10 +430,20 @@
             </div>
 
             <div class="space-y-1 border-t border-slate-100 pt-3">
-                <a href="/Settings">
-                    <i class="fa-solid fa-gear"></i>
-                    <span data-i18n="sidebar-settings">إعدادات المستهدفات</span>
-                </a>
+                @if (Model.IsSuperAdmin)
+                {
+                    <a href="/Users">
+                        <i class="fa-solid fa-users-cog"></i>
+                        <span>إدارة المستخدمين</span>
+                    </a>
+                }
+                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+                {
+                    <a href="/Settings">
+                        <i class="fa-solid fa-gear"></i>
+                        <span data-i18n="sidebar-settings">إعدادات المستهدفات</span>
+                    </a>
+                }
                 <div class="text-[9px] text-slate-400 text-center pt-2 font-mono" data-i18n="sidebar-copyright">نظام رواحل القياسي المعتمد © 2026</div>
             </div>
         </aside>
@@ -461,21 +471,37 @@
                         <span id="langToggleText">English (EN)</span>
                     </button>
 
-                    <a href="/Settings" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-xs">
-                        <i class="fa-solid fa-sliders text-[#b0841a]"></i>
-                        <span data-i18n="sidebar-settings">تعديل المستهدفات</span>
-                    </a>
+                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+                    {
+                        <a href="/Settings" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-xs">
+                            <i class="fa-solid fa-sliders text-[#b0841a]"></i>
+                            <span data-i18n="sidebar-settings">تعديل المستهدفات</span>
+                        </a>
+                    }
 
-                    <!-- الملف الشخصي للمدير العام -->
+                    <!-- زر تسجيل الخروج -->
+                    <form method="post" action="/Account/Logout" class="inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="bg-slate-100 hover:bg-slate-200 text-rose-600 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-xs">
+                            <i class="fa-solid fa-sign-out-alt"></i>
+                            <span data-i18n="logout">خروج</span>
+                        </button>
+                    </form>
+
+                    <!-- الملف الشخصي للمستخدِم -->
                     <div onclick="openProfileModal()" class="flex items-center gap-3 border-s border-slate-200 ps-4 cursor-pointer hover:opacity-85 transition-opacity">
                         <div class="text-start">
                             <div class="flex items-center gap-1.5 justify-start">
                                 <i class="fa-solid fa-circle-info text-[10px] text-[#b0841a]"></i>
-                                <h4 class="text-xs font-black text-slate-800" data-i18n="header-ceo-name">غسان عراقي</h4>
+                                <h4 class="text-xs font-black text-slate-800">@Model.UserArabicDisplayName</h4>
                             </div>
-                            <span class="text-[9px] bg-[#b0841a]/10 border border-[#b0841a]/30 text-[#b0841a] px-2.5 py-0.5 rounded-md font-black mt-1 inline-block" data-i18n="header-ceo-role">المدير العام (CEO)</span>
+                            <span class="text-[9px] bg-[#b0841a]/10 border border-[#b0841a]/30 text-[#b0841a] px-2.5 py-0.5 rounded-md font-black mt-1 inline-block">
+                                @(User.IsInRole("SuperAdmin") ? "مدير عام" : User.IsInRole("Admin") ? "مسؤول نظام" : User.IsInRole("Manager") ? "مدير قطاع" : "مستخدم قطاع")
+                            </span>
                         </div>
-                        <div class="w-10 h-10 rounded-full border border-[#b0841a]/40 shadow-xs overflow-hidden bg-white flex items-center justify-center text-[#b0841a] font-black text-xs">غ ع</div>
+                        <div class="w-10 h-10 rounded-full border border-[#b0841a]/40 shadow-xs overflow-hidden bg-white flex items-center justify-center text-[#b0841a] font-black text-xs">
+                            @(string.IsNullOrEmpty(Model.UserArabicDisplayName) ? "?" : Model.UserArabicDisplayName[0].ToString())
+                        </div>
                     </div>
                 </div>
             </header>
@@ -1183,17 +1209,23 @@
             <button onclick="closeProfileModal()" class="absolute top-4 left-4 w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center transition-colors border border-slate-200">
                 <i class="fa-solid fa-xmark text-xs"></i>
             </button>
-            <div class="w-16 h-16 rounded-full border-2 border-[#b0841a] bg-[#faf9f6] flex items-center justify-center text-[#b0841a] font-black text-lg mx-auto shadow-sm mb-3">غ ع</div>
-            <h4 class="text-sm font-black text-slate-900 text-center mb-1">غسان عراقي</h4>
-            <span class="text-[9px] bg-[#b0841a]/10 border border-[#b0841a]/20 text-[#b0841a] px-3 py-0.5 rounded-full font-black mx-auto inline-block mb-4">المدير العام والتنفيذي (CEO)</span>
+            <div class="w-16 h-16 rounded-full border-2 border-[#b0841a] bg-[#faf9f6] flex items-center justify-center text-[#b0841a] font-black text-lg mx-auto shadow-sm mb-3">
+                @(string.IsNullOrEmpty(Model.UserArabicDisplayName) ? "?" : Model.UserArabicDisplayName[0].ToString())
+            </div>
+            <h4 class="text-sm font-black text-slate-900 text-center mb-1">@Model.UserArabicDisplayName</h4>
+            <span class="text-[9px] bg-[#b0841a]/10 border border-[#b0841a]/20 text-[#b0841a] px-3 py-0.5 rounded-full font-black mx-auto inline-block mb-4">
+                @(User.IsInRole("SuperAdmin") ? "مدير عام" : User.IsInRole("Admin") ? "مسؤول نظام" : User.IsInRole("Manager") ? "مدير قطاع" : "مستخدم قطاع")
+            </span>
             <div class="border-t border-slate-100 pt-4 space-y-2.5 text-[10px] text-slate-600 font-bold text-start">
                 <div class="flex justify-between">
                     <span class="text-slate-500">البريد الإلكتروني:</span>
-                    <span class="font-mono text-slate-700">g.iraqi@rawahel.com.sa</span>
+                    <span class="font-mono text-slate-700">@User.Identity?.Name</span>
                 </div>
                 <div class="flex justify-between">
                     <span class="text-slate-500">الصلاحيات البرمجية:</span>
-                    <span class="text-[#b0841a] font-black">إدارة كاملة للنظام (Full Admin)</span>
+                    <span class="text-[#b0841a] font-black">
+                        @(User.IsInRole("SuperAdmin") ? "إدارة كاملة للنظام (SuperAdmin)" : User.IsInRole("Admin") ? "مسؤول نظام (Admin)" : User.IsInRole("Manager") ? "مدير قطاع (Manager)" : "مستخدم قطاع (User)")
+                    </span>
                 </div>
             </div>
         </div>
@@ -1202,6 +1234,7 @@
     <!-- تفعيل سكريبت الحسابات والرسوم البيانية -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        const allowedDepts = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AllowedDepartmentCodes));
         try {
             AOS.init({ duration: 800, once: true });
         } catch (e) {
@@ -1451,6 +1484,24 @@
 
         // دالة تبديل المشاهد (SPA View Router Controller)
         function showView(viewName) {
+            if (viewName !== 'overview' && viewName !== 'departments') {
+                const uiToDbMapping = {
+                    'contracts': 'contracts',
+                    'hajj': 'hajj',
+                    'leasing': 'leasing',
+                    'dept-finance': 'finance',
+                    'dept-commercial': 'commercial',
+                    'dept-ops': 'operations',
+                    'dept-support': 'hr',
+                    'dept-hse': 'hse',
+                    'dept-strategy': 'pmo'
+                };
+                const dbCode = uiToDbMapping[viewName];
+                if (dbCode && !allowedDepts.includes(dbCode)) {
+                    alert(document.documentElement.lang === 'en' ? "Access Denied: You do not have permissions for this section." : "عذراً: ليس لديك صلاحية للوصول إلى هذا القسم.");
+                    return;
+                }
+            }
             currentView = viewName;
             const isEn = document.documentElement.lang === 'en';
             
@@ -2152,6 +2203,31 @@
                     });
                 } catch (e) { console.error(e); }
             }
+
+            // Hide unauthorized sections/cards from DOM
+            document.querySelectorAll('[onclick^="showView(\'"]').forEach(el => {
+                const match = el.getAttribute('onclick').match(/showView\('([^']+)'\)/);
+                if (match) {
+                    const viewName = match[1];
+                    if (viewName !== 'overview' && viewName !== 'departments') {
+                        const uiToDbMapping = {
+                            'contracts': 'contracts',
+                            'hajj': 'hajj',
+                            'leasing': 'leasing',
+                            'dept-finance': 'finance',
+                            'dept-commercial': 'commercial',
+                            'dept-ops': 'operations',
+                            'dept-support': 'hr',
+                            'dept-hse': 'hse',
+                            'dept-strategy': 'pmo'
+                        };
+                        const dbCode = uiToDbMapping[viewName];
+                        if (dbCode && !allowedDepts.includes(dbCode)) {
+                            el.style.display = 'none';
+                        }
+                    }
+                }
+            });
 
             const savedLang = localStorage.getItem('lang') || 'ar';
             applyLanguage(savedLang);

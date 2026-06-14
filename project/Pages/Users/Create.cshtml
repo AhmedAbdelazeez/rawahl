@@ -1,0 +1,187 @@
+@page
+@model project.Pages.Users.CreateModel
+@{
+    Layout = null;
+    ViewData["Title"] = "إضافة مستخدم جديد - شركة رواحل المشاعر";
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <!-- Tailwind CSS v4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@4"></script>
+    <!-- Google Fonts - Tajawal -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;850;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-image: linear-gradient(rgba(250, 249, 246, 0.96), rgba(250, 249, 246, 0.96)), url('https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/slider10.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto space-y-6">
+        <!-- Breadcrumbs / Top nav -->
+        <div class="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <div class="flex items-center gap-2 text-sm text-slate-500">
+                <a href="/" class="hover:text-[#b0841a]"><i class="fas fa-home"></i></a>
+                <span>/</span>
+                <a href="/Users" class="hover:text-[#b0841a]">إدارة المستخدمين</a>
+                <span>/</span>
+                <span class="text-slate-800 font-bold">إضافة مستخدم</span>
+            </div>
+            <a href="/Users" class="text-xs font-bold text-[#b0841a] hover:underline">
+                <i class="fas fa-arrow-left ml-1"></i> العودة للمستخدمين
+            </a>
+        </div>
+
+        <!-- Create Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="p-6 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
+                <div class="p-2.5 bg-[#b0841a]/10 text-[#b0841a] rounded-lg">
+                    <i class="fas fa-user-plus text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800">بيانات المستخدم الجديد</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">أدخل البيانات الأساسية وحدد الصلاحيات المطلوبة</p>
+                </div>
+            </div>
+
+            <form method="post" class="p-6 space-y-6">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="p-4 bg-red-50 border-r-4 border-red-500 rounded-xl text-red-700 text-sm">
+                        <div asp-validation-summary="All" class="list-none space-y-1"></div>
+                    </div>
+                }
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Arabic Display Name -->
+                    <div class="space-y-1.5">
+                        <label asp-for="Input.ArabicDisplayName" class="text-sm font-semibold text-slate-700">الاسم المعروض (عربي)</label>
+                        <input asp-for="Input.ArabicDisplayName" placeholder="مثال: أحمد عبد العزيز" 
+                               class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-[#b0841a] focus:ring-1 focus:ring-[#b0841a] transition" />
+                        <span asp-validation-for="Input.ArabicDisplayName" class="text-xs text-red-500"></span>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="space-y-1.5">
+                        <label asp-for="Input.FullName" class="text-sm font-semibold text-slate-700">الاسم الكامل (إنجليزي)</label>
+                        <input asp-for="Input.FullName" placeholder="Example: Ahmed Abdelaziz" dir="ltr"
+                               class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-[#b0841a] focus:ring-1 focus:ring-[#b0841a] transition" />
+                        <span asp-validation-for="Input.FullName" class="text-xs text-red-500"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="space-y-1.5">
+                        <label asp-for="Input.Email" class="text-sm font-semibold text-slate-700">البريد الإلكتروني</label>
+                        <input asp-for="Input.Email" type="email" placeholder="username@rawahil.local" dir="ltr"
+                               class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-[#b0841a] focus:ring-1 focus:ring-[#b0841a] transition" />
+                        <span asp-validation-for="Input.Email" class="text-xs text-red-500"></span>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="space-y-1.5">
+                        <label asp-for="Input.Password" class="text-sm font-semibold text-slate-700">كلمة المرور</label>
+                        <input asp-for="Input.Password" type="password" placeholder="••••••••" dir="ltr"
+                               class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-[#b0841a] focus:ring-1 focus:ring-[#b0841a] transition" />
+                        <span asp-validation-for="Input.Password" class="text-xs text-red-500"></span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-100 pt-6">
+                    <!-- Role Dropdown -->
+                    <div class="space-y-1.5">
+                        <label asp-for="Input.SelectedRole" class="text-sm font-semibold text-slate-700">الدور / الصلاحية</label>
+                        <select asp-for="Input.SelectedRole" id="roleSelect"
+                                class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-[#b0841a] focus:ring-1 focus:ring-[#b0841a] transition bg-white">
+                            <option value="">-- اختر الدور الصلاحي --</option>
+                            <option value="SuperAdmin">مدير عام (SuperAdmin)</option>
+                            <option value="Admin">مسؤول نظام (Admin)</option>
+                            <option value="Manager">مدير قطاع (Manager)</option>
+                            <option value="DepartmentUser">مستخدم قطاع (DepartmentUser)</option>
+                        </select>
+                        <span asp-validation-for="Input.SelectedRole" class="text-xs text-red-500"></span>
+                    </div>
+
+                    <!-- Active / Inactive -->
+                    <div class="flex items-center pt-8">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input asp-for="Input.IsActive" type="checkbox" class="sr-only peer" />
+                            <div class="w-11 h-6 bg-slate-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-[#b0841a]/30 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:right-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#b0841a]"></div>
+                            <span class="mr-3 text-sm font-semibold text-slate-700">حساب نشط</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Departments Multi-select -->
+                <div id="departmentsSection" class="space-y-3 border-t border-slate-100 pt-6">
+                    <div class="flex items-center justify-between">
+                        <label class="text-sm font-semibold text-slate-700">القطاعات المصرح بمؤشراتها</label>
+                        <span id="allDeptsNotice" class="text-xs text-slate-400 italic hidden">الدور المختار يملك وصولاً كاملاً تلقائياً</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        @for (int i = 0; i < Model.AvailableDepartments.Count; i++)
+                        {
+                            var dept = Model.AvailableDepartments[i];
+                            <label class="flex items-center bg-white p-2.5 rounded-lg border border-slate-200 hover:border-slate-300 transition cursor-pointer text-xs font-semibold text-slate-700 select-none font-bold">
+                                <input type="checkbox" name="Input.SelectedDepartmentIds" value="@dept.Id" class="dept-checkbox rounded border-slate-300 text-[#b0841a] focus:ring-[#b0841a] ml-2 h-4 w-4" />
+                                @dept.NameAr
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="flex items-center justify-end gap-3 border-t border-slate-100 pt-6">
+                    <a href="/Users" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition">
+                        إلغاء
+                    </a>
+                    <button type="submit" class="px-5 py-2.5 bg-gradient-to-l from-[#b0841a] to-[#8c6510] text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg transition cursor-pointer">
+                        حفظ وإنشاء المستخدم
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JS to automatically disable departments if Admin/SuperAdmin is selected -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const roleSelect = document.getElementById("roleSelect");
+            const checkboxes = document.querySelectorAll(".dept-checkbox");
+            const allDeptsNotice = document.getElementById("allDeptsNotice");
+
+            function toggleDepartments() {
+                const role = roleSelect.value;
+                if (role === "SuperAdmin" || role === "Admin") {
+                    checkboxes.forEach(cb => {
+                        cb.checked = false;
+                        cb.disabled = true;
+                        cb.closest("label").classList.add("opacity-50", "cursor-not-allowed");
+                    });
+                    allDeptsNotice.classList.remove("hidden");
+                } else {
+                    checkboxes.forEach(cb => {
+                        cb.disabled = false;
+                        cb.closest("label").classList.remove("opacity-50", "cursor-not-allowed");
+                    });
+                    allDeptsNotice.classList.add("hidden");
+                }
+            }
+
+            roleSelect.addEventListener("change", toggleDepartments);
+            toggleDepartments(); // Run on load
+        });
+    </script>
+</body>
+</html>

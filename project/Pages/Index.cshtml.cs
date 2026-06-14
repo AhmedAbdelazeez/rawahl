@@ -1,10 +1,28 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using project.Services;
 
 namespace project.Pages
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IDepartmentAccessService _departmentAccessService;
+
+        public IndexModel(ICurrentUserService currentUserService, IDepartmentAccessService departmentAccessService)
+        {
+            _currentUserService = currentUserService;
+            _departmentAccessService = departmentAccessService;
+        }
+
+        public string UserArabicDisplayName { get; set; } = string.Empty;
+        public bool IsSuperAdmin { get; set; }
+        public IList<string> AllowedDepartmentCodes { get; set; } = new List<string>();
+
         // ================= الإحصائيات المالية الأساسية =================
         [BindProperty]
         public double TotalRevenue { get; set; } = 142.5; // M ر.س
@@ -77,12 +95,11 @@ namespace project.Pages
         [BindProperty]
         public double NpsComplaints { get; set; } = 12.0; // % (المستهدف 80%)
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            // 💡 للتطوير مستقبلاً:
-            // هنا يمكنك جلب البيانات الفعلية من قاعدة البيانات عبر Entity Framework أو Dapper أو API خارجي.
-            // مثال:
-            // this.TotalRevenue = _databaseContext.Sales.Sum(s => s.Amount) / 1000000.0;
+            UserArabicDisplayName = await _currentUserService.GetArabicDisplayNameAsync();
+            IsSuperAdmin = await _currentUserService.IsSuperAdminAsync();
+            AllowedDepartmentCodes = await _departmentAccessService.GetAllowedDepartmentsAsync();
         }
     }
 }

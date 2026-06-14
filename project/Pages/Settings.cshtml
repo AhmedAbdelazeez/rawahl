@@ -213,10 +213,20 @@
             </div>
 
             <div class="space-y-1 border-t border-slate-100 pt-3">
-                <a href="/Settings" class="bg-sidebar-active">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>إعدادات المستهدفات</span>
-                </a>
+                @if (Model.IsSuperAdmin)
+                {
+                    <a href="/Users">
+                        <i class="fa-solid fa-users-cog"></i>
+                        <span>إدارة المستخدمين</span>
+                    </a>
+                }
+                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+                {
+                    <a href="/Settings" class="bg-sidebar-active">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>إعدادات المستهدفات</span>
+                    </a>
+                }
                 <div class="text-[9px] text-slate-400 text-center pt-2 font-mono">نظام رواحل القياسي المعتمد © 2026</div>
             </div>
         </aside>
@@ -239,6 +249,31 @@
                         <i class="fa-solid fa-arrow-right"></i>
                         <span>العودة للوحة الأداء</span>
                     </a>
+
+                    <!-- زر تسجيل الخروج -->
+                    <form method="post" action="/Account/Logout" class="inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="bg-slate-100 hover:bg-slate-200 text-rose-600 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-xs">
+                            <i class="fa-solid fa-sign-out-alt"></i>
+                            <span>خروج</span>
+                        </button>
+                    </form>
+
+                    <!-- الملف الشخصي للمستخدِم -->
+                    <div onclick="openProfileModal()" class="flex items-center gap-3 border-s border-slate-200 ps-4 cursor-pointer hover:opacity-85 transition-opacity">
+                        <div class="text-start">
+                            <div class="flex items-center gap-1.5 justify-start">
+                                <i class="fa-solid fa-circle-info text-[10px] text-[#ca9b29]"></i>
+                                <h4 class="text-xs font-black text-slate-800">@Model.UserArabicDisplayName</h4>
+                            </div>
+                            <span class="text-[9px] bg-[#ca9b29]/10 border border-[#ca9b29]/30 text-[#ca9b29] px-2.5 py-0.5 rounded-md font-black mt-1 inline-block">
+                                @(User.IsInRole("SuperAdmin") ? "مدير عام" : User.IsInRole("Admin") ? "مسؤول نظام" : User.IsInRole("Manager") ? "مدير قطاع" : "مستخدم قطاع")
+                            </span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full border border-[#ca9b29]/40 shadow-xs overflow-hidden bg-white flex items-center justify-center text-[#ca9b29] font-black text-xs">
+                            @(string.IsNullOrEmpty(Model.UserArabicDisplayName) ? "?" : Model.UserArabicDisplayName[0].ToString())
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -313,6 +348,35 @@
             <button onclick="closeSuccessModal()" class="w-full bg-gradient-to-r from-[#ca9b29] to-[#a87919] text-white py-3 rounded-xl text-xs font-black shadow-md transition-all active:scale-95 cursor-pointer">
                 حسنًا، اذهب للوحة الأداء
             </button>
+        </div>
+    </div>
+
+    <!-- ================= لوحة معلومات الملف الشخصي المنبثقة ================= -->
+    <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div id="profileModalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs opacity-0 transition-opacity duration-300" onclick="closeProfileModal()"></div>
+        <div id="profileModalBox" class="bg-white w-full max-w-xs rounded-3xl border border-[#ca9b29]/40 shadow-2xl overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col p-6 z-10 text-center text-slate-800">
+            <button onclick="closeProfileModal()" class="absolute top-4 left-4 w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center transition-colors border border-slate-200">
+                <i class="fa-solid fa-xmark text-xs"></i>
+            </button>
+            <div class="w-16 h-16 rounded-full border-2 border-[#ca9b29] bg-[#faf9f6] flex items-center justify-center text-[#ca9b29] font-black text-lg mx-auto shadow-sm mb-3">
+                @(string.IsNullOrEmpty(Model.UserArabicDisplayName) ? "?" : Model.UserArabicDisplayName[0].ToString())
+            </div>
+            <h4 class="text-sm font-black text-slate-900 text-center mb-1">@Model.UserArabicDisplayName</h4>
+            <span class="text-[9px] bg-[#ca9b29]/10 border border-[#ca9b29]/30 text-[#ca9b29] px-3 py-0.5 rounded-full font-black mx-auto inline-block mb-4">
+                @(User.IsInRole("SuperAdmin") ? "مدير عام" : User.IsInRole("Admin") ? "مسؤول نظام" : User.IsInRole("Manager") ? "مدير قطاع" : "مستخدم قطاع")
+            </span>
+            <div class="border-t border-slate-100 pt-4 space-y-2.5 text-[10px] text-slate-600 font-bold text-start">
+                <div class="flex justify-between">
+                    <span class="text-slate-500">البريد الإلكتروني:</span>
+                    <span class="font-mono text-slate-700">@User.Identity?.Name</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">الصلاحيات البرمجية:</span>
+                    <span class="text-[#ca9b29] font-black">
+                        @(User.IsInRole("SuperAdmin") ? "إدارة كاملة للنظام (SuperAdmin)" : User.IsInRole("Admin") ? "مسؤول نظام (Admin)" : User.IsInRole("Manager") ? "مدير قطاع (Manager)" : "مستخدم قطاع (User)")
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -694,6 +758,32 @@
                     modal.classList.add('hidden');
                     window.location.href = '/Index';
                 }, 300);
+            }
+        }
+
+        function openProfileModal() {
+            const modal = document.getElementById('profileModal');
+            const overlay = document.getElementById('profileModalOverlay');
+            const box = document.getElementById('profileModalBox');
+            if (modal && overlay && box) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    box.classList.remove('scale-90', 'opacity-0');
+                    box.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            }
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profileModal');
+            const overlay = document.getElementById('profileModalOverlay');
+            const box = document.getElementById('profileModalBox');
+            if (modal && overlay && box) {
+                box.classList.remove('scale-100', 'opacity-100');
+                box.classList.add('scale-90', 'opacity-0');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => { modal.classList.add('hidden'); }, 300);
             }
         }
 
