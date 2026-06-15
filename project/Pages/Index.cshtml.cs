@@ -95,10 +95,34 @@ namespace project.Pages
         [BindProperty]
         public double NpsComplaints { get; set; } = 12.0; // % (المستهدف 80%)
 
+        public bool IsTransportationManager { get; set; }
+        public bool IsPilgrimServicesManager { get; set; }
+
         public async Task OnGetAsync()
         {
             UserArabicDisplayName = await _currentUserService.GetArabicDisplayNameAsync();
-            IsSuperAdmin = await _currentUserService.IsSuperAdminAsync();
+            var isSuper = await _currentUserService.IsSuperAdminAsync();
+            var isAdmin = await _currentUserService.IsAdminAsync();
+            IsSuperAdmin = isSuper || isAdmin;
+            
+            var username = User.Identity?.Name;
+            
+            IsTransportationManager = User.IsInRole("TransportationManager") || 
+                                      username == "transportation.manager@rawahil.local" || 
+                                      username == "hajj.manager@rawahil.local" || 
+                                      username == "rental.manager@rawahil.local" || 
+                                      username == "contracts.manager@rawahil.local" ||
+                                      User.IsInRole("Manager");
+                                      
+            IsPilgrimServicesManager = User.IsInRole("PilgrimServicesManager") || 
+                                       username == "pilgrim.manager@rawahil.local";
+            
+            if (IsSuperAdmin)
+            {
+                IsTransportationManager = true;
+                IsPilgrimServicesManager = true;
+            }
+
             AllowedDepartmentCodes = await _departmentAccessService.GetAllowedDepartmentsAsync();
         }
     }
