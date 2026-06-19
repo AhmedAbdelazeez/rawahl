@@ -1149,7 +1149,7 @@
                                 <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="dept-compliance-title">إدارة الامتثال</h2>
                                 <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">بوابة متابعة الالتزام التشغيلي والسياسات الداخلية ومعالجة المخالفات وإجراءات التدقيق والتحسين المستمر.</p>
                             </div>
-                            <button onclick="showView('transportation-sector')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                            <button id="compliance-back-btn" onclick="showView('transportation-sector')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
                                 <i class="fa-solid fa-arrow-right"></i>
                                 <span data-i18n="btn-back-depts">العودة للنقل المختص</span>
                             </button>
@@ -1158,7 +1158,7 @@
                 </section>
 
                 <!-- 10 Compliance KPI Summary Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8 text-start" data-aos="fade-up">
+                <div id="grid-compliance" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8 text-start" data-aos="fade-up">
                     <!-- 1. نسبة الالتزام التشغيلي -->
                     <div id="card-comp-ops-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start mb-2">
@@ -1994,19 +1994,37 @@
                 </div>
 
                 <!-- عنوان بوابة الإدارة/الإدارات التفاعلي -->
-                <div class="flex justify-between items-center mb-6 text-start">
+                <div id="view-kpi-title-wrapper" class="flex justify-between items-center mb-6 text-start">
                     <h2 id="view-kpi-title" class="text-md sm:text-lg font-black text-slate-800 flex items-center gap-2">
                         <span class="w-2.5 h-5 bg-[#b0841a] rounded-full inline-block"></span>
                         <span id="view-kpi-title-text">بوابة إدارات الأعمال</span>
                     </h2>
                 </div>
 
+                <!-- Service Detail Banner (Beautiful banner styled like Makkah Tour Project Detail banner) -->
+                <section id="service-detail-banner" class="mb-6 hidden" data-aos="fade-up">
+                    <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+                        <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                            <div>
+                                <span id="service-banner-badge" class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">مراقبة الخدمات</span>
+                                <h2 id="service-banner-title" class="text-lg font-black mt-2 text-slate-800">اسم الخدمة - التحليل التشغيلي</h2>
+                                <p id="service-banner-desc" class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">وصف تفصيلي للخدمة وأدائها ومؤشراتها الرئيسية.</p>
+                            </div>
+                            <button id="service-banner-back-btn" onclick="showView('transportation-services')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                                <i class="fa-solid fa-arrow-right"></i>
+                                <span id="service-banner-back-text">العودة للخدمات</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Unified grid for Business Sectors (dynamic placement of cards to prevent uneven layouts) -->
-                <div id="sector-kpis-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8 text-start hidden"></div>
+                <div id="sector-kpis-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 text-start hidden"></div>
 
                 <!-- الإدارات والشبكة الهيكلية لكروت الـ 22 مؤشر بالكامل -->
                 <!-- 4 Top Executive KPIs for Sector/Department/Service -->
-                <div id="executive-top-panel" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 text-start">
+                <div id="executive-top-panel" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 text-start hidden">
                     <!-- Revenue -->
                     <div class="glass-card p-5 rounded-2xl border-l-4 border-[#b0841a] flex flex-col justify-between h-32 bg-white">
                         <span class="text-xs text-slate-500 font-bold flex items-center gap-1"><i class="fa-solid fa-coins text-[#b0841a]"></i> <span data-i18n="exec-top-revenue">إجمالي الإيرادات</span></span>
@@ -2035,7 +2053,7 @@
                     </div>
                 </div>
 
-                <div id="kpis-container">
+                <div id="kpis-container" class="hidden">
                     
                     <!-- 1. الإدارة المالية -->
                     <div id="section-finance" class="kpi-group-wrapper mb-6 text-start">
@@ -3452,6 +3470,7 @@
         };
 
         let currentView = 'overview';
+        let previousView = 'overview';
         let flagsPieChart = null, sectorChartInstance = null;
         const kpiCurrentFlags = {};
 
@@ -3731,6 +3750,11 @@
                 }
             }
 
+            if (viewName !== currentView) {
+                if (viewName.startsWith('dept-') || viewName.startsWith('service-') || ['contracts', 'hajj', 'leasing'].includes(viewName)) {
+                    previousView = currentView;
+                }
+            }
             currentView = viewName;
             
             document.querySelectorAll('aside a').forEach(a => {
@@ -3798,6 +3822,26 @@
             } else if (viewName === 'dept-compliance') {
                 if (viewDeptCompliance) viewDeptCompliance.classList.remove('hidden');
                 document.getElementById('header-main-title').innerText = isEn ? 'Compliance & Governance Monitoring' : 'إدارة الامتثال والحوكمة';
+                
+                const compBackBtn = document.getElementById('compliance-back-btn');
+                if (compBackBtn) {
+                    let backAction = "showView('departments')";
+                    let backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                    
+                    if (previousView === 'transportation-departments') {
+                        backAction = "showView('transportation-departments')";
+                        backText = isEn ? 'Back to Departments' : 'العودة لقائمة الإدارات';
+                    } else if (previousView === 'transportation-sector') {
+                        backAction = "showView('transportation-sector')";
+                        backText = isEn ? 'Back to Transportation' : 'العودة للنقل المختص';
+                    }
+                    compBackBtn.setAttribute('onclick', backAction);
+                    const compBackTextSpan = compBackBtn.querySelector('span[data-i18n]');
+                    if (compBackTextSpan) {
+                        compBackTextSpan.innerText = backText;
+                    }
+                }
+                
                 setTimeout(() => { initComplianceCharts(); }, 100);
             } else if (viewName === 'dept-projects') {
                 if (viewDeptProjects) viewDeptProjects.classList.remove('hidden');
@@ -3829,7 +3873,7 @@
             'service-leasing': ['rental-fleet-utilization', 'rental-revenue-per-bus', 'rental-contract-satisfaction', 'rental-maintenance-adherence', 'rental-safety-compliance', 'rental-active-contracts'],
 
             'dept-tourism': ['hotel-occupancy', 'hotel-cancel-rate', 'hotel-rating'],
-            'dept-ops': ['ops-plan'],
+            'dept-ops': ['ops-plan', 'fleet-ready'],
             'dept-commercial': ['cust-ret', 'nps', 'new-contracts'],
             'dept-fleet': ['fleet-ready', 'fleet-util'],
             'dept-support': ['hr-ret', 'it-autom', 'critical-succession', 'saudization'],
@@ -3846,16 +3890,16 @@
         };
 
         const cardOriginalGrids = {
-            'comp-ops-rate': 'card-comp-ops-rate',
-            'comp-violations-count': 'card-comp-violations-count',
-            'comp-closure-rate': 'card-comp-closure-rate',
-            'comp-resolution-time': 'card-comp-resolution-time',
-            'comp-contract-rate': 'card-comp-contract-rate',
-            'comp-policies-rate': 'card-comp-policies-rate',
-            'comp-audit-results': 'card-comp-audit-results',
-            'comp-critical-findings': 'card-comp-critical-findings',
-            'comp-monthly-rate': 'card-comp-monthly-rate',
-            'comp-improvement-rate': 'card-comp-improvement-rate',
+            'comp-ops-rate': 'grid-compliance',
+            'comp-violations-count': 'grid-compliance',
+            'comp-closure-rate': 'grid-compliance',
+            'comp-resolution-time': 'grid-compliance',
+            'comp-contract-rate': 'grid-compliance',
+            'comp-policies-rate': 'grid-compliance',
+            'comp-audit-results': 'grid-compliance',
+            'comp-critical-findings': 'grid-compliance',
+            'comp-monthly-rate': 'grid-compliance',
+            'comp-improvement-rate': 'grid-compliance',
 
             'rev-growth': 'grid-finance',
             'ebitda': 'grid-finance',
@@ -3935,16 +3979,12 @@
 
             let isService = viewName.startsWith('service-') || ['contracts', 'hajj', 'leasing'].includes(viewName);
             let isDept = viewName.startsWith('dept-');
-            let isTransportDept = ['contracts', 'hajj', 'leasing', 'dept-finance', 'dept-commercial', 'dept-ops', 'dept-support', 'dept-hse', 'dept-strategy'].includes(viewName);
+            let isTransportDept = ['contracts', 'hajj', 'leasing', 'dept-finance', 'dept-commercial', 'dept-ops', 'dept-support', 'dept-hse', 'dept-strategy', 'dept-audit', 'dept-fleet', 'dept-tourism'].includes(viewName);
 
             sectorChartContainer.classList.remove('hidden');
             const execPanel = document.getElementById('executive-top-panel');
             if (execPanel) {
-                if (isService) {
-                    execPanel.classList.add('hidden');
-                } else {
-                    execPanel.classList.remove('hidden');
-                }
+                execPanel.classList.add('hidden');
             }
 
             let sectorTitle = '';
@@ -4022,6 +4062,136 @@
                 breadcrumbContainer.classList.add('hidden');
             }
 
+            // Toggle view elements: hide default breadcrumb and title, show beautiful banner
+            const breadcrumbWrapper = document.getElementById('view-kpi-breadcrumb');
+            const titleWrapper = document.getElementById('view-kpi-title-wrapper');
+            const serviceBanner = document.getElementById('service-detail-banner');
+            
+            if (breadcrumbWrapper) breadcrumbWrapper.classList.add('hidden');
+            if (titleWrapper) titleWrapper.classList.add('hidden');
+            if (serviceBanner) {
+                serviceBanner.classList.remove('hidden');
+                
+                const badgeEl = document.getElementById('service-banner-badge');
+                const titleEl = document.getElementById('service-banner-title');
+                const descEl = document.getElementById('service-banner-desc');
+                const backBtn = document.getElementById('service-banner-back-btn');
+                const backTextEl = document.getElementById('service-banner-back-text');
+                
+                let badge = '', title = '', desc = '', backAction = '', backText = '';
+                
+                if (viewName === 'contracts' || viewName === 'service-contracts') {
+                    badge = isEn ? 'Contracts & Agreements Services' : 'خدمات العقود والاتفاقيات';
+                    title = isEn ? 'Contracts & Agreements Service - Operational Analysis' : 'خدمة العقود والاتفاقيات - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring strategic contracts, renewal rates, turnaround times, and active legal disputes.' : 'متابعة توقيع العقود الاستراتيجية، معدل تجديد العقود، متوسط زمن توقيع العقود، والنزاعات القانونية النشطة.';
+                    backAction = "showView('transportation-services')";
+                    backText = isEn ? 'Back to Services' : 'العودة للخدمات';
+                } else if (viewName === 'hajj' || viewName === 'service-hajj-transport') {
+                    badge = isEn ? 'Hajj & Umrah Transport Services' : 'خدمات نقل الحجاج والمعتمرين';
+                    title = isEn ? 'Hajj & Umrah Transport Service - Operational Analysis' : 'خدمة الحج والعمرة للنقل - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring pilgrim transport scheduling, route compliance, fleet readiness, and driver safety.' : 'تفويج ونقل ضيوف الرحمن والتزام مسارات التشغيل وجاهزية الأسطول والأمن والسلامة.';
+                    backAction = "showView('transportation-services')";
+                    backText = isEn ? 'Back to Services' : 'العودة للخدمات';
+                } else if (viewName === 'leasing' || viewName === 'service-leasing') {
+                    badge = isEn ? 'Bus Leasing & Operations Services' : 'خدمات تأجير الحافلات والتشغيل';
+                    title = isEn ? 'Rental & Operations Service - Operational Analysis' : 'خدمة خدمات الايجار والتشغيل - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring daily rental fleet utilization, revenue per bus, and maintenance schedules.' : 'متابعة جاهزية أسطول الحافلات اليومية ونسب استغلال المقاعد وجداول الصيانة الدورية للتأجير.';
+                    backAction = "showView('transportation-services')";
+                    backText = isEn ? 'Back to Services' : 'العودة للخدمات';
+                } else if (viewName === 'service-visa') {
+                    badge = isEn ? 'Electronic Visa Issuance Services' : 'خدمات إصدار التأشيرات الإلكترونية';
+                    title = isEn ? 'Visa Issuance Service - Operational Analysis' : 'خدمة إصدار التأشيرات - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring visa processing times, approval rates, issuance volumes, and integration uptime.' : 'متابعة زمن معالجة التأشيرات، نسب الموافقة، إجمالي التأشيرات، والربط الإلكتروني للفئات المختلفة.';
+                    backAction = "showView('pilgrim-sector')";
+                    backText = isEn ? 'Back to Pilgrim Services' : 'العودة لخدمات المعتمرين';
+                } else if (viewName === 'service-hotels') {
+                    badge = isEn ? 'Hotel Booking & Accommodation Services' : 'خدمات الإسكان وحجوزات الفنادق';
+                    title = isEn ? 'Hotel Booking & Accommodation Service - Operational Analysis' : 'خدمة حجز وإقامة الفنادق - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring hotel occupancy levels, cancellation rates, room pricing, and contract compliance.' : 'متابعة نسب إشغال الفنادق، معدل إلغاء الحجوزات، متوسط أسعار الغرف، والالتزام ببنود عقود الإقامة.';
+                    backAction = "showView('pilgrim-sector')";
+                    backText = isEn ? 'Back to Pilgrim Services' : 'العودة لخدمات المعتمرين';
+                } else if (viewName === 'service-transport') {
+                    badge = isEn ? 'Pilgrim Transport Services' : 'خدمات نقل وتفويج المعتمرين';
+                    title = isEn ? 'Pilgrim Transport Service - Operational Analysis' : 'خدمة نقل المعتمرين - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring transport schedule adherence, shuttle utilization efficiency, and passenger safety rates.' : 'متابعة الالتزام بخطط التفويج، كفاءة تشغيل حافلات المعتمرين، ومعدلات الأمان والسلامة أثناء التنقل.';
+                    backAction = "showView('pilgrim-sector')";
+                    backText = isEn ? 'Back to Pilgrim Services' : 'العودة لخدمات المعتمرين';
+                } else if (viewName === 'service-hospitality') {
+                    badge = isEn ? 'Catering & Hospitality Services' : 'خدمات الإعاشة والضيافة';
+                    title = isEn ? 'Hospitality & Catering Service - Operational Analysis' : 'خدمة الضيافة والإعاشة - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring meal delivery punctuality, food safety standards compliance, and satisfaction levels.' : 'متابعة التزام مواعيد الوجبات، سلامة وجودة الأغذية، ونسب رضا المعتمرين عن خدمات الإعاشة.';
+                    backAction = "showView('pilgrim-sector')";
+                    backText = isEn ? 'Back to Pilgrim Services' : 'العودة لخدمات المعتمرين';
+                } else if (viewName.startsWith('dept-')) {
+                    let deptBackAction = "showView('departments')";
+                    if (previousView === 'transportation-departments') {
+                        deptBackAction = "showView('transportation-departments')";
+                    }
+
+                    if (viewName === 'dept-finance') {
+                    badge = isEn ? 'Finance Department' : 'الإدارة المالية';
+                    title = isEn ? 'Finance Department - Operational Analysis' : 'الإدارة المالية - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring revenue growth, EBITDA margin, cash flows, and return on assets.' : 'الإيرادات والربحية والتدفقات النقدية التشغيلية والعائد الكلي على الأصول المالية.';
+                    backAction = deptBackAction;
+                    backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                } else if (viewName === 'dept-commercial') {
+                    badge = isEn ? 'Commercial Department' : 'الإدارة التجارية والعملاء';
+                    title = isEn ? 'Commercial Department - Operational Analysis' : 'الادارة التجارية - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring commercial performance, partner retention, NPS, and new contracts.' : 'متابعة الفرع التجاري ومبيعات وعقود النقل المختص ورضا العملاء NPS ونسب الاحتفاظ بالشركاء.';
+                    backAction = deptBackAction;
+                    backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                } else if (viewName === 'dept-ops') {
+                    badge = isEn ? 'Operations Department' : 'إدارة العمليات';
+                    title = isEn ? 'Operations Department - Operational Analysis' : 'ادارة العمليات - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring daily bus route scheduling, plan adherence, and operational trips.' : 'الالتزام بالخطة التشغيلية اليومية للحافلات، وتوجيه المسارات، ومتابعة الرحلات التشغيلية.';
+                    backAction = deptBackAction;
+                    backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                } else if (viewName === 'dept-fleet') {
+                    badge = isEn ? 'Fleet Department' : 'إدارة الأسطول';
+                    title = isEn ? 'Fleet Department - Operational Analysis' : 'ادارة الاسطول - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring daily fleet readiness, seat utilization, and periodic maintenance.' : 'متابعة جاهزية أسطول الحافلات اليومية ونسب استغلال المقاعد وجداول الصيانة الدورية.';
+                    backAction = deptBackAction;
+                    backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                } else if (viewName === 'dept-support') {
+                    badge = isEn ? 'Support Services Department' : 'إدارة خدمات الدعم';
+                    title = isEn ? 'Support Services - Operational Analysis' : 'ادارة خدمات الدعم - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring human resources, IT infrastructure automation, procurement, and support.' : 'الموارد البشرية والتوظيف، البنية التحتية لتقنية المعلومات، مشتريات الشركة والخدمات اللوجستية.';
+                    backAction = deptBackAction;
+                    backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                } else if (viewName === 'dept-strategy') {
+                    badge = isEn ? 'Strategy & Performance Department' : 'إدارة الاستراتيجية والأداء';
+                    title = isEn ? 'Strategy & Performance - Operational Analysis' : 'والاستراتيجية والاداء - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring strategic goal achievement, PMO initiatives, and corporate governance.' : 'تحقيق الأهداف الاستراتيجية، مبادرات مكتب إدارة المشاريع PMO، ومتابعة نضج الأداء المؤسسي.';
+                    backAction = deptBackAction;
+                    backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                } else if (viewName === 'dept-audit') {
+                    badge = isEn ? 'Internal Audit Department' : 'إدارة التدقيق الداخلي';
+                    title = isEn ? 'Internal Audit - Operational Analysis' : 'التدقيق الداخلي - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring internal audits, governance maturity, and policy compliance assessments.' : 'أعمال التدقيق الداخلي، مراجعة العمليات والسياسات، وتقييم الحوكمة والامتثال الإداري.';
+                    backAction = deptBackAction;
+                    backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                } else if (viewName === 'dept-hse') {
+                    badge = isEn ? 'Health, Safety & Environment (HSE)' : 'إدارة الصحة والسلامة والبيئة';
+                    title = isEn ? 'HSE - Operational Analysis' : 'الصحة والسلامة والبيئة - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring traffic and industrial accidents, safety training, and regulation compliance.' : 'معدل الحوادث المرورية والصناعية، الالتزام باللوائح والتعليمات، والسلامة العامة على الطرق.';
+                    backAction = deptBackAction;
+                    backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                } else if (viewName === 'dept-tourism') {
+                    badge = isEn ? 'Tourism Department' : 'إدارة السياحة';
+                    title = isEn ? 'Tourism Department - Operational Analysis' : 'إدارة السياحة - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring hotel occupancy, cancellation rates, and guest satisfaction ratings.' : 'متابعة نسب إشغال الفنادق ومعدلات الإلغاء وتقييمات رضا النزلاء.';
+                    backAction = deptBackAction;
+                    backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+                }
+                }
+                
+                if (badgeEl) badgeEl.innerText = badge;
+                if (titleEl) titleEl.innerText = title;
+                if (descEl) descEl.innerText = desc;
+                if (backBtn) backBtn.setAttribute('onclick', backAction);
+                if (backTextEl) backTextEl.innerText = backText;
+            }
+
             document.getElementById('sector-chart-title').innerText = isEn ? 'Comparative Analysis: Actual Performance vs Target' : 'تحليل مقارنة الأداء الفعلي بالمستهدف الأساسي';
 
             const allowedKpis = sectorMapping[viewName] || [];
@@ -4057,38 +4227,20 @@
             const topBar = document.getElementById('exec-top-achievement-bar');
             if (topBar) topBar.style.width = achievePct + '%';
 
-            // 4. Show/Hide Grids and place cards dynamically
-            if (!isDept) {
-                kpisContainer.classList.add('hidden');
-                sectorGrid.classList.remove('hidden');
-                sectorGrid.innerHTML = '';
+            // 4. Show/Hide Grids and place cards dynamically (unified flat grid for all views)
+            kpisContainer.classList.add('hidden');
+            sectorGrid.classList.remove('hidden');
+            sectorGrid.innerHTML = '';
 
-                document.querySelectorAll('[id^="card-"]').forEach(card => {
-                    const cardId = card.id.replace('card-', '');
-                    if (allowedKpis.includes(cardId)) {
-                        card.classList.remove('hidden');
-                        sectorGrid.appendChild(card);
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-            } else {
-                sectorGrid.classList.add('hidden');
-                kpisContainer.classList.remove('hidden');
-                
-                document.querySelectorAll('.kpi-group-wrapper').forEach(grp => grp.classList.add('hidden'));
-                
-                document.querySelectorAll('[id^="card-"]').forEach(card => {
-                    const cardId = card.id.replace('card-', '');
-                    if (allowedKpis.includes(cardId)) {
-                        card.classList.remove('hidden');
-                        const wrapper = card.closest('.kpi-group-wrapper');
-                        if (wrapper) wrapper.classList.remove('hidden');
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-            }
+            document.querySelectorAll('[id^="card-"]').forEach(card => {
+                const cardId = card.id.replace('card-', '');
+                if (allowedKpis.includes(cardId)) {
+                    card.classList.remove('hidden');
+                    sectorGrid.appendChild(card);
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
 
             setTimeout(() => { buildSectorChart(viewName); }, 80);
         }
@@ -4110,6 +4262,8 @@
                 const chartLabels = [];
                 const actualData = [];
                 const targetData = [];
+                const originalActuals = [];
+                const originalTargets = [];
 
                 allowedKpis.forEach(key => {
                     const elVal = document.getElementById(`val-${key}`);
@@ -4122,10 +4276,29 @@
                         if (cardTitle) kpiName = cardTitle.innerText;
 
                         chartLabels.push(kpiName);
-                        actualData.push(valNum);
                         
                         const targetVal = kpiSettings[key] ? kpiSettings[key].target : 0;
-                        targetData.push(targetVal);
+                        const unit = valText.replace(/[0-9.,\-+]/g, '').trim();
+
+                        // Calculate percentage achievement
+                        const isInverse = ['hse-ltifr', 'hse-accidents', 'visa-processing-time', 'hotel-cancel-rate', 'comp-violations-count', 'comp-resolution-time', 'comp-critical-findings', 'visa-data-error-rate', 'visa-complaints-rate', 'hotel-overbooking-incidents', 'meal-waste-percentage', 'hospitality-complaints'].includes(key);
+                        let achievement = 100;
+                        if (isInverse) {
+                            if (targetVal === 0) {
+                                achievement = valNum === 0 ? 100 : Math.max(0, 100 - valNum * 10);
+                            } else {
+                                achievement = valNum === 0 ? 120 : (targetVal / valNum) * 100;
+                            }
+                        } else {
+                            achievement = targetVal > 0 ? (valNum / targetVal) * 100 : (valNum > 0 ? 120 : 100);
+                        }
+                        
+                        const displayAchievement = Math.min(150, Math.max(0, achievement));
+                        actualData.push(displayAchievement);
+                        targetData.push(100);
+                        
+                        originalActuals.push(valText);
+                        originalTargets.push(targetVal.toLocaleString() + (unit ? ' ' + unit : ''));
                     }
                 });
 
@@ -4143,7 +4316,7 @@
                         labels: chartLabels,
                         datasets: [
                             { 
-                                label: isEn ? 'Actual Performance' : 'الأداء الفعلي الحالي', 
+                                label: isEn ? 'Actual Performance (Achievement %)' : 'الأداء الفعلي الحالي (نسبة الإنجاز %)', 
                                 data: actualData, 
                                 backgroundColor: actualGradient, 
                                 borderRadius: 6,
@@ -4151,7 +4324,7 @@
                                 categoryPercentage: 0.7
                             },
                             { 
-                                label: isEn ? 'Target Value' : 'المستهدف الأساسي', 
+                                label: isEn ? 'Target Baseline (100%)' : 'المستهدف الأساسي (100%)', 
                                 data: targetData, 
                                 backgroundColor: targetGradient, 
                                 borderRadius: 6,
@@ -4164,12 +4337,30 @@
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: { labels: { color: '#0f172a', font: { family: fontName, size: 11, weight: 'bold' } } }
+                            legend: { labels: { color: '#0f172a', font: { family: fontName, size: 11, weight: 'bold' } } },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const index = context.dataIndex;
+                                        const isActual = context.datasetIndex === 0;
+                                        const originalVal = isActual ? originalActuals[index] : originalTargets[index];
+                                        const labelText = isActual ? (isEn ? 'Actual: ' : 'الفعلي: ') : (isEn ? 'Target: ' : 'المستهدف: ');
+                                        const pctText = isActual ? ` (${context.raw.toFixed(1)}%)` : '';
+                                        return labelText + originalVal + pctText;
+                                    }
+                                }
+                            }
                         },
                         scales: {
                             y: { 
                                 grid: { color: 'rgba(0, 0, 0, 0.06)' }, 
-                                ticks: { color: '#1e293b', font: { family: fontName, size: 10, weight: 'bold' } } 
+                                ticks: { 
+                                    color: '#1e293b', 
+                                    font: { family: fontName, size: 10, weight: 'bold' },
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                } 
                             },
                             x: { 
                                 grid: { color: 'rgba(0, 0, 0, 0.03)' }, 
