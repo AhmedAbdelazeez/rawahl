@@ -209,6 +209,48 @@ namespace project.Pages
         [BindProperty]
         public int RentalActiveContracts { get; set; } = 45;
 
+        // ================= مؤشرات أداء إضافية (New KPIs) =================
+        [BindProperty]
+        public double OpsD15 { get; set; } = 45.0; // time in minutes (Target: <= 60)
+        [BindProperty]
+        public double OpsD16 { get; set; } = 25.0; // time in minutes (Target: <= 30)
+        [BindProperty]
+        public double OpsD17 { get; set; } = 2.4; // % absence rate (Target: <= 5%)
+        [BindProperty]
+        public double OpsD18 { get; set; } = 98.0; // % operators count adherence (Target: 100%)
+        [BindProperty]
+        public double OpsD19 { get; set; } = 97.5; // % uniform compliance (Target: 100%)
+        [BindProperty]
+        public int OpsD20 { get; set; } = 0; // incidents (Target: <= 2)
+        [BindProperty]
+        public double OpsD21 { get; set; } = 35.0; // time in minutes (Target: <= 45)
+        [BindProperty]
+        public double OpsD22 { get; set; } = 40.0; // time in minutes (Target: <= 50)
+        [BindProperty]
+        public double OpsD23 { get; set; } = 55.0; // time in minutes (Target: <= 60)
+        [BindProperty]
+        public double OpsD24 { get; set; } = 99.0; // % contract standard adherence (Target: 100%)
+        [BindProperty]
+        public double OpsD25 { get; set; } = 98.5; // % capacity limit adherence (Target: 100%)
+        [BindProperty]
+        public double OpsD26 { get; set; } = 98.0; // % buses count adherence (Target: 100%)
+        [BindProperty]
+        public double OpsD27 { get; set; } = 99.2; // % directional signs adherence (Target: 100%)
+        [BindProperty]
+        public double OpsD28 { get; set; } = 97.8; // % operational signs adherence (Target: 100%)
+        [BindProperty]
+        public int OpsD29 { get; set; } = 0; // violations (Target: 0)
+        [BindProperty]
+        public double OpsD30 { get; set; } = 99.5; // % security guards availability (Target: 100%)
+        [BindProperty]
+        public double OpsD31 { get; set; } = 98.5; // % qualified buses (Target: 100%)
+        [BindProperty]
+        public double OpsD32 { get; set; } = 99.6; // % buses tracking coverage (Target: 100%)
+        [BindProperty]
+        public double ComD10 { get; set; } = 99.2; // % fleet cleaning compliance (Target: 100%)
+        [BindProperty]
+        public int HseD15 { get; set; } = 0; // violations (Target: 0)
+
         public bool IsTransportationManager { get; set; }
         public bool IsPilgrimServicesManager { get; set; }
 
