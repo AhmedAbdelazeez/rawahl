@@ -1388,7 +1388,7 @@
                                 <span class="text-[9px] bg-amber-50 text-amber-700 px-2.5 py-1 rounded-lg border border-amber-200 font-black mb-2 inline-block">مشروع نقل حيوي</span>
                                 <h3 class="text-lg font-black text-slate-900 group-hover:text-[#b0841a] transition-colors flex items-center gap-2">
                                     <i class="fa-solid fa-bus text-[#b0841a]"></i>
-                                    <span data-i18n="project-shuttle-title">مشروع نقل المتردد</span>
+                                    <span data-i18n="project-shuttle-title">مشروع النقل الترددي </span>
                                 </h3>
                                 <p class="text-xs text-slate-500 font-semibold mt-2.5 leading-relaxed">إدارة وتشغيل مسارات تفويج ونقل الحجاج في المشاعر المقدسة ونسب الالتزام بالجدول وتفاصيل استغلال الأسطول.</p>
                             </div>
@@ -1435,7 +1435,7 @@
                         <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
                             <div>
                                 <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">تحليل تشغيل الحافلات الميداني</span>
-                                <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="project-shuttle-detail-title">مشروع نقل المتردد - التحليل التشغيلي</h2>
+                                <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="project-shuttle-detail-title">النقل الترددي  - التحليل التشغيلي</h2>
                                 <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">متابعة أداء حافلات التفويج والمستفيدين والرحلات وتكاليف التشغيل اليومية.</p>
                             </div>
                             <button onclick="showView('dept-projects')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
@@ -3293,7 +3293,7 @@
                 'dept-compliance-desc': 'متابعة التزام العمليات التشغيلية، والسياسات والإجراءات، وعقود التشغيل ومعالجة المخالفات.',
                 'dept-kpi-count-10': '10 مؤشرات أداء',
                 'dept-projects-title': 'إدارة المشاريع',
-                'dept-projects-desc': 'مراقبة وتحليل أداء المشاريع الاستراتيجية والتشغيلية، بما يشمل نقل المتردد وجولة مكة.',
+        'dept-projects-desc': 'مراقبة وتحليل أداء المشاريع الاستراتيجية والتشغيلية، بما يشمل النقل الترددي  وجولة مكة.',
                 'dept-projects-count-2': 'مشروعين',
                 'btn-back-depts': 'العودة للإدارات',
                 'kpi-comp-ops-rate': 'نسبة الالتزام التشغيلي',
@@ -3309,9 +3309,9 @@
                 'chart-compliance-trend': 'تحليل اتجاه الامتثال الشهري (آخر 6 أشهر)',
                 'chart-compliance-distribution': 'توزيع مؤشرات الامتثال',
                 'table-compliance-tracking': 'جدول متابعة الأداء التاريخي والامتثال الشهري',
-                'project-shuttle-title': 'مشروع نقل المتردد',
+        'project-shuttle-title': 'مشروع النقل الترددي ',
                 'project-makkah-tour-title': 'مشروع جولة مكة',
-                'project-shuttle-detail-title': 'مشروع نقل المتردد - التحليل التشغيلي',
+        'project-shuttle-detail-title': 'مشروع النقل الترددي  - التحليل التشغيلي',
                 'project-makkah-tour-detail-title': 'مشروع جولة مكة - التحليل التشريحي والتشغيلي',
                 'kpi-shuttle-beneficiaries': 'عدد المستفيدين',
                 'kpi-shuttle-trips': 'عدد الرحلات',
@@ -4135,7 +4135,7 @@
                 document.getElementById('header-main-title').innerText = isEn ? 'Project Management Office' : 'إدارة المشاريع الاستراتيجية';
             } else if (viewName === 'project-shuttle') {
                 if (viewProjectShuttle) viewProjectShuttle.classList.remove('hidden');
-                document.getElementById('header-main-title').innerText = isEn ? 'Shuttle Transport Project Details' : 'مشروع نقل المتردد - التفاصيل';
+        document.getElementById('header-main-title').innerText = isEn ? 'Shuttle Transport Project Details' : 'مشروع النقل الترددي  - التفاصيل';
                 setTimeout(() => { initShuttleCharts(); }, 100);
             } else if (viewName === 'project-makkah-tour') {
                 if (viewProjectMakkahTour) viewProjectMakkahTour.classList.remove('hidden');
