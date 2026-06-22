@@ -10,27 +10,38 @@ namespace temp_excel_reader
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             try
             {
-                string path = @"..\مؤشرات استراتيجية.xlsx";
+                string path = @"newKpi.xlsx";
                 var sheets = MiniExcel.GetSheetNames(path);
-                foreach (var sheet in sheets)
+                using (var writer = new StreamWriter(@"scratch\kpis_clean.txt", false, System.Text.Encoding.UTF8))
                 {
-                    Console.WriteLine($"--- Sheet: {sheet} ---");
-                    var rows = MiniExcel.Query(path, useHeaderRow: false, sheetName: sheet).ToList();
-                    Console.WriteLine($"Total rows: {rows.Count}");
-                    for (int i = 0; i < rows.Count; i++)
+                    foreach (var sheet in sheets)
                     {
-                        var row = (IDictionary<string, object>)rows[i];
-                        Console.Write($"Row {i+1}: ");
-                        foreach (var kvp in row)
+                        string line = $"--- Sheet: {sheet} ---";
+                        Console.WriteLine(line);
+                        writer.WriteLine(line);
+                        var rows = MiniExcel.Query(path, useHeaderRow: false, sheetName: sheet).ToList();
+                        line = $"Total rows: {rows.Count}";
+                        Console.WriteLine(line);
+                        writer.WriteLine(line);
+                        for (int i = 0; i < rows.Count; i++)
                         {
-                            if (kvp.Value != null && !string.IsNullOrWhiteSpace(kvp.Value.ToString()))
+                            var row = (IDictionary<string, object>)rows[i];
+                            var parts = new List<string>();
+                            parts.Add($"Row {i+1}:");
+                            foreach (var kvp in row)
                             {
-                                Console.Write($"[{kvp.Key}]: '{kvp.Value}' ");
+                                if (kvp.Value != null && !string.IsNullOrWhiteSpace(kvp.Value.ToString()))
+                                {
+                                    parts.Add($"[{kvp.Key}]: '{kvp.Value}'");
+                                }
                             }
+                            string fullLine = string.Join(" ", parts);
+                            Console.WriteLine(fullLine);
+                            writer.WriteLine(fullLine);
                         }
-                        Console.WriteLine();
                     }
                 }
             }
