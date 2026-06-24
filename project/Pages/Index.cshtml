@@ -860,7 +860,7 @@
                     </div>
                 </section>
 
-                <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-start" data-aos="fade-up">
+                <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 text-start" data-aos="fade-up">
                     <!-- Service Contracts & Agreements -->
                     <div onclick="showView('service-contracts')" class="glass-card p-10 rounded-3xl cursor-pointer flex flex-col justify-between min-h-[320px] group bg-white border-2 border-[#b0841a]/15 hover:border-[#b0841a] transition-all duration-350 shadow-md hover:shadow-xl">
                         <div class="flex justify-between items-start gap-4">
@@ -879,21 +879,39 @@
                         </div>
                     </div>
 
-                    <!-- Service Hajj & Umrah Transport -->
+                    <!-- Service Hajj Transport -->
                     <div onclick="showView('service-hajj-transport')" class="glass-card p-10 rounded-3xl cursor-pointer flex flex-col justify-between min-h-[320px] group bg-white border-2 border-[#b0841a]/15 hover:border-[#b0841a] transition-all duration-350 shadow-md hover:shadow-xl">
                         <div class="flex justify-between items-start gap-4">
                              <div>
                                  <h3 class="text-2xl font-black text-slate-900 mt-5 flex items-center gap-3">
                                      <i class="fa-solid fa-kaaba text-[#b0841a] text-3xl group-hover:scale-110 transition-transform duration-300"></i>
-                                     <span data-i18n="service-hajj-title">خدمة الحج والعمرة للنقل</span>
+                                     <span data-i18n="service-hajj-title">خدمة نقل الحجاج</span>
                                  </h3>
-                                 <p class="text-sm text-slate-500 font-semibold mt-4 leading-relaxed" data-i18n="dept-hajj-desc">تفويج ونقل ضيوف الرحمن والتزام مسارات التشغيل وجاهزية الأسطول والأمن والسلامة.</p>
+                                 <p class="text-sm text-slate-500 font-semibold mt-4 leading-relaxed" data-i18n="service-hajj-desc">تفويج ونقل الحجاج والتزام مسارات التشغيل وجاهزية الأسطول والأمن والسلامة للحج.</p>
                              </div>
                              <span class="w-14 h-14 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-lg font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-all duration-300"><i class="fa-solid fa-arrow-left ltr:rotate-180 text-xl"></i></span>
                         </div>
                         <div class="mt-6 flex justify-between items-end border-t border-slate-100 pt-5">
                              <span class="text-xs text-[#b0841a] font-bold">6 مؤشرات أداء</span>
                              <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg font-black border border-slate-200">HAJJ</span>
+                        </div>
+                    </div>
+
+                    <!-- Service Umrah Transport -->
+                    <div onclick="showView('service-umrah-transport')" class="glass-card p-10 rounded-3xl cursor-pointer flex flex-col justify-between min-h-[320px] group bg-white border-2 border-[#b0841a]/15 hover:border-[#b0841a] transition-all duration-350 shadow-md hover:shadow-xl">
+                        <div class="flex justify-between items-start gap-4">
+                             <div>
+                                 <h3 class="text-2xl font-black text-slate-900 mt-5 flex items-center gap-3">
+                                     <i class="fa-solid fa-mosque text-[#b0841a] text-3xl group-hover:scale-110 transition-transform duration-300"></i>
+                                     <span data-i18n="service-umrah-title">خدمة نقل المعتمرين</span>
+                                 </h3>
+                                 <p class="text-sm text-slate-500 font-semibold mt-4 leading-relaxed" data-i18n="service-umrah-desc">تفويج ونقل المعتمرين والتزام مسارات التشغيل وجاهزية الأسطول والأمن والسلامة للعمرة.</p>
+                             </div>
+                             <span class="w-14 h-14 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-lg font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-all duration-300"><i class="fa-solid fa-arrow-left ltr:rotate-180 text-xl"></i></span>
+                        </div>
+                        <div class="mt-6 flex justify-between items-end border-t border-slate-100 pt-5">
+                             <span class="text-xs text-[#b0841a] font-bold">6 مؤشرات أداء</span>
+                             <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg font-black border border-slate-200">UMRAH</span>
                         </div>
                     </div>
 
@@ -3507,11 +3525,14 @@
 
                 // Specialized Transportation Sector views (Arabic)
                 'sect-trans-services-title': 'خدمات القطاع',
-                'sect-trans-services-desc': 'العقود والاتفاقيات، الحج والعمرة، وخدمات الإيجار والتشغيل.',
+                'sect-trans-services-desc': 'العقود والاتفاقيات، نقل الحجاج، نقل المعتمرين، وخدمات الإيجار والتشغيل.',
                 'sect-trans-depts-title': 'كافة الإدارات',
                 'sect-trans-depts-desc': 'إدارات النقل التخصصي المساندة والتشغيلية الموحدة.',
                 'service-contracts-title': 'خدمة العقود والاتفاقيات',
-                'service-hajj-title': 'خدمة الحج والعمرة للنقل',
+                'service-hajj-title': 'خدمة نقل الحجاج',
+                'service-hajj-desc': 'تفويج ونقل الحجاج والتزام مسارات التشغيل وجاهزية الأسطول والأمن والسلامة للحج.',
+                'service-umrah-title': 'خدمة نقل المعتمرين',
+                'service-umrah-desc': 'تفويج ونقل المعتمرين والتزام مسارات التشغيل وجاهزية الأسطول والأمن والسلامة للعمرة.',
                 'service-leasing-title': 'خدمة التاجير والتشغيل '
             },
             'en': {
@@ -3747,11 +3768,14 @@
 
                 // Specialized Transportation Sector views (English)
                 'sect-trans-services-title': 'Sector Services',
-                'sect-trans-services-desc': 'Contracts & Agreements, Hajj & Umrah, and Rental & Operations.',
+                'sect-trans-services-desc': 'Contracts & Agreements, Hajj Transport, Umrah Transport, and Rental & Operations.',
                 'sect-trans-depts-title': 'All Departments',
                 'sect-trans-depts-desc': 'Support and operational departments for Specialized Transportation.',
                 'service-contracts-title': 'service Contracts & Agreements',
-                'service-hajj-title': 'service Hajj & Umrah Transport',
+                'service-hajj-title': 'Hajj Transport Service',
+                'service-hajj-desc': 'Monitoring Hajj pilgrim transport scheduling, route compliance, fleet readiness, and driver safety.',
+                'service-umrah-title': 'Umrah Transport Service',
+                'service-umrah-desc': 'Monitoring Umrah pilgrim transport scheduling, route compliance, fleet readiness, and passenger safety.',
                 'service-leasing-title': 'service Rental & Operations Services'
             }
         };
@@ -4157,6 +4181,7 @@
             
             'service-contracts': ['new-contracts', 'cust-ret', 'audit-comp', 'contracts-renewal-rate', 'contracts-turnaround-time', 'contracts-legal-disputes'],
             'service-hajj-transport': ['fleet-ready', 'ops-plan', 'nps', 'hajj-driver-adherence', 'hajj-fuel-efficiency', 'hajj-safety-training-rate'],
+            'service-umrah-transport': ['pilgrim-ops-plan', 'pilgrim-safety-rate', 'pilgrim-shuttle-util', 'pilgrim-bus-maintenance-adherence', 'pilgrim-trip-duration', 'pilgrim-satisfaction'],
             'service-leasing': ['rental-fleet-utilization', 'rental-revenue-per-bus', 'rental-contract-satisfaction', 'rental-maintenance-adherence', 'rental-safety-compliance', 'rental-active-contracts'],
 
             'dept-tourism': ['hotel-occupancy', 'hotel-cancel-rate', 'hotel-rating'],
@@ -4325,7 +4350,7 @@
                         backBtn.querySelector('span').innerText = isEn ? 'Back to Departments' : 'العودة لقائمة الإدارات';
                     }
                 } else if (isService) {
-                    const isTransService = ['service-contracts', 'service-hajj-transport', 'service-leasing', 'contracts', 'hajj', 'leasing'].includes(viewName);
+                    const isTransService = ['service-contracts', 'service-hajj-transport', 'service-umrah-transport', 'service-leasing', 'contracts', 'hajj', 'umrah', 'leasing'].includes(viewName);
                     if (isTransService) {
                         if (breadcrumbRoot) {
                             breadcrumbRoot.setAttribute('onclick', "showView('transportation-services')");
@@ -4348,7 +4373,8 @@
                 }
 
                 if (viewName === 'contracts' || viewName === 'service-contracts') sectorTitle = isEn ? 'service Contracts & Agreements' : 'خدمة العقود والاتفاقيات';
-                else if (viewName === 'hajj' || viewName === 'service-hajj-transport') sectorTitle = isEn ? 'service Hajj & Umrah Transport' : 'خدمة الحج والعمرة للنقل';
+                else if (viewName === 'hajj' || viewName === 'service-hajj-transport') sectorTitle = isEn ? 'Hajj Transport Service' : 'خدمة نقل الحجاج';
+                else if (viewName === 'umrah' || viewName === 'service-umrah-transport') sectorTitle = isEn ? 'Umrah Transport Service' : 'خدمة نقل المعتمرين';
                 else if (viewName === 'leasing' || viewName === 'service-leasing') sectorTitle = isEn ? 'service Rental & Operations Services' : 'خدمة التاجير والتشغيل ';
                 else if (viewName === 'dept-tourism') sectorTitle = isEn ? 'Tourism Department' : 'ادارة السياحة';
                 else if (viewName === 'dept-ops') sectorTitle = isEn ? 'Operations Department' : 'ادارة العمليات';
@@ -4396,9 +4422,15 @@
                     backAction = "showView('transportation-services')";
                     backText = isEn ? 'Back to Services' : 'العودة للخدمات';
                 } else if (viewName === 'hajj' || viewName === 'service-hajj-transport') {
-                    badge = isEn ? 'Hajj & Umrah Transport Services' : 'خدمات نقل الحجاج والمعتمرين';
-                    title = isEn ? 'Hajj & Umrah Transport Service - Operational Analysis' : 'خدمة الحج والعمرة للنقل - التحليل التشغيلي';
-                    desc = isEn ? 'Monitoring pilgrim transport scheduling, route compliance, fleet readiness, and driver safety.' : 'تفويج ونقل ضيوف الرحمن والتزام مسارات التشغيل وجاهزية الأسطول والأمن والسلامة.';
+                    badge = isEn ? 'Hajj Transport Services' : 'خدمات نقل الحجاج';
+                    title = isEn ? 'Hajj Transport Service - Operational Analysis' : 'خدمة نقل الحجاج - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring Hajj pilgrim transport scheduling, route compliance, fleet readiness, and driver safety.' : 'تفويج ونقل الحجاج والتزام مسارات التشغيل وجاهزية الأسطول والأمن والسلامة للحج.';
+                    backAction = "showView('transportation-services')";
+                    backText = isEn ? 'Back to Services' : 'العودة للخدمات';
+                } else if (viewName === 'umrah' || viewName === 'service-umrah-transport') {
+                    badge = isEn ? 'Umrah Transport Services' : 'خدمات نقل المعتمرين';
+                    title = isEn ? 'Umrah Transport Service - Operational Analysis' : 'خدمة نقل المعتمرين - التحليل التشغيلي';
+                    desc = isEn ? 'Monitoring Umrah pilgrim transport scheduling, route compliance, fleet readiness, and passenger safety.' : 'تفويج ونقل المعتمرين والتزام مسارات التشغيل وجاهزية الأسطول والأمن والسلامة للعمرة.';
                     backAction = "showView('transportation-services')";
                     backText = isEn ? 'Back to Services' : 'العودة للخدمات';
                 } else if (viewName === 'leasing' || viewName === 'service-leasing') {
@@ -4508,7 +4540,7 @@
             // 3. Render 4 Top Executive KPIs for Sector/Department/Service
             const execData = {
                 'contracts': { revenue: '45.0', growth: '+6.5%', achievement: '93%', transactions: '1,240' },
-                'hajj': { revenue: '62.5', growth: '+11.2%', achievement: '90%', transactions: '8,500' },
+                'hajj': { revenue: '38.5', growth: '+9.2%', achievement: '92%', transactions: '5,000' },
                 'leasing': { revenue: '35.0', growth: '+7.1%', achievement: '89%', transactions: '2,680' },
                 'dept-finance': { revenue: '142.5', growth: '+8.2%', achievement: '91%', transactions: '12,420' },
                 'dept-commercial': { revenue: '45.0', growth: '+6.5%', achievement: '93%', transactions: '1,240' },
@@ -4516,6 +4548,11 @@
                 'dept-support': { revenue: '142.5', growth: '+8.2%', achievement: '91%', transactions: '12,420' },
                 'dept-hse': { revenue: '142.5', growth: '+8.2%', achievement: '95%', transactions: '12,420' },
                 'dept-strategy': { revenue: '142.5', growth: '+8.2%', achievement: '91%', transactions: '12,420' },
+                
+                'service-contracts': { revenue: '45.0', growth: '+6.5%', achievement: '93%', transactions: '1,240' },
+                'service-hajj-transport': { revenue: '38.5', growth: '+9.2%', achievement: '92%', transactions: '5,000' },
+                'service-umrah-transport': { revenue: '24.0', growth: '+14.5%', achievement: '90%', transactions: '3,500' },
+                'service-leasing': { revenue: '35.0', growth: '+7.1%', achievement: '89%', transactions: '2,680' },
                 
                 'service-visa': { revenue: '15.2', growth: '+14.5%', achievement: '95%', transactions: '16,420' },
                 'service-hotels': { revenue: '28.4', growth: '+12.1%', achievement: '88%', transactions: '5,200' },
@@ -5433,6 +5470,18 @@
                 } else if (currentView === 'service-hospitality') {
                     deptNameAr = 'خدمة الضيافة';
                     deptNameEn = 'Hospitality & Catering Service';
+                } else if (currentView === 'service-contracts') {
+                    deptNameAr = 'خدمة العقود والاتفاقيات';
+                    deptNameEn = 'Contracts & Agreements Service';
+                } else if (currentView === 'service-hajj-transport') {
+                    deptNameAr = 'خدمة نقل الحجاج';
+                    deptNameEn = 'Hajj Transport Service';
+                } else if (currentView === 'service-umrah-transport') {
+                    deptNameAr = 'خدمة نقل المعتمرين';
+                    deptNameEn = 'Umrah Transport Service';
+                } else if (currentView === 'service-leasing') {
+                    deptNameAr = 'خدمة التأجير والتشغيل';
+                    deptNameEn = 'Rental & Operations Service';
                 }
                 const currentName = lang === 'en' ? deptNameEn : deptNameAr;
                 if (titleText) titleText.innerText = currentName;
