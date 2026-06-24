@@ -903,7 +903,7 @@
                              <div>
                                  <h3 class="text-2xl font-black text-slate-900 mt-5 flex items-center gap-3">
                                      <i class="fa-solid fa-bus text-[#b0841a] text-3xl group-hover:scale-110 transition-transform duration-300"></i>
-                                     <span data-i18n="service-leasing-title">خدمة خدمات الايجار والتشغيل</span>
+                                     <span data-i18n="service-leasing-title">خدمة التاجير والتشغيل </span>
                                  </h3>
                                  <p class="text-sm text-slate-500 font-semibold mt-4 leading-relaxed" data-i18n="dept-fleet-desc">متابعة جاهزية أسطول الحافلات اليومية ونسب استغلال المقاعد وجداول الصيانة الدورية.</p>
                              </div>
@@ -3512,7 +3512,7 @@
                 'sect-trans-depts-desc': 'إدارات النقل التخصصي المساندة والتشغيلية الموحدة.',
                 'service-contracts-title': 'خدمة العقود والاتفاقيات',
                 'service-hajj-title': 'خدمة الحج والعمرة للنقل',
-                'service-leasing-title': 'خدمة خدمات الايجار والتشغيل'
+                'service-leasing-title': 'خدمة التاجير والتشغيل '
             },
             'en': {
                 'langToggleText': 'العربية (AR)',
@@ -4349,7 +4349,7 @@
 
                 if (viewName === 'contracts' || viewName === 'service-contracts') sectorTitle = isEn ? 'service Contracts & Agreements' : 'خدمة العقود والاتفاقيات';
                 else if (viewName === 'hajj' || viewName === 'service-hajj-transport') sectorTitle = isEn ? 'service Hajj & Umrah Transport' : 'خدمة الحج والعمرة للنقل';
-                else if (viewName === 'leasing' || viewName === 'service-leasing') sectorTitle = isEn ? 'service Rental & Operations Services' : 'خدمة خدمات الايجار والتشغيل';
+                else if (viewName === 'leasing' || viewName === 'service-leasing') sectorTitle = isEn ? 'service Rental & Operations Services' : 'خدمة التاجير والتشغيل ';
                 else if (viewName === 'dept-tourism') sectorTitle = isEn ? 'Tourism Department' : 'ادارة السياحة';
                 else if (viewName === 'dept-ops') sectorTitle = isEn ? 'Operations Department' : 'ادارة العمليات';
                 else if (viewName === 'dept-commercial') sectorTitle = isEn ? 'Commercial Department' : 'الادارة التجارية';
@@ -4402,8 +4402,8 @@
                     backAction = "showView('transportation-services')";
                     backText = isEn ? 'Back to Services' : 'العودة للخدمات';
                 } else if (viewName === 'leasing' || viewName === 'service-leasing') {
-                    badge = isEn ? 'Bus Leasing & Operations Services' : 'خدمات تأجير الحافلات والتشغيل';
-                    title = isEn ? 'Rental & Operations Service - Operational Analysis' : 'خدمة خدمات الايجار والتشغيل - التحليل التشغيلي';
+                    badge = isEn ? 'Bus Leasing & Operations Services' : 'خدمة التاجير والتشغيل ';
+                    title = isEn ? 'Rental & Operations Service - Operational Analysis' : 'خدمة التاجير والتشغيل  - التحليل التشغيلي';
                     desc = isEn ? 'Monitoring daily rental fleet utilization, revenue per bus, and maintenance schedules.' : 'متابعة جاهزية أسطول الحافلات اليومية ونسب استغلال المقاعد وجداول الصيانة الدورية للتأجير.';
                     backAction = "showView('transportation-services')";
                     backText = isEn ? 'Back to Services' : 'العودة للخدمات';
