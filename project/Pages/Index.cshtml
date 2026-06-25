@@ -404,7 +404,7 @@
                     
                     <div class="sidebar-header" data-i18n="sidebar-business-areas">إدارات الأعمال الحيوية</div>
                     
-                    @if (Model.IsTransportationManager)
+                    @if (Model.ShowTransportationSector)
                     {
                         <a href="javascript:void(0)" onclick="showView('transportation-sector')" id="lnk-transportation-sector">
                             <i class="fa-solid fa-bus"></i>
@@ -412,7 +412,7 @@
                         </a>
                     }
                     
-                    @if (Model.IsPilgrimServicesManager)
+                    @if (Model.ShowPilgrimSector)
                     {
                         <a href="javascript:void(0)" onclick="showView('pilgrim-sector')" id="lnk-pilgrim-sector">
                             <i class="fa-solid fa-kaaba"></i>
@@ -4031,34 +4031,72 @@
         function showView(viewName) {
             const isEn = document.documentElement.lang === 'en';
             
-            // 1. RBAC Check on views (Bypassed for testing / preview)
-            if (viewName === 'transportation-sector' && !isTransportationManager) {
-                console.warn("Bypassed role check for Specialized Transportation.");
-            }
-            if (viewName === 'pilgrim-sector' && !isPilgrimServicesManager) {
-                console.warn("Bypassed role check for Pilgrim Services.");
-            }
-            if (['service-visa', 'service-hotels', 'service-transport', 'service-hospitality'].includes(viewName) && !isPilgrimServicesManager) {
-                console.warn("Bypassed role check for Pilgrim sub-services.");
+            // 1. RBAC Check on views
+            let isAllowed = true;
+
+            // Sectors access validation
+            if (viewName === 'sectors' || viewName === 'transportation-sector' || viewName === 'transportation-services' || viewName === 'transportation-departments') {
+                const transDepts = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'operations', 'fleet', 'hr', 'hse', 'audit', 'pmo'];
+                const hasTransAccess = isTransportationManager || transDepts.some(d => allowedDepts.includes(d));
+                if (!hasTransAccess) {
+                    isAllowed = false;
+                }
             }
 
-            if (viewName !== 'overview' && viewName !== 'departments' && viewName !== 'transportation-sector' && viewName !== 'pilgrim-sector' && !viewName.startsWith('service-')) {
-                const uiToDbMapping = {
-                    'contracts': 'contracts',
-                    'hajj': 'hajj',
-                    'leasing': 'leasing',
-                    'dept-finance': 'finance',
-                    'dept-commercial': 'commercial',
-                    'dept-ops': 'operations',
-                    'dept-support': 'hr',
-                    'dept-hse': 'hse',
-                    'dept-strategy': 'pmo'
-                };
-                const dbCode = uiToDbMapping[viewName];
-                if (dbCode && !allowedDepts.includes(dbCode)) {
-                    alert(isEn ? "Access Denied: You do not have permissions for this section." : "عذراً: ليس لديك صلاحية للوصول إلى هذا القسم.");
-                    return;
+            if (viewName === 'pilgrim-sector') {
+                const pilgrimDepts = ['tourism', 'visa', 'hotels', 'transport', 'hospitality'];
+                const hasPilgrimAccess = isPilgrimServicesManager || pilgrimDepts.some(d => allowedDepts.includes(d));
+                if (!hasPilgrimAccess) {
+                    isAllowed = false;
                 }
+            }
+
+            // Services and Departments mapping
+            const uiToDbMapping = {
+                'contracts': 'contracts',
+                'hajj': 'hajj',
+                'leasing': 'leasing',
+                'dept-finance': 'finance',
+                'dept-commercial': 'commercial',
+                'dept-ops': 'operations',
+                'dept-fleet': 'fleet',
+                'dept-support': 'hr',
+                'dept-hse': 'hse',
+                'dept-audit': 'audit',
+                'dept-strategy': 'pmo',
+                'dept-tourism': 'tourism',
+                'service-contracts': 'contracts',
+                'service-hajj-transport': 'hajj',
+                'service-umrah-transport': 'umrah',
+                'service-leasing': 'leasing',
+                'service-visa': 'visa',
+                'service-hotels': 'hotels',
+                'service-transport': 'transport',
+                'service-hospitality': 'hospitality'
+            };
+
+            const dbCode = uiToDbMapping[viewName];
+            if (dbCode) {
+                const isPilgrimDept = ['tourism', 'visa', 'hotels', 'transport', 'hospitality'].includes(dbCode);
+                const isTransDept = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'operations', 'fleet', 'hr', 'hse', 'audit', 'pmo'].includes(dbCode);
+                
+                let hasAccess = false;
+                if (isPilgrimDept && isPilgrimServicesManager) {
+                    hasAccess = true;
+                } else if (isTransDept && isTransportationManager) {
+                    hasAccess = true;
+                } else if (allowedDepts.includes(dbCode)) {
+                    hasAccess = true;
+                }
+
+                if (!hasAccess) {
+                    isAllowed = false;
+                }
+            }
+
+            if (!isAllowed) {
+                alert(isEn ? "Access Denied: You do not have permissions for this section." : "عذراً: ليس لديك صلاحية للوصول إلى هذا القسم.");
+                return;
             }
 
             if (viewName !== currentView) {
@@ -5522,10 +5560,24 @@
                     if (viewName !== 'overview' && viewName !== 'departments') {
                         let isAllowed = true;
                         
-                        if (viewName === 'transportation-sector' && !isTransportationManager) isAllowed = false;
-                        if (viewName === 'pilgrim-sector' && !isPilgrimServicesManager) isAllowed = false;
-                        if (['service-visa', 'service-hotels', 'service-transport', 'service-hospitality'].includes(viewName) && !isPilgrimServicesManager) isAllowed = false;
+                        // Sectors access validation
+                        if (viewName === 'sectors' || viewName === 'transportation-sector' || viewName === 'transportation-services' || viewName === 'transportation-departments') {
+                            const transDepts = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'operations', 'fleet', 'hr', 'hse', 'audit', 'pmo'];
+                            const hasTransAccess = isTransportationManager || transDepts.some(d => allowedDepts.includes(d));
+                            if (!hasTransAccess) {
+                                isAllowed = false;
+                            }
+                        }
 
+                        if (viewName === 'pilgrim-sector') {
+                            const pilgrimDepts = ['tourism', 'visa', 'hotels', 'transport', 'hospitality'];
+                            const hasPilgrimAccess = isPilgrimServicesManager || pilgrimDepts.some(d => allowedDepts.includes(d));
+                            if (!hasPilgrimAccess) {
+                                isAllowed = false;
+                            }
+                        }
+
+                        // Services and Departments mapping
                         const uiToDbMapping = {
                             'contracts': 'contracts',
                             'hajj': 'hajj',
@@ -5533,13 +5585,39 @@
                             'dept-finance': 'finance',
                             'dept-commercial': 'commercial',
                             'dept-ops': 'operations',
+                            'dept-fleet': 'fleet',
                             'dept-support': 'hr',
                             'dept-hse': 'hse',
-                            'dept-strategy': 'pmo'
+                            'dept-audit': 'audit',
+                            'dept-strategy': 'pmo',
+                            'dept-tourism': 'tourism',
+                            'service-contracts': 'contracts',
+                            'service-hajj-transport': 'hajj',
+                            'service-umrah-transport': 'umrah',
+                            'service-leasing': 'leasing',
+                            'service-visa': 'visa',
+                            'service-hotels': 'hotels',
+                            'service-transport': 'transport',
+                            'service-hospitality': 'hospitality'
                         };
+
                         const dbCode = uiToDbMapping[viewName];
-                        if (dbCode && !allowedDepts.includes(dbCode)) {
-                            isAllowed = false;
+                        if (dbCode) {
+                            const isPilgrimDept = ['tourism', 'visa', 'hotels', 'transport', 'hospitality'].includes(dbCode);
+                            const isTransDept = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'operations', 'fleet', 'hr', 'hse', 'audit', 'pmo'].includes(dbCode);
+                            
+                            let hasAccess = false;
+                            if (isPilgrimDept && isPilgrimServicesManager) {
+                                hasAccess = true;
+                            } else if (isTransDept && isTransportationManager) {
+                                hasAccess = true;
+                            } else if (allowedDepts.includes(dbCode)) {
+                                hasAccess = true;
+                            }
+
+                            if (!hasAccess) {
+                                isAllowed = false;
+                            }
                         }
                         
                         if (!isAllowed) {

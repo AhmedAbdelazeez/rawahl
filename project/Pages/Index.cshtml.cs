@@ -253,6 +253,8 @@ namespace project.Pages
 
         public bool IsTransportationManager { get; set; }
         public bool IsPilgrimServicesManager { get; set; }
+        public bool ShowTransportationSector { get; set; }
+        public bool ShowPilgrimSector { get; set; }
 
         public async Task OnGetAsync()
         {
@@ -280,6 +282,13 @@ namespace project.Pages
             }
 
             AllowedDepartmentCodes = await _departmentAccessService.GetAllowedDepartmentsAsync();
+
+            // Enforce sector links in sidebar/overview based on roles or any assigned department in that sector
+            ShowTransportationSector = IsTransportationManager || 
+                                       System.Linq.Enumerable.Any(AllowedDepartmentCodes, code => new[] { "contracts", "hajj", "umrah", "leasing", "finance", "commercial", "operations", "fleet", "hr", "hse", "audit", "pmo" }.Contains(code));
+
+            ShowPilgrimSector = IsPilgrimServicesManager || 
+                                System.Linq.Enumerable.Any(AllowedDepartmentCodes, code => new[] { "tourism", "visa", "hotels", "transport", "hospitality" }.Contains(code));
         }
     }
 }
