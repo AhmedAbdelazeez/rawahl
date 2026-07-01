@@ -1,0 +1,67 @@
+@model project.Pages.IndexModel
+
+<!-- ================= إدارة المشاريع (Project Management Department View) ================= -->
+<div id="view-dept-projects" class="view-container hidden">
+    <section class="mb-6" data-aos="fade-up">
+        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                <div>
+                    <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">بوابة المشاريع الاستراتيجية</span>
+                    <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="dept-projects-title">إدارة المشاريع</h2>
+                    <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">تفاصيل تشغيل ومراقبة المشاريع الميدانية الكبرى وجداولها الزمنية ونسب تحقيق مستهدفاتها.</p>
+                </div>
+                <button onclick="showView('transportation-sector')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span data-i18n="btn-back-depts">العودة للنقل التخصصي</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 text-start" data-aos="fade-up">
+        <!-- Project 1 Card: نقل المتردد -->
+        <div onclick="showView('project-shuttle')" class="glass-card p-6 rounded-3xl cursor-pointer flex flex-col justify-between h-64 group bg-white border-2 hover:border-[#b0841a] transition-all">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span class="text-[9px] bg-amber-50 text-amber-700 px-2.5 py-1 rounded-lg border border-amber-200 font-black mb-2 inline-block">مشروع نقل حيوي</span>
+                    <h3 class="text-lg font-black text-slate-900 group-hover:text-[#b0841a] transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-bus text-[#b0841a]"></i>
+                        <span data-i18n="project-shuttle-title">مشروع النقل الترددي </span>
+                    </h3>
+                    <p class="text-xs text-slate-500 font-semibold mt-2.5 leading-relaxed">إدارة وتشغيل مسارات تفويج ونقل الحجاج في المشاعر المقدسة ونسب الالتزام بالجدول وتفاصيل استغلال الأسطول.</p>
+                </div>
+                <span class="w-10 h-10 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-sm font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+            </div>
+            <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <div class="flex gap-4 text-xs font-bold text-slate-600">
+                     <span>المستفيدين: <span class="text-slate-950 font-black">250,000+</span></span>
+                     <span>نسبة الإنجاز: <span class="text-emerald-600 font-black">95%</span></span>
+                 </div>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">SHUTTLE</span>
+            </div>
+        </div>
+
+        <!-- Project 2 Card: جولة مكة -->
+        <div onclick="showView('project-makkah-tour')" class="glass-card p-6 rounded-3xl cursor-pointer flex flex-col justify-between h-64 group bg-white border-2 hover:border-[#b0841a] transition-all">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span class="text-[9px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-lg border border-emerald-200 font-black mb-2 inline-block">مشروع سياحي وتاريخي</span>
+                    <h3 class="text-lg font-black text-slate-900 group-hover:text-[#b0841a] transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-kaaba text-[#b0841a]"></i>
+                        <span data-i18n="project-makkah-tour-title">مشروع جولة مكة</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 font-semibold mt-2.5 leading-relaxed">تنظيم وإدارة الجولات السياحية والتاريخية الميدانية في مكة المكرمة والمعالم الأثرية والمزارات الدينية.</p>
+                </div>
+                <span class="w-10 h-10 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-sm font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+            </div>
+            <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <div class="flex gap-4 text-xs font-bold text-slate-600">
+                     <span>الزوار: <span class="text-slate-950 font-black">45,000+</span></span>
+                     <span>نسبة رضا العملاء: <span class="text-emerald-600 font-black">94%</span></span>
+                 </div>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">MAKKAH TOUR</span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,113 @@
+@model project.Pages.IndexModel
+
+<div id="view-kpi-dashboard" class="hidden">
+    <!-- Breadcrumbs and back button -->
+    <div id="view-kpi-breadcrumb" class="mb-6 flex justify-between items-center bg-white p-3.5 rounded-xl border border-slate-200 hidden">
+        <div class="text-xs font-bold text-slate-600 flex items-center gap-2">
+            <span onclick="showView('departments')" class="text-[#b0841a] hover:underline cursor-pointer"><i class="fa-solid fa-layer-group me-1"></i>كافة الإدارات</span>
+            <i class="fa-solid fa-chevron-left text-[8px] text-slate-400"></i>
+            <span id="breadcrumb-current" class="text-slate-200">تفاصيل الإدارة</span>
+        </div>
+        <button onclick="showView('departments')" class="text-xs font-black text-slate-700 hover:text-[#b0841a] bg-slate-100 px-3.5 py-1.5 rounded-lg border border-slate-200 transition-colors cursor-pointer flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>العودة لقائمة الإدارات</span>
+        </button>
+    </div>
+
+    <!-- عنوان بوابة الإدارة/الإدارات التفاعلي -->
+    <div id="view-kpi-title-wrapper" class="flex justify-between items-center mb-6 text-start">
+        <h2 id="view-kpi-title" class="text-md sm:text-lg font-black text-slate-800 flex items-center gap-2">
+            <span class="w-2.5 h-5 bg-[#b0841a] rounded-full inline-block"></span>
+            <span id="view-kpi-title-text">بوابة إدارات الأعمال</span>
+        </h2>
+    </div>
+
+    <!-- Service Detail Banner (Beautiful banner styled like Makkah Tour Project Detail banner) -->
+    <section id="service-detail-banner" class="mb-6 hidden" data-aos="fade-up">
+        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                <div>
+                    <span id="service-banner-badge" class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">مراقبة الخدمات</span>
+                    <h2 id="service-banner-title" class="text-lg font-black mt-2 text-slate-800">اسم الخدمة - التحليل التشغيلي</h2>
+                    <p id="service-banner-desc" class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">وصف تفصيلي للخدمة وأدائها ومؤشراتها الرئيسية.</p>
+                </div>
+                <button id="service-banner-back-btn" onclick="showView('transportation-services')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span id="service-banner-back-text">العودة للخدمات</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unified grid for Business Sectors (dynamic placement of cards to prevent uneven layouts) -->
+    <div id="sector-kpis-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 text-start hidden"></div>
+
+    <!-- الإدارات والشبكة الهيكلية لكروت الـ 22 مؤشر بالكامل -->
+    <!-- 4 Top Executive KPIs for Sector/Department/Service -->
+    <div id="executive-top-panel" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 text-start hidden">
+        <!-- Revenue -->
+        <div class="glass-card p-5 rounded-2xl border-l-4 border-[#b0841a] flex flex-col justify-between h-32 bg-white">
+            <span class="text-xs text-slate-500 font-bold flex items-center gap-1"><i class="fa-solid fa-coins text-[#b0841a]"></i> <span data-i18n="exec-top-revenue">إجمالي الإيرادات</span></span>
+            <span id="exec-top-revenue-val" class="text-2xl font-black text-slate-900 mt-2">--</span>
+            <span id="exec-top-revenue-sub" class="text-[9px] text-slate-400 font-bold">--</span>
+        </div>
+        <!-- Growth -->
+        <div class="glass-card p-5 rounded-2xl border-l-4 border-[#b0841a] flex flex-col justify-between h-32 bg-white">
+            <span class="text-xs text-slate-500 font-bold flex items-center gap-1"><i class="fa-solid fa-chart-line text-[#b0841a]"></i> <span data-i18n="exec-top-growth">معدل النمو</span></span>
+            <span id="exec-top-growth-val" class="text-2xl font-black text-slate-900 mt-2">--</span>
+            <span id="exec-top-growth-sub" class="text-[9px] text-slate-400 font-bold">--</span>
+        </div>
+        <!-- Achievement -->
+        <div class="glass-card p-5 rounded-2xl border-l-4 border-[#b0841a] flex flex-col justify-between h-32 bg-white">
+            <span class="text-xs text-slate-500 font-bold flex items-center gap-1"><i class="fa-solid fa-bullseye text-[#b0841a]"></i> <span data-i18n="exec-top-achievement">نسبة تحقيق المستهدف</span></span>
+            <span id="exec-top-achievement-val" class="text-2xl font-black text-slate-900 mt-2">--</span>
+            <div class="w-full bg-slate-100 rounded-full h-1.5 mt-2">
+                <div id="exec-top-achievement-bar" class="bg-gradient-to-r from-[#b0841a] to-[#8c6510] h-1.5 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+        <!-- Transactions -->
+        <div class="glass-card p-5 rounded-2xl border-l-4 border-[#b0841a] flex flex-col justify-between h-32 bg-white">
+            <span class="text-xs text-slate-500 font-bold flex items-center gap-1"><i class="fa-solid fa-gears text-[#b0841a]"></i> <span data-i18n="exec-top-transactions">إجمالي العمليات</span></span>
+            <span id="exec-top-transactions-val" class="text-2xl font-black text-slate-900 mt-2">--</span>
+            <span id="exec-top-transactions-sub" class="text-[9px] text-slate-400 font-bold">--</span>
+        </div>
+    </div>
+
+    <!-- Hidden templates for KPI Cards -->
+    <div id="kpis-container" class="hidden">
+        <!-- Transportation Company Departments -->
+        <partial name="Dashboard/Transportation/Departments/_Finance" />
+        <partial name="Dashboard/Transportation/Departments/_Commercial" />
+        <partial name="Dashboard/Transportation/Departments/_Operations" />
+        <partial name="Dashboard/Transportation/Departments/_Fleet" />
+        <partial name="Dashboard/Transportation/Departments/_Support" />
+        <partial name="Dashboard/Transportation/Departments/_Strategy" />
+        <partial name="Dashboard/Transportation/Departments/_Audit" />
+        <partial name="Dashboard/Transportation/Departments/_Hse" />
+
+        <!-- Transportation Company Services -->
+        <partial name="Dashboard/Transportation/Services/_Contracts" />
+        <partial name="Dashboard/Transportation/Services/_Hajj" />
+        <partial name="Dashboard/Transportation/Services/_Umrah" />
+        <partial name="Dashboard/Transportation/Services/_Leasing" />
+
+        <!-- Tourism & Umrah Company Departments -->
+        <partial name="Dashboard/Tourism/Departments/_Tourism" />
+
+        <!-- Tourism & Umrah Company Services -->
+        <partial name="Dashboard/Tourism/Services/_Visa" />
+        <partial name="Dashboard/Tourism/Services/_Hotels" />
+        <partial name="Dashboard/Tourism/Services/_Transport" />
+        <partial name="Dashboard/Tourism/Services/_Hospitality" />
+    </div>
+
+    <!-- 💡 سيكشن المخطط البياني للإدارة/الإدارة المنفرد (يعرض الأداء الفعلي والمستهدف) -->
+    <div id="sector-chart-container" class="glass-card p-6 rounded-2xl mb-8 text-start hidden" data-aos="fade-up">
+        <h3 class="text-xs font-black text-slate-800 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-chart-bar text-[#b0841a]"></i>
+            <span id="sector-chart-title">تحليل كفاءة أداء الإدارة المستمر</span>
+        </h3>
+        <div class="h-96 relative"><canvas id="sectorChart"></canvas></div>
+    </div>
+</div>

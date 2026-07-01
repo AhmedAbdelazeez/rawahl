@@ -1,0 +1,12 @@
+/* Specialized Transportation Sector Specific Stylesheet */
+/* Add any styling specific to Transportation company, its departments, and services here */
+
+/* Compliance Table Customizations */
+#view-dept-compliance table {
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+#view-dept-compliance tr:hover {
+    background-color: rgba(176, 132, 26, 0.03);
+}

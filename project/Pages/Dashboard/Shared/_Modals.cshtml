@@ -1,0 +1,54 @@
+@model project.Pages.IndexModel
+
+<!-- ================= لوحة تفاصيل مجموعة الأعلام (Group Drilldown Modal) ================= -->
+<div id="kpiGroupModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div id="kpiGroupOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs opacity-0 transition-opacity duration-300" onclick="closeKpiGroupModal()"></div>
+    <div id="kpiGroupBox" class="bg-white w-full max-w-lg rounded-3xl border border-[#b0841a]/40 shadow-2xl overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col max-h-[75vh] z-10 text-slate-800">
+        <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-slate-50 via-white to-slate-50 text-slate-800">
+            <div>
+                <h3 id="kpiGroupTitle" class="text-sm font-black text-slate-800 flex items-center gap-2">
+                    <span id="kpiGroupIndicator" class="w-2.5 h-2.5 rounded-full bg-[#b0841a] animate-pulse"></span>
+                    <span id="kpiGroupHeaderTitle">مؤشرات الأداء</span>
+                </h3>
+                <p id="kpiGroupSubtitle" class="text-[9px] text-[#b0841a] mt-1 font-bold">عرض المؤشرات التابعة لهذه الفئة</p>
+            </div>
+            <button onclick="closeKpiGroupModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-800 hover:bg-slate-200 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-xs"></i>
+            </button>
+        </div>
+        <div class="p-5 overflow-y-auto space-y-4 text-start flex-1">
+            <div id="kpiGroupList" class="space-y-2">
+                <!-- يتم حقن قائمة المؤشرات هنا بواسطة JS -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= لوحة معلومات الملف الشخصي المنبثقة ================= -->
+<div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div id="profileModalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs opacity-0 transition-opacity duration-300" onclick="closeProfileModal()"></div>
+    <div id="profileModalBox" class="bg-white w-full max-w-xs rounded-3xl border border-[#b0841a]/40 shadow-2xl overflow-hidden transform scale-90 opacity-0 transition-all duration-300 flex flex-col p-6 z-10 text-center text-slate-800">
+        <button onclick="closeProfileModal()" class="absolute top-4 left-4 w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center transition-colors border border-slate-200">
+            <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+        <div class="w-16 h-16 rounded-full border-2 border-[#b0841a] bg-[#faf9f6] flex items-center justify-center text-[#b0841a] font-black text-lg mx-auto shadow-sm mb-3">
+            @(string.IsNullOrEmpty(Model.UserArabicDisplayName) ? "?" : Model.UserArabicDisplayName[0].ToString())
+        </div>
+        <h4 class="text-sm font-black text-slate-900 text-center mb-1">@Model.UserArabicDisplayName</h4>
+        <span class="text-[9px] bg-[#b0841a]/10 border border-[#b0841a]/20 text-[#b0841a] px-3 py-0.5 rounded-full font-black mx-auto inline-block mb-4">
+            @((User.IsInRole("SuperAdmin") ? "مدير عام" : User.IsInRole("Admin") ? "مسؤول نظام" : User.IsInRole("Manager") ? "مدير إدارة" : "مستخدم إدارة"))" data-i18n="@(User.IsInRole("SuperAdmin") ? "role-superadmin" : User.IsInRole("Admin") ? "role-admin" : User.IsInRole("Manager") ? "role-manager" : "role-user")
+        </span>
+        <div class="border-t border-slate-100 pt-4 space-y-2.5 text-[10px] text-slate-600 font-bold text-start">
+            <div class="flex justify-between">
+                <span class="text-slate-500">البريد الإلكتروني:</span>
+                <span class="font-mono text-slate-700">@User.Identity?.Name</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-slate-500">الصلاحيات البرمجية:</span>
+                <span class="text-[#b0841a] font-black">
+                    @(User.IsInRole("SuperAdmin") ? "إدارة كاملة للنظام (SuperAdmin)" : User.IsInRole("Admin") ? "مسؤول نظام (Admin)" : User.IsInRole("Manager") ? "مدير إدارة (Manager)" : "مستخدم إدارة (User)")
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

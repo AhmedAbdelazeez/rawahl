@@ -1,0 +1,218 @@
+@model project.Pages.IndexModel
+
+<!-- ================= ثالثاً: شبكة الإدارات والأقسام (Departments Grid View) ================= -->
+<div id="view-departments-grid" class="hidden">
+    <section class="mb-6" data-aos="fade-up">
+        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                <div>
+                    <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1 rounded-full font-bold border border-[#b0841a]/20" data-i18n="sidebar-company-depts">إدارات الشركة</span>
+                    <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="show-all-departments">كافة إدارات شركة رواحل</h2>
+                    <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">اختر الإدارة المطلوبة لاستعراض مؤشراتها وأدائها الفعلي مقارنة بالمستهدف بشكل تفصيلي.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="departments-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 text-start" data-aos="fade-up">
+
+        <!-- Tourism Department -->
+        <div onclick="showView('dept-tourism')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-globe text-[#b0841a] text-base"></i>
+                         <span data-i18n="dept-tourism-title">ادارة السياحة</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-tourism-desc">تنظيم وإدارة البرامج السياحية والرحلات وحجوزات الفنادق لزوار بيت الله الحرام.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-3">3 مؤشرات أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">TOURISM</span>
+             </div>
+        </div>
+
+        <!-- Operations Department -->
+        <div onclick="showView('dept-ops')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-gears text-[#b0841a] text-base"></i>
+                         <span data-i18n="dept-ops-title">ادارة العمليات</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-ops-desc">الالتزام بالخطة التشغيلية اليومية للحافلات، وتوجيه المسارات، ومتابعة الرحلات التشغيلية.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-3">3 مؤشرات أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">OPERATIONS</span>
+             </div>
+        </div>
+
+        <!-- Commercial Department -->
+        <div onclick="showView('dept-commercial')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-chart-line text-[#b0841a] text-base"></i>
+                         <span data-i18n="dept-commercial-title">الادارة التجارية</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-commercial-desc">متابعة الفرع التجاري ومبيعات وعقود النقل التخصصي ورضا العملاء NPS ونسب الاحتفاظ بالشركاء.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-3">3 مؤشرات أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">COMMERCIAL</span>
+             </div>
+        </div>
+
+        <!-- Fleet Department -->
+        <div onclick="showView('dept-fleet')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-bus text-[#b0841a] text-base"></i>
+                         <span data-i18n="dept-fleet-title">ادارة الاسطول</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-fleet-desc">متابعة جاهزية أسطول الحافلات اليومية ونسب استغلال المقاعد وجداول الصيانة الدورية.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-2">2 مؤشر أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">FLEET</span>
+             </div>
+        </div>
+
+        <!-- Support Services Department -->
+        <div onclick="showView('dept-support')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-laptop-code text-[#b0841a] text-base"></i>
+                         <span data-i18n="dept-support-title">ادارة خدمات الدعم (الموارد البشرية، تقنية المعلومات، المشتريات وخدمات الدعم )</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-support-desc">الموارد البشرية والتوظيف، البنية التحتية لتقنية المعلومات، مشتريات الشركة والخدمات اللوجستية.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-4">4 مؤشرات أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">SUPPORT</span>
+             </div>
+        </div>
+
+        <!-- Financial Department -->
+        <div onclick="showView('dept-finance')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-wallet text-[#b0841a] text-base"></i>
+                         <span data-i18n="dept-finance-title">الادارة المالية</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-finance-desc">الإيرادات والربحية والتدفقات النقدية التشغيلية والعائد الكلي على الأصول المالية.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-4">4 مؤشرات أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">FINANCE</span>
+             </div>
+        </div>
+
+        <!-- Strategy & Performance Department -->
+        <div onclick="showView('dept-strategy')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-university text-[#b0841a] text-base"></i>
+                         <span data-i18n="dept-strategy-title">والاستراتيجية والاداء</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-strategy-desc">تحقيق الأهداف الاستراتيجية، مبادرات مكتب إدارة المشاريع PMO، ومتابعة نضج الأداء المؤسسي.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-5">5 مؤشرات أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">STRATEGY</span>
+             </div>
+        </div>
+
+        <!-- Internal Audit Department -->
+        <div onclick="showView('dept-audit')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-magnifying-glass text-[#b0841a] text-base"></i>
+                         <span data-i18n="dept-audit-title">التدقيق الداخلي</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-audit-desc">أعمال التدقيق الداخلي، مراجعة العمليات والسياسات، وتقييم الحوكمة والامتثال الإداري.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-2">2 مؤشر أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">AUDIT</span>
+             </div>
+        </div>
+
+        <!-- HSE Safety & Auditing -->
+        <div onclick="showView('dept-hse')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-shield-virus text-[#b0841a] text-base"></i>
+                         <span data-i18n="dept-hse-title">الصحة والسلامة والبيئة</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-hse-desc">معدل الحوادث المرورية والصناعية، الالتزام باللوائح والتعليمات، والسلامة العامة على الطرق.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-3">3 مؤشرات أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">HSE</span>
+             </div>
+        </div>
+
+        <!-- Compliance Department (إدارة الامتثال) -->
+        <div onclick="showView('dept-compliance')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+              <div class="flex justify-between items-start">
+                  <div>
+                      <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                          <i class="fa-solid fa-gavel text-[#b0841a] text-base animate-pulse"></i>
+                          <span data-i18n="dept-compliance-title">إدارة الامتثال</span>
+                      </h3>
+                      <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-compliance-desc">متابعة التزام العمليات التشغيلية، والسياسات والإجراءات، وعقود التشغيل ومعالجة المخالفات.</p>
+                  </div>
+                  <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+              </div>
+              <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                  <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-kpi-count-10">10 مؤشرات أداء</span>
+                  <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">COMPLIANCE</span>
+              </div>
+        </div>
+
+        <!-- Project Management Department (إدارة المشاريع) -->
+        <div onclick="showView('dept-projects')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+              <div class="flex justify-between items-start">
+                  <div>
+                      <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                          <i class="fa-solid fa-diagram-project text-[#b0841a] text-base animate-pulse"></i>
+                          <span data-i18n="dept-projects-title">إدارة المشاريع</span>
+                      </h3>
+                      <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed" data-i18n="dept-projects-desc">مراقبة وتحليل أداء المشاريع الاستراتيجية والتشغيلية، بما يشمل نقل المتردد وجولة مكة.</p>
+                  </div>
+                  <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+              </div>
+              <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                  <span class="text-[9px] text-[#b0841a] font-black" data-i18n="dept-projects-count-2">مشروعين</span>
+                  <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">PROJECTS</span>
+              </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,74 @@
+@model project.Pages.IndexModel
+
+<!-- Visa Service KPI Cards -->
+<!-- Processing Time -->
+<div id="card-visa-processing-time" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-visa-processing-time-title">وقت معالجة التأشيرات</span>
+        <span id="flag-visa-processing-time" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-visa-processing-time">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-visa-processing-time">--</span></span>
+    </div>
+</div>
+
+<!-- Approval Rate -->
+<div id="card-visa-approval-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-visa-approval-rate-title">نسبة قبول التأشيرات</span>
+        <span id="flag-visa-approval-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-visa-approval-rate">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-visa-approval-rate">--</span></span>
+    </div>
+</div>
+
+<!-- Visa Count -->
+<div id="card-visa-count" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-visa-count-title">عدد التأشيرات المصدرة</span>
+        <span id="flag-visa-count" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-visa-count">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-visa-count">--</span></span>
+    </div>
+</div>
+
+<!-- System Link Integration Uptime -->
+<div id="card-visa-integration-uptime" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-visa-integration-uptime-title">جاهزية نظام الربط الإلكتروني</span>
+        <span id="flag-visa-integration-uptime" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-visa-integration-uptime">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-visa-integration-uptime">--</span></span>
+    </div>
+</div>
+
+<!-- Data Entry Error Rate -->
+<div id="card-visa-data-error-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-visa-data-error-rate-title">معدل أخطاء إدخال البيانات</span>
+        <span id="flag-visa-data-error-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-visa-data-error-rate">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-visa-data-error-rate">--</span></span>
+    </div>
+</div>
+
+<!-- Visa Service Complaints Rate -->
+<div id="card-visa-complaints-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-visa-complaints-rate-title">معدل شكاوى التأشيرات</span>
+        <span id="flag-visa-complaints-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-visa-complaints-rate">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-visa-complaints-rate">--</span></span>
+    </div>
+</div>

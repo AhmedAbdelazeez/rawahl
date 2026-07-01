@@ -1,0 +1,96 @@
+@model project.Pages.IndexModel
+
+<!-- ================= تفاصيل مشروع نقل المتردد (Shuttle Project Details) ================= -->
+<div id="view-project-shuttle" class="view-container hidden">
+    <section class="mb-6" data-aos="fade-up">
+        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                <div>
+                    <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">تحليل تشغيل الحافلات الميداني</span>
+                    <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="project-shuttle-detail-title">النقل الترددي  - التحليل التشغيلي</h2>
+                    <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">متابعة أداء حافلات التفويج والمستفيدين والرحلات وتكاليف التشغيل اليومية.</p>
+                </div>
+                <button onclick="showView('dept-projects')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span data-i18n="btn-back-depts">العودة للمشاريع</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 text-start" data-aos="fade-up">
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-shuttle-beneficiaries">عدد المستفيدين</span>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.ShuttleBeneficiaries.ToString("N0")</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 250,000+</span>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-shuttle-trips">عدد الرحلات</span>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.ShuttleTrips.ToString("N0")</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 8,000</span>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-shuttle-schedule-adherence">الالتزام بالجدول</span>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.ShuttleScheduleAdherence%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 95%</span>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-shuttle-satisfaction">رضا المستفيدين</span>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.ShuttleSatisfaction%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 90%</span>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-shuttle-trip-cost">تكلفة الرحلة</span>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.ShuttleTripCost ر.س</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 50 ر.س</span>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-shuttle-occupancy-rate">معدل الإشغال</span>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.ShuttleOccupancyRate%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 80%</span>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-shuttle-complaints">عدد الشكاوى</span>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.ShuttleComplaints</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: &lt; 15</span>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-shuttle-ops-completion">نسبة إنجاز التشغيل</span>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.ShuttleOpsCompletion%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 90%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shuttle Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 text-start" data-aos="fade-up">
+        <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="chart-shuttle-trips">أداء الرحلات اليومية (الفعلي vs المستهدف)</h3>
+            <div class="relative w-full h-80">
+                <canvas id="shuttlePerformanceChart"></canvas>
+            </div>
+        </div>
+        <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="chart-shuttle-occupancy">معدل إشغال الحافلات اليومي</h3>
+            <div class="relative w-full h-80">
+                <canvas id="shuttleOccupancyChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

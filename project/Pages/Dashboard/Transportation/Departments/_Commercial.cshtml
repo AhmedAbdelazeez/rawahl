@@ -1,0 +1,50 @@
+@model project.Pages.IndexModel
+
+<!-- Commercial Department KPI Cards -->
+<!-- Customer Retention -->
+<div id="card-cust-ret" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-cust-ret-title">نسبة الاحتفاظ بالعملاء</span>
+        <span id="flag-cust-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-cust-ret">@Model.CustRetention%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-cust-ret">--</span></span>
+    </div>
+</div>
+
+<!-- NPS -->
+<div id="card-nps" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-nps-title">صافي نقاط رضا العملاء NPS</span>
+        <span id="flag-nps" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-nps">@Model.Nps</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-nps">--</span></span>
+    </div>
+</div>
+
+<!-- New Contracts -->
+<div id="card-new-contracts" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-new-contracts-title">عدد العقود الاستراتيجية الجديدة</span>
+        <span id="flag-new-contracts" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-new-contracts">@Model.NewContracts</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-new-contracts">--</span></span>
+    </div>
+</div>
+
+<!-- Fleet Cleaning Compliance (COM-D-10) -->
+<div id="card-com-d-10" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-com-d-10-title">الامتثال لتنظيف الأسطول</span>
+        <span id="flag-com-d-10" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-com-d-10">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-com-d-10">--</span></span>
+    </div>
+</div>

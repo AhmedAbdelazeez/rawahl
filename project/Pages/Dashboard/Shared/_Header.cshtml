@@ -1,0 +1,56 @@
+@model project.Pages.IndexModel
+
+<!-- الهيدر العلوي -->
+<header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-white p-5 rounded-2xl border border-[#b0841a]/20 shadow-xs relative overflow-hidden">
+    <div class="text-right">
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <span class="w-2 h-6 bg-gradient-to-b from-[#b0841a] to-[#8c6510] rounded-full inline-block"></span>
+            <span id="header-main-title" class="bg-gradient-to-r from-slate-900 via-slate-800 to-[#b0841a] bg-clip-text text-transparent" data-i18n="header-title">نظام مراقبة الأداء لشركة رواحل المشاعر</span>
+        </h1>
+        <p class="text-xs text-[#b0841a] mt-1.5 font-bold flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <span data-i18n="header-subtitle">لوحة تفاعلية حية متصلة بقاعدة البيانات ومطابقة لألوان الهوية الرسمية</span>
+        </p>
+    </div>
+    
+    <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+        <!-- زر تبديل اللغة (Language Toggle) -->
+        <button id="langToggleBtn" onclick="toggleLanguage()" class="bg-slate-100 hover:bg-slate-200 text-[#b0841a] border border-[#b0841a]/30 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+            <i class="fa-solid fa-globe text-[#b0841a]"></i>
+            <span id="langToggleText">English (EN)</span>
+        </button>
+
+        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+        {
+            <a href="/Settings" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-xs">
+                <i class="fa-solid fa-sliders text-[#b0841a]"></i>
+                <span data-i18n="sidebar-settings">تعديل المستهدفات</span>
+            </a>
+        }
+
+        <!-- زر تسجيل الخروج -->
+        <form method="post" action="/Account/Logout" class="inline">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="bg-slate-100 hover:bg-slate-200 text-rose-600 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-xs">
+                <i class="fa-solid fa-sign-out-alt"></i>
+                <span data-i18n="logout">خروج</span>
+            </button>
+        </form>
+
+        <!-- الملف الشخصي للمستخدِم -->
+        <div onclick="openProfileModal()" class="flex items-center gap-3 border-s border-slate-200 ps-4 cursor-pointer hover:opacity-85 transition-opacity">
+            <div class="text-start">
+                <div class="flex items-center gap-1.5 justify-start">
+                    <i class="fa-solid fa-circle-info text-[10px] text-[#b0841a]"></i>
+                    <h4 class="text-xs font-black text-slate-800">@Model.UserArabicDisplayName</h4>
+                </div>
+                <span class="text-[9px] bg-[#b0841a]/10 border border-[#b0841a]/30 text-[#b0841a] px-2.5 py-0.5 rounded-md font-black mt-1 inline-block">
+                    @((User.IsInRole("SuperAdmin") ? "مدير عام" : User.IsInRole("Admin") ? "مسؤول نظام" : User.IsInRole("Manager") ? "مدير إدارة" : "مستخدم إدارة"))" data-i18n="@(User.IsInRole("SuperAdmin") ? "role-superadmin" : User.IsInRole("Admin") ? "role-admin" : User.IsInRole("Manager") ? "role-manager" : "role-user")
+                </span>
+            </div>
+            <div class="w-10 h-10 rounded-full border border-[#b0841a]/40 shadow-xs overflow-hidden bg-white flex items-center justify-center text-[#b0841a] font-black text-xs">
+                @(string.IsNullOrEmpty(Model.UserArabicDisplayName) ? "?" : Model.UserArabicDisplayName[0].ToString())
+            </div>
+        </div>
+    </div>
+</header>

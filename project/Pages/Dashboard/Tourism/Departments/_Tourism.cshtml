@@ -1,0 +1,38 @@
+@model project.Pages.IndexModel
+
+<!-- Tourism Department KPI Cards -->
+<!-- Hotel Occupancy -->
+<div id="card-hotel-occupancy" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-hotel-occupancy-title">نسبة إشغال الفنادق</span>
+        <span id="flag-hotel-occupancy" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-hotel-occupancy">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hotel-occupancy">--</span></span>
+    </div>
+</div>
+
+<!-- Hotel Cancel Rate -->
+<div id="card-hotel-cancel-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-hotel-cancel-rate-title">معدل إلغاء الحجوزات</span>
+        <span id="flag-hotel-cancel-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-hotel-cancel-rate">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hotel-cancel-rate">--</span></span>
+    </div>
+</div>
+
+<!-- Guest Rating -->
+<div id="card-hotel-rating" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-hotel-rating-title">تقييم رضا النزلاء عن الإقامة</span>
+        <span id="flag-hotel-rating" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-hotel-rating">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hotel-rating">--</span></span>
+    </div>
+</div>

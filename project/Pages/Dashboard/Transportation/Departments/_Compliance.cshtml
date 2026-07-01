@@ -1,0 +1,224 @@
+@model project.Pages.IndexModel
+
+<!-- ================= إدارة الامتثال (Compliance Department View) ================= -->
+<div id="view-dept-compliance" class="view-container hidden">
+    <section class="mb-6" data-aos="fade-up">
+        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                <div>
+                    <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">بوابة الحوكمة والرقابة</span>
+                    <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="dept-compliance-title">إدارة الامتثال</h2>
+                    <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">بوابة متابعة الالتزام التشغيلي والسياسات الداخلية ومعالجة المخالفات وإجراءات التدقيق والتحسين المستمر.</p>
+                </div>
+                <button id="compliance-back-btn" onclick="showView('transportation-sector')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span data-i18n="btn-back-depts">العودة للنقل التخصصي</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10 Compliance KPI Summary Cards -->
+    <div id="grid-compliance" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8 text-start" data-aos="fade-up">
+        <!-- 1. نسبة الالتزام التشغيلي -->
+        <div id="card-comp-ops-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-ops-rate">نسبة الالتزام التشغيلي</span>
+                <span id="flag-comp-ops-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-ops-rate">@Model.CompOpsRate%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-ops-rate">95%</span></span>
+            </div>
+        </div>
+        <!-- 2. عدد المخالفات المسجلة -->
+        <div id="card-comp-violations-count" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-violations-count">عدد المخالفات المسجلة</span>
+                <span id="flag-comp-violations-count" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-violations-count">@Model.CompViolationsCount</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-violations-count">0</span></span>
+            </div>
+        </div>
+        <!-- 3. نسبة إغلاق المخالفات -->
+        <div id="card-comp-closure-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-closure-rate">نسبة إغلاق المخالفات</span>
+                <span id="flag-comp-closure-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-closure-rate">@Model.CompClosureRate%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-closure-rate">95%</span></span>
+            </div>
+        </div>
+        <!-- 4. متوسط زمن معالجة المخالفة -->
+        <div id="card-comp-resolution-time" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-resolution-time">متوسط زمن معالجة المخالفة</span>
+                <span id="flag-comp-resolution-time" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-resolution-time">@Model.CompResolutionTime يوم</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-resolution-time">5 أيام</span></span>
+            </div>
+        </div>
+        <!-- 5. نسبة الالتزام بالعقود -->
+        <div id="card-comp-contract-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-contract-rate">نسبة الالتزام بالعقود</span>
+                <span id="flag-comp-contract-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-contract-rate">@Model.CompContractRate%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-contract-rate">95%</span></span>
+            </div>
+        </div>
+        <!-- 6. نسبة الالتزام بالسياسات والإجراءات -->
+        <div id="card-comp-policies-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-policies-rate">الالتزام بالسياسات والإجراءات</span>
+                <span id="flag-comp-policies-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-policies-rate">@Model.CompPoliciesRate%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-policies-rate">95%</span></span>
+            </div>
+        </div>
+        <!-- 7. نتائج التدقيق الداخلي -->
+        <div id="card-comp-audit-results" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-audit-results">نتائج التدقيق الداخلي</span>
+                <span id="flag-comp-audit-results" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-audit-results">@Model.CompAuditResults%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-audit-results">90%</span></span>
+            </div>
+        </div>
+        <!-- 8. عدد الملاحظات الحرجة -->
+        <div id="card-comp-critical-findings" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-critical-findings">عدد الملاحظات الحرجة</span>
+                <span id="flag-comp-critical-findings" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-critical-findings">@Model.CompCriticalFindings</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-critical-findings">0</span></span>
+            </div>
+        </div>
+        <!-- 9. معدل الامتثال الشهري -->
+        <div id="card-comp-monthly-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-monthly-rate">معدل الامتثال الشهري</span>
+                <span id="flag-comp-monthly-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-monthly-rate">@Model.CompMonthlyRate%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-monthly-rate">95%</span></span>
+            </div>
+        </div>
+        <!-- 10. نسبة التحسين المستمر -->
+        <div id="card-comp-improvement-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-comp-improvement-rate">نسبة التحسين المستمر</span>
+                <span id="flag-comp-improvement-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900" id="val-comp-improvement-rate">@Model.CompImprovementRate%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: <span id="target-val-comp-improvement-rate">90%</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts & Tracking Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 text-start" data-aos="fade-up">
+        <div class="glass-card p-6 rounded-2xl lg:col-span-2">
+            <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="chart-compliance-trend">تحليل اتجاه الامتثال الشهري (آخر 6 أشهر)</h3>
+            <div class="relative w-full h-80">
+                <canvas id="complianceTrendChart"></canvas>
+            </div>
+        </div>
+        <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="chart-compliance-distribution">توزيع مؤشرات الامتثال</h3>
+            <div class="relative w-full h-80 flex items-center justify-center">
+                <canvas id="complianceDistributionChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Tracking Table -->
+    <div class="glass-card p-6 rounded-2xl mb-8 text-start" data-aos="fade-up">
+        <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="table-compliance-tracking">جدول متابعة الأداء التاريخي والامتثال الشهري</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-xs font-bold text-slate-700 border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-[#b0841a]">
+                        <th class="py-3 px-4 text-right">المؤشر</th>
+                        <th class="py-3 px-4 text-center">المستهدف</th>
+                        <th class="py-3 px-4 text-center">يناير</th>
+                        <th class="py-3 px-4 text-center">فبراير</th>
+                        <th class="py-3 px-4 text-center">مارس</th>
+                        <th class="py-3 px-4 text-center">أبريل</th>
+                        <th class="py-3 px-4 text-center">مايو</th>
+                        <th class="py-3 px-4 text-center">يونيو (الحالي)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-center">
+                    <tr>
+                        <td class="py-3 px-4 text-right">نسبة الالتزام التشغيلي</td>
+                        <td class="py-3 px-4">95%</td>
+                        <td class="py-3 px-4 text-emerald-600">96.0%</td>
+                        <td class="py-3 px-4 text-emerald-600">95.5%</td>
+                        <td class="py-3 px-4 text-amber-600">94.8%</td>
+                        <td class="py-3 px-4 text-emerald-600">95.2%</td>
+                        <td class="py-3 px-4 text-emerald-600">96.5%</td>
+                        <td class="py-3 px-4 text-emerald-600">94.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-right">عدد المخالفات المسجلة</td>
+                        <td class="py-3 px-4">0</td>
+                        <td class="py-3 px-4 text-emerald-600">5</td>
+                        <td class="py-3 px-4 text-emerald-600">8</td>
+                        <td class="py-3 px-4 text-emerald-600">12</td>
+                        <td class="py-3 px-4 text-emerald-600">10</td>
+                        <td class="py-3 px-4 text-emerald-600">9</td>
+                        <td class="py-3 px-4 text-amber-600">14</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-right">نسبة إغلاق المخالفات</td>
+                        <td class="py-3 px-4">95%</td>
+                        <td class="py-3 px-4 text-emerald-600">98%</td>
+                        <td class="py-3 px-4 text-emerald-600">97%</td>
+                        <td class="py-3 px-4 text-emerald-600">95%</td>
+                        <td class="py-3 px-4 text-emerald-600">96%</td>
+                        <td class="py-3 px-4 text-emerald-600">94%</td>
+                        <td class="py-3 px-4 text-amber-600">92.8%</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-right">متوسط زمن معالجة المخالفة</td>
+                        <td class="py-3 px-4">5 أيام</td>
+                        <td class="py-3 px-4 text-emerald-600">2.8 يوم</td>
+                        <td class="py-3 px-4 text-emerald-600">3.0 يوم</td>
+                        <td class="py-3 px-4 text-emerald-600">3.5 يوم</td>
+                        <td class="py-3 px-4 text-emerald-600">3.1 يوم</td>
+                        <td class="py-3 px-4 text-emerald-600">2.9 يوم</td>
+                        <td class="py-3 px-4 text-emerald-600">3.2 يوم</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-right">نسبة الالتزام بالعقود</td>
+                        <td class="py-3 px-4">95%</td>
+                        <td class="py-3 px-4 text-emerald-600">98.5%</td>
+                        <td class="py-3 px-4 text-emerald-600">98.0%</td>
+                        <td class="py-3 px-4 text-emerald-600">97.0%</td>
+                        <td class="py-3 px-4 text-emerald-600">97.5%</td>
+                        <td class="py-3 px-4 text-emerald-600">98.0%</td>
+                        <td class="py-3 px-4 text-emerald-600">97.5%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

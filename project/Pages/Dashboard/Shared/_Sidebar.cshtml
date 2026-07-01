@@ -1,0 +1,73 @@
+@model project.Pages.IndexModel
+
+<!-- ================= القائمة الجانبية (Sidebar) ================= -->
+<aside class="w-72 bg-sidebar text-slate-700 p-5 flex flex-col justify-between hidden lg:flex border-e-2 border-[#b0841a]/40 shrink-0 shadow-sm">
+    <div>
+        <!-- الشعار المطور المعتمد لشركة رواحل -->
+        <div onclick="showView('overview')" class="flex flex-col items-center text-center mt-2 mb-6 bg-white border border-[#b0841a]/30 p-4 rounded-xl shadow-xs cursor-pointer hover:opacity-95 transition-opacity">
+            <img src="https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/logo.png" alt="شركة رواحل المشاعر" class="w-24 h-auto object-contain mb-1 filter drop-shadow-sm">
+            <h2 class="text-slate-800 text-xs font-black tracking-wide mt-1" data-i18n="sidebar-logo-text">شركة رواحل المشاعر</h2>
+            <span class="text-[8px] text-[#b0841a] block tracking-wider font-bold mt-0.5">RAWAHEL AL MASHAER CO.</span>
+        </div>
+
+        <nav class="space-y-1.5">
+            <a href="javascript:void(0)" onclick="showView('overview')" id="lnk-overview" class="flex items-center gap-3 px-4 py-2.5 bg-sidebar-active rounded-xl text-xs font-black shadow-md transition-all">
+                <i class="fa-solid fa-table-columns text-base"></i>
+                <span data-i18n="nav-overview">الرئيسية والتحليل الموحد</span>
+            </a>
+            
+            <div class="sidebar-header" data-i18n="sidebar-business-areas">إدارات الأعمال الحيوية</div>
+            
+            @if (Model.ShowTransportationSector)
+            {
+                <a href="javascript:void(0)" onclick="showView('transportation-sector')" id="lnk-transportation-sector">
+                    <i class="fa-solid fa-bus"></i>
+                    <span data-i18n="nav-transportation">رواحل للنقل التخصصي</span>
+                </a>
+            }
+            
+            @if (Model.ShowPilgrimSector)
+            {
+                <a href="javascript:void(0)" onclick="showView('pilgrim-sector')" id="lnk-pilgrim-sector">
+                    <i class="fa-solid fa-kaaba"></i>
+                    <span data-i18n="nav-pilgrim-services">رواحل لخدمات العمره والسياحه</span>
+                </a>
+            }
+
+            <div class="sidebar-header" data-i18n="sidebar-company-depts">إدارات الشركة</div>
+
+            <a href="javascript:void(0)" onclick="showView('departments')" id="lnk-departments">
+                <i class="fa-solid fa-layer-group"></i>
+                <span data-i18n="show-all-departments">عرض جميع الإدارات</span>
+            </a>
+            
+            <a href="javascript:void(0)" onclick="showView('dept-compliance')" id="lnk-dept-compliance">
+                <i class="fa-solid fa-gavel text-[#b0841a]"></i>
+                <span data-i18n="dept-compliance-title">إدارة الامتثال</span>
+            </a>
+
+            <a href="javascript:void(0)" onclick="showView('dept-projects')" id="lnk-dept-projects">
+                <i class="fa-solid fa-diagram-project text-[#b0841a]"></i>
+                <span data-i18n="dept-projects-title">إدارة المشاريع</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="space-y-1 border-t border-slate-100 pt-3">
+        @if (Model.IsSuperAdmin)
+        {
+            <a href="/Users">
+                <i class="fa-solid fa-users-cog"></i>
+                <span>إدارة المستخدمين</span>
+            </a>
+        }
+        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+        {
+            <a href="/Settings">
+                <i class="fa-solid fa-gear"></i>
+                <span data-i18n="sidebar-settings">إعدادات المستهدفات</span>
+            </a>
+        }
+        <div class="text-[9px] text-slate-400 text-center pt-2 font-mono" data-i18n="sidebar-copyright">نظام رواحل القياسي المعتمد © 2026</div>
+    </div>
+</aside>

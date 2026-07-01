@@ -1,0 +1,26 @@
+@model project.Pages.IndexModel
+
+<!-- Operations Department KPI Cards -->
+<!-- Ops Plan -->
+<div id="card-ops-plan" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-plan-title">الالتزام بالخطة التشغيلية</span>
+        <span id="flag-ops-plan" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-plan">@Model.OpsPlan%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-plan">--</span></span>
+    </div>
+</div>
+
+<!-- Fleet Readiness -->
+<div id="card-fleet-ready" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-fleet-ready-title">نسبة جاهزية أسطول الحافلات</span>
+        <span id="flag-fleet-ready" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-fleet-ready">@Model.FleetReady%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-fleet-ready">--</span></span>
+    </div>
+</div>

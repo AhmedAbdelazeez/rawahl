@@ -1,0 +1,120 @@
+@model project.Pages.IndexModel
+
+<!-- ================= تفاصيل مشروع جولة مكة (Makkah Tour Project Details) ================= -->
+<div id="view-project-makkah-tour" class="view-container hidden">
+    <section class="mb-6" data-aos="fade-up">
+        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                <div>
+                    <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">مراقبة الجولات السياحية والإرشادية</span>
+                    <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="project-makkah-tour-detail-title">مشروع جولة مكة - التحليل التشريحي والتشغيلي</h2>
+                    <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">متابعة إيرادات الجولات ونسب رضا الحجاج وأعداد الزوار والمرشدين النشطين بمكة.</p>
+                </div>
+                <button onclick="showView('dept-projects')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span data-i18n="btn-back-depts">العودة للمشاريع</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 text-start" data-aos="fade-up">
+        <div id="card-makkah-tour-visitors" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-makkah-tour-visitors">عدد الزوار</span>
+                <span id="flag-makkah-tour-visitors" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">ممتاز</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.MakkahTourVisitors.ToString("N0")</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 40,000+</span>
+            </div>
+        </div>
+        <div id="card-makkah-tour-tours" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-makkah-tour-tours">عدد الجولات المنفذة</span>
+                <span id="flag-makkah-tour-tours" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">ممتاز</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.MakkahTourTours.ToString("N0")</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 1,000</span>
+            </div>
+        </div>
+        <div id="card-makkah-tour-satisfaction" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-makkah-tour-satisfaction">نسبة رضا العملاء</span>
+                <span id="flag-makkah-tour-satisfaction" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">ممتاز</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.MakkahTourSatisfaction%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 90%</span>
+            </div>
+        </div>
+        <div id="card-makkah-tour-revenue" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-makkah-tour-revenue">الإيرادات (مليون ر.س)</span>
+                <span id="flag-makkah-tour-revenue" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">ممتاز</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.MakkahTourRevenue M</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 3.0 M</span>
+            </div>
+        </div>
+        <div id="card-makkah-tour-booking-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-makkah-tour-booking-rate">معدل الحجوزات</span>
+                <span id="flag-makkah-tour-booking-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">جيد</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.MakkahTourBookingRate%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 80%</span>
+            </div>
+        </div>
+        <div id="card-makkah-tour-active-guides" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-makkah-tour-active-guides">عدد المرشدين النشطين</span>
+                <span id="flag-makkah-tour-active-guides" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">ممتاز</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.MakkahTourActiveGuides</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 30+</span>
+            </div>
+        </div>
+        <div id="card-makkah-tour-plan-adherence" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-makkah-tour-plan-adherence">الالتزام بالخطة التشغيلية</span>
+                <span id="flag-makkah-tour-plan-adherence" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">ممتاز</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.MakkahTourPlanAdherence%</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: 95%</span>
+            </div>
+        </div>
+        <div id="card-makkah-tour-remarks-complaints" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black text-slate-800" data-i18n="kpi-makkah-tour-remarks-complaints">عدد الملاحظات والشكاوى</span>
+                <span id="flag-makkah-tour-remarks-complaints" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">ممتاز</span>
+            </div>
+            <div class="my-2 flex flex-col items-center justify-center">
+                <span class="text-3xl font-black text-slate-900">@Model.MakkahTourRemarksComplaints</span>
+                <span class="text-[9px] text-slate-500 font-bold mt-1">المستهدف: &lt; 10</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Makkah Tour Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 text-start" data-aos="fade-up">
+        <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="chart-makkah-tour-revenue">نمو الإيرادات الشهري (مليون ر.س)</h3>
+            <div class="relative w-full h-80">
+                <canvas id="makkahTourRevenueChart"></canvas>
+            </div>
+        </div>
+        <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="chart-makkah-tour-demographics">توزيع جنسيات الزوار والمستفيدين</h3>
+            <div class="relative w-full h-80">
+                <canvas id="makkahTourDemographicsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

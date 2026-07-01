@@ -1,0 +1,26 @@
+@model project.Pages.IndexModel
+
+<!-- Internal Audit Department KPI Cards -->
+<!-- Audit Compliance -->
+<div id="card-audit-comp" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="val-audit-comp-label">نسبة الامتثال للوائح والتراخيص</span>
+        <span id="flag-audit-comp" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-audit-comp">@Model.AuditCompliance%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-audit-comp">--</span></span>
+    </div>
+</div>
+
+<!-- Risk Handling -->
+<div id="card-risk-handling" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="val-risk-handling-label">نسبة معالجة المخاطر المؤسسية</span>
+        <span id="flag-risk-handling" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-risk-handling">@Model.RiskHandling%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-risk-handling">--</span></span>
+    </div>
+</div>

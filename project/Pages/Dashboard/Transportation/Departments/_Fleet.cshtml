@@ -1,0 +1,243 @@
+@model project.Pages.IndexModel
+
+<!-- Fleet Department KPI Cards -->
+<!-- Fleet Readiness -->
+<div id="card-fleet-ready" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-fleet-ready-title">نسبة جاهزية أسطول الحافلات</span>
+        <span id="flag-fleet-ready" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-fleet-ready">@Model.FleetReady%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-fleet-ready">--</span></span>
+    </div>
+</div>
+
+<!-- Fleet Seat Utilization -->
+<div id="card-fleet-util" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-fleet-util-title">نسبة استغلال أسطول مقاعد الحافلات</span>
+        <span id="flag-fleet-util" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-fleet-util">@Model.FleetUtil%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-fleet-util">--</span></span>
+    </div>
+</div>
+
+<!-- 18 Operational Sub-metrics -->
+<!-- OPS-D-15 -->
+<div id="card-ops-d-15" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-15-title">زمن استبدال الحافلات في حالة عطل</span>
+        <span id="flag-ops-d-15" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-15">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-15">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-16 -->
+<div id="card-ops-d-16" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-16-title">زمن إخلاء المحطات</span>
+        <span id="flag-ops-d-16" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-16">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-16">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-17 -->
+<div id="card-ops-d-17" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-17-title">معدل تغيب السائقين</span>
+        <span id="flag-ops-d-17" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-17">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-17">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-18 -->
+<div id="card-ops-d-18" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-18-title">الالتزام بعدد المشغلين</span>
+        <span id="flag-ops-d-18" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-18">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-18">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-19 -->
+<div id="card-ops-d-19" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-19-title">الالتزام بالزي الرسمي</span>
+        <span id="flag-ops-d-19" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-19">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-19">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-20 -->
+<div id="card-ops-d-20" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-20-title">الاستجابة للأعطال</span>
+        <span id="flag-ops-d-20" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-20">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-20">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-21 -->
+<div id="card-ops-d-21" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-21-title">زمن الاستجابة للأعطال في المحطات والمواقف</span>
+        <span id="flag-ops-d-21" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-21">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-21">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-22 -->
+<div id="card-ops-d-22" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-22-title">زمن الاستجابة للأعطال في المسارات الداخلية</span>
+        <span id="flag-ops-d-22" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-22">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-22">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-23 -->
+<div id="card-ops-d-23" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-23-title">زمن الاستجابة للأعطال في المسارات الخارجية</span>
+        <span id="flag-ops-d-23" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-23">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-23">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-24 -->
+<div id="card-ops-d-24" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-24-title">الالتزام بمعيار التعاقاد</span>
+        <span id="flag-ops-d-24" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-24">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-24">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-25 -->
+<div id="card-ops-d-25" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-25-title">الالتزام بالطاقة الاستيعابية</span>
+        <span id="flag-ops-d-25" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-25">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-25">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-26 -->
+<div id="card-ops-d-26" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-26-title">الالتزام بعدد الحافلات</span>
+        <span id="flag-ops-d-26" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-26">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-26">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-27 -->
+<div id="card-ops-d-27" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-27-title">اللوحات الإرشادية</span>
+        <span id="flag-ops-d-27" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-27">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-27">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-28 -->
+<div id="card-ops-d-28" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-28-title">اللوحات التشغيلية</span>
+        <span id="flag-ops-d-28" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-28">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-28">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-29 -->
+<div id="card-ops-d-29" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-29-title">الالتزام بعدم دخول الحافلات غير المصرح لها</span>
+        <span id="flag-ops-d-29" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-29">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-29">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-30 -->
+<div id="card-ops-d-30" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-30-title">توفر الحراسات</span>
+        <span id="flag-ops-d-30" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-30">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-30">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-31 -->
+<div id="card-ops-d-31" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-31-title">الحافلات المؤهلة</span>
+        <span id="flag-ops-d-31" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-31">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-31">--</span></span>
+    </div>
+</div>
+
+<!-- OPS-D-32 -->
+<div id="card-ops-d-32" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-d-32-title">الحافلات حسب التتبع</span>
+        <span id="flag-ops-d-32" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-d-32">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-d-32">--</span></span>
+    </div>
+</div>

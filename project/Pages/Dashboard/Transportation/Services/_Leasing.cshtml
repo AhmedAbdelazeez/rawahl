@@ -1,0 +1,74 @@
+@model project.Pages.IndexModel
+
+<!-- Rental & Operations Service KPI Cards -->
+<!-- Rental Fleet Utilization -->
+<div id="card-rental-fleet-utilization" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-rental-fleet-utilization-title">معدل استغلال حافلات التأجير</span>
+        <span id="flag-rental-fleet-utilization" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-rental-fleet-utilization">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-rental-fleet-utilization">--</span></span>
+    </div>
+</div>
+
+<!-- Rental Revenue Per Bus -->
+<div id="card-rental-revenue-per-bus" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-rental-revenue-per-bus-title">الإيراد اليومي للحافلة المؤجرة</span>
+        <span id="flag-rental-revenue-per-bus" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-rental-revenue-per-bus">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-rental-revenue-per-bus">--</span></span>
+    </div>
+</div>
+
+<!-- Rental Clients Satisfaction -->
+<div id="card-rental-contract-satisfaction" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-rental-contract-satisfaction-title">رضا العملاء عن خدمات التأجير</span>
+        <span id="flag-rental-contract-satisfaction" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-rental-contract-satisfaction">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-rental-contract-satisfaction">--</span></span>
+    </div>
+</div>
+
+<!-- Rental Fleet Maintenance Adherence -->
+<div id="card-rental-maintenance-adherence" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-rental-maintenance-adherence-title">صيانة حافلات التأجير والتشغيل</span>
+        <span id="flag-rental-maintenance-adherence" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-rental-maintenance-adherence">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-rental-maintenance-adherence">--</span></span>
+    </div>
+</div>
+
+<!-- Rental Safety Compliance -->
+<div id="card-rental-safety-compliance" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-rental-safety-compliance-title">الامتثال للسلامة بالتأجير</span>
+        <span id="flag-rental-safety-compliance" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-rental-safety-compliance">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-rental-safety-compliance">--</span></span>
+    </div>
+</div>
+
+<!-- Active Rental Contracts -->
+<div id="card-rental-active-contracts" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-rental-active-contracts-title">عدد عقود التأجير والتشغيل النشطة</span>
+        <span id="flag-rental-active-contracts" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-rental-active-contracts">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-rental-active-contracts">--</span></span>
+    </div>
+</div>

@@ -1,0 +1,105 @@
+@model project.Pages.IndexModel
+
+<!-- ================= قطاعات شركة رواحل المشاعر (Sector Selection View) ================= -->
+<div id="view-sectors" class="view-container hidden">
+    <section class="mb-6" data-aos="fade-up">
+        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                <div>
+                    <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">قطاعات التشغيل الرئيسية</span>
+                    <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="company-sectors-title">قطاعات شركة رواحل المشاعر</h2>
+                    <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">اختر القطاع التشغيلي المطلوب للدخول إلى لوحة المتابعة والمؤشرات الخاصة به.</p>
+                </div>
+                <button onclick="showView('overview')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span data-i18n="btn-back-overview">العودة للرئيسية</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 text-start" data-aos="fade-up">
+        <!-- Sector Card 1: Specialized Transportation (النقل التخصصي) -->
+        <div onclick="showView('transportation-sector')" class="glass-card p-8 rounded-3xl border-2 border-[#b0841a] relative overflow-hidden flex flex-col justify-between min-h-[380px] bg-gradient-to-br from-white via-white to-[#faf6ec] group cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-350">
+            <div class="absolute -right-12 -top-12 w-48 h-48 bg-[#b0841a]/5 rounded-full blur-2xl group-hover:bg-[#b0841a]/10 transition-colors"></div>
+            <div class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#b0841a]/10 to-transparent rounded-br-full"></div>
+            <div>
+                <div class="flex justify-between items-start mb-6">
+                    <div class="flex items-center gap-4">
+                        <i class="fa-solid fa-bus text-[#b0841a] text-4xl animate-pulse"></i>
+                    </div>
+                    <span class="text-xs font-black px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span data-i18n="nav-transportation">النقل التخصصي</span>
+                    </span>
+                </div>
+                <h2 class="text-2xl font-black text-slate-900 group-hover:text-[#b0841a] transition-colors" data-i18n="nav-transportation">النقل التخصصي</h2>
+                <p class="text-sm text-slate-600 font-semibold mt-4 leading-relaxed" data-i18n="card-transport-desc">إدارة الهيكل التنظيمي المعتمد وعمليات النقل والتشغيل للحافلات وعقود الحج والعمرة والاتفاقيات التجارية وإدارات الشركة المساندة.</p>
+                
+                <!-- Sector Summary Metrics -->
+                <div class="grid grid-cols-3 gap-3 mt-6 bg-slate-50/80 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="text-[9px] text-slate-500 block font-bold" data-i18n="label-total-revenue">إجمالي الإيراد</span>
+                        <span class="text-sm font-black text-slate-950 mt-0.5 block">142.5 M</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-slate-500 block font-bold" data-i18n="label-growth-rate">معدل النمو</span>
+                        <span class="text-sm font-black text-emerald-600 mt-0.5 block">+8.2%</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-slate-500 block font-bold" data-i18n="label-achievement-rate">نسبة التحقيق</span>
+                        <span class="text-sm font-black text-slate-950 mt-0.5 block">91%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-4 border-t border-slate-100 flex justify-end">
+                <button class="px-6 py-3 bg-gradient-to-l from-[#b0841a] to-[#8c6510] text-white font-bold rounded-xl text-xs shadow-md group-hover:shadow-lg transition-all duration-300 transform group-hover:-translate-y-0.5 flex items-center gap-2">
+                    <span data-i18n="btn-access-portal">الدخول للمنصة</span>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sector Card 2: Tourism & Pilgrim Services (رواحل لخدمات العمرة والسياحة) -->
+        <div onclick="showView('pilgrim-sector')" class="glass-card p-8 rounded-3xl border-2 border-[#b0841a] relative overflow-hidden flex flex-col justify-between min-h-[380px] bg-gradient-to-br from-white via-white to-[#faf6ec] group cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-350">
+            <div class="absolute -right-12 -top-12 w-48 h-48 bg-[#b0841a]/5 rounded-full blur-2xl group-hover:bg-[#b0841a]/10 transition-colors"></div>
+            <div class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#b0841a]/10 to-transparent rounded-br-full"></div>
+            <div>
+                <div class="flex justify-between items-start mb-6">
+                    <div class="flex items-center gap-4">
+                        <i class="fa-solid fa-kaaba text-[#b0841a] text-4xl animate-pulse"></i>
+                    </div>
+                    <span class="text-xs font-black px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span data-i18n="nav-pilgrim-services">رواحل لخدمات العمرة والسياحة</span>
+                    </span>
+                </div>
+                <h2 class="text-2xl font-black text-slate-900 group-hover:text-[#b0841a] transition-colors" data-i18n="nav-pilgrim-services">رواحل لخدمات العمرة والسياحة</h2>
+                <p class="text-sm text-slate-600 font-semibold mt-4 leading-relaxed" data-i18n="card-pilgrim-desc">إدارة باقات وخدمات ضيوف الرحمن بما يشمل إصدار التأشيرات، حجوزات الفنادق، نقل المعتمرين، والضيافة والتموين المتكاملة.</p>
+                
+                <!-- Sector Summary Metrics -->
+                <div class="grid grid-cols-3 gap-3 mt-6 bg-slate-50/80 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="text-[9px] text-slate-500 block font-bold" data-i18n="label-total-revenue">إجمالي الإيراد</span>
+                        <span class="text-sm font-black text-slate-950 mt-0.5 block">89.5 M</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-slate-500 block font-bold" data-i18n="label-growth-rate">معدل النمو</span>
+                        <span class="text-sm font-black text-emerald-600 mt-0.5 block">+12.8%</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-slate-500 block font-bold" data-i18n="label-achievement-rate">نسبة التحقيق</span>
+                        <span class="text-sm font-black text-slate-950 mt-0.5 block">89%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-4 border-t border-slate-100 flex justify-end">
+                <button class="px-6 py-3 bg-gradient-to-l from-[#b0841a] to-[#8c6510] text-white font-bold rounded-xl text-xs shadow-md group-hover:shadow-lg transition-all duration-300 transform group-hover:-translate-y-0.5 flex items-center gap-2">
+                    <span data-i18n="btn-access-portal">الدخول للمنصة</span>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

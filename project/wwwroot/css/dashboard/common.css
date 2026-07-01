@@ -1,0 +1,279 @@
+/* Load Tajawal as primary Arabic font */
+body, button, input, select, textarea, span, h1, h2, h3, h4, h5, h6, p, div, a {
+    font-family: 'Tajawal', sans-serif;
+}
+
+html[dir="ltr"] body, html[dir="ltr"] button, html[dir="ltr"] input, html[dir="ltr"] select, html[dir="ltr"] textarea, html[dir="ltr"] span, html[dir="ltr"] h1, html[dir="ltr"] h2, html[dir="ltr"] h3, html[dir="ltr"] h4, html[dir="ltr"] h5, html[dir="ltr"] h6, html[dir="ltr"] p, html[dir="ltr"] div, html[dir="ltr"] a {
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-image: linear-gradient(rgba(250, 249, 246, 0.98), rgba(250, 249, 246, 0.98)), url('https://www.rawahel.com.sa/wp-content/themes/tl4s-raoaa_rawahel/images/slider10.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: #0f172a;
+}
+
+.bg-sidebar { background-color: #ffffff; }
+.bg-sidebar-active { 
+    background: linear-gradient(135deg, #b0841a 0%, #8c6510 100%); 
+    color: #ffffff !important; 
+    box-shadow: 0 4px 15px rgba(176, 132, 26, 0.3); 
+}
+
+.text-gold-brand { color: #b0841a; }
+.bg-gold-brand { background-color: #b0841a; }
+
+/* glassmorphism components with glowing effects */
+.glass-card {
+    background-color: #ffffff;
+    border: 1px solid rgba(176, 132, 26, 0.35);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+    color: #0f172a;
+}
+.glass-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(176, 132, 26, 0.6);
+    box-shadow: 0 10px 30px rgba(176, 132, 26, 0.15);
+}
+
+/* Core Sectors (Grid of 3) */
+#sectors-grid .glass-card {
+    min-height: 16.5rem !important;
+    height: auto !important;
+    padding: 2rem !important;
+    border-radius: 1.5rem !important;
+    background: linear-gradient(135deg, #ffffff 0%, #faf6ec 100%) !important;
+    border: 1.5px solid rgba(176, 132, 26, 0.5) !important;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(176, 132, 26, 0.08) !important;
+}
+#sectors-grid .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #b0841a, #e2b34a, #8c6510);
+}
+#sectors-grid .glass-card h3 {
+    font-size: 1.25rem !important;
+    font-weight: 900 !important;
+    color: #0f172a !important;
+}
+#sectors-grid .glass-card p {
+    font-size: 0.95rem !important;
+    line-height: 1.625 !important;
+    font-weight: 500 !important;
+    color: #475569 !important;
+    margin-top: 0.75rem !important;
+}
+#sectors-grid .glass-card span[id^="sector-perf-"] {
+    font-size: 2.75rem !important;
+    font-weight: 900 !important;
+}
+#sectors-grid .glass-card span.w-10.h-10 {
+    width: 3rem !important;
+    height: 3rem !important;
+    font-size: 1.125rem !important;
+}
+#sectors-grid .glass-card:hover {
+    transform: translateY(-5px) !important;
+    border-color: rgba(176, 132, 26, 0.8) !important;
+    box-shadow: 0 15px 35px rgba(176, 132, 26, 0.22) !important;
+}
+
+/* Summary KPI Cards (Grid of 6) */
+#summary-cards-grid .glass-card {
+    min-height: 11rem !important;
+    height: auto !important;
+    padding: 1.5rem !important;
+    border-radius: 1.25rem !important;
+}
+#summary-cards-grid .glass-card span[data-i18n] {
+    font-size: 0.95rem !important;
+    font-weight: 850 !important;
+    color: #0f172a !important;
+    line-height: 1.4 !important;
+}
+#summary-cards-grid .glass-card span[id^="val-"] {
+    font-size: 2.25rem !important;
+    font-weight: 900 !important;
+}
+#summary-cards-grid .glass-card span[id^="target-val-"] {
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+}
+
+/* Detailed KPI Cards (Grid of 22 in sectors/depts) */
+#kpis-container .glass-card, #sector-kpis-grid .glass-card {
+    min-height: 12rem !important;
+}
+#kpis-container .glass-card span[data-i18n], #sector-kpis-grid .glass-card span[data-i18n] {
+    font-size: 0.875rem !important;
+    font-weight: 850 !important;
+    color: #0f172a !important;
+}
+#kpis-container .glass-card span[id^="val-"], #sector-kpis-grid .glass-card span[id^="val-"] {
+    font-size: 2.25rem !important;
+    font-weight: 900 !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+    color: #0f172a !important;
+}
+#kpis-container .glass-card span[id^="target-val-"], #sector-kpis-grid .glass-card span[id^="target-val-"],
+#kpis-container .glass-card .text-slate-500, #sector-kpis-grid .glass-card .text-slate-500 {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+#kpis-container .glass-card .text-\[9px\], #sector-kpis-grid .glass-card .text-\[9px\] {
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+}
+
+/* Sidebar Text Scaling */
+aside nav a {
+    font-size: 0.875rem !important; /* text-sm */
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+}
+aside nav .pt-3 {
+    font-size: 0.75rem !important; /* text-xs */
+}
+aside .text-\[9px\] {
+    font-size: 0.75rem !important;
+}
+
+.bg-amber-light-card { 
+    background-color: #ffffff; 
+    border: 1px solid rgba(176, 132, 26, 0.4); 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    color: #0f172a;
+}
+
+/* ticker animations */
+.ticker-wrap {
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    border-bottom: 3px solid #b0841a;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    direction: ltr !important; 
+    color: #f8fafc;
+}
+.ticker-wrap .text-[#b0841a] {
+    color: #fbbf24 !important; /* glowing amber/gold */
+    text-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+}
+.ticker-wrap .text-emerald-700 {
+    color: #34d399 !important; /* light emerald/green */
+    text-shadow: 0 0 8px rgba(52, 211, 153, 0.4);
+}
+.ticker-wrap .text-gold-brand {
+    color: #f59e0b !important;
+    text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+.ticker__item {
+    font-size: 0.95rem !important; /* text-sm/base */
+    padding: 0 4rem !important; /* wider spacing */
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+}
+.ticker-container {
+    display: flex;
+    width: max-content;
+    animation: ticker-loop 35s linear infinite;
+}
+.ticker {
+    display: flex;
+    white-space: nowrap;
+}
+html[dir="rtl"] .ticker { direction: rtl !important; }
+html[dir="ltr"] .ticker { direction: ltr !important; }
+@keyframes ticker-loop {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+}
+.ticker-wrap:hover .ticker-container {
+    animation-play-state: paused;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(240, 240, 240, 0.8);
+}
+::-webkit-scrollbar-thumb {
+    background: #b0841a;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #ca9b29;
+}
+
+@keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+}
+
+/* Premium Sidebar Navbar Navigation */
+aside a {
+    font-size: 0.9rem !important; /* Larger text size, about 14.4px */
+    font-weight: 700 !important; /* Bold */
+    padding: 0.75rem 1rem !important; /* Spacing */
+    margin-bottom: 0.35rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.85rem !important;
+    border-radius: 0.75rem !important; /* Rounded corners */
+    color: #334155 !important; /* Slate 700 */
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+aside a i {
+    color: #b0841a !important; /* Gold icons in inactive state */
+    font-size: 1.1rem !important; /* Larger icons for scanning */
+    width: 1.5rem !important;
+    text-align: center !important;
+    transition: color 0.25s ease !important;
+}
+aside a:hover {
+    background-color: #fafaf9 !important; /* Soft warm grey background */
+    color: #b0841a !important; /* Hover text in gold */
+}
+aside a:hover i {
+    color: #b0841a !important; /* Keep hover icon gold */
+}
+
+/* Active Link State */
+aside a.bg-sidebar-active {
+    background: linear-gradient(135deg, #b0841a 0%, #8c6510 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(176, 132, 26, 0.3) !important;
+    font-weight: 850 !important;
+}
+aside a.bg-sidebar-active i {
+    color: #ffffff !important; /* Force white icon when active */
+}
+
+/* Sidebar Section Headers */
+aside .sidebar-header {
+    font-size: 0.75rem !important; /* text-xs */
+    font-weight: 850 !important;
+    color: #94a3b8 !important; /* Slate-400 */
+    letter-spacing: 0.075em !important;
+    text-transform: uppercase !important;
+    padding: 1rem 1rem 0.35rem 1rem !important;
+}

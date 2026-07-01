@@ -1,0 +1,50 @@
+@model project.Pages.IndexModel
+
+<!-- Support Services Department KPI Cards -->
+<!-- Employee Retention -->
+<div id="card-hr-ret" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-ret-label">معدل الاحتفاظ بالموظفين الكوادر</span>
+        <span id="flag-hr-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-hr-ret">@Model.HrRetention%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-ret">--</span></span>
+    </div>
+</div>
+
+<!-- IT Automation -->
+<div id="card-it-autom" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="val-it-autom-label">تنفيذ مشاريع التحول الرقمي وأتمتة الورش</span>
+        <span id="flag-it-autom" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-it-autom">@Model.ItAutomation%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-it-autom">--</span></span>
+    </div>
+</div>
+
+<!-- Succession Planning -->
+<div id="card-critical-succession" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="val-critical-succession-label">خطط الإحلال والتعاقب للوظائف الحرجة</span>
+        <span id="flag-critical-succession" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-critical-succession">@Model.CriticalSuccession%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-critical-succession">--</span></span>
+    </div>
+</div>
+
+<!-- Saudization -->
+<div id="card-saudization" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="val-saudization-label">نسبة التوطين والسعوده بالشركة</span>
+        <span id="flag-saudization" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-saudization">@Model.Saudization%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-saudization">--</span></span>
+    </div>
+</div>

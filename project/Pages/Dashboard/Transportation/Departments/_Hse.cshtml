@@ -1,0 +1,38 @@
+@model project.Pages.IndexModel
+
+<!-- Health, Safety & Environment (HSE) Department KPI Cards -->
+<!-- LTIFR -->
+<div id="card-hse-ltifr" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-ltifr-label">معدل حوادث العمل LTIFR</span>
+        <span id="flag-hse-ltifr" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-hse-ltifr">@Model.Ltifr</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-ltifr">--</span></span>
+    </div>
+</div>
+
+<!-- Serious Accidents -->
+<div id="card-hse-accidents" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-accidents-label">حوادث جسيمة للحافلات بالطرق</span>
+        <span id="flag-hse-accidents" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-rose-700" id="val-hse-accidents">@Model.Accidents</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-accidents">--</span></span>
+    </div>
+</div>
+
+<!-- Audit Compliance -->
+<div id="card-audit-comp" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="val-audit-comp-label">نسبة الامتثال للوائح والتراخيص</span>
+        <span id="flag-audit-comp" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-audit-comp">@Model.AuditCompliance%</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-audit-comp">--</span></span>
+    </div>
+</div>

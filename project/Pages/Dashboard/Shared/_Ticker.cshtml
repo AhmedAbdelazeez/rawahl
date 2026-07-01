@@ -1,0 +1,48 @@
+@model project.Pages.IndexModel
+
+<!-- ================= شريط أخبار الـ KPIs اللانهائي ================= -->
+<div class="ticker-wrap py-4 text-sm font-black">
+    <div class="ticker-container">
+        <div class="ticker">
+            <div class="ticker__item">
+                <span class="text-gold-brand"><i class="fa-solid fa-square-poll-vertical animate-pulse me-1.5"></i> <span data-i18n="ticker-perf-label">الأداء العام لشركة رواحل:</span></span> 
+                <span data-i18n="ticker-perf-desc">معدل إنجاز إدارات التشغيل</span> 
+                <span class="text-[#b0841a] font-black mx-1" id="ticker-total-perf">--</span> 
+                <span data-i18n="ticker-may">لشهر مايو.</span>
+            </div>
+            <div class="ticker__item">
+                <span class="text-gold-brand"><i class="fa-solid fa-chart-line me-1.5"></i> <span data-i18n="ticker-revenue-label">نمو الإيرادات:</span></span> 
+                <span data-i18n="ticker-revenue-desc">حققنا نسبة نمو بقيمة</span> 
+                <span class="text-emerald-700 font-black mx-1" id="ticker-rev-growth">@Model.TotalRevenue M ر.س</span> 
+            </div>
+            <div class="ticker__item">
+                <span class="text-gold-brand"><i class="fa-solid fa-money-bill-trend-up me-1.5"></i> <span data-i18n="ticker-ebitda-label">هامش EBITDA التشغيلي:</span></span> 
+                <span data-i18n="ticker-ebitda-desc">أداء مالي متزن ويسجل</span> 
+                <span class="text-emerald-700 font-black mx-1" id="ticker-ebitda">@Model.Ebitda%</span>.
+            </div>
+            <div class="ticker__item">
+                <span class="text-gold-brand"><i class="fa-solid fa-bus-simple me-1.5"></i> <span data-i18n="ticker-fleet-label">جاهزية الأسطول الحالية:</span></span> 
+                <span data-i18n="ticker-fleet-desc">جاهزية حافلات التشغيل ترتفع لـ</span> 
+                <span class="text-[#b0841a] font-black mx-1" id="ticker-fleet-ready">@Model.FleetReady%</span> 
+                <span data-i18n="ticker-fleet-total">(إجمالي 1,240 حافلة).</span>
+            </div>
+            <div class="ticker__item">
+                <span class="text-gold-brand"><i class="fa-solid fa-star-half-stroke me-1.5"></i> <span data-i18n="ticker-nps-label">رضا العملاء NPS:</span></span> 
+                <span data-i18n="ticker-nps-desc">نقاط رضا ضيوف الرحمن تسجل</span> 
+                <span class="text-[#b0841a] font-black mx-1" id="ticker-nps">@Model.Nps نقطة</span> 
+            </div>
+        </div>
+        <!-- مكرر لدوران الأنباء بسلاسة -->
+        <div class="ticker" aria-hidden="true">
+            <div class="ticker__item">
+                <span class="text-gold-brand"><i class="fa-solid fa-square-poll-vertical animate-pulse me-1.5"></i> <span data-i18n="ticker-perf-label">الأداء العام لشركة رواحل:</span></span> 
+                <span data-i18n="ticker-perf-desc">معدل إنجاز إدارات التشغيل</span> 
+                <span class="text-[#b0841a] font-black mx-1" id="ticker-total-perf-dup">--</span> 
+            </div>
+            <div class="ticker__item">
+                <span class="text-gold-brand"><i class="fa-solid fa-chart-line me-1.5"></i> <span data-i18n="ticker-revenue-label">نمو الإيرادات:</span></span> 
+                <span class="text-emerald-700 font-black mx-1" id="ticker-rev-growth-dup">@Model.TotalRevenue M ر.س</span>.
+            </div>
+        </div>
+    </div>
+</div>

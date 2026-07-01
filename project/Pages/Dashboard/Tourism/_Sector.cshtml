@@ -1,0 +1,122 @@
+@model project.Pages.IndexModel
+
+<!-- ================= رواحل لخدمات العمره والسياحه (Tourism & Pilgrim Services View) ================= -->
+<div id="view-pilgrim-sector" class="view-container hidden">
+    <section class="mb-6" data-aos="fade-up">
+        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                <div>
+                    <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">المنصة التنفيذية للخدمات</span>
+                    <h2 class="text-lg font-black mt-2 text-slate-800">باقات وخدمات إدارة المعتمرين والسياحة</h2>
+                    <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">بوابة المراقبة والتحليل لرحلة ضيوف الرحمن: إصدار التأشيرات، الفنادق، النقل، والضيافة المتكاملة.</p>
+                </div>
+                <button onclick="showView('overview')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>العودة للرئيسية</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4 Top Executive KPIs for Pilgrim Sector -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 text-start" data-aos="fade-up">
+        <div class="glass-card p-5 rounded-2xl border-l-4 border-[#b0841a] flex flex-col justify-between h-32">
+            <span class="text-xs text-slate-500 font-bold flex items-center gap-1"><i class="fa-solid fa-coins text-[#b0841a]"></i> إجمالي الإيرادات للإدارة</span>
+            <span class="text-2xl font-black text-slate-900 mt-2">89.5 مليون ر.س</span>
+            <span class="text-[9px] text-emerald-600 font-black">+12.8% نمو متسارع</span>
+        </div>
+        <div class="glass-card p-5 rounded-2xl border-l-4 border-[#b0841a] flex flex-col justify-between h-32">
+            <span class="text-xs text-slate-500 font-bold flex items-center gap-1"><i class="fa-solid fa-chart-line text-[#b0841a]"></i> معدل النمو التشغيلي</span>
+            <span class="text-2xl font-black text-slate-900 mt-2">+12.8%</span>
+            <span class="text-[9px] text-slate-400 font-bold">بالمقارنة بالشهر السابق</span>
+        </div>
+        <div class="glass-card p-5 rounded-2xl border-l-4 border-[#b0841a] flex flex-col justify-between h-32">
+            <span class="text-xs text-slate-500 font-bold flex items-center gap-1"><i class="fa-solid fa-bullseye text-[#b0841a]"></i> كفاءة تحقيق المستهدف</span>
+            <span class="text-2xl font-black text-slate-900 mt-2">89%</span>
+            <div class="w-full bg-slate-100 rounded-full h-1.5 mt-2">
+                <div class="bg-gradient-to-r from-[#b0841a] to-[#8c6510] h-1.5 rounded-full" style="width: 89%"></div>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl border-l-4 border-[#b0841a] flex flex-col justify-between h-32">
+            <span class="text-xs text-slate-500 font-bold flex items-center gap-1"><i class="fa-solid fa-gears text-[#b0841a]"></i> إجمالي العمليات والمعاملات</span>
+            <span class="text-2xl font-black text-slate-900 mt-2">70,400 معاملة</span>
+            <span class="text-[9px] text-slate-400 font-bold">تأشيرة، حجز، رحلة وضيافة</span>
+        </div>
+    </div>
+
+    <!-- 4 Grouped Services Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 text-start" data-aos="fade-up">
+        <!-- Visa Issuance -->
+        <div onclick="showView('service-visa')" class="glass-card p-6 rounded-2xl cursor-pointer flex flex-col justify-between h-48 group bg-white hover:border-[#b0841a]">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-passport text-[#b0841a] text-lg"></i>
+                        <span>خدمة إصدار التأشيرات</span>
+                    </h3>
+                    <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed">أتمتة وإصدار تأشيرات العمرة الإلكترونية والربط مع نظام وزارة الخارجية لسرعة إنجاز معاملات المعتمرين.</p>
+                </div>
+                <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+            </div>
+            <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                <span class="text-[9px] text-[#b0841a] font-black">إيراد الإدارة: 15.4 مليون ر.س</span>
+                <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">VISA</span>
+            </div>
+        </div>
+
+        <!-- Hotel Booking -->
+        <div onclick="showView('service-hotels')" class="glass-card p-6 rounded-2xl cursor-pointer flex flex-col justify-between h-48 group bg-white hover:border-[#b0841a]">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-hotel text-[#b0841a] text-lg"></i>
+                        <span>خدمة حجز الفنادق والسكن</span>
+                    </h3>
+                    <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed">حجز وتأمين الغرف الفندقية والسكن لبعثات الحج والعمرة بمكة المكرمة والمدينة المنورة بشراكات استراتيجية.</p>
+                </div>
+                <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+            </div>
+            <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                <span class="text-[9px] text-[#b0841a] font-black">إيراد الإدارة: 28.2 مليون ر.س</span>
+                <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">HOTEL</span>
+            </div>
+        </div>
+
+        <!-- Pilgrim Transport -->
+        <div onclick="showView('service-transport')" class="glass-card p-6 rounded-2xl cursor-pointer flex flex-col justify-between h-48 group bg-white hover:border-[#b0841a]">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-bus text-[#b0841a] text-lg"></i>
+                        <span>خدمة نقل المعتمرين</span>
+                    </h3>
+                    <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed">تفويج ونقل ضيوف الرحمن بين المنافذ والمطارات والفنادق وحول المشاعر المقدسة بحافلات مخصصة وحديثة.</p>
+                </div>
+                <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+            </div>
+            <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                <span class="text-[9px] text-[#b0841a] font-black">إيراد الإدارة: 35.8 مليون ر.س</span>
+                <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">TRANSPORT</span>
+            </div>
+        </div>
+
+        <!-- Hospitality -->
+        <div onclick="showView('service-hospitality')" class="glass-card p-6 rounded-2xl cursor-pointer flex flex-col justify-between h-48 group bg-white hover:border-[#b0841a]">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-utensils text-[#b0841a] text-lg"></i>
+                        <span>خدمة الضيافة</span>
+                    </h3>
+                    <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed">تقديم الوجبات الغذائية المتميزة وخدمات الضيافة والإعاشة في مقار سكن المعتمرين وبعثات ضيوف الرحمن.</p>
+                </div>
+                <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+            </div>
+            <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                <span class="text-[9px] text-[#b0841a] font-black">إيراد الإدارة: 10.1 مليون ر.س</span>
+                <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">HOSPITALITY</span>
+            </div>
+        </div>
+    </section>
+</div>
