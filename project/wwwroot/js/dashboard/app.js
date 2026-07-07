@@ -394,6 +394,11 @@ function showView(viewName, isPopState) {
     const viewTransportationServices = document.getElementById('view-transportation-services');
     const viewTransportationDepartments = document.getElementById('view-transportation-departments');
     
+    // Portal Integration Views
+    const viewDeptProjectsDynamic = document.getElementById('view-dept-projects-dynamic');
+    const viewDeptFleetDynamic = document.getElementById('view-dept-fleet-dynamic');
+    const viewPortalKpis = document.getElementById('view-portal-kpis');
+    
     viewOverview.classList.add('hidden');
     if (viewSectors) viewSectors.classList.add('hidden');
     if (viewTransportationSector) viewTransportationSector.classList.add('hidden');
@@ -406,6 +411,10 @@ function showView(viewName, isPopState) {
     if (viewProjectMakkahTour) viewProjectMakkahTour.classList.add('hidden');
     if (viewTransportationServices) viewTransportationServices.classList.add('hidden');
     if (viewTransportationDepartments) viewTransportationDepartments.classList.add('hidden');
+    
+    if (viewDeptProjectsDynamic) viewDeptProjectsDynamic.classList.add('hidden');
+    if (viewDeptFleetDynamic) viewDeptFleetDynamic.classList.add('hidden');
+    if (viewPortalKpis) viewPortalKpis.classList.add('hidden');
     
     if (viewName === 'overview') {
         viewOverview.classList.remove('hidden');
@@ -454,6 +463,10 @@ function showView(viewName, isPopState) {
     } else if (viewName === 'dept-projects') {
         if (viewDeptProjects) viewDeptProjects.classList.remove('hidden');
         document.getElementById('header-main-title').innerText = isEn ? 'Project Management Office' : 'إدارة المشاريع الاستراتيجية';
+        if (window.PortalIntegration) {
+            window.PortalIntegration.resetViews();
+            window.PortalIntegration.load();
+        }
     } else if (viewName === 'project-shuttle') {
         if (viewProjectShuttle) viewProjectShuttle.classList.remove('hidden');
         document.getElementById('header-main-title').innerText = isEn ? 'Shuttle Transport Project Details' : 'مشروع النقل الترددي  - التفاصيل';
@@ -462,6 +475,10 @@ function showView(viewName, isPopState) {
         if (viewProjectMakkahTour) viewProjectMakkahTour.classList.remove('hidden');
         document.getElementById('header-main-title').innerText = isEn ? 'Makkah Tour Project Details' : 'مشروع جولة مكة - التفاصيل';
         setTimeout(() => { if (window.initMakkahTourCharts) window.initMakkahTourCharts(); }, 100);
+    } else if (viewName === 'dept-fleet') {
+        viewKpiDashboard.classList.remove('hidden');
+        applyKpiFilters(viewName);
+        if (window.PortalIntegration) window.PortalIntegration.load();
     } else {
         viewKpiDashboard.classList.remove('hidden');
         applyKpiFilters(viewName);

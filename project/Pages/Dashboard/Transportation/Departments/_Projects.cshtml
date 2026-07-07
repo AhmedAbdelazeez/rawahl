@@ -1,67 +1,179 @@
 @model project.Pages.IndexModel
 
-<!-- ================= إدارة المشاريع (Project Management Department View) ================= -->
+<!-- ================= إدارة المشاريع (Dynamic Project Management View) ================= -->
 <div id="view-dept-projects" class="view-container hidden">
-    <section class="mb-6" data-aos="fade-up">
-        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
-            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
-                <div>
-                    <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">بوابة المشاريع الاستراتيجية</span>
-                    <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="dept-projects-title">إدارة المشاريع</h2>
-                    <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">تفاصيل تشغيل ومراقبة المشاريع الميدانية الكبرى وجداولها الزمنية ونسب تحقيق مستهدفاتها.</p>
+    <!-- SECTION 1: Projects List Grid -->
+    <div id="projects-list-section">
+        <section class="mb-6" data-aos="fade-up">
+            <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+                <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                    <div>
+                        <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">بوابة المشاريع الاستراتيجية</span>
+                        <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="dept-projects-title">إدارة المشاريع</h2>
+                        <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">تفاصيل تشغيل ومراقبة المشاريع الميدانية الكبرى وجداولها الزمنية ونسب تحقيق مستهدفاتها.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <div id="portal-live-indicator" class="flex items-center gap-1 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
+                            <span class="w-2 h-2 rounded-full bg-slate-300 inline-block ml-1"></span>
+                            <span class="text-[10px] font-bold text-slate-500">جاري الاتصال...</span>
+                        </div>
+                        <button onclick="window.PortalIntegration.refresh()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-rotate"></i>
+                            <span>تحديث</span>
+                        </button>
+                    </div>
                 </div>
-                <button onclick="showView('transportation-sector')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-arrow-right"></i>
-                    <span data-i18n="btn-back-depts">العودة للنقل التخصصي</span>
-                </button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 text-start" data-aos="fade-up">
-        <!-- Project 1 Card: نقل المتردد -->
-        <div onclick="showView('project-shuttle')" class="glass-card p-6 rounded-3xl cursor-pointer flex flex-col justify-between h-64 group bg-white border-2 hover:border-[#b0841a] transition-all">
-            <div class="flex justify-between items-start">
-                <div>
-                    <span class="text-[9px] bg-amber-50 text-amber-700 px-2.5 py-1 rounded-lg border border-amber-200 font-black mb-2 inline-block">مشروع نقل حيوي</span>
-                    <h3 class="text-lg font-black text-slate-900 group-hover:text-[#b0841a] transition-colors flex items-center gap-2">
-                        <i class="fa-solid fa-bus text-[#b0841a]"></i>
-                        <span data-i18n="project-shuttle-title">مشروع النقل الترددي </span>
-                    </h3>
-                    <p class="text-xs text-slate-500 font-semibold mt-2.5 leading-relaxed">إدارة وتشغيل مسارات تفويج ونقل الحجاج في المشاعر المقدسة ونسب الالتزام بالجدول وتفاصيل استغلال الأسطول.</p>
-                </div>
-                <span class="w-10 h-10 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-sm font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
-            </div>
-            <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
-                 <div class="flex gap-4 text-xs font-bold text-slate-600">
-                     <span>المستفيدين: <span class="text-slate-950 font-black">250,000+</span></span>
-                     <span>نسبة الإنجاز: <span class="text-emerald-600 font-black">95%</span></span>
-                 </div>
-                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">SHUTTLE</span>
+        <!-- Error Banner -->
+        <div id="portal-error-banner" class="mb-6 hidden"></div>
+
+        <!-- Filter Tabs & Stats Summary Bar -->
+        <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 text-start" data-aos="fade-up">
+            <div id="project-status-filters" class="flex flex-wrap gap-2">
+                <!-- Status filter buttons injected here -->
+                <div class="h-8 w-64 bg-slate-100 animate-pulse rounded-lg"></div>
             </div>
         </div>
 
-        <!-- Project 2 Card: جولة مكة -->
-        <div onclick="showView('project-makkah-tour')" class="glass-card p-6 rounded-3xl cursor-pointer flex flex-col justify-between h-64 group bg-white border-2 hover:border-[#b0841a] transition-all">
-            <div class="flex justify-between items-start">
-                <div>
-                    <span class="text-[9px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-lg border border-emerald-200 font-black mb-2 inline-block">مشروع سياحي وتاريخي</span>
-                    <h3 class="text-lg font-black text-slate-900 group-hover:text-[#b0841a] transition-colors flex items-center gap-2">
-                        <i class="fa-solid fa-kaaba text-[#b0841a]"></i>
-                        <span data-i18n="project-makkah-tour-title">مشروع جولة مكة</span>
-                    </h3>
-                    <p class="text-xs text-slate-500 font-semibold mt-2.5 leading-relaxed">تنظيم وإدارة الجولات السياحية والتاريخية الميدانية في مكة المكرمة والمعالم الأثرية والمزارات الدينية.</p>
+        <!-- Summary Statistics Bar -->
+        <div class="mb-6 bg-slate-50 border border-slate-200/60 p-4 rounded-2xl text-start" id="projects-summary-bar" data-aos="fade-up">
+            <div class="h-6 w-full bg-slate-200/50 animate-pulse rounded-lg"></div>
+        </div>
+
+        <!-- Loading Skeleton -->
+        <div class="portal-loading-skeleton grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            @for (int i = 0; i < 3; i++)
+            {
+                <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-64 bg-white border border-slate-100 animate-pulse">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="h-6 w-16 bg-slate-200 rounded-lg"></div>
+                            <div class="h-4 w-8 bg-slate-200 rounded"></div>
+                        </div>
+                        <div class="h-5 w-3/4 bg-slate-200 rounded mb-2"></div>
+                        <div class="h-4 w-full bg-slate-100 rounded mb-1"></div>
+                    </div>
+                    <div class="mt-4 border-t border-slate-100 pt-3">
+                        <div class="h-2 w-full bg-slate-200 rounded mb-2"></div>
+                        <div class="h-4 w-24 bg-slate-100 rounded"></div>
+                    </div>
                 </div>
-                <span class="w-10 h-10 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-sm font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+            }
+        </div>
+
+        <!-- Live Projects Grid -->
+        <div class="portal-content grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 text-start" id="dynamic-projects-grid">
+            <!-- Project cards injected dynamically by JS -->
+        </div>
+    </div>
+
+    <!-- SECTION 2: Project Dynamic Details Drilldown -->
+    <div id="project-details-section" class="hidden">
+        <section class="mb-6">
+            <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden">
+                <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-start">
+                    <div>
+                        <span id="detail-project-client" class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold border border-[#b0841a]/20">اسم العميل</span>
+                        <h2 id="detail-project-name" class="text-lg font-black mt-2 text-slate-800">اسم المشروع الحقيقي</h2>
+                        <p id="detail-project-desc" class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">وصف المشروع الحقيقي وتفاصيل أهداف التشغيل.</p>
+                    </div>
+                    <button onclick="window.closeProjectDetails()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span>العودة للمشاريع</span>
+                    </button>
+                </div>
             </div>
-            <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
-                 <div class="flex gap-4 text-xs font-bold text-slate-600">
-                     <span>الزوار: <span class="text-slate-950 font-black">45,000+</span></span>
-                     <span>نسبة رضا العملاء: <span class="text-emerald-600 font-black">94%</span></span>
-                 </div>
-                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">MAKKAH TOUR</span>
+        </section>
+
+        <!-- KPI metrics grid for project -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 text-start">
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white">
+                <span class="text-[10px] font-black text-slate-700">نسبة التقدم الفعلي</span>
+                <div class="my-2 text-center">
+                    <span id="detail-kpi-progress" class="text-3xl font-black text-slate-900">0%</span>
+                </div>
+            </div>
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white">
+                <span class="text-[10px] font-black text-slate-700">إجمالي الرحلات</span>
+                <div class="my-2 text-center">
+                    <span id="detail-kpi-trips" class="text-3xl font-black text-slate-900">0</span>
+                </div>
+            </div>
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white">
+                <span class="text-[10px] font-black text-slate-700">المهام المكتملة</span>
+                <div class="my-2 text-center">
+                    <span id="detail-kpi-tasks" class="text-3xl font-black text-slate-900">0</span>
+                </div>
+            </div>
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white">
+                <span class="text-[10px] font-black text-slate-700">قيمة عقد المشروع</span>
+                <div class="my-2 text-center">
+                    <span id="detail-kpi-value" class="text-2xl font-black text-slate-900">0 ر.س</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Tasks and Milestones Lists -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 text-start">
+            <!-- Tasks List Table -->
+            <div class="glass-card p-6 rounded-3xl bg-white border border-slate-100">
+                <h3 class="text-sm font-black text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-[#b0841a]"></i>
+                    <span>قائمة المهام وحالة إنجازها</span>
+                </h3>
+                <div class="overflow-x-auto max-h-96">
+                    <table class="w-full text-xs font-bold text-slate-600">
+                        <thead>
+                            <tr class="border-b border-slate-100 text-slate-400 text-right">
+                                <th class="pb-2">المهمة</th>
+                                <th class="pb-2">الحالة</th>
+                                <th class="pb-2 text-left">تاريخ الاستحقاق</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detail-tasks-table-body">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Milestones List -->
+            <div class="glass-card p-6 rounded-3xl bg-white border border-slate-100">
+                <h3 class="text-sm font-black text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-flag text-[#b0841a]"></i>
+                    <span>المراحل الرئيسية للمشروع (Milestones)</span>
+                </h3>
+                <div class="space-y-3 max-h-96 overflow-y-auto pr-1" id="detail-milestones-list">
+                    <!-- Injected by JS -->
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .portal-filter-btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 0.75rem;
+        font-weight: 800;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        background-color: #f8fafc;
+        color: #475569;
+        transition: all 0.2s;
+    }
+    .portal-filter-btn:hover {
+        background-color: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+    .portal-filter-btn.active {
+        background: linear-gradient(135deg, #b0841a 0%, #8c6510 100%);
+        color: #ffffff;
+        border-color: #b0841a;
+        box-shadow: 0 4px 10px rgba(176, 132, 26, 0.2);
+    }
+</style>

@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddControllers();
 
 // DbContext configuration
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
@@ -43,6 +44,18 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IDepartmentAccessService, DepartmentAccessService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+
+// Portal Integration
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient<IPortalIntegrationService, PortalIntegrationService>(client =>
+{
+    var url = builder.Configuration["PortalApiUrl"] ?? "http://localhost:5186/";
+    client.BaseAddress = new Uri(url);
+    client.Timeout = TimeSpan.FromSeconds(15);
+}).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+});
 
 // Authorization Policies
 builder.Services.AddAuthorization(options =>
@@ -85,6 +98,7 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
+app.MapControllers();
 
 // Seed Database
 using (var scope = app.Services.CreateScope())
