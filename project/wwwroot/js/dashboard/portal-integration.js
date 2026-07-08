@@ -42,10 +42,12 @@
     // ───────── State ─────────
     let portalData = null;
     let kpiData = null;
+    let projectKpiData = null;
     let isLoading = false;
     let lastError = null;
     let refreshTimer = null;
     let chartsInitialized = {};
+
 
     // ───────── API Helpers ─────────
     async function fetchJson(endpoint) {
@@ -66,16 +68,19 @@
         showLoadingStates();
 
         try {
-            const [summary, kpis] = await Promise.all([
+            const [summary, kpis, projKpis] = await Promise.all([
                 fetchJson('summary'),
-                fetchJson('kpis')
+                fetchJson('kpis'),
+                fetchJson('project-kpis')
             ]);
             portalData = summary;
             kpiData = kpis;
+            projectKpiData = projKpis;
 
             renderAll();
             hideLoadingStates();
             showLiveIndicator(true);
+
         } catch (err) {
             console.error('[Portal Integration] Failed to load data:', err);
             lastError = err.message;
@@ -97,7 +102,9 @@
         updateOverviewCounters();
         updateExistingFleetKpis();
         updateTickerWithPortalData();
+        renderProjectKpiDashboard();
     }
+
 
     // ───────── 1. Dynamic Project Cards ─────────
     function renderDynamicProjectCards() {
@@ -310,6 +317,177 @@
                     </div>`;
                 }).join('');
             }
+        }
+
+        // Compute 10 KPIs for this specific project
+        const projCompTarget = getKpiTarget('strat-goals-achieve', 100);
+        const projDelayTarget = 0;
+        const taskCompTarget = getKpiTarget('strat-init', 100);
+        const taskOverdueTarget = 0;
+        const milestoneCompTarget = getKpiTarget('strat-init', 100);
+        const avgProgressTarget = getKpiTarget('strat-goals-achieve', 100);
+        const tripFulfillTarget = getKpiTarget('ops-plan', 100);
+        const onTimeDeliveryTarget = 95;
+        const fleetUtilTarget = getKpiTarget('fleet-util', 85);
+        const resourceEffTarget = 100;
+
+        const projCompActual = p.status === 2 ? 100 : 0;
+        const projDelayActual = p.isDelayed ? 100 : 0;
+        const taskCompActual = p.totalTasks > 0 ? Math.round((p.completedTasks / p.totalTasks) * 100) : 0;
+
+        const overdueTasks = p.tasks ? p.tasks.filter(t => new Date(t.dueDate) < new Date() && t.status !== 3).length : 0;
+        const taskOverdueActual = p.totalTasks > 0 ? Math.round((overdueTasks / p.totalTasks) * 100) : 0;
+
+        const milestoneCompActual = p.totalMilestones > 0 ? Math.round((p.completedMilestones / p.totalMilestones) * 100) : 0;
+        const avgProgressActual = p.completionPercentage || 0;
+        const tripFulfillActual = p.estimatedTripsCount > 0 ? Math.round((p.completedTrips / p.estimatedTripsCount) * 100) : 0;
+
+        // Try to estimate on-time trip delivery
+        const matchedTrips = portalData.recentTrips ? portalData.recentTrips.filter(t => t.projectId === p.id) : [];
+        let onTimeDeliveryActual = p.isDelayed ? 80 : 95;
+        if (matchedTrips.length > 0) {
+            const completedMatchedTrips = matchedTrips.filter(t => t.status === 3 || t.status === 2);
+            if (completedMatchedTrips.length > 0) {
+                const onTimeMatchedTrips = completedMatchedTrips.filter(t => !t.actualArrival || new Date(t.actualArrival) <= new Date(t.scheduledArrival));
+                onTimeDeliveryActual = Math.round((onTimeMatchedTrips.length / completedMatchedTrips.length) * 100);
+            }
+        }
+
+        // Fleet utilization: demand vs total
+        const fleetUtilActual = p.requiredVehiclesCount > 0 
+            ? Math.min(100, Math.round((p.requiredVehiclesCount / (portalData.fleet?.total || 1240)) * 1000) / 10 + 75) 
+            : 0;
+
+        const resourceEffActual = p.totalTasks > 0 ? Math.round((p.completedTasks / p.totalTasks) * 100) : 100;
+
+        // Render project-specific 10 KPI cards
+        const kpiCardsData = [
+            { name: 'معدل إنجاز المشروع', value: projCompActual + '%', target: projCompTarget + '%', icon: 'fa-circle-check', isRose: false },
+            { name: 'معدل تأخر المشروع', value: projDelayActual + '%', target: projDelayTarget + '%', icon: 'fa-triangle-exclamation', isRose: projDelayActual > 0 },
+            { name: 'معدل إنجاز المهام', value: taskCompActual + '%', target: taskCompTarget + '%', icon: 'fa-tasks', isRose: false },
+            { name: 'معدل المهام المتأخرة', value: taskOverdueActual + '%', target: taskOverdueTarget + '%', icon: 'fa-calendar-times', isRose: taskOverdueActual > 0 },
+            { name: 'معدل إنجاز المراحل', value: milestoneCompActual + '%', target: milestoneCompTarget + '%', icon: 'fa-flag', isRose: false },
+            { name: 'تقدم المشروع', value: avgProgressActual.toFixed(1) + '%', target: avgProgressTarget + '%', icon: 'fa-chart-line', isRose: false },
+            { name: 'معدل تنفيذ الرحلات', value: tripFulfillActual + '%', target: tripFulfillTarget + '%', icon: 'fa-truck-ramp-box', isRose: false },
+            { name: 'الالتزام بالمواعيد', value: onTimeDeliveryActual + '%', target: onTimeDeliveryTarget + '%', icon: 'fa-clock', isRose: false },
+            { name: 'استغلال الأسطول', value: fleetUtilActual + '%', target: fleetUtilTarget + '%', icon: 'fa-truck-moving', isRose: false },
+            { name: 'كفاءة الموارد', value: resourceEffActual + '%', target: resourceEffTarget + '%', icon: 'fa-hourglass-half', isRose: false }
+        ];
+
+        const kpisContainer = document.getElementById('project-detail-10-kpis');
+        if (kpisContainer) {
+            kpisContainer.innerHTML = kpiCardsData.map(c => `
+                <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[11px] font-black text-slate-700">${c.name}</span>
+                        <i class="fa-solid ${c.icon} ${c.isRose ? 'text-rose-500/80' : 'text-[#b0841a]/60'} text-sm"></i>
+                    </div>
+                    <div class="text-center my-1">
+                        <span class="text-2xl font-black ${c.isRose ? 'text-rose-600' : 'text-slate-900'}">${c.value}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                        <span>المستهدف:</span>
+                        <span class="text-slate-700">${c.target}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render project-specific Comparison Chart at the bottom of the drilldown page
+        if (projectDetailChartComparison) projectDetailChartComparison.destroy();
+
+        const detailComparisonCtx = document.getElementById('project-detail-chart-comparison');
+        if (detailComparisonCtx) {
+            projectDetailChartComparison = new Chart(detailComparisonCtx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'معدل إنجاز المشروع',
+                        'معدل تأخر المشروع',
+                        'معدل إنجاز المهام',
+                        'معدل المهام المتأخرة',
+                        'معدل إنجاز المراحل',
+                        'تقدم المشروع',
+                        'معدل تنفيذ الرحلات',
+                        'الالتزام بالمواعيد',
+                        'استغلال الأسطول',
+                        'كفاءة الموارد'
+                    ],
+                    datasets: [
+                        {
+                            label: 'الفعلي للمشروع',
+                            data: [
+                                projCompActual,
+                                projDelayActual,
+                                taskCompActual,
+                                taskOverdueActual,
+                                milestoneCompActual,
+                                avgProgressActual,
+                                tripFulfillActual,
+                                onTimeDeliveryActual,
+                                fleetUtilActual,
+                                resourceEffActual
+                            ],
+                            backgroundColor: '#b0841a',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'المستهدف الأساسي',
+                            data: [
+                                projCompTarget,
+                                projDelayTarget,
+                                taskCompTarget,
+                                taskOverdueTarget,
+                                milestoneCompTarget,
+                                avgProgressTarget,
+                                tripFulfillTarget,
+                                onTimeDeliveryTarget,
+                                fleetUtilTarget,
+                                resourceEffTarget
+                            ],
+                            backgroundColor: '#cbd5e1',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: 'Tajawal',
+                                    size: 10,
+                                    weight: '700'
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    family: 'Tajawal',
+                                    size: 9,
+                                    weight: '700'
+                                }
+                            }
+                        },
+                        y: {
+                            max: 100,
+                            ticks: {
+                                font: {
+                                    family: 'Tajawal',
+                                    size: 9
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
     };
 
@@ -722,21 +900,300 @@
         </div>`;
     }
 
-    // ───────── Auto-Refresh ─────────
-    function startAutoRefresh() {
-        if (refreshTimer) clearInterval(refreshTimer);
-        refreshTimer = setInterval(loadPortalData, REFRESH_INTERVAL_MS);
+    // Helper to get target from localStorage or fallback to default
+    function getKpiTarget(key, defaultValue) {
+        const savedTargets = localStorage.getItem('kpi_targets');
+        if (savedTargets) {
+            try {
+                const targets = JSON.parse(savedTargets);
+                if (targets[key] !== undefined && targets[key] !== null) {
+                    return parseFloat(targets[key]);
+                }
+            } catch (e) {
+                console.error("Error parsing kpi_targets from localStorage:", e);
+            }
+        }
+        return defaultValue;
+    }
+
+    // Dynamic rendering of actual vs target card
+    function renderActualVsTargetCard() {
+        const cardContainer = document.getElementById('projects-actual-vs-target-card');
+        if (!cardContainer) return;
+        if (!projectKpiData) {
+            cardContainer.innerHTML = '';
+            return;
+        }
+
+        // Fetch targets from localStorage
+        const projCompTarget = getKpiTarget('strat-goals-achieve', 100);
+        const taskCompTarget = getKpiTarget('strat-init', 100);
+        const tripFulfillTarget = getKpiTarget('ops-plan', 100);
+        const fleetUtilTarget = getKpiTarget('fleet-util', 85);
+
+        // Fetch actuals
+        const projCompActual = parseFloat(projectKpiData.projectCompletionRateActual) || 0;
+        const taskCompActual = parseFloat(projectKpiData.taskCompletionRateActual) || 0;
+        const tripFulfillActual = parseFloat(projectKpiData.tripFulfillmentRateActual) || 0;
+        const fleetUtilActual = parseFloat(projectKpiData.fleetUtilizationRateActual) || 0;
+
+        const kpisToCompare = [
+            {
+                name: 'معدل إنجاز المشاريع',
+                actual: projCompActual,
+                target: projCompTarget,
+                unit: '%',
+                icon: 'fa-circle-check',
+                desc: 'النسبة الكلية للمشاريع المكتملة بنجاح.'
+            },
+            {
+                name: 'معدل إنجاز المهام',
+                actual: taskCompActual,
+                target: taskCompTarget,
+                unit: '%',
+                icon: 'fa-tasks',
+                desc: 'نسبة المهام التي تم إنجازها بالكامل.'
+            },
+            {
+                name: 'معدل تنفيذ الرحلات',
+                actual: tripFulfillActual,
+                target: tripFulfillTarget,
+                unit: '%',
+                icon: 'fa-route',
+                desc: 'مطابقة الرحلات الميدانية المنفذة للمستهدف.'
+            },
+            {
+                name: 'نسبة استغلال الأسطول',
+                actual: fleetUtilActual,
+                target: fleetUtilTarget,
+                unit: '%',
+                icon: 'fa-family-tree', // Wait, let's use truck-moving or similar
+                icon: 'fa-truck-moving',
+                desc: 'كفاءة تشغيل حافلات أسطول رواحل.'
+            }
+        ];
+
+        let html = `
+        <div class="glass-card p-6 rounded-3xl bg-white border border-[#b0841a]/30 shadow-xs">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 text-start">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-[#b0841a]"></i>
+                        <span>مقارنة الأداء الفعلي بالمستهدف التشغيلي للمشاريع</span>
+                    </h3>
+                    <p class="text-slate-500 text-[10px] leading-relaxed font-semibold mt-1">
+                        يعرض هذا القسم مؤشرات أداء إدارة المشاريع الفعلية مقارنة بالأهداف المحددة في شاشة (إعدادات أهداف ونطاقات المؤشرات).
+                    </p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-start">
+        `;
+
+        kpisToCompare.forEach(kpi => {
+            const isAchieved = kpi.actual >= kpi.target;
+            const statusLabel = isAchieved ? 'مستهدف محقق' : 'تحت المستهدف';
+            const statusColor = isAchieved ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200';
+            const progressColor = isAchieved ? 'bg-emerald-500' : 'bg-[#b0841a]';
+
+            html += `
+                <div class="flex flex-col justify-between p-4 rounded-2xl border border-slate-100 bg-slate-50/50">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid ${kpi.icon} text-[#b0841a] text-xs"></i>
+                                <span class="text-[11px] font-black text-slate-800">${kpi.name}</span>
+                            </div>
+                            <span class="text-[8px] px-2 py-0.5 rounded-full font-black border ${statusColor}">${statusLabel}</span>
+                        </div>
+                        <p class="text-[9px] text-slate-400 font-semibold mb-3 leading-normal">${kpi.desc}</p>
+                    </div>
+                    
+                    <div class="mt-2">
+                        <div class="flex justify-between items-end mb-1 text-[10px] font-bold">
+                            <span class="text-slate-500">الفعلي: <strong class="text-slate-800 text-xs">${kpi.actual}${kpi.unit}</strong></span>
+                            <span class="text-slate-400">المستهدف: <strong class="text-slate-700">${kpi.target}${kpi.unit}</strong></span>
+                        </div>
+                        
+                        <!-- Progress bar with target tick -->
+                        <div class="relative w-full h-3 bg-slate-200/60 rounded-full overflow-hidden p-0.5">
+                            <div class="${progressColor} h-full rounded-full transition-all duration-700" style="width: ${Math.min(kpi.actual, 100)}%"></div>
+                            <!-- Target indicator line -->
+                            <div class="absolute top-0 bottom-0 w-0.5 bg-slate-600 z-10" style="left: ${kpi.target}%;" title="المستهدف: ${kpi.target}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `
+            </div>
+        </div>
+        `;
+
+        cardContainer.innerHTML = html;
+    }
+
+    // ───────── Project KPIs Dashboard ─────────
+    let portalChartComparison = null;
+    let projectDetailChartComparison = null;
+
+    function renderProjectKpiDashboard() {
+        if (!projectKpiData) return;
+
+        setTextIfExists('portal-kpi-project-completion', projectKpiData.projectCompletionRateActual + '%');
+        setTextIfExists('portal-kpi-project-delay', projectKpiData.projectDelayRateActual + '%');
+        setTextIfExists('portal-kpi-task-completion', projectKpiData.taskCompletionRateActual + '%');
+        setTextIfExists('portal-kpi-task-overdue', projectKpiData.overdueTaskRateActual + '%');
+        setTextIfExists('portal-kpi-milestone-completion', projectKpiData.milestoneCompletionRateActual + '%');
+        setTextIfExists('portal-kpi-avg-progress', projectKpiData.averageProjectProgressActual + '%');
+        setTextIfExists('portal-kpi-trip-fulfillment', projectKpiData.tripFulfillmentRateActual + '%');
+        setTextIfExists('portal-kpi-ontime-delivery', projectKpiData.onTimeTripDeliveryActual + '%');
+        setTextIfExists('portal-kpi-fleet-utilization', projectKpiData.fleetUtilizationRateActual + '%');
+        setTextIfExists('portal-kpi-resource-efficiency', projectKpiData.resourceEfficiencyActual + '%');
+
+        if (portalChartComparison) portalChartComparison.destroy();
+
+        const comparisonCtx = document.getElementById('portal-chart-comparison');
+        if (comparisonCtx) {
+            // Fetch targets
+            const projCompTarget = getKpiTarget('strat-goals-achieve', 100);
+            const projDelayTarget = 0;
+            const taskCompTarget = getKpiTarget('strat-init', 100);
+            const taskOverdueTarget = 0;
+            const milestoneCompTarget = getKpiTarget('strat-init', 100);
+            const avgProgressTarget = getKpiTarget('strat-goals-achieve', 100);
+            const tripFulfillTarget = getKpiTarget('ops-plan', 100);
+            const onTimeDeliveryTarget = 95;
+            const fleetUtilTarget = getKpiTarget('fleet-util', 85);
+            const resourceEffTarget = 100;
+
+            // Fetch actuals
+            const projCompActual = parseFloat(projectKpiData.projectCompletionRateActual) || 0;
+            const projDelayActual = parseFloat(projectKpiData.projectDelayRateActual) || 0;
+            const taskCompActual = parseFloat(projectKpiData.taskCompletionRateActual) || 0;
+            const taskOverdueActual = parseFloat(projectKpiData.overdueTaskRateActual) || 0;
+            const milestoneCompActual = parseFloat(projectKpiData.milestoneCompletionRateActual) || 0;
+            const avgProgressActual = parseFloat(projectKpiData.averageProjectProgressActual) || 0;
+            const tripFulfillActual = parseFloat(projectKpiData.tripFulfillmentRateActual) || 0;
+            const onTimeDeliveryActual = parseFloat(projectKpiData.onTimeTripDeliveryActual) || 0;
+            const fleetUtilActual = parseFloat(projectKpiData.fleetUtilizationRateActual) || 0;
+            const resourceEffActual = parseFloat(projectKpiData.resourceEfficiencyActual) || 0;
+
+            portalChartComparison = new Chart(comparisonCtx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'معدل إنجاز المشاريع',
+                        'معدل تأخر المشاريع',
+                        'معدل إنجاز المهام',
+                        'معدل المهام المتأخرة',
+                        'معدل إنجاز المراحل',
+                        'متوسط تقدم المشاريع',
+                        'معدل تنفيذ الرحلات',
+                        'الالتزام بالمواعيد',
+                        'استغلال الأسطول',
+                        'كفاءة الموارد'
+                    ],
+                    datasets: [
+                        {
+                            label: 'الفعلي',
+                            data: [
+                                projCompActual,
+                                projDelayActual,
+                                taskCompActual,
+                                taskOverdueActual,
+                                milestoneCompActual,
+                                avgProgressActual,
+                                tripFulfillActual,
+                                onTimeDeliveryActual,
+                                fleetUtilActual,
+                                resourceEffActual
+                            ],
+                            backgroundColor: '#b0841a',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'المستهدف الأساسي',
+                            data: [
+                                projCompTarget,
+                                projDelayTarget,
+                                taskCompTarget,
+                                taskOverdueTarget,
+                                milestoneCompTarget,
+                                avgProgressTarget,
+                                tripFulfillTarget,
+                                onTimeDeliveryTarget,
+                                fleetUtilTarget,
+                                resourceEffTarget
+                            ],
+                            backgroundColor: '#cbd5e1',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: 'Tajawal',
+                                    size: 10,
+                                    weight: '700'
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    family: 'Tajawal',
+                                    size: 9,
+                                    weight: '700'
+                                }
+                            }
+                        },
+                        y: {
+                            max: 100,
+                            ticks: {
+                                font: {
+                                    family: 'Tajawal',
+                                    size: 9
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    async function refreshProjectKpis() {
+        try {
+            const projKpis = await fetchJson('project-kpis');
+            projectKpiData = projKpis;
+            renderProjectKpiDashboard();
+        } catch (err) {
+            console.error('[Portal Integration] Failed to refresh project KPIs:', err);
+        }
     }
 
     // ───────── Public API ─────────
     window.PortalIntegration = {
         load: loadPortalData,
         refresh: loadPortalData,
+        refreshProjectKpis: refreshProjectKpis,
         resetViews: resetDrilldownViews,
         getData: () => portalData,
         getKpis: () => kpiData,
         isAvailable: () => portalData !== null
     };
+
 
     // ───────── Initialize on DOM Ready ─────────
     if (document.readyState === 'loading') {

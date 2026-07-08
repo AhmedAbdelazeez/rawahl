@@ -30,7 +30,185 @@
         <!-- Error Banner -->
         <div id="portal-error-banner" class="mb-6 hidden"></div>
 
-        <!-- Filter Tabs & Stats Summary Bar -->
+        <!-- Projects Dashboard & KPIs Title (Moved to Top) -->
+        <div class="flex justify-between items-center mb-6" data-aos="fade-up">
+            <div>
+                <h3 class="text-sm font-black text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-gauge-high text-[#b0841a]"></i>
+                    <span>لوحة قياس أداء المشاريع</span>
+                </h3>
+                <p class="text-slate-500 text-[10px] leading-relaxed font-semibold mt-1">مؤشرات الأداء الفعلية والرسوم البيانية للمشاريع والعقود النشطة</p>
+            </div>
+            <button onclick="window.PortalIntegration.refreshProjectKpis()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-[10px] font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-rotate"></i>
+                <span>تحديث المؤشرات</span>
+            </button>
+        </div>
+
+        <!-- 10 KPI Cards Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8" data-aos="fade-up">
+            <!-- 1. Project Completion Rate -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">معدل إنجاز المشاريع</span>
+                    <i class="fa-solid fa-circle-check text-[#b0841a]/60 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-slate-900" id="portal-kpi-project-completion">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">100%</span>
+                </div>
+            </div>
+
+            <!-- 2. Project Delay Rate -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">معدل تأخر المشاريع</span>
+                    <i class="fa-solid fa-triangle-exclamation text-rose-500/80 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-rose-600" id="portal-kpi-project-delay">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">0%</span>
+                </div>
+            </div>
+
+            <!-- 3. Task Completion Rate -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">معدل إنجاز المهام</span>
+                    <i class="fa-solid fa-tasks text-[#b0841a]/60 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-slate-900" id="portal-kpi-task-completion">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">100%</span>
+                </div>
+            </div>
+
+            <!-- 4. Overdue Task Rate -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">معدل المهام المتأخرة</span>
+                    <i class="fa-solid fa-calendar-times text-rose-500/80 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-rose-600" id="portal-kpi-task-overdue">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">0%</span>
+                </div>
+            </div>
+
+            <!-- 5. Milestone Completion Rate -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">معدل إنجاز المراحل</span>
+                    <i class="fa-solid fa-flag text-[#b0841a]/60 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-slate-900" id="portal-kpi-milestone-completion">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">100%</span>
+                </div>
+            </div>
+
+            <!-- 6. Avg Project Completion % -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">متوسط تقدم المشاريع</span>
+                    <i class="fa-solid fa-chart-line text-[#b0841a]/60 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-slate-900" id="portal-kpi-avg-progress">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">100%</span>
+                </div>
+            </div>
+
+            <!-- 7. Trip Fulfillment Rate -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">معدل تنفيذ الرحلات</span>
+                    <i class="fa-solid fa-truck-ramp-box text-[#b0841a]/60 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-slate-900" id="portal-kpi-trip-fulfillment">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">100%</span>
+                </div>
+            </div>
+
+            <!-- 8. On-Time Trip Delivery Rate -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">الالتزام بالمواعيد</span>
+                    <i class="fa-solid fa-clock text-[#b0841a]/60 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-slate-900" id="portal-kpi-ontime-delivery">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">95%</span>
+                </div>
+            </div>
+
+            <!-- 9. Fleet Utilization Rate -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">استغلال الأسطول</span>
+                    <i class="fa-solid fa-truck-moving text-[#b0841a]/60 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-slate-900" id="portal-kpi-fleet-utilization">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">85%</span>
+                </div>
+            </div>
+
+            <!-- 10. Resource Efficiency -->
+            <div class="glass-card p-5 rounded-2xl flex flex-col justify-between h-36 bg-white border border-slate-100 shadow-3xs">
+                <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-black text-slate-700">كفاءة الموارد</span>
+                    <i class="fa-solid fa-hourglass-half text-[#b0841a]/60 text-sm"></i>
+                </div>
+                <div class="text-center my-1">
+                    <span class="text-2xl font-black text-slate-900" id="portal-kpi-resource-efficiency">-</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold border-t border-slate-50 pt-1.5">
+                    <span>المستهدف:</span>
+                    <span class="text-slate-700">100%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consolidated Comparison Chart -->
+        <div class="glass-card p-5 rounded-2xl bg-white border border-slate-100 shadow-3xs mb-8" data-aos="fade-up">
+            <h4 class="text-xs font-black text-slate-900 text-center mb-3">تحليل مقارنة الأداء الفعلي بالمستهدف الأساسي للمؤشرات الـ 10 (%)</h4>
+            <div class="relative h-80">
+                <canvas id="portal-chart-comparison"></canvas>
+            </div>
+        </div>
+
+        <hr class="border-slate-100 my-8">
+
+        <!-- Filter Tabs & Stats Summary Bar (Moved below KPIs) -->
         <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 text-start" data-aos="fade-up">
             <div id="project-status-filters" class="flex flex-wrap gap-2">
                 <!-- Status filter buttons injected here -->
@@ -64,7 +242,7 @@
             }
         </div>
 
-        <!-- Live Projects Grid -->
+        <!-- Live Projects Grid (Now at the bottom) -->
         <div class="portal-content grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 text-start" id="dynamic-projects-grid">
             <!-- Project cards injected dynamically by JS -->
         </div>
@@ -117,6 +295,17 @@
             </div>
         </div>
 
+        <!-- Project 10 KPIs Dashboard -->
+        <div class="mb-8" data-aos="fade-up">
+            <h3 class="text-xs font-black text-slate-800 flex items-center gap-2 mb-4">
+                <i class="fa-solid fa-gauge-high text-[#b0841a]"></i>
+                <span>مؤشرات أداء المشروع التفصيلية (10 مؤشرات)</span>
+            </h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4" id="project-detail-10-kpis">
+                <!-- Injected dynamically by JS -->
+            </div>
+        </div>
+
         <!-- Project Tasks and Milestones Lists -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 text-start">
             <!-- Tasks List Table -->
@@ -150,6 +339,14 @@
                 <div class="space-y-3 max-h-96 overflow-y-auto pr-1" id="detail-milestones-list">
                     <!-- Injected by JS -->
                 </div>
+            </div>
+        </div>
+
+        <!-- Single Project Comparison Chart -->
+        <div class="glass-card p-5 rounded-2xl bg-white border border-slate-100 shadow-3xs mb-8" data-aos="fade-up">
+            <h4 class="text-xs font-black text-slate-900 text-center mb-3">تحليل مقارنة أداء المشروع الفعلي بالمستهدف الأساسي (%)</h4>
+            <div class="relative h-80">
+                <canvas id="project-detail-chart-comparison"></canvas>
             </div>
         </div>
     </div>

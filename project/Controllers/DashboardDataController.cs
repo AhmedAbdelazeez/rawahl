@@ -53,6 +53,17 @@ namespace project.Controllers
             return Ok(fleet);
         }
 
+        [HttpGet("project-kpis")]
+        public async Task<IActionResult> GetProjectKpis()
+        {
+            var kpis = await _portalService.GetProjectKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no KPI data.");
+            }
+            return Ok(kpis);
+        }
+
         [HttpGet("health")]
         public async Task<IActionResult> GetHealth()
         {

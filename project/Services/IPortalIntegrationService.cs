@@ -11,5 +11,6 @@ namespace project.Services
         Task<List<PortalProjectDetail>> GetProjectsAsync();
         Task<PortalFleetSummary?> GetFleetSummaryAsync();
         Task<bool> IsPortalAvailableAsync();
+        Task<System.Text.Json.JsonElement?> GetProjectKpisAsync();
     }
 }

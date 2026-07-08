@@ -178,5 +178,23 @@ namespace project.Services
                 return false;
             }
         }
+
+        public async Task<System.Text.Json.JsonElement?> GetProjectKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/dashboard/project-kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonSerializer.Deserialize<System.Text.Json.JsonElement>(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching project KPIs from portal API.");
+            }
+            return null;
+        }
     }
 }
