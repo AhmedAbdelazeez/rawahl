@@ -196,5 +196,23 @@ namespace project.Services
             }
             return null;
         }
+
+        public async Task<System.Text.Json.JsonElement?> GetComplianceKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/compliance/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonSerializer.Deserialize<System.Text.Json.JsonElement>(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching compliance KPIs from portal API.");
+            }
+            return null;
+        }
     }
 }

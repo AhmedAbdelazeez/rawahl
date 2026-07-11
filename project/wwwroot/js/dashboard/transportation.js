@@ -8,6 +8,13 @@ let makkahTourDemographicsChartInstance = null;
 
 function initComplianceCharts() {
     if (typeof Chart === 'undefined') return;
+
+    // If live portal integration has compliance data, let it render dynamically
+    if (window.PortalIntegration && typeof window.PortalIntegration.renderComplianceKpis === 'function' && window.PortalIntegration.hasComplianceData()) {
+        window.PortalIntegration.renderComplianceKpis();
+        return;
+    }
+
     const isEn = document.documentElement.lang === 'en';
     const fontName = isEn ? 'Outfit' : 'Tajawal';
 

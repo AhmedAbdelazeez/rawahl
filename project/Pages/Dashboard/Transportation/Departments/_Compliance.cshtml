@@ -11,10 +11,16 @@
                     <h2 class="text-lg font-black mt-2 text-slate-800" data-i18n="dept-compliance-title">إدارة الامتثال</h2>
                     <p class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">بوابة متابعة الالتزام التشغيلي والسياسات الداخلية ومعالجة المخالفات وإجراءات التدقيق والتحسين المستمر.</p>
                 </div>
-                <button id="compliance-back-btn" onclick="showView('transportation-sector')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-arrow-right"></i>
-                    <span data-i18n="btn-back-depts">العودة للنقل التخصصي</span>
-                </button>
+                <div class="flex gap-2">
+                    <button onclick="window.PortalIntegration.refreshComplianceKpis()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-rotate"></i>
+                        <span>تحديث المؤشرات</span>
+                    </button>
+                    <button id="compliance-back-btn" onclick="showView('transportation-sector')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span data-i18n="btn-back-depts">العودة للنقل التخصصي</span>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -133,92 +139,24 @@
         </div>
     </div>
 
-    <!-- Charts & Tracking Grid -->
+    <!-- Charts & Tracking Grid (Actual Live Data Only) -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 text-start" data-aos="fade-up">
+        <!-- 1. Comparison Chart (Actual vs Target) -->
         <div class="glass-card p-6 rounded-2xl lg:col-span-2">
-            <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="chart-compliance-trend">تحليل اتجاه الامتثال الشهري (آخر 6 أشهر)</h3>
+            <h3 class="text-sm font-black text-slate-900 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-chart-bar text-[#b0841a]"></i>
+                <span>تحليل أداء الامتثال الفعلي مقابل المستهدف التشغيلي</span>
+            </h3>
             <div class="relative w-full h-80">
-                <canvas id="complianceTrendChart"></canvas>
+                <canvas id="compliance-chart-comparison"></canvas>
             </div>
         </div>
+        <!-- 2. Distribution Chart -->
         <div class="glass-card p-6 rounded-2xl">
             <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="chart-compliance-distribution">توزيع مؤشرات الامتثال</h3>
             <div class="relative w-full h-80 flex items-center justify-center">
                 <canvas id="complianceDistributionChart"></canvas>
             </div>
-        </div>
-    </div>
-
-    <!-- Monthly Tracking Table -->
-    <div class="glass-card p-6 rounded-2xl mb-8 text-start" data-aos="fade-up">
-        <h3 class="text-sm font-black text-slate-900 mb-4" data-i18n="table-compliance-tracking">جدول متابعة الأداء التاريخي والامتثال الشهري</h3>
-        <div class="overflow-x-auto">
-            <table class="w-full text-xs font-bold text-slate-700 border-collapse">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200 text-[#b0841a]">
-                        <th class="py-3 px-4 text-right">المؤشر</th>
-                        <th class="py-3 px-4 text-center">المستهدف</th>
-                        <th class="py-3 px-4 text-center">يناير</th>
-                        <th class="py-3 px-4 text-center">فبراير</th>
-                        <th class="py-3 px-4 text-center">مارس</th>
-                        <th class="py-3 px-4 text-center">أبريل</th>
-                        <th class="py-3 px-4 text-center">مايو</th>
-                        <th class="py-3 px-4 text-center">يونيو (الحالي)</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-center">
-                    <tr>
-                        <td class="py-3 px-4 text-right">نسبة الالتزام التشغيلي</td>
-                        <td class="py-3 px-4">95%</td>
-                        <td class="py-3 px-4 text-emerald-600">96.0%</td>
-                        <td class="py-3 px-4 text-emerald-600">95.5%</td>
-                        <td class="py-3 px-4 text-amber-600">94.8%</td>
-                        <td class="py-3 px-4 text-emerald-600">95.2%</td>
-                        <td class="py-3 px-4 text-emerald-600">96.5%</td>
-                        <td class="py-3 px-4 text-emerald-600">94.5%</td>
-                    </tr>
-                    <tr>
-                        <td class="py-3 px-4 text-right">عدد المخالفات المسجلة</td>
-                        <td class="py-3 px-4">0</td>
-                        <td class="py-3 px-4 text-emerald-600">5</td>
-                        <td class="py-3 px-4 text-emerald-600">8</td>
-                        <td class="py-3 px-4 text-emerald-600">12</td>
-                        <td class="py-3 px-4 text-emerald-600">10</td>
-                        <td class="py-3 px-4 text-emerald-600">9</td>
-                        <td class="py-3 px-4 text-amber-600">14</td>
-                    </tr>
-                    <tr>
-                        <td class="py-3 px-4 text-right">نسبة إغلاق المخالفات</td>
-                        <td class="py-3 px-4">95%</td>
-                        <td class="py-3 px-4 text-emerald-600">98%</td>
-                        <td class="py-3 px-4 text-emerald-600">97%</td>
-                        <td class="py-3 px-4 text-emerald-600">95%</td>
-                        <td class="py-3 px-4 text-emerald-600">96%</td>
-                        <td class="py-3 px-4 text-emerald-600">94%</td>
-                        <td class="py-3 px-4 text-amber-600">92.8%</td>
-                    </tr>
-                    <tr>
-                        <td class="py-3 px-4 text-right">متوسط زمن معالجة المخالفة</td>
-                        <td class="py-3 px-4">5 أيام</td>
-                        <td class="py-3 px-4 text-emerald-600">2.8 يوم</td>
-                        <td class="py-3 px-4 text-emerald-600">3.0 يوم</td>
-                        <td class="py-3 px-4 text-emerald-600">3.5 يوم</td>
-                        <td class="py-3 px-4 text-emerald-600">3.1 يوم</td>
-                        <td class="py-3 px-4 text-emerald-600">2.9 يوم</td>
-                        <td class="py-3 px-4 text-emerald-600">3.2 يوم</td>
-                    </tr>
-                    <tr>
-                        <td class="py-3 px-4 text-right">نسبة الالتزام بالعقود</td>
-                        <td class="py-3 px-4">95%</td>
-                        <td class="py-3 px-4 text-emerald-600">98.5%</td>
-                        <td class="py-3 px-4 text-emerald-600">98.0%</td>
-                        <td class="py-3 px-4 text-emerald-600">97.0%</td>
-                        <td class="py-3 px-4 text-emerald-600">97.5%</td>
-                        <td class="py-3 px-4 text-emerald-600">98.0%</td>
-                        <td class="py-3 px-4 text-emerald-600">97.5%</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 </div>

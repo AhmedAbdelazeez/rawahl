@@ -43,6 +43,7 @@
     let portalData = null;
     let kpiData = null;
     let projectKpiData = null;
+    let complianceKpiData = null;
     let isLoading = false;
     let lastError = null;
     let refreshTimer = null;
@@ -68,14 +69,16 @@
         showLoadingStates();
 
         try {
-            const [summary, kpis, projKpis] = await Promise.all([
+            const [summary, kpis, projKpis, compKpis] = await Promise.all([
                 fetchJson('summary'),
                 fetchJson('kpis'),
-                fetchJson('project-kpis')
+                fetchJson('project-kpis'),
+                fetchJson('compliance-kpis')
             ]);
             portalData = summary;
             kpiData = kpis;
             projectKpiData = projKpis;
+            complianceKpiData = compKpis;
 
             renderAll();
             hideLoadingStates();
@@ -103,6 +106,7 @@
         updateExistingFleetKpis();
         updateTickerWithPortalData();
         renderProjectKpiDashboard();
+        renderComplianceKpis();
     }
 
 
@@ -916,6 +920,22 @@
         return defaultValue;
     }
 
+    // Helper to get full settings object for a KPI
+    function getKpiSetting(key) {
+        const savedSettings = localStorage.getItem('kpi_settings');
+        if (savedSettings) {
+            try {
+                const settings = JSON.parse(savedSettings);
+                if (settings[key]) {
+                    return settings[key];
+                }
+            } catch (e) {
+                console.error("Error parsing kpi_settings from localStorage:", e);
+            }
+        }
+        return null;
+    }
+
     // Dynamic rendering of actual vs target card
     function renderActualVsTargetCard() {
         const cardContainer = document.getElementById('projects-actual-vs-target-card');
@@ -1037,6 +1057,7 @@
     // ───────── Project KPIs Dashboard ─────────
     let portalChartComparison = null;
     let projectDetailChartComparison = null;
+    let complianceChartComparison = null;
 
     function renderProjectKpiDashboard() {
         if (!projectKpiData) return;
@@ -1183,11 +1204,340 @@
         }
     }
 
+    async function refreshComplianceKpis() {
+        try {
+            const compKpis = await fetchJson('compliance-kpis');
+            complianceKpiData = compKpis;
+            renderComplianceKpis();
+        } catch (err) {
+            console.error('[Portal Integration] Failed to refresh compliance KPIs:', err);
+        }
+    }
+
+    function updateKpiFlagElementInverse(elementId, value, target) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+
+        const val = parseFloat(value);
+        if (isNaN(val)) {
+            el.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500';
+            el.innerText = '--';
+            return;
+        }
+
+        if (val <= target) {
+            el.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200';
+            el.innerText = 'ممتاز 🟢';
+        } else if (val <= target + 3) {
+            el.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200';
+            el.innerText = 'متابعة 🟡';
+        } else {
+            el.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200';
+            el.innerText = 'حرج 🔴';
+        }
+    }
+
+    function updateKpiStatusFromConfig(elementId, value, key, isInverse) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+
+        const val = parseFloat(value);
+        if (isNaN(val)) {
+            el.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500';
+            el.innerText = '--';
+            return;
+        }
+
+        const config = getKpiSetting(key);
+        const defaultTargets = {
+            'comp-ops-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-violations-count': { target: 0, excellentMax: 0, goodMax: 3 },
+            'comp-closure-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-resolution-time': { target: 5, excellentMax: 5, goodMax: 8 },
+            'comp-contract-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-policies-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-audit-results': { target: 90, excellentMin: 90, goodMin: 80 },
+            'comp-critical-findings': { target: 0, excellentMax: 0, goodMax: 2 },
+            'comp-monthly-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-improvement-rate': { target: 90, excellentMin: 90, goodMin: 80 }
+        };
+
+        const activeConfig = config || defaultTargets[key] || { target: 90, excellentMin: 90, goodMin: 80 };
+
+        if (isInverse) {
+            const excellentMax = activeConfig.excellentMax !== undefined ? activeConfig.excellentMax : activeConfig.target;
+            const goodMax = activeConfig.goodMax !== undefined ? activeConfig.goodMax : (excellentMax + 3);
+
+            if (val <= excellentMax) {
+                el.className = 'text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200';
+                el.innerText = 'ممتاز 🟢';
+            } else if (val <= goodMax) {
+                el.className = 'text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200';
+                el.innerText = 'جيد 🟡';
+            } else {
+                el.className = 'text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200';
+                el.innerText = 'ضعيف 🔴';
+            }
+        } else {
+            const excellentMin = activeConfig.excellentMin !== undefined ? activeConfig.excellentMin : activeConfig.target;
+            const goodMin = activeConfig.goodMin !== undefined ? activeConfig.goodMin : (excellentMin - 10);
+
+            if (val >= excellentMin) {
+                el.className = 'text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200';
+                el.innerText = 'ممتاز 🟢';
+            } else if (val >= goodMin) {
+                el.className = 'text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200';
+                el.innerText = 'جيد 🟡';
+            } else {
+                el.className = 'text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200';
+                el.innerText = 'ضعيف 🔴';
+            }
+        }
+    }
+
+    function renderComplianceKpis() {
+        if (!complianceKpiData) return;
+
+        const violationsCount = complianceKpiData.registeredViolationsCountActual || 0;
+        const closureRate = complianceKpiData.violationsClosureRateActual || 0;
+        const resolutionTime = complianceKpiData.averageViolationResolutionTimeActual || 0;
+        const contractRate = complianceKpiData.contractualComplianceRateActual || 0;
+        const policiesRate = complianceKpiData.policyAdherenceRateActual || 0;
+        const auditResults = complianceKpiData.internalAuditPassingRateActual || 0;
+        const criticalFindings = complianceKpiData.criticalAuditFindingsActual || 0;
+        const monthlyRate = complianceKpiData.monthlyOverallComplianceIndexActual || 0;
+        const improvementRate = complianceKpiData.continuousImprovementRateActual || 0;
+        const opsRate = Math.round((contractRate + policiesRate) / 2.0);
+
+        const opsTarget = getKpiTarget('comp-ops-rate', 95);
+        const violationsTarget = getKpiTarget('comp-violations-count', 0);
+        const closureTarget = getKpiTarget('comp-closure-rate', 95);
+        const resolutionTarget = getKpiTarget('comp-resolution-time', 5);
+        const contractTarget = getKpiTarget('comp-contract-rate', 95);
+        const policiesTarget = getKpiTarget('comp-policies-rate', 95);
+        const auditTarget = getKpiTarget('comp-audit-results', 90);
+        const criticalTarget = getKpiTarget('comp-critical-findings', 0);
+        const monthlyTarget = getKpiTarget('comp-monthly-rate', 95);
+        const improvementTarget = getKpiTarget('comp-improvement-rate', 90);
+
+        setTextIfExists('val-comp-ops-rate', opsRate + '%');
+        setTextIfExists('val-comp-violations-count', violationsCount);
+        setTextIfExists('val-comp-closure-rate', closureRate + '%');
+        setTextIfExists('val-comp-resolution-time', resolutionTime + ' يوم');
+        setTextIfExists('val-comp-contract-rate', contractRate + '%');
+        setTextIfExists('val-comp-policies-rate', policiesRate + '%');
+        setTextIfExists('val-comp-audit-results', auditResults + '%');
+        setTextIfExists('val-comp-critical-findings', criticalFindings);
+        setTextIfExists('val-comp-monthly-rate', monthlyRate + '%');
+        setTextIfExists('val-comp-improvement-rate', improvementRate + '%');
+
+        // Set target displays dynamically
+        setTextIfExists('target-val-comp-ops-rate', opsTarget + '%');
+        setTextIfExists('target-val-comp-violations-count', violationsTarget);
+        setTextIfExists('target-val-comp-closure-rate', closureTarget + '%');
+        setTextIfExists('target-val-comp-resolution-time', resolutionTarget + ' أيام');
+        setTextIfExists('target-val-comp-contract-rate', contractTarget + '%');
+        setTextIfExists('target-val-comp-policies-rate', policiesTarget + '%');
+        setTextIfExists('target-val-comp-audit-results', auditTarget + '%');
+        setTextIfExists('target-val-comp-critical-findings', criticalTarget);
+        setTextIfExists('target-val-comp-monthly-rate', monthlyTarget + '%');
+        setTextIfExists('target-val-comp-improvement-rate', improvementTarget + '%');
+
+        updateKpiStatusFromConfig('flag-comp-ops-rate', opsRate, 'comp-ops-rate', false);
+        updateKpiStatusFromConfig('flag-comp-violations-count', violationsCount, 'comp-violations-count', true);
+        updateKpiStatusFromConfig('flag-comp-closure-rate', closureRate, 'comp-closure-rate', false);
+        updateKpiStatusFromConfig('flag-comp-resolution-time', resolutionTime, 'comp-resolution-time', true);
+        updateKpiStatusFromConfig('flag-comp-contract-rate', contractRate, 'comp-contract-rate', false);
+        updateKpiStatusFromConfig('flag-comp-policies-rate', policiesRate, 'comp-policies-rate', false);
+        updateKpiStatusFromConfig('flag-comp-audit-results', auditResults, 'comp-audit-results', false);
+        updateKpiStatusFromConfig('flag-comp-critical-findings', criticalFindings, 'comp-critical-findings', true);
+        updateKpiStatusFromConfig('flag-comp-monthly-rate', monthlyRate, 'comp-monthly-rate', false);
+        updateKpiStatusFromConfig('flag-comp-improvement-rate', improvementRate, 'comp-improvement-rate', false);
+
+        // Check visibility of the compliance department container
+        const viewDeptCompliance = document.getElementById('view-dept-compliance');
+        const isVisible = viewDeptCompliance && !viewDeptCompliance.classList.contains('hidden');
+        if (!isVisible) {
+            return; // Skip rendering charts if the tab is hidden
+        }
+
+        const isEn = document.documentElement.lang === 'en';
+        const fontName = isEn ? 'Outfit' : 'Tajawal';
+
+        // 1. Update complianceDistributionChart (Doughnut)
+        const distCtx = document.getElementById('complianceDistributionChart');
+        if (distCtx) {
+            // Safely destroy existing chart via Chart.js API
+            const existingDistChart = Chart.getChart(distCtx);
+            if (existingDistChart) {
+                existingDistChart.destroy();
+            }
+
+            let excellentCount = 0;
+            let goodCount = 0;
+            let poorCount = 0;
+
+            const defaultTargets = {
+                'comp-ops-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+                'comp-violations-count': { target: 0, excellentMax: 0, goodMax: 3 },
+                'comp-closure-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+                'comp-resolution-time': { target: 5, excellentMax: 5, goodMax: 8 },
+                'comp-contract-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+                'comp-policies-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+                'comp-audit-results': { target: 90, excellentMin: 90, goodMin: 80 },
+                'comp-critical-findings': { target: 0, excellentMax: 0, goodMax: 2 },
+                'comp-monthly-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+                'comp-improvement-rate': { target: 90, excellentMin: 90, goodMin: 80 }
+            };
+
+            const checkStatus = (val, key, isInverse) => {
+                const config = getKpiSetting(key) || defaultTargets[key] || { target: 90, excellentMin: 90, goodMin: 80 };
+                if (isInverse) {
+                    const excellentMax = config.excellentMax !== undefined ? config.excellentMax : config.target;
+                    const goodMax = config.goodMax !== undefined ? config.goodMax : (excellentMax + 3);
+
+                    if (val <= excellentMax) excellentCount++;
+                    else if (val <= goodMax) goodCount++;
+                    else poorCount++;
+                } else {
+                    const excellentMin = config.excellentMin !== undefined ? config.excellentMin : config.target;
+                    const goodMin = config.goodMin !== undefined ? config.goodMin : (excellentMin - 10);
+
+                    if (val >= excellentMin) excellentCount++;
+                    else if (val >= goodMin) goodCount++;
+                    else poorCount++;
+                }
+            };
+
+            checkStatus(opsRate, 'comp-ops-rate', false);
+            checkStatus(violationsCount, 'comp-violations-count', true);
+            checkStatus(closureRate, 'comp-closure-rate', false);
+            checkStatus(resolutionTime, 'comp-resolution-time', true);
+            checkStatus(contractRate, 'comp-contract-rate', false);
+            checkStatus(policiesRate, 'comp-policies-rate', false);
+            checkStatus(auditResults, 'comp-audit-results', false);
+            checkStatus(criticalFindings, 'comp-critical-findings', true);
+            checkStatus(monthlyRate, 'comp-monthly-rate', false);
+            checkStatus(improvementRate, 'comp-improvement-rate', false);
+
+            const distData = [excellentCount, goodCount, poorCount];
+
+            window.complianceDistributionChartInstance = new Chart(distCtx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: isEn ? ['Excellent 🟢', 'Good 🟡', 'Poor 🔴'] : ['ممتاز 🟢', 'جيد 🟡', 'ضعيف 🔴'],
+                    datasets: [{
+                        data: distData,
+                        backgroundColor: ['#10b981', '#f59e0b', '#f43f5e'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { family: fontName, weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2. Render Comparison Bar Chart (Actual vs Target)
+        const compComparisonCtx = document.getElementById('compliance-chart-comparison');
+        if (compComparisonCtx) {
+            // Safely destroy existing chart via Chart.js API
+            const existingCompChart = Chart.getChart(compComparisonCtx);
+            if (existingCompChart) {
+                existingCompChart.destroy();
+            }
+
+            complianceChartComparison = new Chart(compComparisonCtx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'الالتزام التشغيلي',
+                        'المخالفات المسجلة',
+                        'إغلاق المخالفات',
+                        'زمن الحل (أيام)',
+                        'الالتزام بالعقود',
+                        'السياسات والإجراءات',
+                        'نتائج التدقيق',
+                        'الملاحظات الحرجة',
+                        'الامتثال الشهري',
+                        'التحسين المستمر'
+                    ],
+                    datasets: [
+                        {
+                            label: 'الفعلي',
+                            data: [
+                                opsRate,
+                                violationsCount,
+                                closureRate,
+                                resolutionTime,
+                                contractRate,
+                                policiesRate,
+                                auditResults,
+                                criticalFindings,
+                                monthlyRate,
+                                improvementRate
+                            ],
+                            backgroundColor: '#b0841a',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'المستهدف التشغيلي',
+                            data: [
+                                opsTarget,
+                                violationsTarget,
+                                closureTarget,
+                                resolutionTarget,
+                                contractTarget,
+                                policiesTarget,
+                                auditTarget,
+                                criticalTarget,
+                                monthlyTarget,
+                                improvementTarget
+                            ],
+                            backgroundColor: '#cbd5e1',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: { font: { family: fontName, size: 10, weight: '700' } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { font: { family: fontName, size: 9, weight: '700' } }
+                        },
+                        y: {
+                            ticks: { font: { family: fontName, size: 9 } }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     // ───────── Public API ─────────
     window.PortalIntegration = {
         load: loadPortalData,
         refresh: loadPortalData,
         refreshProjectKpis: refreshProjectKpis,
+        refreshComplianceKpis: refreshComplianceKpis,
+        renderComplianceKpis: renderComplianceKpis,
+        hasComplianceData: () => complianceKpiData !== null,
+        getComplianceKpiData: () => complianceKpiData,
         resetViews: resetDrilldownViews,
         getData: () => portalData,
         getKpis: () => kpiData,

@@ -304,6 +304,10 @@
                         <i class="fa-solid fa-bullseye text-sm"></i>
                         <span>الاستراتيجية والمشاريع PMO</span>
                     </button>
+                    <button onclick="switchCategory('compliance')" id="tab-compliance" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-gavel text-sm"></i>
+                        <span>الامتثال والحوكمة</span>
+                    </button>
                 </div>
             </section>
 
@@ -442,6 +446,21 @@
                     { key: 'gov-maturity', name: 'مستوى تطبيق حوكمة الشركات', unit: '%', min: 65, max: 100, step: 0.5, default: 95, defaultExc: 90.25, defaultGood: 71.25, desc: 'مستوى نضج الحوكمة والشفافية وتوزيع صلاحيات اللجان الإدارية.' },
                     { key: 'strat-goals-achieve', name: 'نسبة تحقيق الأهداف الاستراتيجية الموحدة', unit: '%', min: 50, max: 100, step: 0.5, default: 85, defaultExc: 80.75, defaultGood: 63.75, desc: 'المعدل الكلي لإنجاز أهداف الهيئة الإدارية والتطويرية للشركة.' }
                 ]
+            },
+            'compliance': {
+                title: 'إدارة الامتثال والحوكمة',
+                kpis: [
+                    { key: 'comp-ops-rate', name: 'نسبة الالتزام التشغيلي', unit: '%', min: 70, max: 100, step: 0.5, default: 95, defaultExc: 95, defaultGood: 85, desc: 'متوسط نسبة الالتزام بالعقود والسياسات الداخلية.' },
+                    { key: 'comp-violations-count', name: 'عدد المخالفات المسجلة', unit: 'مخالفة', min: 0, max: 20, step: 1, default: 0, defaultExc: 0, defaultGood: 3, desc: 'إجمالي المخالفات المسجلة (مؤشر عكسي).', isInverse: true },
+                    { key: 'comp-closure-rate', name: 'نسبة إغلاق المخالفات', unit: '%', min: 50, max: 100, step: 0.5, default: 95, defaultExc: 95, defaultGood: 85, desc: 'معدل إغلاق ومعالجة المخالفات المسجلة.' },
+                    { key: 'comp-resolution-time', name: 'متوسط زمن معالجة المخالفة', unit: 'يوم', min: 1, max: 15, step: 0.5, default: 5, defaultExc: 5, defaultGood: 8, desc: 'متوسط الأيام المستغرقة لحل المخالفات (مؤشر عكسي).', isInverse: true },
+                    { key: 'comp-contract-rate', name: 'نسبة الالتزام بالعقود', unit: '%', min: 70, max: 100, step: 0.5, default: 95, defaultExc: 95, defaultGood: 85, desc: 'الالتزام ببنود العقود والشروط الفنية.' },
+                    { key: 'comp-policies-rate', name: 'الالتزام بالسياسات والإجراءات', unit: '%', min: 70, max: 100, step: 0.5, default: 95, defaultExc: 95, defaultGood: 85, desc: 'نسبة الإدارات الملتزمة بالسياسات الداخلية.' },
+                    { key: 'comp-audit-results', name: 'نتائج التدقيق الداخلي', unit: '%', min: 50, max: 100, step: 0.5, default: 90, defaultExc: 90, defaultGood: 80, desc: 'متوسط درجات عمليات التدقيق الداخلي.' },
+                    { key: 'comp-critical-findings', name: 'عدد الملاحظات الحرجة', unit: 'ملاحظة', min: 0, max: 10, step: 1, default: 0, defaultExc: 0, defaultGood: 2, desc: 'عدد الملاحظات الحرجة المكتشفة في التدقيق (مؤشر عكسي).', isInverse: true },
+                    { key: 'comp-monthly-rate', name: 'معدل الامتثال الشهري', unit: '%', min: 70, max: 100, step: 0.5, default: 95, defaultExc: 95, defaultGood: 85, desc: 'المؤشر العام للامتثال والحوكمة.' },
+                    { key: 'comp-improvement-rate', name: 'نسبة التحسين المستمر', unit: '%', min: 50, max: 100, step: 0.5, default: 90, defaultExc: 90, defaultGood: 80, desc: 'معدل تطبيق التوصيات التحسينية.' }
+                ]
             }
         };
 
@@ -467,7 +486,17 @@
             'strat-init': 85.0,
             'risk-handling': 88.0,
             'gov-maturity': 90.0,
-            'strat-goals-achieve': 85.0
+            'strat-goals-achieve': 85.0,
+            'comp-ops-rate': 90.0,
+            'comp-violations-count': 6.0,
+            'comp-closure-rate': 66.7,
+            'comp-resolution-time': 4.8,
+            'comp-contract-rate': 100.0,
+            'comp-policies-rate': 80.0,
+            'comp-audit-results': 89.2,
+            'comp-critical-findings': 2.0,
+            'comp-monthly-rate': 89.7,
+            'comp-improvement-rate': 33.3
         };
 
         let currentActiveCategory = 'finance';
@@ -495,7 +524,17 @@
             'strat-init': { target: 90, excellentMin: 85.5, goodMin: 67.5 },
             'risk-handling': { target: 90, excellentMin: 85.5, goodMin: 67.5 },
             'gov-maturity': { target: 95, excellentMin: 90.25, goodMin: 71.25 },
-            'strat-goals-achieve': { target: 85, excellentMin: 80.75, goodMin: 63.75 }
+            'strat-goals-achieve': { target: 85, excellentMin: 80.75, goodMin: 63.75 },
+            'comp-ops-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-violations-count': { target: 0, excellentMax: 0, goodMax: 3 },
+            'comp-closure-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-resolution-time': { target: 5, excellentMax: 5, goodMax: 8 },
+            'comp-contract-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-policies-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-audit-results': { target: 90, excellentMin: 90, goodMin: 80 },
+            'comp-critical-findings': { target: 0, excellentMax: 0, goodMax: 2 },
+            'comp-monthly-rate': { target: 95, excellentMin: 95, goodMin: 85 },
+            'comp-improvement-rate': { target: 90, excellentMin: 90, goodMin: 80 }
         };
 
         function initSettings() {

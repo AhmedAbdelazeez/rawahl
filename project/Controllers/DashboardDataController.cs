@@ -64,6 +64,17 @@ namespace project.Controllers
             return Ok(kpis);
         }
 
+        [HttpGet("compliance-kpis")]
+        public async Task<IActionResult> GetComplianceKpis()
+        {
+            var kpis = await _portalService.GetComplianceKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no compliance KPI data.");
+            }
+            return Ok(kpis);
+        }
+
         [HttpGet("health")]
         public async Task<IActionResult> GetHealth()
         {

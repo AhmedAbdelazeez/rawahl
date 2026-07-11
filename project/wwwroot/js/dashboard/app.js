@@ -460,6 +460,7 @@ function showView(viewName, isPopState) {
         }
         
         setTimeout(() => { if (window.initComplianceCharts) window.initComplianceCharts(); }, 100);
+        setTimeout(() => { if (window.initComplianceCharts) window.initComplianceCharts(); }, 300);
     } else if (viewName === 'dept-projects') {
         if (viewDeptProjects) viewDeptProjects.classList.remove('hidden');
         document.getElementById('header-main-title').innerText = isEn ? 'Project Management Office' : 'إدارة المشاريع الاستراتيجية';
