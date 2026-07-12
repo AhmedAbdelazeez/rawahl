@@ -23,9 +23,26 @@ const defaultSettings = {
     'fleet-ready': { target: 95, excellentMin: 90.25, goodMin: 71.25 },
     'fleet-util': { target: 85, excellentMin: 80.75, goodMin: 63.75 },
     'hr-ret': { target: 90, excellentMin: 85.5, goodMin: 67.5 },
+    'hr-saudization': { target: 35, excellentMin: 33.25, goodMin: 26.25 },
+    'hr-count': { target: 1500, excellentMin: 1500, goodMin: 1200 },
+    'hr-growth': { target: 10, excellentMin: 10, goodMin: 5 },
+    'hr-absence': { target: 3.0, excellentMax: 3.0, goodMax: 5.0 },
+    'hr-training': { target: 25, excellentMin: 25, goodMin: 20 },
+    'hr-appraisal': { target: 95, excellentMin: 95, goodMin: 90 },
     'it-autom': { target: 80, excellentMin: 76.0, goodMin: 60.0 },
-    'critical-succession': { target: 80, excellentMin: 76.0, goodMin: 60.0 },
-    'saudization': { target: 35, excellentMin: 33.25, goodMin: 26.25 },
+    'it-uptime': { target: 99.9, excellentMin: 99.9, goodMin: 99.0 },
+    'it-ticket-time': { target: 2, excellentMax: 2, goodMax: 4 },
+    'it-incidents': { target: 0, excellentMax: 0, goodMax: 1 },
+    'it-satisfaction': { target: 90, excellentMin: 90, goodMin: 80 },
+    'it-backup': { target: 100, excellentMin: 100, goodMin: 95 },
+    'it-projects': { target: 95, excellentMin: 95, goodMin: 90 },
+    'proc-cycle': { target: 7, excellentMax: 7, goodMax: 10 },
+    'proc-savings': { target: 10, excellentMin: 10, goodMin: 5 },
+    'proc-supplier': { target: 90, excellentMin: 90, goodMin: 80 },
+    'proc-budget': { target: 95, excellentMin: 95, goodMin: 90 },
+    'proc-spare-parts': { target: 98, excellentMin: 98, goodMin: 95 },
+    'proc-inventory': { target: 99, excellentMin: 99, goodMin: 95 },
+    'proc-contracts': { target: 30, excellentMin: 30, goodMin: 25 },
     'hse-ltifr': { target: 1.5, excellentMax: 1.5, goodMax: 2.0 },
     'hse-accidents': { target: 0, excellentMax: 0, goodMax: 1 },
     'audit-comp': { target: 95, excellentMin: 90.25, goodMin: 71.25 },
@@ -136,7 +153,7 @@ function evaluateFlag(key, value) {
     if (!config) return 'excellent';
 
     let isInverse = false;
-    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-violations-count' || key === 'comp-resolution-time' || key === 'comp-critical-findings' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count'].includes(key)) isInverse = true;
+    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-violations-count' || key === 'comp-resolution-time' || key === 'comp-critical-findings' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-absence', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key)) isInverse = true;
 
     if (isInverse) {
         if (value <= config.excellentMax) return 'excellent';
@@ -188,7 +205,9 @@ const sectorMapping = {
     'dept-ops': ['ops-plan', 'fleet-ready'],
     'dept-commercial': ['cust-ret', 'nps', 'new-contracts', 'com-d-10'],
     'dept-fleet': ['fleet-ready', 'fleet-util', 'ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-18', 'ops-d-19', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-24', 'ops-d-25', 'ops-d-26', 'ops-d-27', 'ops-d-28', 'ops-d-29', 'ops-d-30', 'ops-d-31', 'ops-d-32'],
-    'dept-support': ['hr-ret', 'it-autom', 'critical-succession', 'saudization'],
+    'dept-hr': ['hr-ret', 'hr-saudization', 'hr-count', 'hr-growth', 'hr-absence', 'hr-training', 'hr-appraisal'],
+    'dept-it': ['it-autom', 'it-uptime', 'it-ticket-time', 'it-incidents', 'it-satisfaction', 'it-backup', 'it-projects'],
+    'dept-procurement': ['proc-cycle', 'proc-savings', 'proc-supplier', 'proc-budget', 'proc-spare-parts', 'proc-inventory', 'proc-contracts'],
     'dept-finance': ['rev-growth', 'ebitda', 'cashflow', 'roa'],
     'dept-strategy': ['strat-goals', 'strat-init', 'risk-handling', 'gov-maturity', 'strat-goals-achieve', 'hse-d-15'],
     'dept-audit': ['audit-plan-execution', 'operational-compliance-rate', 'total-audited-processes', 'passed-processes-count', 'critical-findings-count', 'recommendations-count', 'risk-mitigation-rate'],
@@ -223,9 +242,26 @@ const cardOriginalGrids = {
     'fleet-ready': 'grid-ops',
     'fleet-util': 'grid-ops',
     'hr-ret': 'grid-support-hr',
-    'it-autom': 'grid-support-hr',
-    'critical-succession': 'grid-support-hr',
-    'saudization': 'grid-support-hr',
+    'hr-saudization': 'grid-support-hr',
+    'hr-count': 'grid-support-hr',
+    'hr-growth': 'grid-support-hr',
+    'hr-absence': 'grid-support-hr',
+    'hr-training': 'grid-support-hr',
+    'hr-appraisal': 'grid-support-hr',
+    'it-autom': 'grid-support-it',
+    'it-uptime': 'grid-support-it',
+    'it-ticket-time': 'grid-support-it',
+    'it-incidents': 'grid-support-it',
+    'it-satisfaction': 'grid-support-it',
+    'it-backup': 'grid-support-it',
+    'it-projects': 'grid-support-it',
+    'proc-cycle': 'grid-support-proc',
+    'proc-savings': 'grid-support-proc',
+    'proc-supplier': 'grid-support-proc',
+    'proc-budget': 'grid-support-proc',
+    'proc-spare-parts': 'grid-support-proc',
+    'proc-inventory': 'grid-support-proc',
+    'proc-contracts': 'grid-support-proc',
     'hse-ltifr': 'grid-support-hse',
     'hse-accidents': 'grid-support-hse',
     'audit-comp': 'grid-support-hse',
@@ -337,7 +373,9 @@ function showView(viewName, isPopState) {
         'dept-commercial': 'commercial',
         'dept-ops': 'operations',
         'dept-fleet': 'fleet',
-        'dept-support': 'hr',
+        'dept-hr': 'hr',
+        'dept-it': 'hr',
+        'dept-procurement': 'hr',
         'dept-hse': 'hse',
         'dept-audit': 'audit',
         'dept-strategy': 'pmo',
@@ -516,7 +554,7 @@ function applyKpiFilters(viewName) {
 
     let isService = viewName.startsWith('service-') || ['contracts', 'hajj', 'leasing'].includes(viewName);
     let isDept = viewName.startsWith('dept-');
-    let isTransportDept = ['contracts', 'hajj', 'leasing', 'dept-finance', 'dept-commercial', 'dept-ops', 'dept-support', 'dept-hse', 'dept-strategy', 'dept-audit', 'dept-fleet', 'dept-tourism'].includes(viewName);
+    let isTransportDept = ['contracts', 'hajj', 'leasing', 'dept-finance', 'dept-commercial', 'dept-ops', 'dept-hr', 'dept-it', 'dept-procurement', 'dept-hse', 'dept-strategy', 'dept-audit', 'dept-fleet', 'dept-tourism'].includes(viewName);
 
     sectorChartContainer.classList.remove('hidden');
     const execPanel = document.getElementById('executive-top-panel');
@@ -580,7 +618,9 @@ function applyKpiFilters(viewName) {
         else if (viewName === 'dept-ops') sectorTitle = isEn ? 'Operations Department' : 'ادارة العمليات';
         else if (viewName === 'dept-commercial') sectorTitle = isEn ? 'Commercial Department' : 'الادارة التجارية';
         else if (viewName === 'dept-fleet') sectorTitle = isEn ? 'Fleet Department' : 'ادارة الاسطول';
-        else if (viewName === 'dept-support') sectorTitle = isEn ? 'Support Services Department (HR, IT, Procurement & Support)' : 'ادارة خدمات الدعم (الموارد البشرية، تقنية المعلومات، المشتريات وخدمات الدعم )';
+        else if (viewName === 'dept-hr') sectorTitle = isEn ? 'Human Resources Department' : 'إدارة الموارد البشرية';
+        else if (viewName === 'dept-it') sectorTitle = isEn ? 'Information Technology Department' : 'إدارة تقنية المعلومات';
+        else if (viewName === 'dept-procurement') sectorTitle = isEn ? 'Procurement & Support Services' : 'إدارة المشتريات والخدمات المساندة';
         else if (viewName === 'dept-finance') sectorTitle = isEn ? 'Financial Department' : 'الادارة المالية';
         else if (viewName === 'dept-strategy') sectorTitle = isEn ? 'Strategy & Performance Department' : 'والاستراتيجية والاداء';
         else if (viewName === 'dept-audit') sectorTitle = isEn ? 'Internal Audit Department' : 'التدقيق الداخلي';
@@ -691,10 +731,22 @@ function applyKpiFilters(viewName) {
                 desc = isEn ? 'Monitoring daily fleet readiness, seat utilization, and periodic maintenance.' : 'متابعة جاهزية أسطول الحافلات اليومية ونسب استغلال المقاعد وجداول الصيانة الدورية.';
                 backAction = deptBackAction;
                 backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
-            } else if (viewName === 'dept-support') {
-                badge = isEn ? 'Support Services Department' : 'إدارة خدمات الدعم';
-                title = isEn ? 'Support Services - Operational Analysis' : 'ادارة خدمات الدعم - التحليل التشغيلي';
-                desc = isEn ? 'Monitoring human resources, IT infrastructure automation, procurement, and support.' : 'الموارد البشرية والتوظيف، البنية التحتية لتقنية المعلومات، مشتريات الشركة والخدمات اللوجستية.';
+            } else if (viewName === 'dept-hr') {
+                badge = isEn ? 'Human Resources' : 'الموارد البشرية';
+                title = isEn ? 'Human Resources Department - Operational Analysis' : 'إدارة الموارد البشرية - التحليل التشغيلي';
+                desc = isEn ? 'Monitoring employee relations, recruitment, training hours, succession planning, and saudization.' : 'متابعة شؤون الموظفين، التوظيف، خطط الإحلال والتعاقب الوظيفي، ونسب التوطين بالشركة.';
+                backAction = deptBackAction;
+                backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+            } else if (viewName === 'dept-it') {
+                badge = isEn ? 'Information Technology' : 'تقنية المعلومات';
+                title = isEn ? 'IT Department - Operational Analysis' : 'إدارة تقنية المعلومات - التحليل التشغيلي';
+                desc = isEn ? 'Monitoring systems uptime, support ticket turnaround, cybersecurity incidents, and digital transformation.' : 'أتمتة العمليات والورش، جاهزية الأنظمة والشبكات، الدعم الفني، وأمن المعلومات.';
+                backAction = deptBackAction;
+                backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+            } else if (viewName === 'dept-procurement') {
+                badge = isEn ? 'Procurement & Support' : 'المشتريات والخدمات المساندة';
+                title = isEn ? 'Procurement & Support Services - Operational Analysis' : 'إدارة المشتريات والخدمات المساندة - التحليل التشغيلي';
+                desc = isEn ? 'Monitoring procurement cycle time, suppliers evaluation, cost savings, and inventory accuracy.' : 'متابعة دورة الشراء، تقييم الموردين، التوفير المالي، وتوافر قطع الغيار والجرد.';
                 backAction = deptBackAction;
                 backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
             } else if (viewName === 'dept-strategy') {
@@ -743,7 +795,9 @@ function applyKpiFilters(viewName) {
         'dept-finance': { revenue: '142.5', growth: '+8.2%', achievement: '91%', transactions: '12,420' },
         'dept-commercial': { revenue: '45.0', growth: '+6.5%', achievement: '93%', transactions: '1,240' },
         'dept-ops': { revenue: '97.5', growth: '+9.3%', achievement: '92%', transactions: '11,180' },
-        'dept-support': { revenue: '142.5', growth: '+8.2%', achievement: '91%', transactions: '12,420' },
+        'dept-hr': { revenue: '14.5', growth: '+5.2%', achievement: '92%', transactions: '1,240' },
+        'dept-it': { revenue: '28.0', growth: '+7.4%', achievement: '90%', transactions: '4,500' },
+        'dept-procurement': { revenue: '100.0', growth: '+9.1%', achievement: '93%', transactions: '6,680' },
         'dept-hse': { revenue: '142.5', growth: '+8.2%', achievement: '95%', transactions: '12,420' },
         'dept-strategy': { revenue: '142.5', growth: '+8.2%', achievement: '91%', transactions: '12,420' },
         
@@ -823,7 +877,7 @@ function buildSectorChart(sectorKey) {
                 const targetVal = kpiSettings[key] ? kpiSettings[key].target : 0;
                 const unit = valText.replace(/[0-9.,\-+]/g, '').trim();
 
-                const isInverse = ['hse-ltifr', 'hse-accidents', 'visa-processing-time', 'hotel-cancel-rate', 'comp-violations-count', 'comp-resolution-time', 'comp-critical-findings', 'visa-data-error-rate', 'visa-complaints-rate', 'hotel-overbooking-incidents', 'meal-waste-percentage', 'hospitality-complaints', 'ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count'].includes(key);
+                const isInverse = ['hse-ltifr', 'hse-accidents', 'visa-processing-time', 'hotel-cancel-rate', 'comp-violations-count', 'comp-resolution-time', 'comp-critical-findings', 'visa-data-error-rate', 'visa-complaints-rate', 'hotel-overbooking-incidents', 'meal-waste-percentage', 'hospitality-complaints', 'ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-turnover', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key);
                 let achievement = 100;
                 if (isInverse) {
                     if (targetVal === 0) {
@@ -930,7 +984,7 @@ function calculateSectorAvg(sectorKey) {
             const config = kpiSettings[key];
             if (config) {
                 let ratio = 100;
-                if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count'].includes(key)) {
+                if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-turnover', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key)) {
                     ratio = val <= config.target ? 100 : Math.max(0, 100 - (val - config.target) * 40);
                 } else {
                     ratio = (val / config.target) * 100;
@@ -1056,9 +1110,29 @@ window.simulateKpiData = function(initial) {
     safeSetText('val-fleet-util', fleetUtil + '%');
     
     safeSetText('val-hr-ret', hrRet + '%');
+    safeSetText('val-hr-saudization', saudization + '%');
+    safeSetText('val-hr-count', '1,420' + (isEn ? ' employees' : ' موظف'));
+    safeSetText('val-hr-growth', '8.5%');
+    safeSetText('val-hr-absence', '2.8%');
+    safeSetText('val-hr-training', '24' + (isEn ? ' hrs' : ' ساعة'));
+    safeSetText('val-hr-appraisal', '92%');
+
     safeSetText('val-it-autom', itAutom + '%');
-    safeSetText('val-critical-succession', criticalSuccession + '%');
-    safeSetText('val-saudization', saudization + '%');
+    safeSetText('val-it-uptime', '99.5%');
+    safeSetText('val-it-ticket-time', '1.5' + (isEn ? ' hrs' : ' ساعة'));
+    safeSetText('val-it-incidents', '0');
+    safeSetText('val-it-satisfaction', '88%');
+    safeSetText('val-it-backup', '100%');
+    safeSetText('val-it-projects', '90%');
+
+    safeSetText('val-proc-cycle', '6' + (isEn ? ' days' : ' أيام'));
+    safeSetText('val-proc-savings', '12%');
+    safeSetText('val-proc-supplier', '88%');
+    safeSetText('val-proc-budget', '97%');
+    safeSetText('val-proc-spare-parts', '96%');
+    safeSetText('val-proc-inventory', '98.5%');
+    safeSetText('val-proc-contracts', '35' + (isEn ? ' contracts' : ' عقد'));
+
     safeSetText('val-hse-ltifr', ltifr);
     safeSetText('val-hse-accidents', accidents);
     safeSetText('val-audit-comp', auditComp + '%');
@@ -1158,9 +1232,13 @@ window.simulateKpiData = function(initial) {
     trackFlag('fleet-ready', fleetReady);
     trackFlag('fleet-util', fleetUtil);
     trackFlag('hr-ret', hrRet);
+    trackFlag('hr-saudization', saudization);
+    trackFlag('hr-count', 1420);
+    trackFlag('hr-growth', 8.5);
+    trackFlag('hr-absence', 2.8);
+    trackFlag('hr-training', 24);
+    trackFlag('hr-appraisal', 92);
     trackFlag('it-autom', itAutom);
-    trackFlag('critical-succession', criticalSuccession);
-    trackFlag('saudization', saudization);
     trackFlag('hse-ltifr', ltifr);
     trackFlag('hse-accidents', accidents);
     trackFlag('audit-comp', auditComp);
@@ -1256,10 +1334,31 @@ window.simulateKpiData = function(initial) {
         applyFlagStyle('flag-ops-plan', 'ops-plan', opsPlan);
         applyFlagStyle('flag-fleet-ready', 'fleet-ready', fleetReady);
         applyFlagStyle('flag-fleet-util', 'fleet-util', fleetUtil);
+        
         applyFlagStyle('flag-hr-ret', 'hr-ret', hrRet);
+        applyFlagStyle('flag-hr-saudization', 'hr-saudization', saudization);
+        applyFlagStyle('flag-hr-count', 'hr-count', 1420);
+        applyFlagStyle('flag-hr-growth', 'hr-growth', 8.5);
+        applyFlagStyle('flag-hr-absence', 'hr-absence', 2.8);
+        applyFlagStyle('flag-hr-training', 'hr-training', 24);
+        applyFlagStyle('flag-hr-appraisal', 'hr-appraisal', 92);
+
         applyFlagStyle('flag-it-autom', 'it-autom', itAutom);
-        applyFlagStyle('flag-critical-succession', 'critical-succession', criticalSuccession);
-        applyFlagStyle('flag-saudization', 'saudization', saudization);
+        applyFlagStyle('flag-it-uptime', 'it-uptime', 99.5);
+        applyFlagStyle('flag-it-ticket-time', 'it-ticket-time', 1.5);
+        applyFlagStyle('flag-it-incidents', 'it-incidents', 0);
+        applyFlagStyle('flag-it-satisfaction', 'it-satisfaction', 88);
+        applyFlagStyle('flag-it-backup', 'it-backup', 100);
+        applyFlagStyle('flag-it-projects', 'it-projects', 90);
+        
+        applyFlagStyle('flag-proc-cycle', 'proc-cycle', 6);
+        applyFlagStyle('flag-proc-savings', 'proc-savings', 12);
+        applyFlagStyle('flag-proc-supplier', 'proc-supplier', 88);
+        applyFlagStyle('flag-proc-budget', 'proc-budget', 97);
+        applyFlagStyle('flag-proc-spare-parts', 'proc-spare-parts', 96);
+        applyFlagStyle('flag-proc-inventory', 'proc-inventory', 98.5);
+        applyFlagStyle('flag-proc-contracts', 'proc-contracts', 35);
+
         applyFlagStyle('flag-hse-ltifr', 'hse-ltifr', ltifr);
         applyFlagStyle('flag-hse-accidents', 'hse-accidents', accidents);
         applyFlagStyle('flag-audit-comp', 'audit-comp', auditComp);
@@ -1365,13 +1464,13 @@ window.simulateKpiData = function(initial) {
             unitStr = isEn ? ' violations' : ' مخالفة';
         } else if (key === 'ops-d-20') {
             unitStr = isEn ? ' breakdowns' : ' عطل';
-        } else if (['visa-processing-time', 'pilgrim-trip-duration'].includes(key)) {
+        } else if (['visa-processing-time', 'pilgrim-trip-duration', 'it-ticket-time', 'hr-training'].includes(key)) {
             unitStr = isEn ? ' hrs' : ' ساعة';
-        } else if (key === 'contracts-turnaround-time') {
+        } else if (key === 'contracts-turnaround-time' || key === 'proc-cycle') {
             unitStr = isEn ? ' days' : ' أيام';
         } else if (['hotel-average-room-rate', 'rental-revenue-per-bus'].includes(key)) {
             unitStr = isEn ? ' SAR' : ' ر.س';
-        } else if (['new-contracts', 'hse-accidents', 'nps', 'hse-ltifr', 'visa-count', 'hotel-overbooking-incidents', 'hospitality-complaints', 'contracts-legal-disputes', 'rental-active-contracts'].includes(key)) {
+        } else if (['new-contracts', 'hse-accidents', 'nps', 'hse-ltifr', 'visa-count', 'hotel-overbooking-incidents', 'hospitality-complaints', 'contracts-legal-disputes', 'rental-active-contracts', 'it-incidents', 'proc-contracts'].includes(key)) {
             unitStr = '';
         } else {
             unitStr = '%';
@@ -1487,7 +1586,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     'dept-commercial': 'commercial',
                     'dept-ops': 'operations',
                     'dept-fleet': 'fleet',
-                    'dept-support': 'hr',
+                    'dept-hr': 'hr',
+                    'dept-it': 'hr',
+                    'dept-procurement': 'hr',
                     'dept-hse': 'hse',
                     'dept-audit': 'audit',
                     'dept-strategy': 'pmo',

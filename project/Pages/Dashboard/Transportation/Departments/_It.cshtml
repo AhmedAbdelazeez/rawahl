@@ -1,0 +1,87 @@
+@model project.Pages.IndexModel
+
+<div id="grid-support-it" class="hidden">
+    <!-- 1. Digital Transformation / Workshop Automation -->
+    <div id="card-it-autom" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-it-autom-label">تنفيذ مشاريع التحول الرقمي وأتمتة الورش</span>
+            <span id="flag-it-autom" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-it-autom">@Model.ItAutomation%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-it-autom">80%</span></span>
+        </div>
+    </div>
+
+    <!-- 2. System and Network Uptime -->
+    <div id="card-it-uptime" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-it-uptime-label">جاهزية وتوفر الأنظمة والشبكات</span>
+            <span id="flag-it-uptime" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-it-uptime">99.5%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-it-uptime">99.9%</span></span>
+        </div>
+    </div>
+
+    <!-- 3. Ticket Resolution Time -->
+    <div id="card-it-ticket-time" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-it-ticket-time-label">متوسط زمن إغلاق تذاكر الدعم</span>
+            <span id="flag-it-ticket-time" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-it-ticket-time">1.5 ساعة</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-it-ticket-time">2 ساعة</span></span>
+        </div>
+    </div>
+
+    <!-- 4. Cybersecurity Incidents -->
+    <div id="card-it-incidents" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-it-incidents-label">عدد الحوادث أو الاختراقات الأمنية</span>
+            <span id="flag-it-incidents" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-it-incidents">0</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-it-incidents">0</span></span>
+        </div>
+    </div>
+
+    <!-- 5. User Satisfaction -->
+    <div id="card-it-satisfaction" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-it-satisfaction-label">رضا المستخدمين عن الخدمات التقنية</span>
+            <span id="flag-it-satisfaction" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-it-satisfaction">88%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-it-satisfaction">90%</span></span>
+        </div>
+    </div>
+
+    <!-- 6. Backup Success Rate -->
+    <div id="card-it-backup" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-it-backup-label">نسبة نجاح النسخ الاحتياطي للبيانات</span>
+            <span id="flag-it-backup" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-it-backup">100%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-it-backup">100%</span></span>
+        </div>
+    </div>
+
+    <!-- 7. IT Project On-Time Delivery -->
+    <div id="card-it-projects" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-it-projects-label">إنجاز المشاريع التقنية بالوقت</span>
+            <span id="flag-it-projects" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-it-projects">90%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-it-projects">95%</span></span>
+        </div>
+    </div>
+</div>

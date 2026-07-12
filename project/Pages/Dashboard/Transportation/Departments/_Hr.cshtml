@@ -1,0 +1,87 @@
+@model project.Pages.IndexModel
+
+<div id="grid-support-hr" class="hidden">
+    <!-- 1. Employee Retention -->
+    <div id="card-hr-ret" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-ret-label">معدل الاحتفاظ بالموظفين الكوادر</span>
+            <span id="flag-hr-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-ret">@Model.HrRetention%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-ret">90%</span></span>
+        </div>
+    </div>
+
+    <!-- 2. Saudization -->
+    <div id="card-hr-saudization" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-saudization-label">نسبة التوطين والسعودة بالشركة</span>
+            <span id="flag-hr-saudization" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-saudization">@Model.Saudization%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-saudization">35%</span></span>
+        </div>
+    </div>
+
+    <!-- 3. Employee Count -->
+    <div id="card-hr-count" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-count-label">إجمالي عدد الموظفين بالشركة</span>
+            <span id="flag-hr-count" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-count">1,420 موظف</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-count">1,500 موظف</span></span>
+        </div>
+    </div>
+
+    <!-- 4. Employee Growth Rate -->
+    <div id="card-hr-growth" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-growth-label">معدل زيادة عدد الموظفين</span>
+            <span id="flag-hr-growth" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-growth">8.5%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-growth">10%</span></span>
+        </div>
+    </div>
+
+    <!-- 5. Employee Absence Rate -->
+    <div id="card-hr-absence" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-absence-label">معدل غياب الموظفين</span>
+            <span id="flag-hr-absence" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-absence">2.8%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-absence">3%</span></span>
+        </div>
+    </div>
+
+    <!-- 6. Training Hours -->
+    <div id="card-hr-training" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-training-label">متوسط ساعات التدريب لكل موظف</span>
+            <span id="flag-hr-training" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-training">24 ساعة</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-training">25 ساعة</span></span>
+        </div>
+    </div>
+
+    <!-- 7. Annual Performance Appraisal Rate -->
+    <div id="card-hr-appraisal" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-appraisal-label">نسبة إتمام تقييم الأداء السنوي</span>
+            <span id="flag-hr-appraisal" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-appraisal">92%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-appraisal">95%</span></span>
+        </div>
+    </div>
+</div>

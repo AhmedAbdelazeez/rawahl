@@ -205,6 +205,33 @@ const translations = {
         'dept-fleet-desc': 'متابعة جاهزية أسطول الحافلات اليومية ونسب استغلال المقاعد وجداول الصيانة الدورية.',
         'dept-support-title': 'ادارة خدمات الدعم (الموارد البشرية، تقنية المعلومات، المشتريات وخدمات الدعم )',
         'dept-support-desc': 'الموارد البشرية والتوظيف، البنية التحتية لتقنية المعلومات، مشتريات الشركة والخدمات اللوجستية.',
+        'dept-hr-title': 'إدارة الموارد البشرية',
+        'dept-hr-desc': 'متابعة شؤون الموظفين، التوظيف، خطط الإحلال والتعاقب الوظيفي، ونسب التوطين بالشركة.',
+        'dept-it-title': 'إدارة تقنية المعلومات',
+        'dept-it-desc': 'أتمتة العمليات والورش، جاهزية الأنظمة والشبكات، الدعم الفني، وأمن المعلومات.',
+        'dept-procurement-title': 'إدارة المشتريات والخدمات المساندة',
+        'dept-procurement-desc': 'متابعة دورة الشراء، تقييم الموردين، التوفير المالي، وتوافر قطع الغيار والجرد.',
+        'val-hr-ret-label': 'معدل الاحتفاظ بالموظفين الكوادر',
+        'val-hr-saudization-label': 'نسبة التوطين والسعودة بالشركة',
+        'val-hr-count-label': 'إجمالي عدد الموظفين بالشركة',
+        'val-hr-growth-label': 'معدل زيادة عدد الموظفين',
+        'val-hr-absence-label': 'معدل غياب الموظفين',
+        'val-hr-training-label': 'متوسط ساعات التدريب لكل موظف',
+        'val-hr-appraisal-label': 'نسبة إتمام تقييم الأداء السنوي',
+        'val-it-autom-label': 'مشاريع التحول الرقمي وأتمتة الورش',
+        'val-it-uptime-label': 'جاهزية وتوفر الأنظمة والشبكات',
+        'val-it-ticket-time-label': 'متوسط زمن إغلاق تذاكر الدعم',
+        'val-it-incidents-label': 'عدد الحوادث أو الاختراقات الأمنية',
+        'val-it-satisfaction-label': 'رضا المستخدمين عن الخدمات التقنية',
+        'val-it-backup-label': 'نسبة نجاح النسخ الاحتياطي للبيانات',
+        'val-it-projects-label': 'إنجاز المشاريع التقنية بالوقت',
+        'val-proc-cycle-label': 'متوسط زمن دورة الشراء',
+        'val-proc-savings-label': 'التوفير في التكاليف الشرائية',
+        'val-proc-supplier-label': 'معدل تقييم أداء الموردين',
+        'val-proc-budget-label': 'الالتزام بميزانية المشتريات',
+        'val-proc-spare-parts-label': 'توفر قطع الغيار الحرج',
+        'val-proc-inventory-label': 'دقة الجرد السنوي والمستمر',
+        'val-proc-contracts-label': 'عقود التوريد النشطة الموقعة',
         'dept-finance-title': 'الادارة المالية',
         'dept-finance-desc': 'الإيرادات والربحية والتدفقات النقدية التشغيلية والعائد الكلي على الأصول المالية.',
         'dept-strategy-title': 'والاستراتيجية والاداء',
@@ -426,6 +453,33 @@ const translations = {
         'dept-fleet-desc': 'Monitoring daily bus fleet readiness, seat utilization rates, and periodic maintenance schedules.',
         'dept-support-title': 'Support Services Department (HR, IT, Procurement & Support)',
         'dept-support-desc': 'Human resources and recruitment, IT infrastructure, company procurement, and logistics.',
+        'dept-hr-title': 'Human Resources Department',
+        'dept-hr-desc': 'Monitoring personnel affairs, recruitment, critical succession planning, and company Saudization rates.',
+        'dept-it-title': 'Information Technology Department',
+        'dept-it-desc': 'Digital transformation & workshop automation, system uptime, support tickets, and cybersecurity.',
+        'dept-procurement-title': 'Procurement & Support Services',
+        'dept-procurement-desc': 'Monitoring procurement cycles, supplier ratings, cost savings, critical spare parts availability, and inventory.',
+        'val-hr-ret-label': 'Key Talent Retention Rate',
+        'val-hr-saudization-label': 'Company Saudization Rate',
+        'val-hr-count-label': 'Total Number of Employees',
+        'val-hr-growth-label': 'Employee Growth Rate',
+        'val-hr-absence-label': 'Employee Absence Rate',
+        'val-hr-training-label': 'Avg Training Hours per Employee',
+        'val-hr-appraisal-label': 'Annual Performance Appraisal Rate',
+        'val-it-autom-label': 'Digital Transformation & Workshop Automation',
+        'val-it-uptime-label': 'Systems & Network Availability',
+        'val-it-ticket-time-label': 'Avg Support Ticket Resolution Time',
+        'val-it-incidents-label': 'Cybersecurity Incidents',
+        'val-it-satisfaction-label': 'IT Services User Satisfaction Rate',
+        'val-it-backup-label': 'Data Backup Success Rate',
+        'val-it-projects-label': 'IT Projects On-Time Delivery Rate',
+        'val-proc-cycle-label': 'Average Procurement Cycle Time',
+        'val-proc-savings-label': 'Procurement Cost Savings Rate',
+        'val-proc-supplier-label': 'Supplier Performance Rating',
+        'val-proc-budget-label': 'Procurement Budget Compliance',
+        'val-proc-spare-parts-label': 'Critical Spare Parts Availability',
+        'val-proc-inventory-label': 'Inventory Accuracy Rate',
+        'val-proc-contracts-label': 'Active Supply Contracts Signed',
         'dept-finance-title': 'Financial Department',
         'dept-finance-desc': 'Revenues, profitability, operating cash flows, and overall return on financial assets.',
         'dept-strategy-title': 'Strategy & Performance Department',
@@ -557,6 +611,15 @@ function applyLanguage(lang) {
         } else if (window.currentView === 'dept-support') {
             deptNameAr = 'ادارة خدمات الدعم (الموارد البشرية، تقنية المعلومات، المشتريات وخدمات الدعم )';
             deptNameEn = 'Support Services Department (HR, IT, Procurement & Support)';
+        } else if (window.currentView === 'dept-hr') {
+            deptNameAr = 'إدارة الموارد البشرية';
+            deptNameEn = 'Human Resources Department';
+        } else if (window.currentView === 'dept-it') {
+            deptNameAr = 'إدارة تقنية المعلومات';
+            deptNameEn = 'Information Technology Department';
+        } else if (window.currentView === 'dept-procurement') {
+            deptNameAr = 'إدارة المشتريات والخدمات المساندة';
+            deptNameEn = 'Procurement & Support Services';
         } else if (window.currentView === 'dept-finance') {
             deptNameAr = 'الادارة المالية';
             deptNameEn = 'Financial Department';

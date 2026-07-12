@@ -1,0 +1,87 @@
+@model project.Pages.IndexModel
+
+<div id="grid-support-proc" class="hidden">
+    <!-- 1. Procurement Cycle Time -->
+    <div id="card-proc-cycle" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-proc-cycle-label">متوسط زمن دورة الشراء</span>
+            <span id="flag-proc-cycle" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-proc-cycle">6 أيام</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-proc-cycle">7 أيام</span></span>
+        </div>
+    </div>
+
+    <!-- 2. Cost Savings Rate -->
+    <div id="card-proc-savings" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-proc-savings-label">التوفير في التكاليف الشرائية</span>
+            <span id="flag-proc-savings" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-proc-savings">12%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-proc-savings">10%</span></span>
+        </div>
+    </div>
+
+    <!-- 3. Supplier Performance Rating -->
+    <div id="card-proc-supplier" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-proc-supplier-label">معدل تقييم أداء الموردين</span>
+            <span id="flag-proc-supplier" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-proc-supplier">88%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-proc-supplier">90%</span></span>
+        </div>
+    </div>
+
+    <!-- 4. Budget Compliance -->
+    <div id="card-proc-budget" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-proc-budget-label">الالتزام بميزانية المشتريات</span>
+            <span id="flag-proc-budget" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-proc-budget">97%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-proc-budget">95%</span></span>
+        </div>
+    </div>
+
+    <!-- 5. Critical Spare Parts Availability -->
+    <div id="card-proc-spare-parts" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-proc-spare-parts-label">توفر قطع الغيار الحرج</span>
+            <span id="flag-proc-spare-parts" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-proc-spare-parts">96%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-proc-spare-parts">98%</span></span>
+        </div>
+    </div>
+
+    <!-- 6. Inventory Accuracy Rate -->
+    <div id="card-proc-inventory" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-proc-inventory-label">دقة الجرد السنوي والمستمر</span>
+            <span id="flag-proc-inventory" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-proc-inventory">98.5%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-proc-inventory">99%</span></span>
+        </div>
+    </div>
+
+    <!-- 7. Active Supply Contracts -->
+    <div id="card-proc-contracts" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-proc-contracts-label">عقود التوريد النشطة الموقعة</span>
+            <span id="flag-proc-contracts" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-proc-contracts">35 عقد</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-proc-contracts">30</span></span>
+        </div>
+    </div>
+</div>
