@@ -95,7 +95,16 @@ const defaultSettings = {
     'ops-d-31': { target: 100, excellentMin: 98, goodMin: 95 },
     'ops-d-32': { target: 100, excellentMin: 99, goodMin: 95 },
     'com-d-10': { target: 100, excellentMin: 98, goodMin: 95 },
-    'hse-d-15': { target: 0, excellentMax: 0, goodMax: 2 }
+    'hse-d-15': { target: 0, excellentMax: 0, goodMax: 2 },
+    
+    // Internal Audit - Operational Analysis KPIs
+    'audit-plan-execution': { target: 90, excellentMin: 90, goodMin: 80 },
+    'operational-compliance-rate': { target: 95, excellentMin: 95, goodMin: 90 },
+    'total-audited-processes': { target: 100, excellentMin: 100, goodMin: 80 },
+    'passed-processes-count': { target: 95, excellentMin: 95, goodMin: 80 },
+    'critical-findings-count': { target: 0, excellentMax: 0, goodMax: 1 },
+    'recommendations-count': { target: 50, excellentMin: 50, goodMin: 40 },
+    'risk-mitigation-rate': { target: 90, excellentMin: 90, goodMin: 80 }
 };
 
 const kpiSettings = { ...defaultSettings };
@@ -127,7 +136,7 @@ function evaluateFlag(key, value) {
     if (!config) return 'excellent';
 
     let isInverse = false;
-    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-violations-count' || key === 'comp-resolution-time' || key === 'comp-critical-findings' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15'].includes(key)) isInverse = true;
+    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-violations-count' || key === 'comp-resolution-time' || key === 'comp-critical-findings' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count'].includes(key)) isInverse = true;
 
     if (isInverse) {
         if (value <= config.excellentMax) return 'excellent';
@@ -182,7 +191,7 @@ const sectorMapping = {
     'dept-support': ['hr-ret', 'it-autom', 'critical-succession', 'saudization'],
     'dept-finance': ['rev-growth', 'ebitda', 'cashflow', 'roa'],
     'dept-strategy': ['strat-goals', 'strat-init', 'risk-handling', 'gov-maturity', 'strat-goals-achieve', 'hse-d-15'],
-    'dept-audit': ['audit-comp', 'risk-handling'],
+    'dept-audit': ['audit-plan-execution', 'operational-compliance-rate', 'total-audited-processes', 'passed-processes-count', 'critical-findings-count', 'recommendations-count', 'risk-mitigation-rate'],
     'dept-hse': ['hse-ltifr', 'hse-accidents', 'audit-comp'],
     
     'service-visa': ['visa-processing-time', 'visa-approval-rate', 'visa-count', 'visa-integration-uptime', 'visa-data-error-rate', 'visa-complaints-rate'],
@@ -225,6 +234,15 @@ const cardOriginalGrids = {
     'risk-handling': 'grid-strategy-gov',
     'gov-maturity': 'grid-strategy-gov',
     'strat-goals-achieve': 'grid-strategy-gov',
+
+    // Operational Audits
+    'audit-plan-execution': 'grid-audit',
+    'operational-compliance-rate': 'grid-audit',
+    'total-audited-processes': 'grid-audit',
+    'passed-processes-count': 'grid-audit',
+    'critical-findings-count': 'grid-audit',
+    'recommendations-count': 'grid-audit',
+    'risk-mitigation-rate': 'grid-audit',
     
     'visa-processing-time': 'grid-service-visa',
     'visa-approval-rate': 'grid-service-visa',
@@ -805,7 +823,7 @@ function buildSectorChart(sectorKey) {
                 const targetVal = kpiSettings[key] ? kpiSettings[key].target : 0;
                 const unit = valText.replace(/[0-9.,\-+]/g, '').trim();
 
-                const isInverse = ['hse-ltifr', 'hse-accidents', 'visa-processing-time', 'hotel-cancel-rate', 'comp-violations-count', 'comp-resolution-time', 'comp-critical-findings', 'visa-data-error-rate', 'visa-complaints-rate', 'hotel-overbooking-incidents', 'meal-waste-percentage', 'hospitality-complaints', 'ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15'].includes(key);
+                const isInverse = ['hse-ltifr', 'hse-accidents', 'visa-processing-time', 'hotel-cancel-rate', 'comp-violations-count', 'comp-resolution-time', 'comp-critical-findings', 'visa-data-error-rate', 'visa-complaints-rate', 'hotel-overbooking-incidents', 'meal-waste-percentage', 'hospitality-complaints', 'ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count'].includes(key);
                 let achievement = 100;
                 if (isInverse) {
                     if (targetVal === 0) {
@@ -912,7 +930,7 @@ function calculateSectorAvg(sectorKey) {
             const config = kpiSettings[key];
             if (config) {
                 let ratio = 100;
-                if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15'].includes(key)) {
+                if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count'].includes(key)) {
                     ratio = val <= config.target ? 100 : Math.max(0, 100 - (val - config.target) * 40);
                 } else {
                     ratio = (val / config.target) * 100;

@@ -214,5 +214,22 @@ namespace project.Services
             }
             return null;
         }
+
+        public async Task<PortalOperationalAuditKpisDto?> GetOperationalAuditKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/operationalaudits/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalOperationalAuditKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching operational audit KPIs from portal API.");
+            }
+            return null;
+        }
     }
 }

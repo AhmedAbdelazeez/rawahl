@@ -44,6 +44,7 @@
     let kpiData = null;
     let projectKpiData = null;
     let complianceKpiData = null;
+    let operationalAuditKpiData = null;
     let isLoading = false;
     let lastError = null;
     let refreshTimer = null;
@@ -69,16 +70,18 @@
         showLoadingStates();
 
         try {
-            const [summary, kpis, projKpis, compKpis] = await Promise.all([
+            const [summary, kpis, projKpis, compKpis, auditKpis] = await Promise.all([
                 fetchJson('summary'),
                 fetchJson('kpis'),
                 fetchJson('project-kpis'),
-                fetchJson('compliance-kpis')
+                fetchJson('compliance-kpis'),
+                fetchJson('operational-audit-kpis')
             ]);
             portalData = summary;
             kpiData = kpis;
             projectKpiData = projKpis;
             complianceKpiData = compKpis;
+            operationalAuditKpiData = auditKpis;
 
             renderAll();
             hideLoadingStates();
@@ -107,6 +110,7 @@
         updateTickerWithPortalData();
         renderProjectKpiDashboard();
         renderComplianceKpis();
+        renderOperationalAuditKpis();
     }
 
 
@@ -1529,13 +1533,58 @@
         }
     }
 
+    async function refreshOperationalAuditKpis() {
+        try {
+            const auditKpis = await fetchJson('operational-audit-kpis');
+            operationalAuditKpiData = auditKpis;
+            renderOperationalAuditKpis();
+        } catch (err) {
+            console.error('[Portal Integration] Failed to refresh operational audit KPIs:', err);
+        }
+    }
+
+    function renderOperationalAuditKpis() {
+        if (!operationalAuditKpiData) return;
+
+        const isEn = document.documentElement.lang === 'en';
+
+        // Bind values
+        setTextIfExists('val-audit-plan-execution', operationalAuditKpiData.auditExecutionRateActual + '%');
+        setTextIfExists('val-operational-compliance-rate', operationalAuditKpiData.operationalComplianceRateActual + '%');
+        setTextIfExists('val-total-audited-processes', operationalAuditKpiData.totalAuditedProcessesActual);
+        setTextIfExists('val-passed-processes-count', operationalAuditKpiData.passedProcessesCountActual);
+        setTextIfExists('val-critical-findings-count', operationalAuditKpiData.criticalFindingsCountActual);
+        setTextIfExists('val-recommendations-count', operationalAuditKpiData.recommendationsCountActual);
+        setTextIfExists('val-risk-mitigation-rate', operationalAuditKpiData.riskMitigationRateActual + '%');
+
+        // Bind targets
+        setTextIfExists('target-val-audit-plan-execution', operationalAuditKpiData.auditExecutionRateTarget + '%');
+        setTextIfExists('target-val-operational-compliance-rate', operationalAuditKpiData.operationalComplianceRateTarget + '%');
+        setTextIfExists('target-val-total-audited-processes', operationalAuditKpiData.totalAuditedProcessesTarget);
+        setTextIfExists('target-val-passed-processes-count', operationalAuditKpiData.passedProcessesCountTarget);
+        setTextIfExists('target-val-critical-findings-count', operationalAuditKpiData.criticalFindingsCountTarget);
+        setTextIfExists('target-val-recommendations-count', operationalAuditKpiData.recommendationsCountTarget);
+        setTextIfExists('target-val-risk-mitigation-rate', operationalAuditKpiData.riskMitigationRateTarget + '%');
+
+        // Update flags
+        updateKpiStatusFromConfig('flag-audit-plan-execution', operationalAuditKpiData.auditExecutionRateActual, 'audit-plan-execution', false);
+        updateKpiStatusFromConfig('flag-operational-compliance-rate', operationalAuditKpiData.operationalComplianceRateActual, 'operational-compliance-rate', false);
+        updateKpiStatusFromConfig('flag-total-audited-processes', operationalAuditKpiData.totalAuditedProcessesActual, 'total-audited-processes', false);
+        updateKpiStatusFromConfig('flag-passed-processes-count', operationalAuditKpiData.passedProcessesCountActual, 'passed-processes-count', false);
+        updateKpiStatusFromConfig('flag-critical-findings-count', operationalAuditKpiData.criticalFindingsCountActual, 'critical-findings-count', true);
+        updateKpiStatusFromConfig('flag-recommendations-count', operationalAuditKpiData.recommendationsCountActual, 'recommendations-count', false);
+        updateKpiStatusFromConfig('flag-risk-mitigation-rate', operationalAuditKpiData.riskMitigationRateActual, 'risk-mitigation-rate', false);
+    }
+
     // ───────── Public API ─────────
     window.PortalIntegration = {
         load: loadPortalData,
         refresh: loadPortalData,
         refreshProjectKpis: refreshProjectKpis,
         refreshComplianceKpis: refreshComplianceKpis,
+        refreshOperationalAuditKpis: refreshOperationalAuditKpis,
         renderComplianceKpis: renderComplianceKpis,
+        renderOperationalAuditKpis: renderOperationalAuditKpis,
         hasComplianceData: () => complianceKpiData !== null,
         getComplianceKpiData: () => complianceKpiData,
         resetViews: resetDrilldownViews,

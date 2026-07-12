@@ -13,5 +13,6 @@ namespace project.Services
         Task<bool> IsPortalAvailableAsync();
         Task<System.Text.Json.JsonElement?> GetProjectKpisAsync();
         Task<System.Text.Json.JsonElement?> GetComplianceKpisAsync();
+        Task<PortalOperationalAuditKpisDto?> GetOperationalAuditKpisAsync();
     }
 }

@@ -250,4 +250,47 @@ namespace project.Models
         public bool IsLive { get; set; }
         public DateTime? LastUpdated { get; set; }
     }
+    public class PortalOperationalAuditDto
+    {
+        public int Id { get; set; }
+        public string TitleEn { get; set; } = string.Empty;
+        public string TitleAr { get; set; } = string.Empty;
+        public DateTime AuditDate { get; set; }
+        public int DepartmentId { get; set; }
+        public string DepartmentName { get; set; } = string.Empty;
+        public int AuditedProcessCount { get; set; }
+        public int PassedProcessCount { get; set; }
+        public int CriticalFindingsCount { get; set; }
+        public int RecommendationsCount { get; set; }
+        public double RiskMitigationRate { get; set; }
+        public int Status { get; set; }
+        public string Title { get; set; } = string.Empty;
+    }
+
+    public class PortalOperationalAuditKpisDto
+    {
+        public double AuditExecutionRateActual { get; set; }
+        public double AuditExecutionRateTarget { get; set; }
+        public double OperationalComplianceRateActual { get; set; }
+        public double OperationalComplianceRateTarget { get; set; }
+        public int TotalAuditedProcessesActual { get; set; }
+        public int TotalAuditedProcessesTarget { get; set; }
+        public int PassedProcessesCountActual { get; set; }
+        public int PassedProcessesCountTarget { get; set; }
+        public int CriticalFindingsCountActual { get; set; }
+        public int CriticalFindingsCountTarget { get; set; }
+        public int RecommendationsCountActual { get; set; }
+        public int RecommendationsCountTarget { get; set; }
+        public double RiskMitigationRateActual { get; set; }
+        public double RiskMitigationRateTarget { get; set; }
+        public List<PortalChartDataPoint> AuditsByStatus { get; set; } = new();
+        public List<PortalChartDataPoint> ComplianceByDepartment { get; set; } = new();
+    }
+
+    public class PortalChartDataPoint
+    {
+        public string Label { get; set; } = string.Empty;
+        public decimal Value { get; set; }
+        public string Color { get; set; } = string.Empty;
+    }
 }

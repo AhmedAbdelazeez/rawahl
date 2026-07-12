@@ -75,6 +75,17 @@ namespace project.Controllers
             return Ok(kpis);
         }
 
+        [HttpGet("operational-audit-kpis")]
+        public async Task<IActionResult> GetOperationalAuditKpis()
+        {
+            var kpis = await _portalService.GetOperationalAuditKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no operational audit KPI data.");
+            }
+            return Ok(kpis);
+        }
+
         [HttpGet("health")]
         public async Task<IActionResult> GetHealth()
         {
