@@ -293,4 +293,28 @@ namespace project.Models
         public decimal Value { get; set; }
         public string Color { get; set; } = string.Empty;
     }
+
+    public class PortalHrKpisDto
+    {
+        public double SaudizationRateActual { get; set; }
+        public double SaudizationRateTarget { get; set; }
+
+        public double RetentionRateActual { get; set; }
+        public double RetentionRateTarget { get; set; }
+
+        public double AvgRatingActual { get; set; }
+        public double AvgRatingTarget { get; set; }
+
+        public double AvgEvaluationActual { get; set; }
+        public double AvgEvaluationTarget { get; set; }
+
+        public int TotalEmployeesActual { get; set; }
+        public int TotalEmployeesTarget { get; set; }
+
+        public decimal AvgSalaryActual { get; set; }
+        public decimal AvgSalaryTarget { get; set; }
+
+        public double AvgTasksPerEmployeeActual { get; set; }
+        public double AvgTasksPerEmployeeTarget { get; set; }
+    }
 }

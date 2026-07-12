@@ -45,6 +45,7 @@
     let projectKpiData = null;
     let complianceKpiData = null;
     let operationalAuditKpiData = null;
+    let hrKpiData = null;
     let isLoading = false;
     let lastError = null;
     let refreshTimer = null;
@@ -70,18 +71,20 @@
         showLoadingStates();
 
         try {
-            const [summary, kpis, projKpis, compKpis, auditKpis] = await Promise.all([
+            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis] = await Promise.all([
                 fetchJson('summary'),
                 fetchJson('kpis'),
                 fetchJson('project-kpis'),
                 fetchJson('compliance-kpis'),
-                fetchJson('operational-audit-kpis')
+                fetchJson('operational-audit-kpis'),
+                fetchJson('hr-kpis')
             ]);
             portalData = summary;
             kpiData = kpis;
             projectKpiData = projKpis;
             complianceKpiData = compKpis;
             operationalAuditKpiData = auditKpis;
+            hrKpiData = hrKpis;
 
             renderAll();
             hideLoadingStates();
@@ -111,6 +114,7 @@
         renderProjectKpiDashboard();
         renderComplianceKpis();
         renderOperationalAuditKpis();
+        renderHrKpis();
     }
 
 
@@ -1576,6 +1580,72 @@
         updateKpiStatusFromConfig('flag-risk-mitigation-rate', operationalAuditKpiData.riskMitigationRateActual, 'risk-mitigation-rate', false);
     }
 
+    function refreshHrKpis() {
+        if (!hrKpiData) return;
+        renderHrKpis();
+    }
+
+    function renderHrKpis() {
+        if (!hrKpiData) return;
+
+        // Dynamically align targets in app.js config
+        if (typeof defaultSettings !== 'undefined') {
+            defaultSettings['hr-ret'].target = hrKpiData.retentionRateTarget;
+            defaultSettings['hr-saudization'].target = hrKpiData.saudizationRateTarget;
+            defaultSettings['hr-count'].target = hrKpiData.totalEmployeesTarget;
+            defaultSettings['hr-growth'].target = Number(hrKpiData.avgSalaryTarget);
+            defaultSettings['hr-absence'].target = hrKpiData.avgTasksPerEmployeeTarget;
+            defaultSettings['hr-training'].target = hrKpiData.avgRatingTarget;
+            defaultSettings['hr-appraisal'].target = hrKpiData.avgEvaluationTarget;
+            
+            defaultSettings['hr-ret'].excellentMin = hrKpiData.retentionRateTarget * 0.95;
+            defaultSettings['hr-ret'].goodMin = hrKpiData.retentionRateTarget * 0.8;
+            defaultSettings['hr-saudization'].excellentMin = hrKpiData.saudizationRateTarget * 0.95;
+            defaultSettings['hr-saudization'].goodMin = hrKpiData.saudizationRateTarget * 0.8;
+            defaultSettings['hr-count'].excellentMin = hrKpiData.totalEmployeesTarget * 0.95;
+            defaultSettings['hr-count'].goodMin = hrKpiData.totalEmployeesTarget * 0.8;
+            defaultSettings['hr-growth'].excellentMin = Number(hrKpiData.avgSalaryTarget) * 0.95;
+            defaultSettings['hr-growth'].goodMin = Number(hrKpiData.avgSalaryTarget) * 0.8;
+            
+            defaultSettings['hr-absence'].excellentMin = hrKpiData.avgTasksPerEmployeeTarget * 0.95;
+            defaultSettings['hr-absence'].goodMin = hrKpiData.avgTasksPerEmployeeTarget * 0.8;
+            delete defaultSettings['hr-absence'].excellentMax;
+            delete defaultSettings['hr-absence'].goodMax;
+            
+            defaultSettings['hr-training'].excellentMin = hrKpiData.avgRatingTarget * 0.95;
+            defaultSettings['hr-training'].goodMin = hrKpiData.avgRatingTarget * 0.8;
+            defaultSettings['hr-appraisal'].excellentMin = hrKpiData.avgEvaluationTarget * 0.95;
+            defaultSettings['hr-appraisal'].goodMin = hrKpiData.avgEvaluationTarget * 0.8;
+        }
+
+        // Bind values
+        setTextIfExists('val-hr-ret', hrKpiData.retentionRateActual + '%');
+        setTextIfExists('val-hr-saudization', hrKpiData.saudizationRateActual + '%');
+        setTextIfExists('val-hr-count', hrKpiData.totalEmployeesActual);
+        setTextIfExists('val-hr-growth', hrKpiData.avgSalaryActual.toLocaleString(undefined, {minimumFractionDigits: 0}) + ' SAR');
+        setTextIfExists('val-hr-absence', hrKpiData.avgTasksPerEmployeeActual);
+        setTextIfExists('val-hr-training', hrKpiData.avgRatingActual);
+        setTextIfExists('val-hr-appraisal', hrKpiData.avgEvaluationActual + '%');
+
+        // Bind targets
+        setTextIfExists('target-val-hr-ret', hrKpiData.retentionRateTarget + '%');
+        setTextIfExists('target-val-hr-saudization', hrKpiData.saudizationRateTarget + '%');
+        setTextIfExists('target-val-hr-count', hrKpiData.totalEmployeesTarget);
+        setTextIfExists('target-val-hr-growth', hrKpiData.avgSalaryTarget.toLocaleString(undefined, {minimumFractionDigits: 0}) + ' SAR');
+        setTextIfExists('target-val-hr-absence', hrKpiData.avgTasksPerEmployeeTarget);
+        setTextIfExists('target-val-hr-training', hrKpiData.avgRatingTarget);
+        setTextIfExists('target-val-hr-appraisal', hrKpiData.avgEvaluationTarget + '%');
+
+        // Update flags
+        updateKpiStatusFromConfig('flag-hr-ret', hrKpiData.retentionRateActual, 'hr-ret', false);
+        updateKpiStatusFromConfig('flag-hr-saudization', hrKpiData.saudizationRateActual, 'hr-saudization', false);
+        updateKpiStatusFromConfig('flag-hr-count', hrKpiData.totalEmployeesActual, 'hr-count', false);
+        updateKpiStatusFromConfig('flag-hr-growth', hrKpiData.avgSalaryActual, 'hr-growth', false);
+        updateKpiStatusFromConfig('flag-hr-absence', hrKpiData.avgTasksPerEmployeeActual, 'hr-absence', false);
+        updateKpiStatusFromConfig('flag-hr-training', hrKpiData.avgRatingActual, 'hr-training', false);
+        updateKpiStatusFromConfig('flag-hr-appraisal', hrKpiData.avgEvaluationActual, 'hr-appraisal', false);
+    }
+
     // ───────── Public API ─────────
     window.PortalIntegration = {
         load: loadPortalData,
@@ -1583,8 +1653,10 @@
         refreshProjectKpis: refreshProjectKpis,
         refreshComplianceKpis: refreshComplianceKpis,
         refreshOperationalAuditKpis: refreshOperationalAuditKpis,
+        refreshHrKpis: refreshHrKpis,
         renderComplianceKpis: renderComplianceKpis,
         renderOperationalAuditKpis: renderOperationalAuditKpis,
+        renderHrKpis: renderHrKpis,
         hasComplianceData: () => complianceKpiData !== null,
         getComplianceKpiData: () => complianceKpiData,
         resetViews: resetDrilldownViews,

@@ -231,5 +231,22 @@ namespace project.Services
             }
             return null;
         }
+
+        public async Task<PortalHrKpisDto?> GetHrKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/employees/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalHrKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching HR KPIs from portal API.");
+            }
+            return null;
+        }
     }
 }

@@ -86,6 +86,17 @@ namespace project.Controllers
             return Ok(kpis);
         }
 
+        [HttpGet("hr-kpis")]
+        public async Task<IActionResult> GetHrKpis()
+        {
+            var kpis = await _portalService.GetHrKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no HR KPI data.");
+            }
+            return Ok(kpis);
+        }
+
         [HttpGet("health")]
         public async Task<IActionResult> GetHealth()
         {
