@@ -97,6 +97,28 @@ namespace project.Controllers
             return Ok(kpis);
         }
 
+        [HttpGet("it-kpis")]
+        public async Task<IActionResult> GetItKpis()
+        {
+            var kpis = await _portalService.GetItKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no IT KPI data.");
+            }
+            return Ok(kpis);
+        }
+
+        [HttpGet("hse-kpis")]
+        public async Task<IActionResult> GetHseKpis()
+        {
+            var kpis = await _portalService.GetHseKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no HSE KPI data.");
+            }
+            return Ok(kpis);
+        }
+
         [HttpGet("health")]
         public async Task<IActionResult> GetHealth()
         {

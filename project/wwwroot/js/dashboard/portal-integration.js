@@ -46,6 +46,8 @@
     let complianceKpiData = null;
     let operationalAuditKpiData = null;
     let hrKpiData = null;
+    let itKpiData = null;
+    let hseKpiData = null;
     let isLoading = false;
     let lastError = null;
     let refreshTimer = null;
@@ -71,13 +73,15 @@
         showLoadingStates();
 
         try {
-            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis] = await Promise.all([
+            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis, itKpis, hseKpis] = await Promise.all([
                 fetchJson('summary'),
                 fetchJson('kpis'),
                 fetchJson('project-kpis'),
                 fetchJson('compliance-kpis'),
                 fetchJson('operational-audit-kpis'),
-                fetchJson('hr-kpis')
+                fetchJson('hr-kpis'),
+                fetchJson('it-kpis'),
+                fetchJson('hse-kpis')
             ]);
             portalData = summary;
             kpiData = kpis;
@@ -85,6 +89,8 @@
             complianceKpiData = compKpis;
             operationalAuditKpiData = auditKpis;
             hrKpiData = hrKpis;
+            itKpiData = itKpis;
+            hseKpiData = hseKpis;
 
             renderAll();
             hideLoadingStates();
@@ -115,6 +121,8 @@
         renderComplianceKpis();
         renderOperationalAuditKpis();
         renderHrKpis();
+        renderItKpis();
+        renderHseKpis();
     }
 
 
@@ -1646,6 +1654,140 @@
         updateKpiStatusFromConfig('flag-hr-appraisal', hrKpiData.avgEvaluationActual, 'hr-appraisal', false);
     }
 
+    async function refreshItKpis() {
+        try {
+            const itKpis = await fetchJson('it-kpis');
+            itKpiData = itKpis;
+            renderItKpis();
+        } catch (err) {
+            console.error('[Portal Integration] Failed to refresh IT KPIs:', err);
+        }
+    }
+
+    function renderItKpis() {
+        if (!itKpiData) return;
+
+        // Dynamically align targets in app.js config if defaultSettings is defined
+        if (typeof defaultSettings !== 'undefined') {
+            defaultSettings['it-autom'].target = itKpiData.digitalTransformationRateTarget;
+            defaultSettings['it-uptime'].target = itKpiData.systemUptimeTarget;
+            defaultSettings['it-ticket-time'].target = itKpiData.avgTicketResolutionTimeTarget;
+            defaultSettings['it-incidents'].target = itKpiData.cybersecurityIncidentsTarget;
+            defaultSettings['it-satisfaction'].target = itKpiData.userSatisfactionTarget;
+            defaultSettings['it-backup'].target = itKpiData.backupSuccessRateTarget;
+            defaultSettings['it-projects'].target = itKpiData.itProjectDeliveryTarget;
+
+            defaultSettings['it-autom'].excellentMin = itKpiData.digitalTransformationRateTarget * 0.95;
+            defaultSettings['it-autom'].goodMin = itKpiData.digitalTransformationRateTarget * 0.8;
+            defaultSettings['it-uptime'].excellentMin = itKpiData.systemUptimeTarget;
+            defaultSettings['it-uptime'].goodMin = itKpiData.systemUptimeTarget - 0.9;
+            defaultSettings['it-ticket-time'].excellentMax = itKpiData.avgTicketResolutionTimeTarget;
+            defaultSettings['it-ticket-time'].goodMax = itKpiData.avgTicketResolutionTimeTarget * 1.5;
+            defaultSettings['it-incidents'].excellentMax = itKpiData.cybersecurityIncidentsTarget;
+            defaultSettings['it-incidents'].goodMax = 1;
+            defaultSettings['it-satisfaction'].excellentMin = itKpiData.userSatisfactionTarget;
+            defaultSettings['it-satisfaction'].goodMin = itKpiData.userSatisfactionTarget * 0.9;
+            defaultSettings['it-backup'].excellentMin = itKpiData.backupSuccessRateTarget;
+            defaultSettings['it-backup'].goodMin = itKpiData.backupSuccessRateTarget * 0.95;
+            defaultSettings['it-projects'].excellentMin = itKpiData.itProjectDeliveryTarget;
+            defaultSettings['it-projects'].goodMin = itKpiData.itProjectDeliveryTarget * 0.9;
+        }
+
+        // Bind values
+        setTextIfExists('val-it-autom', itKpiData.digitalTransformationRateActual + '%');
+        setTextIfExists('val-it-uptime', itKpiData.systemUptimeActual + '%');
+        setTextIfExists('val-it-ticket-time', itKpiData.avgTicketResolutionTimeActual + ' ساعة');
+        setTextIfExists('val-it-incidents', itKpiData.cybersecurityIncidentsActual);
+        setTextIfExists('val-it-satisfaction', itKpiData.userSatisfactionActual + '%');
+        setTextIfExists('val-it-backup', itKpiData.backupSuccessRateActual + '%');
+        setTextIfExists('val-it-projects', itKpiData.itProjectDeliveryActual + '%');
+
+        // Bind targets
+        setTextIfExists('target-val-it-autom', itKpiData.digitalTransformationRateTarget + '%');
+        setTextIfExists('target-val-it-uptime', itKpiData.systemUptimeTarget + '%');
+        setTextIfExists('target-val-it-ticket-time', itKpiData.avgTicketResolutionTimeTarget + ' ساعة');
+        setTextIfExists('target-val-it-incidents', itKpiData.cybersecurityIncidentsTarget);
+        setTextIfExists('target-val-it-satisfaction', itKpiData.userSatisfactionTarget + '%');
+        setTextIfExists('target-val-it-backup', itKpiData.backupSuccessRateTarget + '%');
+        setTextIfExists('target-val-it-projects', itKpiData.itProjectDeliveryTarget + '%');
+
+        // Update flags
+        updateKpiStatusFromConfig('flag-it-autom', itKpiData.digitalTransformationRateActual, 'it-autom', false);
+        updateKpiStatusFromConfig('flag-it-uptime', itKpiData.systemUptimeActual, 'it-uptime', false);
+        updateKpiStatusFromConfig('flag-it-ticket-time', itKpiData.avgTicketResolutionTimeActual, 'it-ticket-time', true);
+        updateKpiStatusFromConfig('flag-it-incidents', itKpiData.cybersecurityIncidentsActual, 'it-incidents', true);
+        updateKpiStatusFromConfig('flag-it-satisfaction', itKpiData.userSatisfactionActual, 'it-satisfaction', false);
+        updateKpiStatusFromConfig('flag-it-backup', itKpiData.backupSuccessRateActual, 'it-backup', false);
+        updateKpiStatusFromConfig('flag-it-projects', itKpiData.itProjectDeliveryActual, 'it-projects', false);
+    }
+
+    async function refreshHseKpis() {
+        try {
+            const hseKpis = await fetchJson('hse-kpis');
+            hseKpiData = hseKpis;
+            renderHseKpis();
+        } catch (err) {
+            console.error('[Portal Integration] Failed to refresh HSE KPIs:', err);
+        }
+    }
+
+    function renderHseKpis() {
+        if (!hseKpiData) return;
+
+        // Dynamically align targets in app.js config if defaultSettings is defined
+        if (typeof defaultSettings !== 'undefined') {
+            defaultSettings['hse-ltifr'].target = hseKpiData.ltifrTarget;
+            defaultSettings['hse-accidents'].target = hseKpiData.seriousRoadAccidentsTarget;
+            defaultSettings['audit-comp'].target = hseKpiData.regulatoryComplianceRateTarget;
+            defaultSettings['hse-training-hours'].target = hseKpiData.hseTrainingHoursTarget;
+            defaultSettings['hse-inspection-completion'].target = hseKpiData.safetyInspectionsCompletionTarget;
+            defaultSettings['hse-near-miss'].target = hseKpiData.nearMissReportingTarget;
+            defaultSettings['hse-waste-recycling'].target = hseKpiData.wasteRecyclingRateTarget;
+
+            defaultSettings['hse-ltifr'].excellentMax = hseKpiData.ltifrTarget;
+            defaultSettings['hse-ltifr'].goodMax = hseKpiData.ltifrTarget + 1.5;
+            defaultSettings['hse-accidents'].excellentMax = hseKpiData.seriousRoadAccidentsTarget;
+            defaultSettings['hse-accidents'].goodMax = 1;
+            defaultSettings['audit-comp'].excellentMin = hseKpiData.regulatoryComplianceRateTarget;
+            defaultSettings['audit-comp'].goodMin = hseKpiData.regulatoryComplianceRateTarget * 0.9;
+            defaultSettings['hse-training-hours'].excellentMin = hseKpiData.hseTrainingHoursTarget;
+            defaultSettings['hse-training-hours'].goodMin = hseKpiData.hseTrainingHoursTarget * 0.8;
+            defaultSettings['hse-inspection-completion'].excellentMin = hseKpiData.safetyInspectionsCompletionTarget;
+            defaultSettings['hse-inspection-completion'].goodMin = hseKpiData.safetyInspectionsCompletionTarget * 0.9;
+            defaultSettings['hse-near-miss'].excellentMin = hseKpiData.nearMissReportingTarget;
+            defaultSettings['hse-near-miss'].goodMin = hseKpiData.nearMissReportingTarget * 0.8;
+            defaultSettings['hse-waste-recycling'].excellentMin = hseKpiData.wasteRecyclingRateTarget;
+            defaultSettings['hse-waste-recycling'].goodMin = hseKpiData.wasteRecyclingRateTarget * 0.8;
+        }
+
+        // Bind values
+        setTextIfExists('val-hse-ltifr', hseKpiData.ltifrActual);
+        setTextIfExists('val-hse-accidents', hseKpiData.seriousRoadAccidentsActual);
+        setTextIfExists('val-audit-comp', hseKpiData.regulatoryComplianceRateActual + '%');
+        setTextIfExists('val-hse-training-hours', hseKpiData.hseTrainingHoursActual + ' ساعة');
+        setTextIfExists('val-hse-inspection-completion', hseKpiData.safetyInspectionsCompletionActual + '%');
+        setTextIfExists('val-hse-near-miss', hseKpiData.nearMissReportingActual);
+        setTextIfExists('val-hse-waste-recycling', hseKpiData.wasteRecyclingRateActual + '%');
+
+        // Bind targets
+        setTextIfExists('target-val-hse-ltifr', hseKpiData.ltifrTarget);
+        setTextIfExists('target-val-hse-accidents', hseKpiData.seriousRoadAccidentsTarget);
+        setTextIfExists('target-val-audit-comp', hseKpiData.regulatoryComplianceRateTarget + '%');
+        setTextIfExists('target-val-hse-training-hours', hseKpiData.hseTrainingHoursTarget + ' ساعة');
+        setTextIfExists('target-val-hse-inspection-completion', hseKpiData.safetyInspectionsCompletionTarget + '%');
+        setTextIfExists('target-val-hse-near-miss', hseKpiData.nearMissReportingTarget);
+        setTextIfExists('target-val-hse-waste-recycling', hseKpiData.wasteRecyclingRateTarget + '%');
+
+        // Update flags
+        updateKpiStatusFromConfig('flag-hse-ltifr', hseKpiData.ltifrActual, 'hse-ltifr', true);
+        updateKpiStatusFromConfig('flag-hse-accidents', hseKpiData.seriousRoadAccidentsActual, 'hse-accidents', true);
+        updateKpiStatusFromConfig('flag-audit-comp', hseKpiData.regulatoryComplianceRateActual, 'audit-comp', false);
+        updateKpiStatusFromConfig('flag-hse-training-hours', hseKpiData.hseTrainingHoursActual, 'hse-training-hours', false);
+        updateKpiStatusFromConfig('flag-hse-inspection-completion', hseKpiData.safetyInspectionsCompletionActual, 'hse-inspection-completion', false);
+        updateKpiStatusFromConfig('flag-hse-near-miss', hseKpiData.nearMissReportingActual, 'hse-near-miss', false);
+        updateKpiStatusFromConfig('flag-hse-waste-recycling', hseKpiData.wasteRecyclingRateActual, 'hse-waste-recycling', false);
+    }
+
     // ───────── Public API ─────────
     window.PortalIntegration = {
         load: loadPortalData,
@@ -1654,9 +1796,13 @@
         refreshComplianceKpis: refreshComplianceKpis,
         refreshOperationalAuditKpis: refreshOperationalAuditKpis,
         refreshHrKpis: refreshHrKpis,
+        refreshItKpis: refreshItKpis,
+        refreshHseKpis: refreshHseKpis,
         renderComplianceKpis: renderComplianceKpis,
         renderOperationalAuditKpis: renderOperationalAuditKpis,
         renderHrKpis: renderHrKpis,
+        renderItKpis: renderItKpis,
+        renderHseKpis: renderHseKpis,
         hasComplianceData: () => complianceKpiData !== null,
         getComplianceKpiData: () => complianceKpiData,
         resetViews: resetDrilldownViews,

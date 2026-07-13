@@ -15,5 +15,7 @@ namespace project.Services
         Task<System.Text.Json.JsonElement?> GetComplianceKpisAsync();
         Task<PortalOperationalAuditKpisDto?> GetOperationalAuditKpisAsync();
         Task<PortalHrKpisDto?> GetHrKpisAsync();
+        Task<PortalItKpisDto?> GetItKpisAsync();
+        Task<PortalHseKpisDto?> GetHseKpisAsync();
     }
 }

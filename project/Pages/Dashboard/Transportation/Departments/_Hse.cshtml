@@ -1,38 +1,88 @@
 @model project.Pages.IndexModel
 
 <!-- Health, Safety & Environment (HSE) Department KPI Cards -->
-<!-- LTIFR -->
-<div id="card-hse-ltifr" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-ltifr-label">معدل حوادث العمل LTIFR</span>
-        <span id="flag-hse-ltifr" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+<div id="grid-support-hse" class="hidden">
+    <!-- 1. LTIFR -->
+    <div id="card-hse-ltifr" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-ltifr-label">معدل إصابات العمل LTIFR</span>
+            <span id="flag-hse-ltifr" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hse-ltifr">0</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-ltifr">0</span></span>
+        </div>
     </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-hse-ltifr">@Model.Ltifr</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-ltifr">--</span></span>
-    </div>
-</div>
 
-<!-- Serious Accidents -->
-<div id="card-hse-accidents" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-accidents-label">حوادث جسيمة للحافلات بالطرق</span>
-        <span id="flag-hse-accidents" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    <!-- 2. Serious Accidents -->
+    <div id="card-hse-accidents" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-accidents-label">حوادث حافلات الطرق الجسيمة</span>
+            <span id="flag-hse-accidents" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hse-accidents">0</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-accidents">0</span></span>
+        </div>
     </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-rose-700" id="val-hse-accidents">@Model.Accidents</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-accidents">--</span></span>
-    </div>
-</div>
 
-<!-- Audit Compliance -->
-<div id="card-audit-comp" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="val-audit-comp-label">نسبة الامتثال للوائح والتراخيص</span>
-        <span id="flag-audit-comp" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    <!-- 3. Audit Compliance -->
+    <div id="card-audit-comp" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-audit-comp-label">الامتثال للوائح والتراخيص البيئية</span>
+            <span id="flag-audit-comp" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-audit-comp">95%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-audit-comp">95%</span></span>
+        </div>
     </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-audit-comp">@Model.AuditCompliance%</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-audit-comp">--</span></span>
+
+    <!-- 4. HSE Training Hours -->
+    <div id="card-hse-training-hours" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-training-hours-label">ساعات التدريب والتوعية بالسلامة</span>
+            <span id="flag-hse-training-hours" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hse-training-hours">120 ساعة</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-training-hours">120 ساعة</span></span>
+        </div>
+    </div>
+
+    <!-- 5. Safety Inspections Completion Rate -->
+    <div id="card-hse-inspection-completion" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-inspection-completion-label">إنجاز جولات التفتيش الوقائي</span>
+            <span id="flag-hse-inspection-completion" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hse-inspection-completion">95%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-inspection-completion">95%</span></span>
+        </div>
+    </div>
+
+    <!-- 6. Near-Miss Reporting Rate -->
+    <div id="card-hse-near-miss" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-near-miss-label">معدل الإبلاغ عن الحوادث الوشيكة</span>
+            <span id="flag-hse-near-miss" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hse-near-miss">50</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-near-miss">50</span></span>
+        </div>
+    </div>
+
+    <!-- 7. Waste Recycling Rate -->
+    <div id="card-hse-waste-recycling" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hse-waste-recycling-label">معدل إعادة تدوير النفايات التشغيلية</span>
+            <span id="flag-hse-waste-recycling" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hse-waste-recycling">40%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hse-waste-recycling">40%</span></span>
+        </div>
     </div>
 </div>

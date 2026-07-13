@@ -248,5 +248,39 @@ namespace project.Services
             }
             return null;
         }
+
+        public async Task<PortalItKpisDto?> GetItKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/it/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalItKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching IT KPIs from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<PortalHseKpisDto?> GetHseKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/hse/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalHseKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching HSE KPIs from portal API.");
+            }
+            return null;
+        }
     }
 }

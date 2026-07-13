@@ -317,4 +317,52 @@ namespace project.Models
         public double AvgTasksPerEmployeeActual { get; set; }
         public double AvgTasksPerEmployeeTarget { get; set; }
     }
+
+    public class PortalItKpisDto
+    {
+        public double DigitalTransformationRateActual { get; set; }
+        public double DigitalTransformationRateTarget { get; set; }
+
+        public double SystemUptimeActual { get; set; }
+        public double SystemUptimeTarget { get; set; }
+
+        public double AvgTicketResolutionTimeActual { get; set; }
+        public double AvgTicketResolutionTimeTarget { get; set; }
+
+        public int CybersecurityIncidentsActual { get; set; }
+        public int CybersecurityIncidentsTarget { get; set; }
+
+        public double UserSatisfactionActual { get; set; }
+        public double UserSatisfactionTarget { get; set; }
+
+        public double BackupSuccessRateActual { get; set; }
+        public double BackupSuccessRateTarget { get; set; }
+
+        public double ItProjectDeliveryActual { get; set; }
+        public double ItProjectDeliveryTarget { get; set; }
+    }
+
+    public class PortalHseKpisDto
+    {
+        public double LtifrActual { get; set; }
+        public double LtifrTarget { get; set; }
+
+        public int SeriousRoadAccidentsActual { get; set; }
+        public int SeriousRoadAccidentsTarget { get; set; }
+
+        public double RegulatoryComplianceRateActual { get; set; }
+        public double RegulatoryComplianceRateTarget { get; set; }
+
+        public double HseTrainingHoursActual { get; set; }
+        public double HseTrainingHoursTarget { get; set; }
+
+        public double SafetyInspectionsCompletionActual { get; set; }
+        public double SafetyInspectionsCompletionTarget { get; set; }
+
+        public int NearMissReportingActual { get; set; }
+        public int NearMissReportingTarget { get; set; }
+
+        public double WasteRecyclingRateActual { get; set; }
+        public double WasteRecyclingRateTarget { get; set; }
+    }
 }
