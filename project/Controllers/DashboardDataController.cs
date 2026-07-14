@@ -119,6 +119,28 @@ namespace project.Controllers
             return Ok(kpis);
         }
 
+        [HttpGet("procurement-kpis")]
+        public async Task<IActionResult> GetProcurementKpis()
+        {
+            var kpis = await _portalService.GetProcurementKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no Procurement KPI data.");
+            }
+            return Ok(kpis);
+        }
+
+        [HttpGet("strategy-kpis")]
+        public async Task<IActionResult> GetStrategyKpis()
+        {
+            var kpis = await _portalService.GetStrategyKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no Strategy KPI data.");
+            }
+            return Ok(kpis);
+        }
+
         [HttpGet("health")]
         public async Task<IActionResult> GetHealth()
         {

@@ -48,6 +48,8 @@
     let hrKpiData = null;
     let itKpiData = null;
     let hseKpiData = null;
+    let procurementKpiData = null;
+    let strategyKpiData = null;
     let isLoading = false;
     let lastError = null;
     let refreshTimer = null;
@@ -73,7 +75,7 @@
         showLoadingStates();
 
         try {
-            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis, itKpis, hseKpis] = await Promise.all([
+            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis, itKpis, hseKpis, procurementKpis, strategyKpis] = await Promise.all([
                 fetchJson('summary'),
                 fetchJson('kpis'),
                 fetchJson('project-kpis'),
@@ -81,7 +83,9 @@
                 fetchJson('operational-audit-kpis'),
                 fetchJson('hr-kpis'),
                 fetchJson('it-kpis'),
-                fetchJson('hse-kpis')
+                fetchJson('hse-kpis'),
+                fetchJson('procurement-kpis'),
+                fetchJson('strategy-kpis')
             ]);
             portalData = summary;
             kpiData = kpis;
@@ -91,6 +95,8 @@
             hrKpiData = hrKpis;
             itKpiData = itKpis;
             hseKpiData = hseKpis;
+            procurementKpiData = procurementKpis;
+            strategyKpiData = strategyKpis;
 
             renderAll();
             hideLoadingStates();
@@ -123,6 +129,8 @@
         renderHrKpis();
         renderItKpis();
         renderHseKpis();
+        renderProcurementKpis();
+        renderStrategyKpis();
     }
 
 
@@ -1788,6 +1796,121 @@
         updateKpiStatusFromConfig('flag-hse-waste-recycling', hseKpiData.wasteRecyclingRateActual, 'hse-waste-recycling', false);
     }
 
+    function renderProcurementKpis() {
+        if (!procurementKpiData) return;
+
+        // Dynamically align targets in app.js config if defaultSettings is defined
+        if (typeof defaultSettings !== 'undefined') {
+            defaultSettings['proc-cycle'].target = procurementKpiData.avgProcurementCycleTimeTarget;
+            defaultSettings['proc-savings'].target = procurementKpiData.costSavingsRateTarget;
+            defaultSettings['proc-supplier'].target = procurementKpiData.supplierPerformanceRatingTarget;
+            defaultSettings['proc-budget'].target = procurementKpiData.budgetComplianceTarget;
+            defaultSettings['proc-spare-parts'].target = procurementKpiData.criticalSparePartsAvailabilityTarget;
+            defaultSettings['proc-inventory'].target = procurementKpiData.inventoryAccuracyRateTarget;
+            defaultSettings['proc-contracts'].target = procurementKpiData.activeSupplyContractsTarget;
+
+            defaultSettings['proc-cycle'].excellentMax = procurementKpiData.avgProcurementCycleTimeTarget;
+            defaultSettings['proc-cycle'].goodMax = procurementKpiData.avgProcurementCycleTimeTarget * 1.5;
+            defaultSettings['proc-savings'].excellentMin = procurementKpiData.costSavingsRateTarget;
+            defaultSettings['proc-savings'].goodMin = procurementKpiData.costSavingsRateTarget * 0.9;
+            defaultSettings['proc-supplier'].excellentMin = procurementKpiData.supplierPerformanceRatingTarget;
+            defaultSettings['proc-supplier'].goodMin = procurementKpiData.supplierPerformanceRatingTarget * 0.9;
+            defaultSettings['proc-budget'].excellentMin = procurementKpiData.budgetComplianceTarget;
+            defaultSettings['proc-budget'].goodMin = procurementKpiData.budgetComplianceTarget * 0.9;
+            defaultSettings['proc-spare-parts'].excellentMin = procurementKpiData.criticalSparePartsAvailabilityTarget;
+            defaultSettings['proc-spare-parts'].goodMin = procurementKpiData.criticalSparePartsAvailabilityTarget * 0.95;
+            defaultSettings['proc-inventory'].excellentMin = procurementKpiData.inventoryAccuracyRateTarget;
+            defaultSettings['proc-inventory'].goodMin = procurementKpiData.inventoryAccuracyRateTarget * 0.95;
+            defaultSettings['proc-contracts'].excellentMin = procurementKpiData.activeSupplyContractsTarget;
+            defaultSettings['proc-contracts'].goodMin = procurementKpiData.activeSupplyContractsTarget * 0.9;
+        }
+
+        // Bind values
+        const isEn = document.documentElement.lang === 'en';
+        setTextIfExists('val-proc-cycle', procurementKpiData.avgProcurementCycleTimeActual + (isEn ? ' days' : ' أيام'));
+        setTextIfExists('val-proc-savings', procurementKpiData.costSavingsRateActual + '%');
+        setTextIfExists('val-proc-supplier', procurementKpiData.supplierPerformanceRatingActual + '%');
+        setTextIfExists('val-proc-budget', procurementKpiData.budgetComplianceActual + '%');
+        setTextIfExists('val-proc-spare-parts', procurementKpiData.criticalSparePartsAvailabilityActual + '%');
+        setTextIfExists('val-proc-inventory', procurementKpiData.inventoryAccuracyRateActual + '%');
+        setTextIfExists('val-proc-contracts', procurementKpiData.activeSupplyContractsActual + (isEn ? ' contracts' : ' عقد'));
+
+        // Bind targets
+        setTextIfExists('target-val-proc-cycle', procurementKpiData.avgProcurementCycleTimeTarget + (isEn ? ' days' : ' أيام'));
+        setTextIfExists('target-val-proc-savings', procurementKpiData.costSavingsRateTarget + '%');
+        setTextIfExists('target-val-proc-supplier', procurementKpiData.supplierPerformanceRatingTarget + '%');
+        setTextIfExists('target-val-proc-budget', procurementKpiData.budgetComplianceTarget + '%');
+        setTextIfExists('target-val-proc-spare-parts', procurementKpiData.criticalSparePartsAvailabilityTarget + '%');
+        setTextIfExists('target-val-proc-inventory', procurementKpiData.inventoryAccuracyRateTarget + '%');
+        setTextIfExists('target-val-proc-contracts', procurementKpiData.activeSupplyContractsTarget);
+
+        // Update flags
+        updateKpiStatusFromConfig('flag-proc-cycle', procurementKpiData.avgProcurementCycleTimeActual, 'proc-cycle', true);
+        updateKpiStatusFromConfig('flag-proc-savings', procurementKpiData.costSavingsRateActual, 'proc-savings', false);
+        updateKpiStatusFromConfig('flag-proc-supplier', procurementKpiData.supplierPerformanceRatingActual, 'proc-supplier', false);
+        updateKpiStatusFromConfig('flag-proc-budget', procurementKpiData.budgetComplianceActual, 'proc-budget', false);
+        updateKpiStatusFromConfig('flag-proc-spare-parts', procurementKpiData.criticalSparePartsAvailabilityActual, 'proc-spare-parts', false);
+        updateKpiStatusFromConfig('flag-proc-inventory', procurementKpiData.inventoryAccuracyRateActual, 'proc-inventory', false);
+        updateKpiStatusFromConfig('flag-proc-contracts', procurementKpiData.activeSupplyContractsActual, 'proc-contracts', false);
+    }
+
+    function renderStrategyKpis() {
+        if (!strategyKpiData) return;
+
+        // Dynamically align targets in app.js config if defaultSettings is defined
+        if (typeof defaultSettings !== 'undefined') {
+            defaultSettings['strat-goals'].target = strategyKpiData.strategicGoalsAchievementTarget;
+            defaultSettings['strat-init'].target = strategyKpiData.pmoInitiativeDeliveryTarget;
+            defaultSettings['risk-handling'].target = strategyKpiData.riskHandlingTarget;
+            defaultSettings['gov-maturity'].target = strategyKpiData.govMaturityTarget;
+            defaultSettings['strat-goals-achieve'].target = strategyKpiData.strategicGoalsAchieveMinedTarget;
+            defaultSettings['strat-milestones'].target = strategyKpiData.onTimeMilestonesDeliveryTarget;
+            defaultSettings['strat-budget'].target = strategyKpiData.strategicBudgetEfficiencyTarget;
+
+            defaultSettings['strat-goals'].excellentMin = strategyKpiData.strategicGoalsAchievementTarget * 0.95;
+            defaultSettings['strat-goals'].goodMin = strategyKpiData.strategicGoalsAchievementTarget * 0.8;
+            defaultSettings['strat-init'].excellentMin = strategyKpiData.pmoInitiativeDeliveryTarget * 0.95;
+            defaultSettings['strat-init'].goodMin = strategyKpiData.pmoInitiativeDeliveryTarget * 0.8;
+            defaultSettings['risk-handling'].excellentMin = strategyKpiData.riskHandlingTarget * 0.95;
+            defaultSettings['risk-handling'].goodMin = strategyKpiData.riskHandlingTarget * 0.8;
+            defaultSettings['gov-maturity'].excellentMin = strategyKpiData.govMaturityTarget * 0.95;
+            defaultSettings['gov-maturity'].goodMin = strategyKpiData.govMaturityTarget * 0.8;
+            defaultSettings['strat-goals-achieve'].excellentMin = strategyKpiData.strategicGoalsAchieveMinedTarget * 0.95;
+            defaultSettings['strat-goals-achieve'].goodMin = strategyKpiData.strategicGoalsAchieveMinedTarget * 0.8;
+            defaultSettings['strat-milestones'].excellentMin = strategyKpiData.onTimeMilestonesDeliveryTarget * 0.95;
+            defaultSettings['strat-milestones'].goodMin = strategyKpiData.onTimeMilestonesDeliveryTarget * 0.8;
+            defaultSettings['strat-budget'].excellentMin = strategyKpiData.strategicBudgetEfficiencyTarget * 0.95;
+            defaultSettings['strat-budget'].goodMin = strategyKpiData.strategicBudgetEfficiencyTarget * 0.8;
+        }
+
+        // Bind values
+        setTextIfExists('val-strat-goals', strategyKpiData.strategicGoalsAchievementActual + '%');
+        setTextIfExists('val-strat-init', strategyKpiData.pmoInitiativeDeliveryActual + '%');
+        setTextIfExists('val-risk-handling', strategyKpiData.riskHandlingActual + '%');
+        setTextIfExists('val-gov-maturity', strategyKpiData.govMaturityActual + '%');
+        setTextIfExists('val-strat-goals-achieve', strategyKpiData.strategicGoalsAchieveMinedActual + '%');
+        setTextIfExists('val-strat-milestones', strategyKpiData.onTimeMilestonesDeliveryActual + '%');
+        setTextIfExists('val-strat-budget', strategyKpiData.strategicBudgetEfficiencyActual + '%');
+
+        // Bind targets
+        setTextIfExists('target-val-strat-goals', strategyKpiData.strategicGoalsAchievementTarget + '%');
+        setTextIfExists('target-val-strat-init', strategyKpiData.pmoInitiativeDeliveryTarget + '%');
+        setTextIfExists('target-val-risk-handling', strategyKpiData.riskHandlingTarget + '%');
+        setTextIfExists('target-val-gov-maturity', strategyKpiData.govMaturityTarget + '%');
+        setTextIfExists('target-val-strat-goals-achieve', strategyKpiData.strategicGoalsAchieveMinedTarget + '%');
+        setTextIfExists('target-val-strat-milestones', strategyKpiData.onTimeMilestonesDeliveryTarget + '%');
+        setTextIfExists('target-val-strat-budget', strategyKpiData.strategicBudgetEfficiencyTarget + '%');
+
+        // Update flags
+        updateKpiStatusFromConfig('flag-strat-goals', strategyKpiData.strategicGoalsAchievementActual, 'strat-goals', false);
+        updateKpiStatusFromConfig('flag-strat-init', strategyKpiData.pmoInitiativeDeliveryActual, 'strat-init', false);
+        updateKpiStatusFromConfig('flag-risk-handling', strategyKpiData.riskHandlingActual, 'risk-handling', false);
+        updateKpiStatusFromConfig('flag-gov-maturity', strategyKpiData.govMaturityActual, 'gov-maturity', false);
+        updateKpiStatusFromConfig('flag-strat-goals-achieve', strategyKpiData.strategicGoalsAchieveMinedActual, 'strat-goals-achieve', false);
+        updateKpiStatusFromConfig('flag-strat-milestones', strategyKpiData.onTimeMilestonesDeliveryActual, 'strat-milestones', false);
+        updateKpiStatusFromConfig('flag-strat-budget', strategyKpiData.strategicBudgetEfficiencyActual, 'strat-budget', false);
+    }
+
     // ───────── Public API ─────────
     window.PortalIntegration = {
         load: loadPortalData,
@@ -1803,6 +1926,8 @@
         renderHrKpis: renderHrKpis,
         renderItKpis: renderItKpis,
         renderHseKpis: renderHseKpis,
+        renderProcurementKpis: renderProcurementKpis,
+        renderStrategyKpis: renderStrategyKpis,
         hasComplianceData: () => complianceKpiData !== null,
         getComplianceKpiData: () => complianceKpiData,
         resetViews: resetDrilldownViews,

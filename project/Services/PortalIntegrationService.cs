@@ -282,5 +282,39 @@ namespace project.Services
             }
             return null;
         }
+
+        public async Task<PortalProcurementKpisDto?> GetProcurementKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/procurement/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalProcurementKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Procurement KPIs from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<PortalStrategyKpisDto?> GetStrategyKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/strategy/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalStrategyKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Strategy KPIs from portal API.");
+            }
+            return null;
+        }
     }
 }

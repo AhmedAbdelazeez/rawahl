@@ -365,4 +365,52 @@ namespace project.Models
         public double WasteRecyclingRateActual { get; set; }
         public double WasteRecyclingRateTarget { get; set; }
     }
+
+    public class PortalProcurementKpisDto
+    {
+        public double AvgProcurementCycleTimeActual { get; set; }
+        public double AvgProcurementCycleTimeTarget { get; set; }
+
+        public double CostSavingsRateActual { get; set; }
+        public double CostSavingsRateTarget { get; set; }
+
+        public double SupplierPerformanceRatingActual { get; set; }
+        public double SupplierPerformanceRatingTarget { get; set; }
+
+        public double BudgetComplianceActual { get; set; }
+        public double BudgetComplianceTarget { get; set; }
+
+        public double CriticalSparePartsAvailabilityActual { get; set; }
+        public double CriticalSparePartsAvailabilityTarget { get; set; }
+
+        public double InventoryAccuracyRateActual { get; set; }
+        public double InventoryAccuracyRateTarget { get; set; }
+
+        public int ActiveSupplyContractsActual { get; set; }
+        public int ActiveSupplyContractsTarget { get; set; }
+    }
+
+    public class PortalStrategyKpisDto
+    {
+        public double StrategicGoalsAchievementActual { get; set; }
+        public double StrategicGoalsAchievementTarget { get; set; }
+
+        public double PmoInitiativeDeliveryActual { get; set; }
+        public double PmoInitiativeDeliveryTarget { get; set; }
+
+        public double RiskHandlingActual { get; set; }
+        public double RiskHandlingTarget { get; set; }
+
+        public double GovMaturityActual { get; set; }
+        public double GovMaturityTarget { get; set; }
+
+        public double StrategicGoalsAchieveMinedActual { get; set; }
+        public double StrategicGoalsAchieveMinedTarget { get; set; }
+
+        public double OnTimeMilestonesDeliveryActual { get; set; }
+        public double OnTimeMilestonesDeliveryTarget { get; set; }
+
+        public double StrategicBudgetEfficiencyActual { get; set; }
+        public double StrategicBudgetEfficiencyTarget { get; set; }
+    }
 }

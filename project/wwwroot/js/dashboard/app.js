@@ -55,6 +55,8 @@ const defaultSettings = {
     'risk-handling': { target: 90, excellentMin: 85.5, goodMin: 67.5 },
     'gov-maturity': { target: 95, excellentMin: 90.25, goodMin: 71.25 },
     'strat-goals-achieve': { target: 85, excellentMin: 80.75, goodMin: 63.75 },
+    'strat-milestones': { target: 90, excellentMin: 85.5, goodMin: 67.5 },
+    'strat-budget': { target: 95, excellentMin: 90.25, goodMin: 71.25 },
     
     // pilgrim services metrics
     'visa-processing-time': { target: 24, excellentMax: 24, goodMax: 48 },
@@ -213,7 +215,7 @@ const sectorMapping = {
     'dept-it': ['it-autom', 'it-uptime', 'it-ticket-time', 'it-incidents', 'it-satisfaction', 'it-backup', 'it-projects'],
     'dept-procurement': ['proc-cycle', 'proc-savings', 'proc-supplier', 'proc-budget', 'proc-spare-parts', 'proc-inventory', 'proc-contracts'],
     'dept-finance': ['rev-growth', 'ebitda', 'cashflow', 'roa'],
-    'dept-strategy': ['strat-goals', 'strat-init', 'risk-handling', 'gov-maturity', 'strat-goals-achieve', 'hse-d-15'],
+    'dept-strategy': ['strat-goals', 'strat-init', 'risk-handling', 'gov-maturity', 'strat-goals-achieve', 'strat-milestones', 'strat-budget'],
     'dept-audit': ['audit-plan-execution', 'operational-compliance-rate', 'total-audited-processes', 'passed-processes-count', 'critical-findings-count', 'recommendations-count', 'risk-mitigation-rate'],
     'dept-hse': ['hse-ltifr', 'hse-accidents', 'audit-comp'],
     
@@ -278,6 +280,8 @@ const cardOriginalGrids = {
     'risk-handling': 'grid-strategy-gov',
     'gov-maturity': 'grid-strategy-gov',
     'strat-goals-achieve': 'grid-strategy-gov',
+    'strat-milestones': 'grid-strategy-gov',
+    'strat-budget': 'grid-strategy-gov',
 
     // Operational Audits
     'audit-plan-execution': 'grid-audit',
@@ -1149,6 +1153,8 @@ window.simulateKpiData = function(initial) {
     safeSetText('val-risk-handling', riskHandling + '%');
     safeSetText('val-gov-maturity', govMaturity + '%');
     safeSetText('val-strat-goals-achieve', stratGoalsAchieve + '%');
+    safeSetText('val-strat-milestones', '88%');
+    safeSetText('val-strat-budget', '96.5%');
 
     // Pilgrim Services HTML Inject
     safeSetText('val-visa-processing-time', visaProcessingTime + (isEn ? ' hrs' : ' ساعة'));
@@ -1255,6 +1261,8 @@ window.simulateKpiData = function(initial) {
     trackFlag('risk-handling', riskHandling);
     trackFlag('gov-maturity', govMaturity);
     trackFlag('strat-goals-achieve', stratGoalsAchieve);
+    trackFlag('strat-milestones', 88);
+    trackFlag('strat-budget', 96.5);
 
     // Pilgrim services flags
     trackFlag('visa-processing-time', visaProcessingTime);
@@ -1375,6 +1383,8 @@ window.simulateKpiData = function(initial) {
         applyFlagStyle('flag-risk-handling', 'risk-handling', riskHandling);
         applyFlagStyle('flag-gov-maturity', 'gov-maturity', govMaturity);
         applyFlagStyle('flag-strat-goals-achieve', 'strat-goals-achieve', stratGoalsAchieve);
+        applyFlagStyle('flag-strat-milestones', 'strat-milestones', 88);
+        applyFlagStyle('flag-strat-budget', 'strat-budget', 96.5);
 
         // Pilgrim flags
         applyFlagStyle('flag-visa-processing-time', 'visa-processing-time', visaProcessingTime);
