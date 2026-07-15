@@ -1,50 +1,87 @@
 @model project.Pages.IndexModel
 
-<!-- Commercial Department KPI Cards -->
-<!-- Customer Retention -->
-<div id="card-cust-ret" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- Commercial Department KPI Cards (7 Clean KPIs) -->
+
+<!-- 1. Customer Retention Rate (معدل الاحتفاظ بالعملاء) -->
+<div id="card-customer-retention" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-cust-ret-title">نسبة الاحتفاظ بالعملاء</span>
-        <span id="flag-cust-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-customer-retention-title">معدل الاحتفاظ بالعملاء</span>
+        <span id="flag-customer-retention" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-cust-ret">@Model.CustRetention%</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-cust-ret">--</span></span>
+        <span class="text-3xl font-black text-slate-900" id="val-customer-retention">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-customer-retention">--</span></span>
     </div>
 </div>
 
-<!-- NPS -->
-<div id="card-nps" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-nps-title">صافي نقاط رضا العملاء NPS</span>
-        <span id="flag-nps" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-nps">@Model.Nps</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-nps">--</span></span>
-    </div>
-</div>
-
-<!-- New Contracts -->
+<!-- 2. New Contracts Secured (عدد العقود الجديدة المبرمة) -->
 <div id="card-new-contracts" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-new-contracts-title">عدد العقود الاستراتيجية الجديدة</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-new-contracts-title">عدد العقود الجديدة المبرمة</span>
         <span id="flag-new-contracts" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-new-contracts">@Model.NewContracts</span>
+        <span class="text-3xl font-black text-slate-900" id="val-new-contracts">--</span>
         <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-new-contracts">--</span></span>
     </div>
 </div>
 
-<!-- Fleet Cleaning Compliance (COM-D-10) -->
-<div id="card-com-d-10" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 3. Contract Renewal Rate (معدل تجديد العقود) -->
+<div id="card-contract-renewal-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-com-d-10-title">الامتثال لتنظيف الأسطول</span>
-        <span id="flag-com-d-10" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-contract-renewal-rate-title">معدل تجديد العقود</span>
+        <span id="flag-contract-renewal-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-com-d-10">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-com-d-10">--</span></span>
+        <span class="text-3xl font-black text-slate-900" id="val-contract-renewal-rate">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-contract-renewal-rate">--</span></span>
+    </div>
+</div>
+
+<!-- 4. Contract Turnaround Time (زمن إعداد وإبرام العقود) -->
+<div id="card-contract-turnaround" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-contract-turnaround-title">زمن إعداد وإبرام العقود</span>
+        <span id="flag-contract-turnaround" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-contract-turnaround">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-contract-turnaround">--</span></span>
+    </div>
+</div>
+
+<!-- 5. Contractual Legal Disputes (النزاعات القانونية على العقود) -->
+<div id="card-legal-disputes" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-legal-disputes-title">النزاعات القانونية على العقود</span>
+        <span id="flag-legal-disputes" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-legal-disputes">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">الحد الأقصى: <span id="target-val-legal-disputes">--</span></span>
+    </div>
+</div>
+
+<!-- 6. Customer Acquisition Cost (تكلفة جذب العميل الجديد) -->
+<div id="card-customer-acquisition-cost" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-customer-acquisition-cost-title">تكلفة جذب العميل الجديد (CAC)</span>
+        <span id="flag-customer-acquisition-cost" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-customer-acquisition-cost">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-customer-acquisition-cost">--</span></span>
+    </div>
+</div>
+
+<!-- 7. Contract Value Growth Rate (قيمة نمو العقود التجارية) -->
+<div id="card-contract-value-growth" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-contract-value-growth-title">قيمة نمو العقود التجارية</span>
+        <span id="flag-contract-value-growth" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-contract-value-growth">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-contract-value-growth">--</span></span>
     </div>
 </div>

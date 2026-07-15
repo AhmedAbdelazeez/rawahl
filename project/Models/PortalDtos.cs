@@ -433,4 +433,52 @@ namespace project.Models
         public double StrategicBudgetEfficiencyActual { get; set; }
         public double StrategicBudgetEfficiencyTarget { get; set; }
     }
+
+    public class PortalFinanceKpisDto
+    {
+        public decimal TotalRevenueActual { get; set; }
+        public decimal TotalRevenueTarget { get; set; }
+
+        public double EbitdaMarginActual { get; set; }
+        public double EbitdaMarginTarget { get; set; }
+
+        public double NetProfitMarginActual { get; set; }
+        public double NetProfitMarginTarget { get; set; }
+
+        public decimal OperatingCashFlowActual { get; set; }
+        public decimal OperatingCashFlowTarget { get; set; }
+
+        public double ReturnOnAssetsActual { get; set; }
+        public double ReturnOnAssetsTarget { get; set; }
+
+        public double BudgetVarianceRateActual { get; set; }
+        public double BudgetVarianceRateTarget { get; set; }
+
+        public decimal WorkingCapitalActual { get; set; }
+        public decimal WorkingCapitalTarget { get; set; }
+    }
+
+    public class PortalCommercialKpisDto
+    {
+        public double CustomerRetentionRateActual { get; set; }
+        public double CustomerRetentionRateTarget { get; set; }
+
+        public int NewContractsSecuredActual { get; set; }
+        public int NewContractsSecuredTarget { get; set; }
+
+        public double ContractRenewalRateActual { get; set; }
+        public double ContractRenewalRateTarget { get; set; }
+
+        public double ContractTurnaroundTimeActual { get; set; }
+        public double ContractTurnaroundTimeTarget { get; set; }
+
+        public int ContractualLegalDisputesActual { get; set; }
+        public int ContractualLegalDisputesTarget { get; set; }
+
+        public decimal CustomerAcquisitionCostActual { get; set; }
+        public decimal CustomerAcquisitionCostTarget { get; set; }
+
+        public double ContractValueGrowthRateActual { get; set; }
+        public double ContractValueGrowthRateTarget { get; set; }
+    }
 }

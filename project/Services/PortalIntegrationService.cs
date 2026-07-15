@@ -316,5 +316,39 @@ namespace project.Services
             }
             return null;
         }
+
+        public async Task<PortalFinanceKpisDto?> GetFinanceKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/finance/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalFinanceKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Finance KPIs from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<PortalCommercialKpisDto?> GetCommercialKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/commercial/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalCommercialKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Commercial KPIs from portal API.");
+            }
+            return null;
+        }
     }
 }

@@ -50,6 +50,8 @@
     let hseKpiData = null;
     let procurementKpiData = null;
     let strategyKpiData = null;
+    let financeKpiData = null;
+    let commercialKpiData = null;
     let isLoading = false;
     let lastError = null;
     let refreshTimer = null;
@@ -75,7 +77,7 @@
         showLoadingStates();
 
         try {
-            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis, itKpis, hseKpis, procurementKpis, strategyKpis] = await Promise.all([
+            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis, itKpis, hseKpis, procurementKpis, strategyKpis, financeKpis, commercialKpis] = await Promise.all([
                 fetchJson('summary'),
                 fetchJson('kpis'),
                 fetchJson('project-kpis'),
@@ -85,7 +87,9 @@
                 fetchJson('it-kpis'),
                 fetchJson('hse-kpis'),
                 fetchJson('procurement-kpis'),
-                fetchJson('strategy-kpis')
+                fetchJson('strategy-kpis'),
+                fetchJson('finance-kpis'),
+                fetchJson('commercial-kpis')
             ]);
             portalData = summary;
             kpiData = kpis;
@@ -97,6 +101,8 @@
             hseKpiData = hseKpis;
             procurementKpiData = procurementKpis;
             strategyKpiData = strategyKpis;
+            financeKpiData = financeKpis;
+            commercialKpiData = commercialKpis;
 
             renderAll();
             hideLoadingStates();
@@ -131,6 +137,8 @@
         renderHseKpis();
         renderProcurementKpis();
         renderStrategyKpis();
+        renderFinanceKpis();
+        renderCommercialKpis();
     }
 
 
@@ -1963,6 +1971,8 @@
         renderHseKpis: renderHseKpis,
         renderProcurementKpis: renderProcurementKpis,
         renderStrategyKpis: renderStrategyKpis,
+        renderFinanceKpis: renderFinanceKpis,
+        renderCommercialKpis: renderCommercialKpis,
         hasComplianceData: () => complianceKpiData !== null,
         getComplianceKpiData: () => complianceKpiData,
         resetViews: resetDrilldownViews,
@@ -1970,6 +1980,72 @@
         getKpis: () => kpiData,
         isAvailable: () => portalData !== null
     };
+
+    function renderFinanceKpis() {
+        if (!financeKpiData) return;
+
+        const isEn = document.documentElement.lang === 'en';
+
+        // Bind values
+        setTextIfExists('val-total-revenue', formatCurrency(financeKpiData.totalRevenueActual));
+        setTextIfExists('val-ebitda-margin', financeKpiData.ebitdaMarginActual.toFixed(1) + '%');
+        setTextIfExists('val-net-profit-margin', financeKpiData.netProfitMarginActual.toFixed(1) + '%');
+        setTextIfExists('val-operating-cashflow', formatCurrency(financeKpiData.operatingCashFlowActual));
+        setTextIfExists('val-roa', financeKpiData.returnOnAssetsActual.toFixed(1) + '%');
+        setTextIfExists('val-budget-variance', financeKpiData.budgetVarianceRateActual.toFixed(1) + '%');
+        setTextIfExists('val-working-capital', formatCurrency(financeKpiData.workingCapitalActual));
+
+        // Bind targets
+        setTextIfExists('target-val-total-revenue', formatCurrency(financeKpiData.totalRevenueTarget));
+        setTextIfExists('target-val-ebitda-margin', financeKpiData.ebitdaMarginTarget + '%');
+        setTextIfExists('target-val-net-profit-margin', financeKpiData.netProfitMarginTarget + '%');
+        setTextIfExists('target-val-operating-cashflow', formatCurrency(financeKpiData.operatingCashFlowTarget));
+        setTextIfExists('target-val-roa', financeKpiData.returnOnAssetsTarget + '%');
+        setTextIfExists('target-val-budget-variance', financeKpiData.budgetVarianceRateTarget + '%');
+        setTextIfExists('target-val-working-capital', formatCurrency(financeKpiData.workingCapitalTarget));
+
+        // Update flags
+        updateKpiFlagElement('flag-total-revenue', financeKpiData.totalRevenueActual, financeKpiData.totalRevenueTarget);
+        updateKpiFlagElement('flag-ebitda-margin', financeKpiData.ebitdaMarginActual, financeKpiData.ebitdaMarginTarget);
+        updateKpiFlagElement('flag-net-profit-margin', financeKpiData.netProfitMarginActual, financeKpiData.netProfitMarginTarget);
+        updateKpiFlagElement('flag-operating-cashflow', financeKpiData.operatingCashFlowActual, financeKpiData.operatingCashFlowTarget);
+        updateKpiFlagElement('flag-roa', financeKpiData.returnOnAssetsActual, financeKpiData.returnOnAssetsTarget);
+        updateKpiFlagElementInverse('flag-budget-variance', financeKpiData.budgetVarianceRateActual, financeKpiData.budgetVarianceRateTarget);
+        updateKpiFlagElement('flag-working-capital', financeKpiData.workingCapitalActual, financeKpiData.workingCapitalTarget);
+    }
+
+    function renderCommercialKpis() {
+        if (!commercialKpiData) return;
+
+        const isEn = document.documentElement.lang === 'en';
+
+        // Bind values
+        setTextIfExists('val-customer-retention', commercialKpiData.customerRetentionRateActual.toFixed(1) + '%');
+        setTextIfExists('val-new-contracts', commercialKpiData.newContractsSecuredActual);
+        setTextIfExists('val-contract-renewal-rate', commercialKpiData.contractRenewalRateActual.toFixed(1) + '%');
+        setTextIfExists('val-contract-turnaround', commercialKpiData.contractTurnaroundTimeActual.toFixed(1) + (isEn ? ' days' : ' يوم'));
+        setTextIfExists('val-legal-disputes', commercialKpiData.contractualLegalDisputesActual);
+        setTextIfExists('val-customer-acquisition-cost', formatCurrency(commercialKpiData.customerAcquisitionCostActual));
+        setTextIfExists('val-contract-value-growth', commercialKpiData.contractValueGrowthRateActual.toFixed(1) + '%');
+
+        // Bind targets
+        setTextIfExists('target-val-customer-retention', commercialKpiData.customerRetentionRateTarget + '%');
+        setTextIfExists('target-val-new-contracts', commercialKpiData.newContractsSecuredTarget);
+        setTextIfExists('target-val-contract-renewal-rate', commercialKpiData.contractRenewalRateTarget + '%');
+        setTextIfExists('target-val-contract-turnaround', commercialKpiData.contractTurnaroundTimeTarget + (isEn ? ' days' : ' يوم'));
+        setTextIfExists('target-val-legal-disputes', commercialKpiData.contractualLegalDisputesTarget);
+        setTextIfExists('target-val-customer-acquisition-cost', formatCurrency(commercialKpiData.customerAcquisitionCostTarget));
+        setTextIfExists('target-val-contract-value-growth', commercialKpiData.contractValueGrowthRateTarget + '%');
+
+        // Update flags
+        updateKpiFlagElement('flag-customer-retention', commercialKpiData.customerRetentionRateActual, commercialKpiData.customerRetentionRateTarget);
+        updateKpiFlagElement('flag-new-contracts', commercialKpiData.newContractsSecuredActual, commercialKpiData.newContractsSecuredTarget);
+        updateKpiFlagElement('flag-contract-renewal-rate', commercialKpiData.contractRenewalRateActual, commercialKpiData.contractRenewalRateTarget);
+        updateKpiFlagElementInverse('flag-contract-turnaround', commercialKpiData.contractTurnaroundTimeActual, commercialKpiData.contractTurnaroundTimeTarget);
+        updateKpiFlagElementInverse('flag-legal-disputes', commercialKpiData.contractualLegalDisputesActual, commercialKpiData.contractualLegalDisputesTarget);
+        updateKpiFlagElementInverse('flag-customer-acquisition-cost', commercialKpiData.customerAcquisitionCostActual, commercialKpiData.customerAcquisitionCostTarget);
+        updateKpiFlagElement('flag-contract-value-growth', commercialKpiData.contractValueGrowthRateActual, commercialKpiData.contractValueGrowthRateTarget);
+    }
 
 
     // ───────── Initialize on DOM Ready ─────────

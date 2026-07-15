@@ -1,50 +1,87 @@
 @model project.Pages.IndexModel
 
-<!-- Financial Department KPI Cards -->
-<!-- Revenue Growth -->
-<div id="card-rev-growth" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- Financial Department KPI Cards (7 Clean KPIs) -->
+
+<!-- 1. Total Revenue (إجمالي الإيرادات) -->
+<div id="card-total-revenue" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-rev-growth-title">إجمالي الإيرادات ومعدل النمو</span>
-        <span id="flag-rev-growth" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-total-revenue-title">إجمالي الإيرادات</span>
+        <span id="flag-total-revenue" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-rev-growth">@Model.TotalRevenue مليون ر.س</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-rev-growth">--</span></span>
+        <span class="text-3xl font-black text-slate-900" id="val-total-revenue">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-total-revenue">--</span></span>
     </div>
 </div>
 
-<!-- EBITDA -->
-<div id="card-ebitda" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 2. EBITDA Margin (هامش EBITDA) -->
+<div id="card-ebitda-margin" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ebitda-title">هامش EBITDA التشغيلي</span>
-        <span id="flag-ebitda" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ebitda-margin-title">هامش EBITDA التشغيلي</span>
+        <span id="flag-ebitda-margin" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ebitda">@Model.Ebitda%</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ebitda">--</span></span>
+        <span class="text-3xl font-black text-slate-900" id="val-ebitda-margin">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ebitda-margin">--</span></span>
     </div>
 </div>
 
-<!-- Cash Flow -->
-<div id="card-cashflow" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 3. Net Profit Margin (هامش صافي الربح) -->
+<div id="card-net-profit-margin" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-cashflow-title">التدفق النقدي التشغيلي</span>
-        <span id="flag-cashflow" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-net-profit-margin-title">هامش صافي الربح</span>
+        <span id="flag-net-profit-margin" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-cashflow">@Model.CashFlow مليون ر.س</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-cashflow">--</span></span>
+        <span class="text-3xl font-black text-slate-900" id="val-net-profit-margin">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-net-profit-margin">--</span></span>
     </div>
 </div>
 
-<!-- ROA -->
+<!-- 4. Operating Cash Flow (التدفق النقدي التشغيلي) -->
+<div id="card-operating-cashflow" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-operating-cashflow-title">التدفق النقدي التشغيلي</span>
+        <span id="flag-operating-cashflow" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-operating-cashflow">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-operating-cashflow">--</span></span>
+    </div>
+</div>
+
+<!-- 5. Return on Assets (العائد على الأصول ROA) -->
 <div id="card-roa" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-roa-title">العائد على الأصول ROA</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-roa-title">العائد على الأصول (ROA)</span>
         <span id="flag-roa" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-roa">@Model.Roa%</span>
+        <span class="text-3xl font-black text-slate-900" id="val-roa">--</span>
         <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-roa">--</span></span>
+    </div>
+</div>
+
+<!-- 6. Budget Variance Rate (نسبة الانحراف عن الميزانية) -->
+<div id="card-budget-variance" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-budget-variance-title">نسبة الانحراف عن الميزانية</span>
+        <span id="flag-budget-variance" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-budget-variance">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">الحد الأقصى: <span id="target-val-budget-variance">--</span></span>
+    </div>
+</div>
+
+<!-- 7. Working Capital (رأس المال العامل) -->
+<div id="card-working-capital" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-working-capital-title">رأس المال العامل</span>
+        <span id="flag-working-capital" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-working-capital">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-working-capital">--</span></span>
     </div>
 </div>
