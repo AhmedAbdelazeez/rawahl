@@ -210,7 +210,7 @@ const sectorMapping = {
     'dept-tourism': ['hotel-occupancy', 'hotel-cancel-rate', 'hotel-rating'],
     'dept-ops': ['ops-plan', 'fleet-ready'],
     'dept-commercial': ['cust-ret', 'nps', 'new-contracts', 'com-d-10'],
-    'dept-fleet': ['fleet-ready', 'fleet-util', 'ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-18', 'ops-d-19', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-24', 'ops-d-25', 'ops-d-26', 'ops-d-27', 'ops-d-28', 'ops-d-29', 'ops-d-30', 'ops-d-31', 'ops-d-32'],
+    'dept-fleet': ['fleet-total', 'fleet-available', 'fleet-active', 'fleet-maintenance', 'fleet-inactive', 'fleet-util', 'fleet-ready', 'fleet-total-trips', 'fleet-completed-trips', 'fleet-maint-rate'],
     'dept-hr': ['hr-ret', 'hr-saudization', 'hr-count', 'hr-growth', 'hr-absence', 'hr-training', 'hr-appraisal'],
     'dept-it': ['it-autom', 'it-uptime', 'it-ticket-time', 'it-incidents', 'it-satisfaction', 'it-backup', 'it-projects'],
     'dept-procurement': ['proc-cycle', 'proc-savings', 'proc-supplier', 'proc-budget', 'proc-spare-parts', 'proc-inventory', 'proc-contracts'],
@@ -484,6 +484,8 @@ function showView(viewName, isPopState) {
     if (viewDeptFleetDynamic) viewDeptFleetDynamic.classList.add('hidden');
     if (viewPortalKpis) viewPortalKpis.classList.add('hidden');
     
+
+
     if (viewName === 'overview') {
         viewOverview.classList.remove('hidden');
         document.getElementById('header-main-title').innerText = isEn ? 'Performance Monitoring Dashboard' : 'نظام مراقبة الأداء لشركة رواحل المشاعر';
@@ -547,6 +549,7 @@ function showView(viewName, isPopState) {
     } else if (viewName === 'dept-fleet') {
         viewKpiDashboard.classList.remove('hidden');
         applyKpiFilters(viewName);
+
         if (window.PortalIntegration) window.PortalIntegration.load();
     } else {
         viewKpiDashboard.classList.remove('hidden');
@@ -579,8 +582,12 @@ function applyKpiFilters(viewName) {
         const cardEl = document.getElementById(`card-${cardId}`);
         const originalGridId = cardOriginalGrids[cardId];
         const originalGridEl = document.getElementById(originalGridId);
-        if (cardEl && originalGridEl && cardEl.parentElement !== originalGridEl) {
-            originalGridEl.appendChild(cardEl);
+        if (cardEl) {
+            if (originalGridEl && cardEl.parentElement !== originalGridEl) {
+                originalGridEl.appendChild(cardEl);
+            } else if (!originalGridEl && kpisContainer && cardEl.parentElement !== kpisContainer) {
+                kpisContainer.appendChild(cardEl);
+            }
         }
     });
 

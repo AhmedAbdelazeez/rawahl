@@ -532,19 +532,52 @@
 
     // ───────── 3. Existing Fleet KPIs update ─────────
     function updateExistingFleetKpis() {
-        if (!kpiData) return;
+        if (!portalData || !kpiData) return;
 
-        // Populate the actual values from API directly to the existing Fleet Department KPI cards
-        setTextIfExists('val-fleet-ready', kpiData.fleetAvailabilityRate?.toFixed(1) + '%');
-        setTextIfExists('val-fleet-util', kpiData.fleetUtilizationRate?.toFixed(1) + '%');
+        const f = portalData.fleet || {};
+        const t = portalData.trips || {};
+        const isEn = document.documentElement.lang === 'en';
 
-        // Update target value indicators
-        setTextIfExists('target-val-fleet-ready', '90%');
+        // 1. Total Fleet Vehicles
+        setTextIfExists('val-fleet-total', f.total ?? 0);
+        setTextIfExists('val-fleet-total-capacity', (f.totalCapacity ?? 0) + (isEn ? ' seats' : ' مقعد'));
+
+        // 2. Available Vehicles
+        setTextIfExists('val-fleet-available', f.available ?? 0);
+        updateKpiFlagElement('flag-fleet-available', f.available, f.total * 0.7);
+
+        // 3. Active Vehicles
+        setTextIfExists('val-fleet-active', f.active ?? 0);
+        updateKpiFlagElement('flag-fleet-active', f.active, f.total * 0.5);
+
+        // 4. Vehicles in Maintenance
+        setTextIfExists('val-fleet-maintenance', f.inMaintenance ?? 0);
+        updateKpiFlagElementInverse('flag-fleet-maintenance', f.inMaintenance, f.total * 0.1);
+
+        // 5. Inactive / Out of Service Vehicles
+        setTextIfExists('val-fleet-inactive', f.outOfService ?? 0);
+        updateKpiFlagElementInverse('flag-fleet-inactive', f.outOfService, f.total * 0.05);
+
+        // 6. Fleet Utilization Rate
+        setTextIfExists('val-fleet-util', (f.utilizationRate ?? 0).toFixed(1) + '%');
         setTextIfExists('target-val-fleet-util', '80%');
+        updateKpiFlagElement('flag-fleet-util', f.utilizationRate, 80);
 
-        // Optional status flag badges calculation (Excel target alignment)
-        updateKpiFlagElement('flag-fleet-ready', kpiData.fleetAvailabilityRate, 90);
-        updateKpiFlagElement('flag-fleet-util', kpiData.fleetUtilizationRate, 80);
+        // 7. Fleet Availability Rate
+        setTextIfExists('val-fleet-ready', (f.availabilityRate ?? 0).toFixed(1) + '%');
+        setTextIfExists('target-val-fleet-ready', '90%');
+        updateKpiFlagElement('flag-fleet-ready', f.availabilityRate, 90);
+
+        // 8. Total Registered Trips
+        setTextIfExists('val-fleet-total-trips', t.total ?? 0);
+
+        // 9. Completed Trips
+        setTextIfExists('val-fleet-completed-trips', t.completed ?? 0);
+        updateKpiFlagElement('flag-fleet-completed-trips', t.completed, t.total * 0.9);
+
+        // 10. Fleet Breakdown/Maintenance Rate
+        setTextIfExists('val-fleet-maint-rate', (f.maintenanceRate ?? 0).toFixed(1) + '%');
+        updateKpiFlagElementInverse('flag-fleet-maint-rate', f.maintenanceRate, 5);
     }
 
     function updateKpiFlagElement(elementId, value, target) {
@@ -1910,6 +1943,8 @@
         updateKpiStatusFromConfig('flag-strat-milestones', strategyKpiData.onTimeMilestonesDeliveryActual, 'strat-milestones', false);
         updateKpiStatusFromConfig('flag-strat-budget', strategyKpiData.strategicBudgetEfficiencyActual, 'strat-budget', false);
     }
+
+
 
     // ───────── Public API ─────────
     window.PortalIntegration = {
