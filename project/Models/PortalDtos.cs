@@ -481,4 +481,52 @@ namespace project.Models
         public double ContractValueGrowthRateActual { get; set; }
         public double ContractValueGrowthRateTarget { get; set; }
     }
+
+    public class PortalTourismKpisDto
+    {
+        public double HotelOccupancyRateActual { get; set; }
+        public double HotelOccupancyRateTarget { get; set; }
+
+        public double BookingCancellationRateActual { get; set; }
+        public double BookingCancellationRateTarget { get; set; }
+
+        public double AverageGuestRatingActual { get; set; }
+        public double AverageGuestRatingTarget { get; set; }
+
+        public int ToursCompletedActual { get; set; }
+        public int ToursCompletedTarget { get; set; }
+
+        public decimal RevParActual { get; set; }
+        public decimal RevParTarget { get; set; }
+
+        public double BookingLeadTimeActual { get; set; }
+        public double BookingLeadTimeTarget { get; set; }
+
+        public int ActiveTourGuidesActual { get; set; }
+        public int ActiveTourGuidesTarget { get; set; }
+    }
+
+    public class PortalOperationsKpisDto
+    {
+        public double PlanAdherenceActual { get; set; }
+        public double PlanAdherenceTarget { get; set; }
+
+        public double FleetUtilizationActual { get; set; }
+        public double FleetUtilizationTarget { get; set; }
+
+        public double AvgBreakdownResponseActual { get; set; }
+        public double AvgBreakdownResponseTarget { get; set; }
+
+        public int ViolationsCountActual { get; set; }
+        public int ViolationsCountTarget { get; set; }
+
+        public double PassengerSatisfactionActual { get; set; }
+        public double PassengerSatisfactionTarget { get; set; }
+
+        public int ScheduledTripsActual { get; set; }
+        public int ScheduledTripsTarget { get; set; }
+
+        public double FuelEfficiencyActual { get; set; }
+        public double FuelEfficiencyTarget { get; set; }
+    }
 }

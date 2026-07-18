@@ -127,7 +127,25 @@ const defaultSettings = {
     'passed-processes-count': { target: 95, excellentMin: 95, goodMin: 80 },
     'critical-findings-count': { target: 0, excellentMax: 0, goodMax: 1 },
     'recommendations-count': { target: 50, excellentMin: 50, goodMin: 40 },
-    'risk-mitigation-rate': { target: 90, excellentMin: 90, goodMin: 80 }
+    'risk-mitigation-rate': { target: 90, excellentMin: 90, goodMin: 80 },
+
+    // Tourism Department KPIs
+    'tourism-hotel-occupancy': { target: 85, excellentMin: 85, goodMin: 75 },
+    'tourism-cancel-rate': { target: 5, excellentMax: 5, goodMax: 10 },
+    'tourism-guest-rating': { target: 4.5, excellentMin: 4.5, goodMin: 4.0 },
+    'tourism-tours-completed': { target: 15, excellentMin: 15, goodMin: 10 },
+    'tourism-revpar': { target: 750, excellentMin: 750, goodMin: 600 },
+    'tourism-lead-time': { target: 24, excellentMax: 24, goodMax: 36 },
+    'tourism-active-guides': { target: 5, excellentMin: 5, goodMin: 3 },
+
+    // Operations Department KPIs
+    'ops-plan-adherence': { target: 95, excellentMin: 95, goodMin: 90 },
+    'ops-fleet-util': { target: 85, excellentMin: 85, goodMin: 75 },
+    'ops-breakdown-response': { target: 30, excellentMax: 30, goodMax: 45 },
+    'ops-violations': { target: 0, excellentMax: 0, goodMax: 2 },
+    'ops-passenger-satisfaction': { target: 90, excellentMin: 90, goodMin: 80 },
+    'ops-scheduled-trips': { target: 100, excellentMin: 100, goodMin: 80 },
+    'ops-fuel-efficiency': { target: 95, excellentMin: 95, goodMin: 90 }
 };
 
 const kpiSettings = { ...defaultSettings };
@@ -159,7 +177,7 @@ function evaluateFlag(key, value) {
     if (!config) return 'excellent';
 
     let isInverse = false;
-    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-violations-count' || key === 'comp-resolution-time' || key === 'comp-critical-findings' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-absence', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key)) isInverse = true;
+    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-violations-count' || key === 'comp-resolution-time' || key === 'comp-critical-findings' || key === 'tourism-cancel-rate' || key === 'tourism-lead-time' || key === 'ops-breakdown-response' || key === 'ops-violations' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-absence', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key)) isInverse = true;
 
     if (isInverse) {
         if (value <= config.excellentMax) return 'excellent';
@@ -207,8 +225,8 @@ const sectorMapping = {
     'service-umrah-transport': ['pilgrim-ops-plan', 'pilgrim-safety-rate', 'pilgrim-shuttle-util', 'pilgrim-bus-maintenance-adherence', 'pilgrim-trip-duration', 'pilgrim-satisfaction'],
     'service-leasing': ['rental-fleet-utilization', 'rental-revenue-per-bus', 'rental-contract-satisfaction', 'rental-maintenance-adherence', 'rental-safety-compliance', 'rental-active-contracts'],
 
-    'dept-tourism': ['hotel-occupancy', 'hotel-cancel-rate', 'hotel-rating'],
-    'dept-ops': ['ops-plan', 'fleet-ready'],
+    'dept-tourism': ['tourism-hotel-occupancy', 'tourism-cancel-rate', 'tourism-guest-rating', 'tourism-tours-completed', 'tourism-revpar', 'tourism-lead-time', 'tourism-active-guides'],
+    'dept-ops': ['ops-plan-adherence', 'ops-fleet-util', 'ops-breakdown-response', 'ops-violations', 'ops-passenger-satisfaction', 'ops-scheduled-trips', 'ops-fuel-efficiency'],
     'dept-commercial': ['customer-retention', 'new-contracts', 'contract-renewal-rate', 'contract-turnaround', 'legal-disputes', 'customer-acquisition-cost', 'contract-value-growth'],
     'dept-fleet': ['fleet-total', 'fleet-available', 'fleet-active', 'fleet-maintenance', 'fleet-inactive', 'fleet-util', 'fleet-ready', 'fleet-total-trips', 'fleet-completed-trips', 'fleet-maint-rate'],
     'dept-hr': ['hr-ret', 'hr-saudization', 'hr-count', 'hr-growth', 'hr-absence', 'hr-training', 'hr-appraisal'],

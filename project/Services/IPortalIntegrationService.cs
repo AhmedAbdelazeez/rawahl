@@ -21,5 +21,7 @@ namespace project.Services
         Task<PortalStrategyKpisDto?> GetStrategyKpisAsync();
         Task<PortalFinanceKpisDto?> GetFinanceKpisAsync();
         Task<PortalCommercialKpisDto?> GetCommercialKpisAsync();
+        Task<PortalTourismKpisDto?> GetTourismKpisAsync();
+        Task<PortalOperationsKpisDto?> GetOperationsKpisAsync();
     }
 }

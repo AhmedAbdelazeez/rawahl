@@ -350,5 +350,39 @@ namespace project.Services
             }
             return null;
         }
+
+        public async Task<PortalTourismKpisDto?> GetTourismKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/tourism/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalTourismKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Tourism KPIs from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<PortalOperationsKpisDto?> GetOperationsKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/operations/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalOperationsKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Operations KPIs from portal API.");
+            }
+            return null;
+        }
     }
 }

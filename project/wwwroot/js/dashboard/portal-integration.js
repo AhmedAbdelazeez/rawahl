@@ -52,6 +52,8 @@
     let strategyKpiData = null;
     let financeKpiData = null;
     let commercialKpiData = null;
+    let tourismKpiData = null;
+    let operationsKpiData = null;
     let isLoading = false;
     let lastError = null;
     let refreshTimer = null;
@@ -77,7 +79,7 @@
         showLoadingStates();
 
         try {
-            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis, itKpis, hseKpis, procurementKpis, strategyKpis, financeKpis, commercialKpis] = await Promise.all([
+            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis, itKpis, hseKpis, procurementKpis, strategyKpis, financeKpis, commercialKpis, tourismKpis, operationsKpis] = await Promise.all([
                 fetchJson('summary'),
                 fetchJson('kpis'),
                 fetchJson('project-kpis'),
@@ -89,7 +91,9 @@
                 fetchJson('procurement-kpis'),
                 fetchJson('strategy-kpis'),
                 fetchJson('finance-kpis'),
-                fetchJson('commercial-kpis')
+                fetchJson('commercial-kpis'),
+                fetchJson('tourism-kpis'),
+                fetchJson('operations-kpis')
             ]);
             portalData = summary;
             kpiData = kpis;
@@ -103,6 +107,8 @@
             strategyKpiData = strategyKpis;
             financeKpiData = financeKpis;
             commercialKpiData = commercialKpis;
+            tourismKpiData = tourismKpis;
+            operationsKpiData = operationsKpis;
 
             renderAll();
             hideLoadingStates();
@@ -139,6 +145,8 @@
         renderStrategyKpis();
         renderFinanceKpis();
         renderCommercialKpis();
+        renderTourismKpis();
+        renderOperationsKpis();
     }
 
 
@@ -1973,6 +1981,8 @@
         renderStrategyKpis: renderStrategyKpis,
         renderFinanceKpis: renderFinanceKpis,
         renderCommercialKpis: renderCommercialKpis,
+        renderTourismKpis: renderTourismKpis,
+        renderOperationsKpis: renderOperationsKpis,
         hasComplianceData: () => complianceKpiData !== null,
         getComplianceKpiData: () => complianceKpiData,
         resetViews: resetDrilldownViews,
@@ -2045,6 +2055,72 @@
         updateKpiFlagElementInverse('flag-legal-disputes', commercialKpiData.contractualLegalDisputesActual, commercialKpiData.contractualLegalDisputesTarget);
         updateKpiFlagElementInverse('flag-customer-acquisition-cost', commercialKpiData.customerAcquisitionCostActual, commercialKpiData.customerAcquisitionCostTarget);
         updateKpiFlagElement('flag-contract-value-growth', commercialKpiData.contractValueGrowthRateActual, commercialKpiData.contractValueGrowthRateTarget);
+    }
+
+    function renderTourismKpis() {
+        if (!tourismKpiData) return;
+
+        const isEn = document.documentElement.lang === 'en';
+
+        // Bind values
+        setTextIfExists('val-tourism-hotel-occupancy', tourismKpiData.hotelOccupancyRateActual.toFixed(1) + '%');
+        setTextIfExists('val-tourism-cancel-rate', tourismKpiData.bookingCancellationRateActual.toFixed(1) + '%');
+        setTextIfExists('val-tourism-guest-rating', tourismKpiData.averageGuestRatingActual.toFixed(1) + ' / 5');
+        setTextIfExists('val-tourism-tours-completed', tourismKpiData.toursCompletedActual);
+        setTextIfExists('val-tourism-revpar', formatCurrency(tourismKpiData.revParActual));
+        setTextIfExists('val-tourism-lead-time', tourismKpiData.bookingLeadTimeActual.toFixed(1) + (isEn ? ' hrs' : ' ساعة'));
+        setTextIfExists('val-tourism-active-guides', tourismKpiData.activeTourGuidesActual);
+
+        // Bind targets
+        setTextIfExists('target-val-tourism-hotel-occupancy', tourismKpiData.hotelOccupancyRateTarget + '%');
+        setTextIfExists('target-val-tourism-cancel-rate', tourismKpiData.bookingCancellationRateTarget + '%');
+        setTextIfExists('target-val-tourism-guest-rating', tourismKpiData.averageGuestRatingTarget + ' / 5');
+        setTextIfExists('target-val-tourism-tours-completed', tourismKpiData.toursCompletedTarget);
+        setTextIfExists('target-val-tourism-revpar', formatCurrency(tourismKpiData.revParTarget));
+        setTextIfExists('target-val-tourism-lead-time', tourismKpiData.bookingLeadTimeTarget + (isEn ? ' hrs' : ' ساعة'));
+        setTextIfExists('target-val-tourism-active-guides', tourismKpiData.activeTourGuidesTarget);
+
+        // Update flags
+        updateKpiFlagElement('flag-tourism-hotel-occupancy', tourismKpiData.hotelOccupancyRateActual, tourismKpiData.hotelOccupancyRateTarget);
+        updateKpiFlagElementInverse('flag-tourism-cancel-rate', tourismKpiData.bookingCancellationRateActual, tourismKpiData.bookingCancellationRateTarget);
+        updateKpiFlagElement('flag-tourism-guest-rating', tourismKpiData.averageGuestRatingActual, tourismKpiData.averageGuestRatingTarget);
+        updateKpiFlagElement('flag-tourism-tours-completed', tourismKpiData.toursCompletedActual, tourismKpiData.toursCompletedTarget);
+        updateKpiFlagElement('flag-tourism-revpar', tourismKpiData.revParActual, tourismKpiData.revParTarget);
+        updateKpiFlagElementInverse('flag-tourism-lead-time', tourismKpiData.bookingLeadTimeActual, tourismKpiData.bookingLeadTimeTarget);
+        updateKpiFlagElement('flag-tourism-active-guides', tourismKpiData.activeTourGuidesActual, tourismKpiData.activeTourGuidesTarget);
+    }
+
+    function renderOperationsKpis() {
+        if (!operationsKpiData) return;
+
+        const isEn = document.documentElement.lang === 'en';
+
+        // Bind values
+        setTextIfExists('val-ops-plan-adherence', operationsKpiData.planAdherenceActual.toFixed(1) + '%');
+        setTextIfExists('val-ops-fleet-util', operationsKpiData.fleetUtilizationActual.toFixed(1) + '%');
+        setTextIfExists('val-ops-breakdown-response', operationsKpiData.avgBreakdownResponseActual.toFixed(1) + (isEn ? ' mins' : ' دقيقة'));
+        setTextIfExists('val-ops-violations', operationsKpiData.violationsCountActual);
+        setTextIfExists('val-ops-passenger-satisfaction', operationsKpiData.passengerSatisfactionActual.toFixed(1) + '%');
+        setTextIfExists('val-ops-scheduled-trips', operationsKpiData.scheduledTripsActual);
+        setTextIfExists('val-ops-fuel-efficiency', operationsKpiData.fuelEfficiencyActual.toFixed(1) + '%');
+
+        // Bind targets
+        setTextIfExists('target-val-ops-plan-adherence', operationsKpiData.planAdherenceTarget + '%');
+        setTextIfExists('target-val-ops-fleet-util', operationsKpiData.fleetUtilizationTarget + '%');
+        setTextIfExists('target-val-ops-breakdown-response', operationsKpiData.avgBreakdownResponseTarget + (isEn ? ' mins' : ' دقيقة'));
+        setTextIfExists('target-val-ops-violations', operationsKpiData.violationsCountTarget);
+        setTextIfExists('target-val-ops-passenger-satisfaction', operationsKpiData.passengerSatisfactionTarget + '%');
+        setTextIfExists('target-val-ops-scheduled-trips', operationsKpiData.scheduledTripsTarget);
+        setTextIfExists('target-val-ops-fuel-efficiency', operationsKpiData.fuelEfficiencyTarget + '%');
+
+        // Update flags
+        updateKpiFlagElement('flag-ops-plan-adherence', operationsKpiData.planAdherenceActual, operationsKpiData.planAdherenceTarget);
+        updateKpiFlagElement('flag-ops-fleet-util', operationsKpiData.fleetUtilizationActual, operationsKpiData.fleetUtilizationTarget);
+        updateKpiFlagElementInverse('flag-ops-breakdown-response', operationsKpiData.avgBreakdownResponseActual, operationsKpiData.avgBreakdownResponseTarget);
+        updateKpiFlagElementInverse('flag-ops-violations', operationsKpiData.violationsCountActual, operationsKpiData.violationsCountTarget);
+        updateKpiFlagElement('flag-ops-passenger-satisfaction', operationsKpiData.passengerSatisfactionActual, operationsKpiData.passengerSatisfactionTarget);
+        updateKpiFlagElement('flag-ops-scheduled-trips', operationsKpiData.scheduledTripsActual, operationsKpiData.scheduledTripsTarget);
+        updateKpiFlagElement('flag-ops-fuel-efficiency', operationsKpiData.fuelEfficiencyActual, operationsKpiData.fuelEfficiencyTarget);
     }
 
 

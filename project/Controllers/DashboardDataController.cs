@@ -163,6 +163,28 @@ namespace project.Controllers
             return Ok(kpis);
         }
 
+        [HttpGet("tourism-kpis")]
+        public async Task<IActionResult> GetTourismKpis()
+        {
+            var kpis = await _portalService.GetTourismKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no Tourism KPI data.");
+            }
+            return Ok(kpis);
+        }
+
+        [HttpGet("operations-kpis")]
+        public async Task<IActionResult> GetOperationsKpis()
+        {
+            var kpis = await _portalService.GetOperationsKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no Operations KPI data.");
+            }
+            return Ok(kpis);
+        }
+
         [HttpGet("health")]
         public async Task<IActionResult> GetHealth()
         {
