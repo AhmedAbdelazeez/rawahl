@@ -185,6 +185,38 @@ namespace project.Controllers
             return Ok(kpis);
         }
 
+        [HttpGet("mohu-groups")]
+        public async Task<IActionResult> GetMohuGroups()
+        {
+            var data = await _portalService.GetMohuGroupsAsync();
+            if (data == null) return StatusCode(503, "Portal API is unavailable or returned no data.");
+            return Ok(data);
+        }
+
+        [HttpGet("mohu-feedbacks")]
+        public async Task<IActionResult> GetMohuFeedbacks()
+        {
+            var data = await _portalService.GetMohuFeedbacksAsync();
+            if (data == null) return StatusCode(503, "Portal API is unavailable or returned no data.");
+            return Ok(data);
+        }
+
+        [HttpGet("mohu-violations")]
+        public async Task<IActionResult> GetMohuViolations()
+        {
+            var data = await _portalService.GetMohuViolationsAsync();
+            if (data == null) return StatusCode(503, "Portal API is unavailable or returned no data.");
+            return Ok(data);
+        }
+
+        [HttpGet("mohu-permits")]
+        public async Task<IActionResult> GetMohuPermits()
+        {
+            var data = await _portalService.GetMohuPermitsAsync();
+            if (data == null) return StatusCode(503, "Portal API is unavailable or returned no data.");
+            return Ok(data);
+        }
+
         [HttpGet("health")]
         public async Task<IActionResult> GetHealth()
         {

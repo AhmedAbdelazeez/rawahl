@@ -23,5 +23,10 @@ namespace project.Services
         Task<PortalCommercialKpisDto?> GetCommercialKpisAsync();
         Task<PortalTourismKpisDto?> GetTourismKpisAsync();
         Task<PortalOperationsKpisDto?> GetOperationsKpisAsync();
+        
+        Task<System.Text.Json.JsonElement?> GetMohuGroupsAsync();
+        Task<System.Text.Json.JsonElement?> GetMohuFeedbacksAsync();
+        Task<System.Text.Json.JsonElement?> GetMohuViolationsAsync();
+        Task<System.Text.Json.JsonElement?> GetMohuPermitsAsync();
     }
 }

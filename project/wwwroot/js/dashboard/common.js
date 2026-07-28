@@ -7,7 +7,7 @@ const translations = {
         'sidebar-company-depts': 'إدارات وأقسام الشركة',
         'nav-overview': 'الرئيسية والتحليل الموحد',
         'nav-transportation': 'رواحل للنقل التخصصي',
-        'nav-pilgrim-services': 'رواحل لخدمات العمره والسياحه',
+        'nav-pilgrim-services': 'العمرة والسياحة',
         'show-all-departments': 'عرض جميع الإدارات',
         'sidebar-settings': 'إعدادات المستهدفات',
         'sidebar-copyright': 'نظام رواحل القياسي المعتمد © 2026',

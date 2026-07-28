@@ -1,0 +1,151 @@
+﻿@model project.Pages.IndexModel
+
+<!-- ================= تجربة المعتمر وجودة الخدمة (MOHU Experience KPIs & CRUD) ================= -->
+
+<div id="card-mohu-exp-1" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-1-title">إجمالي التقييمات</span>
+        <span id="flag-mohu-exp-1" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-1">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-1">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-exp-2" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-2-title">متوسط التقييم (من 5)</span>
+        <span id="flag-mohu-exp-2" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-2">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-2">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-exp-3" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-3-title">نسبة الشكاوى</span>
+        <span id="flag-mohu-exp-3" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-3">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-3">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-exp-4" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-4-title">متوسط وقت الانتظار (دقيقة)</span>
+        <span id="flag-mohu-exp-4" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-4">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-4">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-exp-5" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-5-title">تقييمات السكن</span>
+        <span id="flag-mohu-exp-5" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-5">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-5">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-exp-6" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-6-title">تقييمات النقل</span>
+        <span id="flag-mohu-exp-6" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-6">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-6">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-exp-7" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-7-title">نسبة الرضا الممتاز (5 نجوم)</span>
+        <span id="flag-mohu-exp-7" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-7">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-7">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-exp-8" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-8-title">كفاءة النقل والتفويج</span>
+        <span id="flag-mohu-exp-8" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-8">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-8">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-exp-9" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-9-title">معدل الشكاوى لكل ألف معتمر</span>
+        <span id="flag-mohu-exp-9" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-9">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-9">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-exp-10" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-exp-10-title">الاستجابة للحالات الطارئة</span>
+        <span id="flag-mohu-exp-10" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-exp-10">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-exp-10">--</span></span>
+    </div>
+</div>
+
+<!-- CRUD SECTION -->
+<div id="card-mohu-exp-crud" class="col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-4 glass-card p-6 rounded-2xl mt-4">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-sm font-black text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-edit text-[#b0841a]"></i> إدارة بيانات مؤشرات تجربة المعتمر وجودة الخدمة
+        </h3>
+        <button class="bg-[#b0841a] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-[#8c6510] transition-colors shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> إضافة بيان جديد
+        </button>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-start border-collapse">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-200">
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">رقم المؤشر</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">اسم المؤشر</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">القيمة الفعلية</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">المستهدف</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-center">الإجراءات (CRUD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                    <td class="p-3 text-xs font-semibold text-slate-800">M-EXP-01</td>
+                    <td class="p-3 text-xs font-semibold text-slate-800">رضا المعتمرين</td>
+                    <td class="p-3 text-xs font-black text-slate-900">92%</td>
+                    <td class="p-3 text-xs font-bold text-slate-500">90%</td>
+                    <td class="p-3 text-center flex justify-center gap-2">
+                        <button class="text-blue-500 hover:text-blue-700 bg-blue-50 p-2 rounded-md"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="text-rose-500 hover:text-rose-700 bg-rose-50 p-2 rounded-md"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

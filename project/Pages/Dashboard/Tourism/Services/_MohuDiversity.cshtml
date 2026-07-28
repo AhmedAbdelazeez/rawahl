@@ -1,0 +1,160 @@
+@model project.Pages.IndexModel
+
+<!-- ================= تنوع المعتمرين (MOHU Diversity KPIs & CRUD) ================= -->
+
+<div id="card-mohu-div-1" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-1-title">إجمالي الأفواج</span>
+        <span id="flag-mohu-div-1" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-1">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-1">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-div-2" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-2-title">إجمالي المعتمرين</span>
+        <span id="flag-mohu-div-2" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-2">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-2">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-div-3" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-3-title">متوسط سعر الباقة</span>
+        <span id="flag-mohu-div-3" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-3">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-3">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-div-4" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-4-title">نسبة باقات VIP</span>
+        <span id="flag-mohu-div-4" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-4">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-4">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-div-5" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-5-title">نسبة الباقات الاقتصادية</span>
+        <span id="flag-mohu-div-5" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-5">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-5">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-div-6" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-6-title">أعلى جنسية</span>
+        <span id="flag-mohu-div-6" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-6">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-6">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-div-7" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-7-title">نسبة المعتمرين الجدد</span>
+        <span id="flag-mohu-div-7" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-7">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-7">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-div-8" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-8-title">التزام حصص الدول</span>
+        <span id="flag-mohu-div-8" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-8">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-8">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-div-9" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-9-title">معدل الوصول حسب الخطة</span>
+        <span id="flag-mohu-div-9" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-9">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-9">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-div-10" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-div-10-title">نسبة المعتمرين الفرديين</span>
+        <span id="flag-mohu-div-10" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-div-10">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-div-10">--</span></span>
+    </div>
+</div>
+
+<!-- CRUD SECTION -->
+<div id="card-mohu-div-crud" class="col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-4 glass-card p-6 rounded-2xl mt-4">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-sm font-black text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-edit text-[#b0841a]"></i> إدارة بيانات مؤشرات تنوع المعتمرين
+        </h3>
+        <button class="bg-[#b0841a] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-[#8c6510] transition-colors shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> إضافة بيان جديد
+        </button>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-start border-collapse">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-200">
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">رقم المؤشر</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">اسم المؤشر</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">القيمة الفعلية</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">المستهدف</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-center">الإجراءات (CRUD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                    <td class="p-3 text-xs font-semibold text-slate-800">M-DIV-01</td>
+                    <td class="p-3 text-xs font-semibold text-slate-800">نسبة تنوع الجنسيات</td>
+                    <td class="p-3 text-xs font-black text-slate-900">85%</td>
+                    <td class="p-3 text-xs font-bold text-slate-500">80%</td>
+                    <td class="p-3 text-center flex justify-center gap-2">
+                        <button class="text-blue-500 hover:text-blue-700 bg-blue-50 p-2 rounded-md"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="text-rose-500 hover:text-rose-700 bg-rose-50 p-2 rounded-md"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                    <td class="p-3 text-xs font-semibold text-slate-800">M-DIV-02</td>
+                    <td class="p-3 text-xs font-semibold text-slate-800">عدد الدول المخدومة</td>
+                    <td class="p-3 text-xs font-black text-slate-900">45</td>
+                    <td class="p-3 text-xs font-bold text-slate-500">40</td>
+                    <td class="p-3 text-center flex justify-center gap-2">
+                        <button class="text-blue-500 hover:text-blue-700 bg-blue-50 p-2 rounded-md"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="text-rose-500 hover:text-rose-700 bg-rose-50 p-2 rounded-md"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

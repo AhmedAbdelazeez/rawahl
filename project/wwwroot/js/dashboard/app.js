@@ -120,6 +120,54 @@ const defaultSettings = {
     'com-d-10': { target: 100, excellentMin: 98, goodMin: 95 },
     'hse-d-15': { target: 0, excellentMax: 0, goodMax: 2 },
     
+    // MOHU Diversity
+    'mohu-div-1': { target: 80, excellentMin: 80, goodMin: 70 },
+    'mohu-div-2': { target: 40, excellentMin: 40, goodMin: 30 },
+    'mohu-div-3': { target: 90, excellentMin: 90, goodMin: 80 },
+    'mohu-div-4': { target: 85, excellentMin: 85, goodMin: 75 },
+    'mohu-div-5': { target: 15, excellentMin: 15, goodMin: 10 },
+    'mohu-div-6': { target: 20, excellentMin: 20, goodMin: 15 },
+    'mohu-div-7': { target: 50, excellentMin: 50, goodMin: 40 },
+    'mohu-div-8': { target: 95, excellentMin: 95, goodMin: 90 },
+    'mohu-div-9': { target: 98, excellentMin: 98, goodMin: 95 },
+    'mohu-div-10': { target: 10, excellentMin: 10, goodMin: 5 },
+    
+    // MOHU Experience
+    'mohu-exp-1': { target: 90, excellentMin: 90, goodMin: 80 },
+    'mohu-exp-2': { target: 95, excellentMin: 95, goodMin: 85 },
+    'mohu-exp-3': { target: 100, excellentMin: 100, goodMin: 95 },
+    'mohu-exp-4': { target: 85, excellentMin: 85, goodMin: 75 },
+    'mohu-exp-5': { target: 15, excellentMax: 15, goodMax: 30 },
+    'mohu-exp-6': { target: 90, excellentMin: 90, goodMin: 80 },
+    'mohu-exp-7': { target: 92, excellentMin: 92, goodMin: 85 },
+    'mohu-exp-8': { target: 98, excellentMin: 98, goodMin: 90 },
+    'mohu-exp-9': { target: 0, excellentMax: 0, goodMax: 2 },
+    'mohu-exp-10': { target: 5, excellentMax: 5, goodMax: 15 },
+    
+    // MOHU Compliance
+    'mohu-comp-1': { target: 0, excellentMax: 0, goodMax: 5 },
+    'mohu-comp-2': { target: 100, excellentMin: 100, goodMin: 90 },
+    'mohu-comp-3': { target: 100, excellentMin: 100, goodMin: 95 },
+    'mohu-comp-4': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-comp-5': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-comp-6': { target: 100, excellentMin: 100, goodMin: 95 },
+    'mohu-comp-7': { target: 100, excellentMin: 100, goodMin: 95 },
+    'mohu-comp-8': { target: 0, excellentMax: 0, goodMax: 1000 },
+    'mohu-comp-9': { target: 100, excellentMin: 100, goodMin: 95 },
+    'mohu-comp-10': { target: 95, excellentMin: 95, goodMin: 85 },
+    
+    // MOHU Data Quality
+    'mohu-data-1': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-data-2': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-data-3': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-data-4': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-data-5': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-data-6': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-data-7': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-data-8': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-data-9': { target: 100, excellentMin: 100, goodMin: 98 },
+    'mohu-data-10': { target: 100, excellentMin: 100, goodMin: 98 },
+
     // Internal Audit - Operational Analysis KPIs
     'audit-plan-execution': { target: 90, excellentMin: 90, goodMin: 80 },
     'operational-compliance-rate': { target: 95, excellentMin: 95, goodMin: 90 },
@@ -177,7 +225,7 @@ function evaluateFlag(key, value) {
     if (!config) return 'excellent';
 
     let isInverse = false;
-    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-violations-count' || key === 'comp-resolution-time' || key === 'comp-critical-findings' || key === 'tourism-cancel-rate' || key === 'tourism-lead-time' || key === 'ops-breakdown-response' || key === 'ops-violations' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-absence', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key)) isInverse = true;
+    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-violations-count' || key === 'comp-resolution-time' || key === 'comp-critical-findings' || key === 'tourism-cancel-rate' || key === 'tourism-lead-time' || key === 'ops-breakdown-response' || key === 'ops-violations' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-absence', 'it-ticket-time', 'it-incidents', 'proc-cycle', 'mohu-exp-5', 'mohu-exp-9', 'mohu-exp-10', 'mohu-comp-1', 'mohu-comp-8'].includes(key)) isInverse = true;
 
     if (isInverse) {
         if (value <= config.excellentMax) return 'excellent';
@@ -240,7 +288,11 @@ const sectorMapping = {
     'service-visa': ['visa-processing-time', 'visa-approval-rate', 'visa-count', 'visa-integration-uptime', 'visa-data-error-rate', 'visa-complaints-rate'],
     'service-hotels': ['hotel-occupancy', 'hotel-cancel-rate', 'hotel-rating', 'hotel-average-room-rate', 'hotel-overbooking-incidents', 'hotel-contract-compliance'],
     'service-transport': ['pilgrim-ops-plan', 'pilgrim-safety-rate', 'pilgrim-shuttle-util', 'pilgrim-bus-maintenance-adherence', 'pilgrim-trip-duration', 'pilgrim-satisfaction'],
-    'service-hospitality': ['meal-delivery-ontime', 'food-safety-compliance', 'hospitality-satisfaction', 'meal-waste-percentage', 'hospitality-staff-compliance', 'hospitality-complaints']
+    'service-hospitality': ['meal-delivery-ontime', 'food-safety-compliance', 'hospitality-satisfaction', 'meal-waste-percentage', 'hospitality-staff-compliance', 'hospitality-complaints'],
+    'service-mohu-diversity': ['mohu-div-1', 'mohu-div-2', 'mohu-div-3', 'mohu-div-4', 'mohu-div-5', 'mohu-div-6', 'mohu-div-7'],
+    'service-mohu-experience': ['mohu-exp-1', 'mohu-exp-2', 'mohu-exp-3', 'mohu-exp-4', 'mohu-exp-5', 'mohu-exp-6', 'mohu-exp-7'],
+    'service-mohu-compliance': ['mohu-comp-1', 'mohu-comp-2', 'mohu-comp-3', 'mohu-comp-4', 'mohu-comp-5', 'mohu-comp-6', 'mohu-comp-7'],
+    'service-mohu-data': ['mohu-data-1', 'mohu-data-2', 'mohu-data-3', 'mohu-data-4', 'mohu-data-5', 'mohu-data-6', 'mohu-data-7']
 };
 
 const cardOriginalGrids = {
@@ -417,7 +469,12 @@ function showView(viewName, isPopState) {
         'service-visa': 'visa',
         'service-hotels': 'hotels',
         'service-transport': 'transport',
-        'service-hospitality': 'hospitality'
+        'service-hospitality': 'hospitality',
+        'dept-mohu-standards': 'tourism',
+        'service-mohu-diversity': 'tourism',
+        'service-mohu-experience': 'tourism',
+        'service-mohu-compliance': 'tourism',
+        'service-mohu-data': 'tourism'
     };
 
     const dbCode = uiToDbMapping[viewName];
@@ -479,6 +536,7 @@ function showView(viewName, isPopState) {
     const viewProjectMakkahTour = document.getElementById('view-project-makkah-tour');
     const viewTransportationServices = document.getElementById('view-transportation-services');
     const viewTransportationDepartments = document.getElementById('view-transportation-departments');
+    const viewDeptMohuStandards = document.getElementById('view-dept-mohu-standards');
     
     // Portal Integration Views
     const viewDeptProjectsDynamic = document.getElementById('view-dept-projects-dynamic');
@@ -497,6 +555,7 @@ function showView(viewName, isPopState) {
     if (viewProjectMakkahTour) viewProjectMakkahTour.classList.add('hidden');
     if (viewTransportationServices) viewTransportationServices.classList.add('hidden');
     if (viewTransportationDepartments) viewTransportationDepartments.classList.add('hidden');
+    if (viewDeptMohuStandards) viewDeptMohuStandards.classList.add('hidden');
     
     if (viewDeptProjectsDynamic) viewDeptProjectsDynamic.classList.add('hidden');
     if (viewDeptFleetDynamic) viewDeptFleetDynamic.classList.add('hidden');
@@ -523,6 +582,9 @@ function showView(viewName, isPopState) {
     } else if (viewName === 'pilgrim-sector') {
         if (viewPilgrimSector) viewPilgrimSector.classList.remove('hidden');
         document.getElementById('header-main-title').innerText = isEn ? 'Tourism & Pilgrim Services Portal' : 'بوابة رواحل لخدمات العمرة والسياحة';
+    } else if (viewName === 'dept-mohu-standards') {
+        if (viewDeptMohuStandards) viewDeptMohuStandards.classList.remove('hidden');
+        document.getElementById('header-main-title').innerText = isEn ? 'MOHU New Standards System' : 'التطبيق الكلي لنظام المعايير الجديدة';
     } else if (viewName === 'departments') {
         viewDepartmentsGrid.classList.remove('hidden');
         document.getElementById('header-main-title').innerText = isEn ? 'Company Departments' : 'كافة إدارات شركة رواحل';
@@ -667,6 +729,10 @@ function applyKpiFilters(viewName) {
         else if (viewName === 'service-hotels') sectorTitle = isEn ? 'Hotel Booking & Accommodation' : 'خدمة حجز وإقامة الفنادق';
         else if (viewName === 'service-transport') sectorTitle = isEn ? 'Pilgrim Transport Service' : 'خدمة نقل المعتمرين';
         else if (viewName === 'service-hospitality') sectorTitle = isEn ? 'Hospitality & Catering Service' : 'خدمة الضيافة';
+        else if (viewName === 'service-mohu-diversity') sectorTitle = isEn ? 'Pilgrims Diversity' : 'تنوع المعتمرين';
+        else if (viewName === 'service-mohu-experience') sectorTitle = isEn ? 'Pilgrim Experience & Service Quality' : 'تجربة المعتمر وجودة الخدمة';
+        else if (viewName === 'service-mohu-compliance') sectorTitle = isEn ? 'Compliance' : 'الامتثال';
+        else if (viewName === 'service-mohu-data') sectorTitle = isEn ? 'Data Quality' : 'جودة البيانات';
 
         breadcrumbCurrent.innerText = sectorTitle;
         titleText.innerText = sectorTitle;
@@ -740,6 +806,30 @@ function applyKpiFilters(viewName) {
             desc = isEn ? 'Monitoring meal delivery punctuality, food safety standards compliance, and satisfaction levels.' : 'متابعة التزام مواعيد الوجبات، سلامة وجودة الأغذية، ونسب رضا المعتمرين عن خدمات الإعاشة.';
             backAction = "showView('pilgrim-sector')";
             backText = isEn ? 'Back to Pilgrim Services' : 'العودة لخدمات المعتمرين';
+        } else if (viewName === 'service-mohu-diversity') {
+            badge = isEn ? 'MOHU Standards' : 'معايير وزارة الحج والعمرة';
+            title = isEn ? 'Pilgrims Diversity - Operational Analysis' : 'تنوع المعتمرين - التحليل التشغيلي';
+            desc = isEn ? 'Monitoring the diversity of pilgrims, nationalities, pricing segments, and individual pilgrims ratio.' : 'يعكس مدى التزام الشركة بتقديم عروض تلائم شرائح سعرية متنوعة توافق فئاتها.';
+            backAction = "showView('dept-mohu-standards')";
+            backText = isEn ? 'Back to Standards' : 'العودة للمعايير';
+        } else if (viewName === 'service-mohu-experience') {
+            badge = isEn ? 'MOHU Standards' : 'معايير وزارة الحج والعمرة';
+            title = isEn ? 'Pilgrim Experience & Quality - Operational Analysis' : 'تجربة المعتمر وجودة الخدمة - التحليل التشغيلي';
+            desc = isEn ? 'Monitoring pilgrim satisfaction, service quality, and complaint resolution rates.' : 'يعكس رضا المعتمرين عن الخدمات المقدمة وجودتها، بما يشمل التفاعل معهم ومعالجة الشكاوى.';
+            backAction = "showView('dept-mohu-standards')";
+            backText = isEn ? 'Back to Standards' : 'العودة للمعايير';
+        } else if (viewName === 'service-mohu-compliance') {
+            badge = isEn ? 'MOHU Standards' : 'معايير وزارة الحج والعمرة';
+            title = isEn ? 'Compliance - Operational Analysis' : 'الامتثال - التحليل التشغيلي';
+            desc = isEn ? 'Monitoring adherence to ministry regulations, health policies, and safe transport.' : 'يقيس مدى التزام الشركات بالتعليمات والأنظمة ومستوى التعاون مع الوزارة في الاستجابات والتنظيم.';
+            backAction = "showView('dept-mohu-standards')";
+            backText = isEn ? 'Back to Standards' : 'العودة للمعايير';
+        } else if (viewName === 'service-mohu-data') {
+            badge = isEn ? 'MOHU Standards' : 'معايير وزارة الحج والعمرة';
+            title = isEn ? 'Data Quality - Operational Analysis' : 'جودة البيانات - التحليل التشغيلي';
+            desc = isEn ? 'Monitoring data accuracy across grouping, accommodation, and entry/exit ports.' : 'يقيس مدى تطابق البيانات المسجلة من قبل الشركة مع البيانات المعتمدة من الجهات الحكومية.';
+            backAction = "showView('dept-mohu-standards')";
+            backText = isEn ? 'Back to Standards' : 'العودة للمعايير';
         } else if (viewName.startsWith('dept-')) {
             let deptBackAction = "showView('departments')";
             if (window.previousView === 'transportation-departments') deptBackAction = "showView('transportation-departments')";

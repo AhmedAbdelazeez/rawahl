@@ -384,5 +384,77 @@ namespace project.Services
             }
             return null;
         }
+
+        public async Task<System.Text.Json.JsonElement?> GetMohuGroupsAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/mohu-business/groups");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Mohu Groups from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<System.Text.Json.JsonElement?> GetMohuFeedbacksAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/mohu-business/feedbacks");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Mohu Feedbacks from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<System.Text.Json.JsonElement?> GetMohuViolationsAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/mohu-business/violations");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Mohu Violations from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<System.Text.Json.JsonElement?> GetMohuPermitsAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/mohu-business/permits");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Mohu Permits from portal API.");
+            }
+            return null;
+        }
     }
 }

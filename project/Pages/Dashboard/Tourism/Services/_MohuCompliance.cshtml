@@ -1,0 +1,151 @@
+﻿@model project.Pages.IndexModel
+
+<!-- ================= الامتثال (MOHU Compliance KPIs & CRUD) ================= -->
+
+<div id="card-mohu-comp-1" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-1-title">إجمالي المخالفات</span>
+        <span id="flag-mohu-comp-1" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-1">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-1">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-comp-2" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-2-title">إجمالي الغرامات (ر.س)</span>
+        <span id="flag-mohu-comp-2" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-2">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-2">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-comp-3" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-3-title">متوسط الغرامة للمخالفة</span>
+        <span id="flag-mohu-comp-3" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-3">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-3">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-comp-4" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-4-title">المخالفات المغلقة</span>
+        <span id="flag-mohu-comp-4" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-4">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-4">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-comp-5" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-5-title">المخالفات المفتوحة</span>
+        <span id="flag-mohu-comp-5" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-5">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-5">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-comp-6" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-6-title">تقييم لجنة الرقابة</span>
+        <span id="flag-mohu-comp-6" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-6">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-6">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-comp-7" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-7-title">المعتمرين المتأثرين</span>
+        <span id="flag-mohu-comp-7" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-7">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-7">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-comp-8" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-8-title">نسبة الغرامات المالية</span>
+        <span id="flag-mohu-comp-8" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-8">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-8">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-comp-9" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-9-title">الالتزام بنظام المسار الإلكتروني</span>
+        <span id="flag-mohu-comp-9" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-9">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-9">--</span></span>
+    </div>
+</div>
+
+<div id="card-mohu-comp-10" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="mohu-comp-10-title">تقييم لجان المراقبة</span>
+        <span id="flag-mohu-comp-10" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-mohu-comp-10">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-mohu-comp-10">--</span></span>
+    </div>
+</div>
+
+<!-- CRUD SECTION -->
+<div id="card-mohu-comp-crud" class="col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-4 glass-card p-6 rounded-2xl mt-4">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-sm font-black text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-edit text-[#b0841a]"></i> إدارة بيانات مؤشرات الامتثال
+        </h3>
+        <button class="bg-[#b0841a] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-[#8c6510] transition-colors shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> إضافة بيان جديد
+        </button>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-start border-collapse">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-200">
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">رقم المؤشر</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">اسم المؤشر</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">القيمة الفعلية</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-start">المستهدف</th>
+                    <th class="p-3 text-xs font-bold text-slate-500 text-center">الإجراءات (CRUD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                    <td class="p-3 text-xs font-semibold text-slate-800">M-COMP-01</td>
+                    <td class="p-3 text-xs font-semibold text-slate-800">المعتمرين المتأثرين من المخالفات</td>
+                    <td class="p-3 text-xs font-black text-slate-900">0%</td>
+                    <td class="p-3 text-xs font-bold text-slate-500">0%</td>
+                    <td class="p-3 text-center flex justify-center gap-2">
+                        <button class="text-blue-500 hover:text-blue-700 bg-blue-50 p-2 rounded-md"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="text-rose-500 hover:text-rose-700 bg-rose-50 p-2 rounded-md"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

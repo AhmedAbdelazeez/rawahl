@@ -1,0 +1,58 @@
+<!-- ================= جودة البيانات (MOHU Data Quality View) ================= -->
+<div id="view-service-mohu-data" class="view-container hidden">
+    <!-- Header -->
+    <section class="mb-6" data-aos="fade-down">
+        <div class="bg-white rounded-3xl p-6 text-slate-800 border border-[#b0841a]/30 relative overflow-hidden flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="absolute -right-24 -top-24 w-64 h-64 bg-[#b0841a]/5 rounded-full blur-3xl"></div>
+            <div class="relative z-10 text-start">
+                <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3.5 py-1.5 rounded-full font-bold">إدارة جودة البيانات</span>
+                <h2 class="text-xl font-black mt-2 text-slate-800">مؤشرات جودة البيانات والتصاريح</h2>
+                <p class="text-slate-500 text-xs mt-1 font-semibold">متابعة دقيقة لمدى تطابق التصاريح، بيانات المنافذ، تواريخ الوصول، والسكن.</p>
+            </div>
+            <button onclick="showView('dept-mohu-standards')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition z-10">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span>عودة لإدارة المعايير</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- 7 KPIs Grid -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" data-aos="fade-up">
+        <div class="glass-card p-4 rounded-2xl border-r-4 border-[#b0841a]">
+            <span class="text-[10px] text-slate-500 font-bold block mb-1">إجمالي التصاريح</span>
+            <span class="text-xl font-black text-slate-900" id="mohu-data-kpi1">--</span>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border-r-4 border-[#b0841a]">
+            <span class="text-[10px] text-slate-500 font-bold block mb-1">تطابق بيانات المنافذ</span>
+            <span class="text-xl font-black text-slate-900" id="mohu-data-kpi2">--</span>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border-r-4 border-[#b0841a]">
+            <span class="text-[10px] text-slate-500 font-bold block mb-1">تطابق تواريخ الوصول</span>
+            <span class="text-xl font-black text-slate-900" id="mohu-data-kpi3">--</span>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border-r-4 border-[#b0841a]">
+            <span class="text-[10px] text-slate-500 font-bold block mb-1">تطابق بيانات السكن</span>
+            <span class="text-xl font-black text-slate-900" id="mohu-data-kpi4">--</span>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border-r-4 border-[#b0841a]">
+            <span class="text-[10px] text-slate-500 font-bold block mb-1">تصاريح مكتملة التطابق</span>
+            <span class="text-xl font-black text-slate-900" id="mohu-data-kpi5">--</span>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border-r-4 border-[#b0841a]">
+            <span class="text-[10px] text-slate-500 font-bold block mb-1">تصاريح بها خلل بيانات</span>
+            <span class="text-xl font-black text-slate-900" id="mohu-data-kpi6">--</span>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border-r-4 border-[#b0841a] md:col-span-2">
+            <span class="text-[10px] text-slate-500 font-bold block mb-1">آخر تحديث للبيانات</span>
+            <span class="text-xl font-black text-slate-900" id="mohu-data-kpi7">--</span>
+        </div>
+    </section>
+
+    <!-- Chart -->
+    <section class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm" data-aos="fade-up">
+        <h3 class="text-sm font-black text-slate-800 mb-4">معدل التطابق حسب نوع البيانات</h3>
+        <div class="relative h-72 w-full">
+            <canvas id="mohuDataChart"></canvas>
+        </div>
+    </section>
+</div>
