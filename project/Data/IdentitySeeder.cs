@@ -36,8 +36,11 @@ namespace project.Data
                 new Department { NameAr = "قطاع الإيجار والتشغيل", NameEn = "Rental & Operation", Code = "leasing", Icon = "fa-bus" },
                 new Department { NameAr = "مؤشرات الأداء المالي", NameEn = "Financial Performance", Code = "finance", Icon = "fa-chart-line" },
                 new Department { NameAr = "مؤشرات الفرع التجاري والعملاء", NameEn = "Commercial & Customers", Code = "commercial", Icon = "fa-users" },
+                new Department { NameAr = "إدارة المبيعات", NameEn = "Sales Department", Code = "sales", Icon = "fa-bag-shopping" },
                 new Department { NameAr = "إدارة العمليات", NameEn = "Operations Department", Code = "operations", Icon = "fa-tachometer-alt" },
                 new Department { NameAr = "إدارة الأسطول", NameEn = "Fleet Department", Code = "fleet", Icon = "fa-bus" },
+                new Department { NameAr = "إدارة الصيانة", NameEn = "Maintenance Department", Code = "maintenance", Icon = "fa-screwdriver-wrench" },
+                new Department { NameAr = "إدارة التخزين", NameEn = "Storage Department", Code = "storage", Icon = "fa-warehouse" },
                 new Department { NameAr = "الموارد البشرية والتحول الرقمي", NameEn = "HR & Digital Transformation", Code = "hr", Icon = "fa-laptop-code" },
                 new Department { NameAr = "الصحة والسلامة والبيئة HSE", NameEn = "Health, Safety & Environment", Code = "hse", Icon = "fa-shield-virus" },
                 new Department { NameAr = "التدقيق الداخلي والرقابة", NameEn = "Internal Audit & Governance", Code = "audit", Icon = "fa-university" },
@@ -79,7 +82,7 @@ namespace project.Data
                 new { Email = "admin@rawahil.local", Password = "Rawahil@12345", FullName = "Dashboard Admin", DisplayName = "مسؤول النظام", Role = "Admin", DeptCodes = new string[0] },
                 
                 // Transportation Company General Manager
-                new { Email = "transportation.manager@rawahil.local", Password = "Rawahil@12345", FullName = "Transportation General Manager", DisplayName = "مدير عام قطاع النقل", Role = "TransportationManager", DeptCodes = new[] { "contracts", "hajj", "umrah", "leasing", "finance", "commercial", "operations", "fleet", "hr", "hse", "audit", "pmo" } },
+                new { Email = "transportation.manager@rawahil.local", Password = "Rawahil@12345", FullName = "Transportation General Manager", DisplayName = "مدير عام قطاع النقل", Role = "TransportationManager", DeptCodes = new[] { "contracts", "hajj", "umrah", "leasing", "finance", "commercial", "sales", "operations", "fleet", "hr", "hse", "audit", "pmo" } },
 
                 // Transportation Company Department Users
                 new { Email = "contracts.manager@rawahil.local", Password = "Rawahil@12345", FullName = "Contracts Manager", DisplayName = "مدير قطاع العقود", Role = "Manager", DeptCodes = new[] { "contracts" } },
@@ -88,8 +91,11 @@ namespace project.Data
                 new { Email = "finance.user@rawahil.local", Password = "Rawahil@12345", FullName = "Finance User", DisplayName = "مستخدم المالية", Role = "DepartmentUser", DeptCodes = new[] { "finance" } },
                 new { Email = "operations.user@rawahil.local", Password = "Rawahil@12345", FullName = "Operations User", DisplayName = "مستخدم العمليات والأسطول", Role = "DepartmentUser", DeptCodes = new[] { "operations" } },
                 new { Email = "fleet.user@rawahil.local", Password = "Rawahil@12345", FullName = "Fleet User", DisplayName = "مستخدم إدارة الأسطول", Role = "DepartmentUser", DeptCodes = new[] { "fleet" } },
+                new { Email = "maintenance.user@rawahil.local", Password = "Rawahil@12345", FullName = "Maintenance User", DisplayName = "مستخدم إدارة الصيانة", Role = "DepartmentUser", DeptCodes = new[] { "maintenance" } },
+                new { Email = "storage.user@rawahil.local", Password = "Rawahil@12345", FullName = "Storage User", DisplayName = "مستخدم إدارة التخزين", Role = "DepartmentUser", DeptCodes = new[] { "storage" } },
                 new { Email = "hse.user@rawahil.local", Password = "Rawahil@12345", FullName = "HSE User", DisplayName = "مستخدم السلامة والامتثال", Role = "DepartmentUser", DeptCodes = new[] { "hse" } },
                 new { Email = "commercial.user@rawahil.local", Password = "Rawahil@12345", FullName = "Commercial User", DisplayName = "مستخدم الفرع التجاري", Role = "DepartmentUser", DeptCodes = new[] { "commercial" } },
+                new { Email = "sales.user@rawahil.local", Password = "Rawahil@12345", FullName = "Sales User", DisplayName = "مستخدم إدارة المبيعات", Role = "DepartmentUser", DeptCodes = new[] { "sales" } },
                 new { Email = "hr.user@rawahil.local", Password = "Rawahil@12345", FullName = "HR User", DisplayName = "مستخدم الموارد البشرية", Role = "DepartmentUser", DeptCodes = new[] { "hr" } },
                 new { Email = "pmo.user@rawahil.local", Password = "Rawahil@12345", FullName = "PMO User", DisplayName = "مستخدم الاستراتيجية والمشاريع", Role = "DepartmentUser", DeptCodes = new[] { "pmo" } },
                 new { Email = "umrah.user@rawahil.local", Password = "Rawahil@12345", FullName = "Umrah User", DisplayName = "مستخدم قطاع العمرة", Role = "DepartmentUser", DeptCodes = new[] { "umrah" } },

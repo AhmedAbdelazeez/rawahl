@@ -185,6 +185,29 @@ namespace project.Controllers
             return Ok(kpis);
         }
 
+        [HttpGet("maintenance-kpis")]
+        public async Task<IActionResult> GetMaintenanceKpis()
+        {
+            var kpis = await _portalService.GetMaintenanceKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no maintenance KPI data.");
+            }
+            return Ok(kpis);
+        }
+
+        // ============== Sales Department ==============
+        [HttpGet("sales-kpis")]
+        public async Task<IActionResult> GetSalesKpis()
+        {
+            var kpis = await _portalService.GetSalesKpisAsync();
+            if (kpis == null)
+            {
+                return StatusCode(503, "Portal API is unavailable or returned no Sales KPI data.");
+            }
+            return Ok(kpis);
+        }
+
         [HttpGet("mohu-groups")]
         public async Task<IActionResult> GetMohuGroups()
         {
@@ -222,6 +245,88 @@ namespace project.Controllers
         {
             var available = await _portalService.IsPortalAvailableAsync();
             return Ok(new { available });
+        }
+
+        // ============== Fleet: 5 new indicators ==============
+        [HttpGet("fleet-indicators")]
+        public async Task<IActionResult> GetFleetIndicators()
+        {
+            var data = await _portalService.GetFleetIndicatorsAsync();
+            if (data == null) return StatusCode(503, "Portal API is unavailable or returned no fleet indicators.");
+            return Ok(data);
+        }
+
+        // ============== Maintenance Department landing page ==============
+        [HttpGet("maintenance-workorders")]
+        public async Task<IActionResult> GetMaintenanceWorkOrders(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] System.DateTime? fromDate = null,
+            [FromQuery] System.DateTime? toDate = null)
+        {
+            var data = await _portalService.GetMaintenanceWorkOrdersPagedAsync(page, pageSize, fromDate, toDate);
+            if (data == null) return StatusCode(503, "Portal API is unavailable or returned no maintenance data.");
+            return Ok(data);
+        }
+
+        [HttpPost("maintenance-upload")]
+        public async Task<IActionResult> UploadMaintenanceExcel(Microsoft.AspNetCore.Http.IFormFile file, [FromQuery] string branchName = "الورشة المركزية")
+        {
+            if (file == null || file.Length == 0) return BadRequest("No file uploaded.");
+            if (!IsXlsxFile(file))
+                return BadRequest("Only .xlsx or .xls files are supported.");
+
+            var data = await _portalService.UploadMaintenanceExcelAsync(file, branchName);
+            if (data == null) return StatusCode(503, "Portal API is unavailable or the upload failed.");
+            return Ok(data);
+        }
+
+        // ============== Storage / Warehouse Department landing page ==============
+        [HttpGet("warehouse-items")]
+        public async Task<IActionResult> GetWarehouseItems(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] System.DateTime? fromDate = null,
+            [FromQuery] System.DateTime? toDate = null)
+        {
+            var data = await _portalService.GetWarehouseItemsAsync(page, pageSize, fromDate, toDate);
+            if (data == null) return StatusCode(503, "Portal API is unavailable or returned no warehouse data.");
+            return Ok(data);
+        }
+
+        [HttpGet("warehouse-kpis")]
+        public async Task<IActionResult> GetWarehouseKpis()
+        {
+            var data = await _portalService.GetWarehouseKpisAsync();
+            if (data == null) return StatusCode(503, "Portal API is unavailable or returned no warehouse KPI data.");
+            return Ok(data);
+        }
+
+        [HttpPost("warehouse-upload")]
+        public async Task<IActionResult> UploadWarehouseExcel(Microsoft.AspNetCore.Http.IFormFile file)
+        {
+            if (file == null || file.Length == 0) return BadRequest("No file uploaded.");
+            if (!IsXlsxFile(file))
+                return BadRequest("Only .xlsx or .xls files are supported.");
+
+            var data = await _portalService.UploadWarehouseExcelAsync(file);
+            if (data == null) return StatusCode(503, "Portal API is unavailable or the upload failed.");
+            return Ok(data);
+        }
+
+        // File-extension checks based purely on IFormFile.FileName can fail for non-ASCII
+        // (e.g. Arabic) file names, since some browsers/proxies mangle the Content-Disposition
+        // filename encoding in multipart uploads. Fall back to the browser-reported ContentType
+        // when the extension can't be read reliably.
+        private static bool IsXlsxFile(Microsoft.AspNetCore.Http.IFormFile file)
+        {
+            // .xls (legacy Excel 97-2003) is also accepted here - the ERP backend converts it
+            // to .xlsx automatically before parsing.
+            var ext = System.IO.Path.GetExtension(file.FileName)?.Trim().ToLowerInvariant();
+            if (ext == ".xlsx" || ext == ".xls") return true;
+
+            return string.Equals(file.ContentType, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", System.StringComparison.OrdinalIgnoreCase)
+                || string.Equals(file.ContentType, "application/vnd.ms-excel", System.StringComparison.OrdinalIgnoreCase);
         }
     }
 }
