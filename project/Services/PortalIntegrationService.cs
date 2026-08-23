@@ -385,6 +385,45 @@ namespace project.Services
             return null;
         }
 
+        public async Task<PortalMaintenanceKpisDto?> GetMaintenanceKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/maintenance/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<PortalMaintenanceKpisDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Maintenance KPIs from portal API.");
+            }
+            return null;
+        }
+
+        // Sales Department: executive KPIs computed by NewFeature from the real uploaded customer
+        // roster and fleet capacity data (see SalesController/SalesService in NewFeature). Returned as
+        // a raw JsonElement (like Fleet indicators) rather than a hand-mirrored DTO, since the shape is
+        // richer/nested and a mirror risks silently drifting out of sync without a shared compiled contract.
+        public async Task<System.Text.Json.JsonElement?> GetSalesKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/sales/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Sales KPIs from portal API.");
+            }
+            return null;
+        }
+
         public async Task<System.Text.Json.JsonElement?> GetMohuGroupsAsync()
         {
             try
@@ -453,6 +492,126 @@ namespace project.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching Mohu Permits from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<System.Text.Json.JsonElement?> GetFleetIndicatorsAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/vehicles/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Fleet indicators from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<System.Text.Json.JsonElement?> GetMaintenanceWorkOrdersPagedAsync(int page, int pageSize, DateTime? fromDate, DateTime? toDate)
+        {
+            try
+            {
+                var url = $"api/maintenance/workorders/paged?page={page}&pageSize={pageSize}";
+                if (fromDate.HasValue) url += $"&fromDate={fromDate.Value:yyyy-MM-dd}";
+                if (toDate.HasValue) url += $"&toDate={toDate.Value:yyyy-MM-dd}";
+
+                var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching paginated Maintenance work orders from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<System.Text.Json.JsonElement?> UploadMaintenanceExcelAsync(Microsoft.AspNetCore.Http.IFormFile file, string branchName)
+        {
+            return await UploadFileAsync($"api/maintenance/bulk-upload?branchName={Uri.EscapeDataString(branchName)}", file, "Maintenance");
+        }
+
+        public async Task<System.Text.Json.JsonElement?> GetWarehouseItemsAsync(int page, int pageSize, DateTime? fromDate, DateTime? toDate)
+        {
+            try
+            {
+                var url = $"api/warehouse/items?page={page}&pageSize={pageSize}";
+                if (fromDate.HasValue) url += $"&fromDate={fromDate.Value:yyyy-MM-dd}";
+                if (toDate.HasValue) url += $"&toDate={toDate.Value:yyyy-MM-dd}";
+
+                var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching paginated Warehouse items from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<System.Text.Json.JsonElement?> GetWarehouseKpisAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/warehouse/kpis");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Warehouse KPIs from portal API.");
+            }
+            return null;
+        }
+
+        public async Task<System.Text.Json.JsonElement?> UploadWarehouseExcelAsync(Microsoft.AspNetCore.Http.IFormFile file)
+        {
+            return await UploadFileAsync("api/warehouse/bulk-upload", file, "Warehouse");
+        }
+
+        // Shared helper: forwards an uploaded .xlsx file to a backend bulk-upload endpoint as
+        // multipart/form-data and relays the JSON response ({ successCount, errors }) back.
+        private async Task<System.Text.Json.JsonElement?> UploadFileAsync(string relativeUrl, Microsoft.AspNetCore.Http.IFormFile file, string logContext)
+        {
+            try
+            {
+                using var content = new System.Net.Http.MultipartFormDataContent();
+                using var fileStream = file.OpenReadStream();
+                using var streamContent = new System.Net.Http.StreamContent(fileStream);
+                streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(
+                    string.IsNullOrEmpty(file.ContentType) ? "application/octet-stream" : file.ContentType);
+                content.Add(streamContent, "file", file.FileName);
+
+                var response = await _httpClient.PostAsync(relativeUrl, content);
+                var json = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return System.Text.Json.JsonDocument.Parse(json).RootElement;
+                }
+
+                _logger.LogWarning("{Context} bulk upload failed with status {Status}: {Body}", logContext, response.StatusCode, json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error forwarding {Context} Excel upload to portal API.", logContext);
             }
             return null;
         }

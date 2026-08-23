@@ -54,6 +54,9 @@
     let commercialKpiData = null;
     let tourismKpiData = null;
     let operationsKpiData = null;
+    let maintenanceKpiData = null;
+    let fleetIndicatorsData = null;
+    let salesKpiData = null;
     let isLoading = false;
     let lastError = null;
     let refreshTimer = null;
@@ -79,7 +82,7 @@
         showLoadingStates();
 
         try {
-            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis, itKpis, hseKpis, procurementKpis, strategyKpis, financeKpis, commercialKpis, tourismKpis, operationsKpis] = await Promise.all([
+            const [summary, kpis, projKpis, compKpis, auditKpis, hrKpis, itKpis, hseKpis, procurementKpis, strategyKpis, financeKpis, commercialKpis, tourismKpis, operationsKpis, maintenanceKpis, fleetIndicators, salesKpis] = await Promise.all([
                 fetchJson('summary'),
                 fetchJson('kpis'),
                 fetchJson('project-kpis'),
@@ -93,7 +96,10 @@
                 fetchJson('finance-kpis'),
                 fetchJson('commercial-kpis'),
                 fetchJson('tourism-kpis'),
-                fetchJson('operations-kpis')
+                fetchJson('operations-kpis'),
+                fetchJson('maintenance-kpis'),
+                fetchJson('fleet-indicators').catch(() => null),
+                fetchJson('sales-kpis').catch(() => null)
             ]);
             portalData = summary;
             kpiData = kpis;
@@ -109,6 +115,9 @@
             commercialKpiData = commercialKpis;
             tourismKpiData = tourismKpis;
             operationsKpiData = operationsKpis;
+            maintenanceKpiData = maintenanceKpis;
+            fleetIndicatorsData = fleetIndicators;
+            salesKpiData = salesKpis;
 
             renderAll();
             hideLoadingStates();
@@ -147,6 +156,8 @@
         renderCommercialKpis();
         renderTourismKpis();
         renderOperationsKpis();
+        renderFleetIndicators();
+        renderSalesKpis();
     }
 
 
@@ -580,9 +591,10 @@
         updateKpiFlagElement('flag-fleet-util', f.utilizationRate, 80);
 
         // 7. Fleet Availability Rate
-        setTextIfExists('val-fleet-ready', (f.availabilityRate ?? 0).toFixed(1) + '%');
+        const readyRate = maintenanceKpiData ? maintenanceKpiData.fleetAvailabilityRate : (f.availabilityRate ?? 0);
+        setTextIfExists('val-fleet-ready', readyRate.toFixed(1) + '%');
         setTextIfExists('target-val-fleet-ready', '90%');
-        updateKpiFlagElement('flag-fleet-ready', f.availabilityRate, 90);
+        updateKpiFlagElement('flag-fleet-ready', readyRate, 90);
 
         // 8. Total Registered Trips
         setTextIfExists('val-fleet-total-trips', t.total ?? 0);
@@ -592,8 +604,92 @@
         updateKpiFlagElement('flag-fleet-completed-trips', t.completed, t.total * 0.9);
 
         // 10. Fleet Breakdown/Maintenance Rate
-        setTextIfExists('val-fleet-maint-rate', (f.maintenanceRate ?? 0).toFixed(1) + '%');
-        updateKpiFlagElementInverse('flag-fleet-maint-rate', f.maintenanceRate, 5);
+        const maintRate = maintenanceKpiData ? maintenanceKpiData.maintenanceBacklogRate : (f.maintenanceRate ?? 0);
+        setTextIfExists('val-fleet-maint-rate', maintRate.toFixed(1) + '%');
+        updateKpiFlagElementInverse('flag-fleet-maint-rate', maintRate, 5);
+
+        // 11. Mean Time To Repair (MTTR)
+        if (maintenanceKpiData) {
+            setTextIfExists('val-fleet-mttr', maintenanceKpiData.meanTimeToRepairHours.toFixed(1) + (isEn ? ' hrs' : ' ساعة'));
+            updateKpiFlagElementInverse('flag-fleet-mttr', maintenanceKpiData.meanTimeToRepairHours, 3.0);
+
+            // 12. Total Spare Parts Cost
+            setTextIfExists('val-fleet-parts-cost', formatCurrency(maintenanceKpiData.totalSparePartsCost));
+            updateKpiFlagElementInverse('flag-fleet-parts-cost', maintenanceKpiData.totalSparePartsCost, 50000);
+        }
+    }
+
+    // 5 new Fleet indicators computed from the real Vehicle table (Fleet Details bulk upload)
+    function renderFleetIndicators() {
+        if (!fleetIndicatorsData) return;
+        const d = fleetIndicatorsData;
+        const isEn = document.documentElement.lang === 'en';
+
+        setTextIfExists('val-fleet-total-seating', (d.totalSeatingCapacityActual ?? 0) + (isEn ? ' seats' : ' مقعد'));
+
+        setTextIfExists('val-fleet-avg-age', (d.averageBusAgeActual ?? 0).toFixed(1) + (isEn ? ' yrs' : ' سنة'));
+        updateKpiFlagElementInverse('flag-fleet-avg-age', d.averageBusAgeActual, d.averageBusAgeTarget);
+
+        setTextIfExists('val-fleet-modernization', (d.fleetModernizationRateActual ?? 0).toFixed(1) + '%');
+        updateKpiFlagElement('flag-fleet-modernization', d.fleetModernizationRateActual, d.fleetModernizationRateTarget);
+
+        setTextIfExists('val-fleet-type-variety', d.busTypeVarietyCountActual ?? 0);
+
+        setTextIfExists('val-fleet-avg-capacity', (d.averageCapacityPerBusActual ?? 0).toFixed(1) + (isEn ? ' seats/bus' : ' مقعد/حافلة'));
+    }
+
+    // Sales Department: 7 executive KPIs computed by NewFeature from the real uploaded customer
+    // roster and fleet capacity data. Fields with no genuine business target (growth rate, top
+    // segment, fleet capacity) are rendered as informational figures rather than fabricated targets.
+    function renderSalesKpis() {
+        if (!salesKpiData) return;
+        const d = salesKpiData;
+        const isEn = document.documentElement.lang === 'en';
+
+        // 1. Active customers (vs previous year's count, shown as context - not a pass/fail target)
+        setTextIfExists('val-sales-active-customers', d.totalActiveCustomersActual ?? 0);
+        setTextIfExists('target-val-sales-active-customers', d.hasCustomerData && d.totalActiveCustomersTarget ? d.totalActiveCustomersTarget : '--');
+
+        // 2. New customers vs illustrative target
+        setTextIfExists('val-sales-new-customers', d.newCustomersActual ?? 0);
+        setTextIfExists('target-val-sales-new-customers', d.newCustomersTarget ?? '--');
+        updateKpiFlagElement('flag-sales-new-customers', d.newCustomersActual, d.newCustomersTarget);
+
+        // 3. Customer retention rate vs illustrative target
+        setTextIfExists('val-sales-retention', d.hasCustomerData ? (d.customerRetentionRateActual ?? 0).toFixed(1) + '%' : '--');
+        setTextIfExists('target-val-sales-retention', (d.customerRetentionRateTarget ?? 0) + '%');
+        if (d.hasCustomerData) updateKpiFlagElement('flag-sales-retention', d.customerRetentionRateActual, d.customerRetentionRateTarget);
+
+        // 4. YoY customer growth - derived metric, null when there's no prior-year roster to compare
+        if (d.customerGrowthYoYPercent === null || d.customerGrowthYoYPercent === undefined) {
+            setTextIfExists('val-sales-growth', isEn ? 'N/A' : 'غير متاح');
+        } else {
+            const growth = d.customerGrowthYoYPercent;
+            setTextIfExists('val-sales-growth', (growth >= 0 ? '+' : '') + growth.toFixed(1) + '%');
+            const flagEl = document.getElementById('flag-sales-growth');
+            if (flagEl) {
+                if (growth > 0) { flagEl.innerText = isEn ? '🟢 Growing' : '🟢 نمو'; flagEl.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200'; }
+                else if (growth === 0) { flagEl.innerText = isEn ? '🟡 Flat' : '🟡 ثابت'; flagEl.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200'; }
+                else { flagEl.innerText = isEn ? '🔴 Declining' : '🔴 تراجع'; flagEl.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200'; }
+            }
+        }
+
+        // 5. Top customer segment - informational
+        setTextIfExists('val-sales-top-segment', d.topCustomerSegment || (isEn ? 'N/A' : '--'));
+        setTextIfExists('target-val-sales-top-segment', d.topCustomerSegmentSharePercent ? d.topCustomerSegmentSharePercent.toFixed(1) + '%' : '--');
+
+        // 6 & 7. Fleet capacity context - informational, no fabricated target
+        setTextIfExists('val-sales-fleet-buses', d.hasFleetData ? (d.totalFleetBuses ?? 0) : '--');
+        setTextIfExists('val-sales-fleet-seats', d.hasFleetData ? (d.totalFleetSeats ?? 0) : '--');
+        setTextIfExists('target-val-sales-fleet-seats', d.hasFleetData ? (d.averageSeatsPerBus ?? 0).toFixed(1) : '--');
+
+        ['flag-sales-active-customers', 'flag-sales-top-segment', 'flag-sales-fleet-buses', 'flag-sales-fleet-seats'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.innerText === '--') {
+                el.innerText = isEn ? 'ℹ️ Info' : 'ℹ️ معلومة';
+                el.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200';
+            }
+        });
     }
 
     function updateKpiFlagElement(elementId, value, target) {
@@ -1983,6 +2079,9 @@
         renderCommercialKpis: renderCommercialKpis,
         renderTourismKpis: renderTourismKpis,
         renderOperationsKpis: renderOperationsKpis,
+        renderSalesKpis: renderSalesKpis,
+        hasSalesData: () => salesKpiData !== null,
+        getSalesKpiData: () => salesKpiData,
         hasComplianceData: () => complianceKpiData !== null,
         getComplianceKpiData: () => complianceKpiData,
         resetViews: resetDrilldownViews,
@@ -2121,6 +2220,22 @@
         updateKpiFlagElement('flag-ops-passenger-satisfaction', operationsKpiData.passengerSatisfactionActual, operationsKpiData.passengerSatisfactionTarget);
         updateKpiFlagElement('flag-ops-scheduled-trips', operationsKpiData.scheduledTripsActual, operationsKpiData.scheduledTripsTarget);
         updateKpiFlagElement('flag-ops-fuel-efficiency', operationsKpiData.fuelEfficiencyActual, operationsKpiData.fuelEfficiencyTarget);
+
+        // ── Real Trip-based KPIs ──
+        setTextIfExists('val-ops-otp', operationsKpiData.onTimePerformanceActual.toFixed(1) + '%');
+        setTextIfExists('val-ops-total-trips', operationsKpiData.totalTripsExecutedActual);
+        setTextIfExists('val-ops-active-drivers', operationsKpiData.activeDriversCountActual);
+        setTextIfExists('val-ops-fuel-odometer', operationsKpiData.fuelOdometerEfficiencyActual.toFixed(2) + (isEn ? ' km/L' : ' كم/لتر'));
+
+        setTextIfExists('target-val-ops-otp', operationsKpiData.onTimePerformanceTarget + '%');
+        setTextIfExists('target-val-ops-total-trips', operationsKpiData.totalTripsExecutedTarget);
+        setTextIfExists('target-val-ops-active-drivers', operationsKpiData.activeDriversCountTarget);
+        setTextIfExists('target-val-ops-fuel-odometer', operationsKpiData.fuelOdometerEfficiencyTarget.toFixed(2) + (isEn ? ' km/L' : ' كم/لتر'));
+
+        updateKpiFlagElement('flag-ops-otp', operationsKpiData.onTimePerformanceActual, operationsKpiData.onTimePerformanceTarget);
+        updateKpiFlagElement('flag-ops-total-trips', operationsKpiData.totalTripsExecutedActual, operationsKpiData.totalTripsExecutedTarget);
+        updateKpiFlagElement('flag-ops-active-drivers', operationsKpiData.activeDriversCountActual, operationsKpiData.activeDriversCountTarget);
+        updateKpiFlagElement('flag-ops-fuel-odometer', operationsKpiData.fuelOdometerEfficiencyActual, operationsKpiData.fuelOdometerEfficiencyTarget);
     }
 
 

@@ -1,0 +1,72 @@
+@model project.Pages.IndexModel
+
+<!-- Maintenance Department KPI Cards -->
+
+<!-- 1. Mean Time To Repair -->
+<div id="card-dm-mttr" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">متوسط زمن الإصلاح (MTTR)</span>
+        <span id="flag-dm-mttr" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-dm-mttr">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: 3.0 ساعات أو أقل</span>
+    </div>
+</div>
+
+<!-- 2. Total Breakdowns -->
+<div id="card-dm-breakdowns" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">إجمالي الأعطال المسجلة</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل الورشة</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-dm-breakdowns">--</span>
+    </div>
+</div>
+
+<!-- 3. Fleet Availability Rate -->
+<div id="card-dm-availability" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">نسبة جاهزية الأسطول</span>
+        <span id="flag-dm-availability" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-dm-availability">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: 90%</span>
+    </div>
+</div>
+
+<!-- 4. Total Spare Parts Cost -->
+<div id="card-dm-parts-cost" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">تكلفة قطع الغيار</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">تراكمي</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-dm-parts-cost">--</span>
+    </div>
+</div>
+
+<!-- 5. Maintenance Backlog Rate -->
+<div id="card-dm-backlog" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">نسبة الأعطال المتراكمة</span>
+        <span id="flag-dm-backlog" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-dm-backlog">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">الحد الأقصى المستهدف: 10%</span>
+    </div>
+</div>
+
+<!-- 6. Active Buses Under Maintenance Rate -->
+<div id="card-dm-active-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">نسبة الحافلات قيد الصيانة حاليًا</span>
+        <span id="flag-dm-active-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-dm-active-rate">--</span>
+    </div>
+</div>

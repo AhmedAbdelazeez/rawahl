@@ -1,0 +1,92 @@
+@page
+@model project.Pages.Dashboard.StorageModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة التخزين - شركة رواحل المشاعر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gold: { brand: '#b0841a', light: '#faf6ec', hover: '#ca9b29' } }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background: #f8f7f4; }
+        .glass-card { background: #fff; border: 1px solid #eee; }
+    </style>
+</head>
+<body class="text-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 bg-white rounded-2xl p-5 border border-[#b0841a]/20">
+            <div>
+                <span class="bg-[#b0841a]/10 text-[#b0841a] text-[10px] px-3 py-1 rounded-full font-bold">إدارة التخزين</span>
+                <h1 class="text-xl font-black mt-2">مرحباً @Model.UserArabicDisplayName</h1>
+                <p class="text-slate-500 text-xs font-semibold mt-1">مخزون قطع الغيار والمستلزمات ومؤشرات الجرد.</p>
+            </div>
+            <a href="/" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-xs font-black rounded-xl flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-right"></i> العودة للرئيسية
+            </a>
+        </div>
+
+        <!-- KPI Cards -->
+        <div id="store-kpi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+            <div class="glass-card p-5 rounded-2xl"><span class="text-xs text-slate-500 font-bold">إجمالي الأصناف</span><div class="text-2xl font-black mt-2" id="kpi-total-items">--</div></div>
+            <div class="glass-card p-5 rounded-2xl"><span class="text-xs text-slate-500 font-bold">قيمة المخزون</span><div class="text-2xl font-black mt-2" id="kpi-stock-value">--</div></div>
+            <div class="glass-card p-5 rounded-2xl"><span class="text-xs text-slate-500 font-bold">أصناف تحت حد الطلب</span><div class="text-2xl font-black mt-2" id="kpi-low-stock">--</div></div>
+            <div class="glass-card p-5 rounded-2xl"><span class="text-xs text-slate-500 font-bold">دقة الجرد %</span><div class="text-2xl font-black mt-2" id="kpi-accuracy">--</div></div>
+            <div class="glass-card p-5 rounded-2xl"><span class="text-xs text-slate-500 font-bold">متوسط سعر الوحدة</span><div class="text-2xl font-black mt-2" id="kpi-avg-price">--</div></div>
+        </div>
+
+        <!-- Filter -->
+        <div class="glass-card p-5 rounded-2xl mb-4 flex flex-wrap gap-3 items-end">
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 block mb-1">من تاريخ الجرد</label>
+                <input type="date" id="store-from" class="border border-slate-200 rounded-lg px-3 py-2 text-xs" />
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 block mb-1">إلى تاريخ الجرد</label>
+                <input type="date" id="store-to" class="border border-slate-200 rounded-lg px-3 py-2 text-xs" />
+            </div>
+            <button id="store-filter-apply" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-black px-4 py-2 rounded-lg">تطبيق الفلتر</button>
+            <button id="store-filter-reset" class="bg-slate-100 hover:bg-slate-200 text-xs font-black px-4 py-2 rounded-lg">إعادة تعيين</button>
+        </div>
+
+        <!-- Table -->
+        <div class="glass-card rounded-2xl overflow-hidden">
+            <table class="w-full text-xs">
+                <thead class="bg-slate-50 text-slate-500 font-black">
+                    <tr>
+                        <td class="p-3">اسم الصنف</td>
+                        <td class="p-3">الفئة</td>
+                        <td class="p-3">الكمية</td>
+                        <td class="p-3">حد الطلب</td>
+                        <td class="p-3">سعر الوحدة</td>
+                        <td class="p-3">تاريخ الجرد</td>
+                    </tr>
+                </thead>
+                <tbody id="store-table-body"></tbody>
+            </table>
+            <div class="flex justify-between items-center p-4 border-t border-slate-100">
+                <span class="text-xs font-bold text-slate-500" id="store-page-info">--</span>
+                <div class="flex gap-2">
+                    <button id="store-prev" class="bg-slate-100 hover:bg-slate-200 text-xs font-black px-3 py-1.5 rounded-lg">السابق</button>
+                    <button id="store-next" class="bg-slate-100 hover:bg-slate-200 text-xs font-black px-3 py-1.5 rounded-lg">التالي</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/dashboard/storage-landing.js" asp-append-version="true"></script>
+</body>
+</html>

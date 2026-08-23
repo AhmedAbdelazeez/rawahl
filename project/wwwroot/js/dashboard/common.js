@@ -207,6 +207,17 @@ const translations = {
         'dept-ops-desc': 'الالتزام بالخطة التشغيلية اليومية للحافلات، وتوجيه المسارات، ومتابعة الرحلات التشغيلية.',
         'dept-commercial-title': 'الادارة التجارية',
         'dept-commercial-desc': 'متابعة الفرع التجاري ومبيعات وعقود النقل التخصصي ورضا العملاء NPS ونسب الاحتفاظ بالشركاء.',
+        'dept-sales-title': 'إدارة المبيعات',
+        'dept-sales-desc': 'متابعة قاعدة العملاء ونموها السنوي، وأكبر شرائح العملاء، والسعة الاستيعابية المتاحة للأسطول.',
+        'card-sales-active-customers-title': 'عدد العملاء النشطين',
+        'card-sales-new-customers-title': 'عملاء جدد هذا العام',
+        'card-sales-retention-title': 'معدل الاحتفاظ بالعملاء',
+        'card-sales-growth-title': 'نمو قاعدة العملاء (سنوي)',
+        'card-sales-growth-sub': 'مقارنة بالعام السابق',
+        'card-sales-top-segment-title': 'أكبر شريحة عملاء',
+        'card-sales-fleet-buses-title': 'إجمالي عدد الحافلات',
+        'card-sales-fleet-buses-sub': 'السعة المتاحة للبيع والتشغيل',
+        'card-sales-fleet-seats-title': 'إجمالي السعة الاستيعابية',
         'dept-fleet-title': 'ادارة الاسطول',
         'dept-fleet-desc': 'متابعة جاهزية أسطول الحافلات اليومية ونسب استغلال المقاعد وجداول الصيانة الدورية.',
         'dept-support-title': 'ادارة خدمات الدعم (الموارد البشرية، تقنية المعلومات، المشتريات وخدمات الدعم )',
@@ -455,6 +466,17 @@ const translations = {
         'dept-ops-desc': 'Commitment to the daily bus operational plan, route routing, and operational trip monitoring.',
         'dept-commercial-title': 'Commercial Department',
         'dept-commercial-desc': 'Monitoring the commercial branch, specialized transport sales and contracts, customer satisfaction NPS, and partner retention rates.',
+        'dept-sales-title': 'Sales Department',
+        'dept-sales-desc': 'Monitoring the customer base, year-over-year growth, top customer segments, and available fleet capacity.',
+        'card-sales-active-customers-title': 'Active Customers',
+        'card-sales-new-customers-title': 'New Customers (This Year)',
+        'card-sales-retention-title': 'Customer Retention Rate',
+        'card-sales-growth-title': 'Customer Base Growth (YoY)',
+        'card-sales-growth-sub': 'Compared to previous year',
+        'card-sales-top-segment-title': 'Top Customer Segment',
+        'card-sales-fleet-buses-title': 'Total Fleet Buses',
+        'card-sales-fleet-buses-sub': 'Capacity available for sales & operations',
+        'card-sales-fleet-seats-title': 'Total Seating Capacity',
         'dept-fleet-title': 'Fleet Department',
         'dept-fleet-desc': 'Monitoring daily bus fleet readiness, seat utilization rates, and periodic maintenance schedules.',
         'dept-support-title': 'Support Services Department (HR, IT, Procurement & Support)',
@@ -628,6 +650,9 @@ function applyLanguage(lang) {
         } else if (window.currentView === 'dept-commercial') {
             deptNameAr = 'الادارة التجارية';
             deptNameEn = 'Commercial Department';
+        } else if (window.currentView === 'dept-sales') {
+            deptNameAr = 'إدارة المبيعات';
+            deptNameEn = 'Sales Department';
         } else if (window.currentView === 'dept-fleet') {
             deptNameAr = 'ادارة الاسطول';
             deptNameEn = 'Fleet Department';

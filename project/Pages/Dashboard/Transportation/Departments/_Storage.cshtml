@@ -1,0 +1,60 @@
+@model project.Pages.IndexModel
+
+<!-- Storage / Warehouse Department KPI Cards -->
+
+<!-- 1. Total Items -->
+<div id="card-ds-total-items" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">إجمالي أصناف المخزون</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">المستودع</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ds-total-items">--</span>
+    </div>
+</div>
+
+<!-- 2. Total Stock Value -->
+<div id="card-ds-stock-value" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">القيمة الإجمالية للمخزون</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">ر.س</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ds-stock-value">--</span>
+    </div>
+</div>
+
+<!-- 3. Low Stock Items -->
+<div id="card-ds-low-stock" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">أصناف تحت حد إعادة الطلب</span>
+        <span id="flag-ds-low-stock" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ds-low-stock">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: صفر</span>
+    </div>
+</div>
+
+<!-- 4. Inventory Accuracy Rate -->
+<div id="card-ds-accuracy" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">دقة الجرد الدوري</span>
+        <span id="flag-ds-accuracy" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ds-accuracy">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: 99%</span>
+    </div>
+</div>
+
+<!-- 5. Average Unit Price -->
+<div id="card-ds-avg-price" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">متوسط سعر الوحدة</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">ر.س</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ds-avg-price">--</span>
+    </div>
+</div>

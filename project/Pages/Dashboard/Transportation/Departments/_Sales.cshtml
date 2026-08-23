@@ -1,0 +1,88 @@
+@model project.Pages.IndexModel
+
+<!-- Sales Department KPI Cards (7 Executive KPIs, computed server-side by NewFeature from the real
+     uploaded customer roster + fleet capacity Excel data - no fabricated/illustrative sales figures) -->
+
+<!-- 1. Active Customers (عدد العملاء النشطين - آخر سنة مالية مرفوعة) -->
+<div id="card-sales-active-customers" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-active-customers-title">عدد العملاء النشطين</span>
+        <span id="flag-sales-active-customers" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-active-customers">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">العام السابق: <span id="target-val-sales-active-customers">--</span></span>
+    </div>
+</div>
+
+<!-- 2. New Customers (عملاء جدد هذا العام) -->
+<div id="card-sales-new-customers" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-new-customers-title">عملاء جدد هذا العام</span>
+        <span id="flag-sales-new-customers" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-new-customers">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-sales-new-customers">--</span></span>
+    </div>
+</div>
+
+<!-- 3. Customer Retention Rate (معدل الاحتفاظ بالعملاء) -->
+<div id="card-sales-retention" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-retention-title">معدل الاحتفاظ بالعملاء</span>
+        <span id="flag-sales-retention" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-retention">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-sales-retention">--</span></span>
+    </div>
+</div>
+
+<!-- 4. Customer Growth YoY (نمو قاعدة العملاء مقارنة بالعام السابق) - derived metric, no fabricated target -->
+<div id="card-sales-growth" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-growth-title">نمو قاعدة العملاء (سنوي)</span>
+        <span id="flag-sales-growth" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-growth">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-growth-sub">مقارنة بالعام السابق</span>
+    </div>
+</div>
+
+<!-- 5. Top Customer Segment (أكبر شريحة عملاء) - informational, no target -->
+<div id="card-sales-top-segment" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-top-segment-title">أكبر شريحة عملاء</span>
+        <span id="flag-sales-top-segment" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-xl font-black text-slate-900 text-center" id="val-sales-top-segment">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">الحصة: <span id="target-val-sales-top-segment">--</span></span>
+    </div>
+</div>
+
+<!-- 6. Total Fleet Buses (إجمالي عدد الحافلات المتاحة) - capacity context, informational -->
+<div id="card-sales-fleet-buses" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-fleet-buses-title">إجمالي عدد الحافلات</span>
+        <span id="flag-sales-fleet-buses" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-fleet-buses">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-fleet-buses-sub">السعة المتاحة للبيع والتشغيل</span>
+    </div>
+</div>
+
+<!-- 7. Total Fleet Seats (إجمالي السعة الاستيعابية بالمقاعد) - capacity context, informational -->
+<div id="card-sales-fleet-seats" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-fleet-seats-title">إجمالي السعة الاستيعابية</span>
+        <span id="flag-sales-fleet-seats" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-fleet-seats">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">متوسط/حافلة: <span id="target-val-sales-fleet-seats">--</span></span>
+    </div>
+</div>

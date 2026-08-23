@@ -276,7 +276,8 @@ const sectorMapping = {
     'dept-tourism': ['tourism-hotel-occupancy', 'tourism-cancel-rate', 'tourism-guest-rating', 'tourism-tours-completed', 'tourism-revpar', 'tourism-lead-time', 'tourism-active-guides'],
     'dept-ops': ['ops-plan-adherence', 'ops-fleet-util', 'ops-breakdown-response', 'ops-violations', 'ops-passenger-satisfaction', 'ops-scheduled-trips', 'ops-fuel-efficiency'],
     'dept-commercial': ['customer-retention', 'new-contracts', 'contract-renewal-rate', 'contract-turnaround', 'legal-disputes', 'customer-acquisition-cost', 'contract-value-growth'],
-    'dept-fleet': ['fleet-total', 'fleet-available', 'fleet-active', 'fleet-maintenance', 'fleet-inactive', 'fleet-util', 'fleet-ready', 'fleet-total-trips', 'fleet-completed-trips', 'fleet-maint-rate'],
+    'dept-sales': ['sales-active-customers', 'sales-new-customers', 'sales-retention', 'sales-growth', 'sales-top-segment', 'sales-fleet-buses', 'sales-fleet-seats'],
+    'dept-fleet': ['fleet-total', 'fleet-available', 'fleet-active', 'fleet-maintenance', 'fleet-inactive', 'fleet-util', 'fleet-ready', 'fleet-total-trips', 'fleet-completed-trips', 'fleet-maint-rate', 'fleet-mttr', 'fleet-parts-cost', 'fleet-total-seating', 'fleet-avg-age', 'fleet-modernization', 'fleet-type-variety', 'fleet-avg-capacity'],
     'dept-hr': ['hr-ret', 'hr-saudization', 'hr-count', 'hr-growth', 'hr-absence', 'hr-training', 'hr-appraisal'],
     'dept-it': ['it-autom', 'it-uptime', 'it-ticket-time', 'it-incidents', 'it-satisfaction', 'it-backup', 'it-projects'],
     'dept-procurement': ['proc-cycle', 'proc-savings', 'proc-supplier', 'proc-budget', 'proc-spare-parts', 'proc-inventory', 'proc-contracts'],
@@ -436,7 +437,7 @@ function showView(viewName, isPopState) {
 
     // RBAC validation on views access
     if (viewName === 'sectors' || viewName === 'transportation-sector' || viewName === 'transportation-services' || viewName === 'transportation-departments') {
-        const transDepts = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'operations', 'fleet', 'hr', 'hse', 'audit', 'pmo'];
+        const transDepts = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'sales', 'operations', 'fleet', 'maintenance', 'storage', 'hr', 'hse', 'audit', 'pmo'];
         const hasTransAccess = isTransportationManager || transDepts.some(d => allowedDepts.includes(d));
         if (!hasTransAccess) isAllowed = false;
     }
@@ -453,6 +454,7 @@ function showView(viewName, isPopState) {
         'leasing': 'leasing',
         'dept-finance': 'finance',
         'dept-commercial': 'commercial',
+        'dept-sales': 'sales',
         'dept-ops': 'operations',
         'dept-fleet': 'fleet',
         'dept-hr': 'hr',
@@ -480,7 +482,7 @@ function showView(viewName, isPopState) {
     const dbCode = uiToDbMapping[viewName];
     if (dbCode) {
         const isPilgrimDept = ['tourism', 'visa', 'hotels', 'transport', 'hospitality'].includes(dbCode);
-        const isTransDept = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'operations', 'fleet', 'hr', 'hse', 'audit', 'pmo'].includes(dbCode);
+        const isTransDept = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'sales', 'operations', 'fleet', 'maintenance', 'storage', 'hr', 'hse', 'audit', 'pmo'].includes(dbCode);
         
         let hasAccess = false;
         if (isPilgrimDept && isPilgrimServicesManager) {
@@ -649,7 +651,7 @@ function applyKpiFilters(viewName) {
 
     let isService = viewName.startsWith('service-') || ['contracts', 'hajj', 'leasing'].includes(viewName);
     let isDept = viewName.startsWith('dept-');
-    let isTransportDept = ['contracts', 'hajj', 'leasing', 'dept-finance', 'dept-commercial', 'dept-ops', 'dept-hr', 'dept-it', 'dept-procurement', 'dept-hse', 'dept-strategy', 'dept-audit', 'dept-fleet', 'dept-tourism'].includes(viewName);
+    let isTransportDept = ['contracts', 'hajj', 'leasing', 'dept-finance', 'dept-commercial', 'dept-sales', 'dept-ops', 'dept-hr', 'dept-it', 'dept-procurement', 'dept-hse', 'dept-strategy', 'dept-audit', 'dept-fleet', 'dept-tourism'].includes(viewName);
 
     sectorChartContainer.classList.remove('hidden');
     const execPanel = document.getElementById('executive-top-panel');
@@ -716,6 +718,7 @@ function applyKpiFilters(viewName) {
         else if (viewName === 'dept-tourism') sectorTitle = isEn ? 'Tourism Department' : 'ادارة السياحة';
         else if (viewName === 'dept-ops') sectorTitle = isEn ? 'Operations Department' : 'ادارة العمليات';
         else if (viewName === 'dept-commercial') sectorTitle = isEn ? 'Commercial Department' : 'الادارة التجارية';
+        else if (viewName === 'dept-sales') sectorTitle = isEn ? 'Sales Department' : 'إدارة المبيعات';
         else if (viewName === 'dept-fleet') sectorTitle = isEn ? 'Fleet Department' : 'ادارة الاسطول';
         else if (viewName === 'dept-hr') sectorTitle = isEn ? 'Human Resources Department' : 'إدارة الموارد البشرية';
         else if (viewName === 'dept-it') sectorTitle = isEn ? 'Information Technology Department' : 'إدارة تقنية المعلومات';
@@ -844,6 +847,12 @@ function applyKpiFilters(viewName) {
                 badge = isEn ? 'Commercial Department' : 'الإدارة التجارية والعملاء';
                 title = isEn ? 'Commercial Department - Operational Analysis' : 'الادارة التجارية - التحليل التشغيلي';
                 desc = isEn ? 'Monitoring commercial performance, partner retention, NPS, and new contracts.' : 'متابعة الفرع التجاري ومبيعات وعقود النقل التخصصي ورضا العملاء NPS ونسب الاحتفاظ بالشركاء.';
+                backAction = deptBackAction;
+                backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+            } else if (viewName === 'dept-sales') {
+                badge = isEn ? 'Sales Department' : 'إدارة المبيعات';
+                title = isEn ? 'Sales Department - Operational Analysis' : 'إدارة المبيعات - التحليل التشغيلي';
+                desc = isEn ? 'Monitoring the customer base, year-over-year growth, top customer segments, and available fleet capacity.' : 'متابعة قاعدة العملاء ونموها السنوي، وأكبر شرائح العملاء، والسعة الاستيعابية المتاحة للأسطول.';
                 backAction = deptBackAction;
                 backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
             } else if (viewName === 'dept-ops') {
@@ -1700,7 +1709,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 let isAllowed = true;
                 
                 if (viewName === 'sectors' || viewName === 'transportation-sector' || viewName === 'transportation-services' || viewName === 'transportation-departments') {
-                    const transDepts = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'operations', 'fleet', 'hr', 'hse', 'audit', 'pmo'];
+                    const transDepts = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'sales', 'operations', 'fleet', 'maintenance', 'storage', 'hr', 'hse', 'audit', 'pmo'];
                     const hasTransAccess = isTransportationManager || transDepts.some(d => allowedDepts.includes(d));
                     if (!hasTransAccess) isAllowed = false;
                 }
@@ -1717,6 +1726,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     'leasing': 'leasing',
                     'dept-finance': 'finance',
                     'dept-commercial': 'commercial',
+                    'dept-sales': 'sales',
                     'dept-ops': 'operations',
                     'dept-fleet': 'fleet',
                     'dept-hr': 'hr',
@@ -1739,7 +1749,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 const dbCode = uiToDbMapping[viewName];
                 if (dbCode) {
                     const isPilgrimDept = ['tourism', 'visa', 'hotels', 'transport', 'hospitality'].includes(dbCode);
-                    const isTransDept = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'operations', 'fleet', 'hr', 'hse', 'audit', 'pmo'].includes(dbCode);
+                    const isTransDept = ['contracts', 'hajj', 'umrah', 'leasing', 'finance', 'commercial', 'sales', 'operations', 'fleet', 'maintenance', 'storage', 'hr', 'hse', 'audit', 'pmo'].includes(dbCode);
                     
                     let hasAccess = false;
                     if (isPilgrimDept && isPilgrimServicesManager) {
