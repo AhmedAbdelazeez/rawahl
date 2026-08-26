@@ -274,10 +274,11 @@ const sectorMapping = {
     'service-leasing': ['rental-fleet-utilization', 'rental-revenue-per-bus', 'rental-contract-satisfaction', 'rental-maintenance-adherence', 'rental-safety-compliance', 'rental-active-contracts'],
 
     'dept-tourism': ['tourism-hotel-occupancy', 'tourism-cancel-rate', 'tourism-guest-rating', 'tourism-tours-completed', 'tourism-revpar', 'tourism-lead-time', 'tourism-active-guides'],
-    'dept-ops': ['ops-plan-adherence', 'ops-fleet-util', 'ops-breakdown-response', 'ops-violations', 'ops-passenger-satisfaction', 'ops-scheduled-trips', 'ops-fuel-efficiency'],
+    'dept-ops': ['ops-total-trips', 'ops-cancelled-trips', 'ops-active-drivers', 'ops-vehicles-deployed', 'ops-clients-served', 'ops-avg-trips-day'],
     'dept-commercial': ['customer-retention', 'new-contracts', 'contract-renewal-rate', 'contract-turnaround', 'legal-disputes', 'customer-acquisition-cost', 'contract-value-growth'],
-    'dept-sales': ['sales-active-customers', 'sales-new-customers', 'sales-retention', 'sales-growth', 'sales-top-segment', 'sales-fleet-buses', 'sales-fleet-seats'],
+    'dept-sales': ['sales-active-customers', 'sales-new-customers', 'sales-retention', 'sales-growth', 'sales-top-segment', 'sales-fleet-buses', 'sales-fleet-seats', 'sales-avg-seats', 'sales-churned', 'sales-daily-ops'],
     'dept-fleet': ['fleet-total', 'fleet-available', 'fleet-active', 'fleet-maintenance', 'fleet-inactive', 'fleet-util', 'fleet-ready', 'fleet-total-trips', 'fleet-completed-trips', 'fleet-maint-rate', 'fleet-mttr', 'fleet-parts-cost', 'fleet-total-seating', 'fleet-avg-age', 'fleet-modernization', 'fleet-type-variety', 'fleet-avg-capacity'],
+    'dept-maintenance': ['dm-mttr', 'dm-breakdowns', 'dm-availability', 'dm-parts-cost', 'dm-backlog', 'dm-active-rate', 'dm-workorders'],
     'dept-hr': ['hr-ret', 'hr-saudization', 'hr-count', 'hr-growth', 'hr-absence', 'hr-training', 'hr-appraisal'],
     'dept-it': ['it-autom', 'it-uptime', 'it-ticket-time', 'it-incidents', 'it-satisfaction', 'it-backup', 'it-projects'],
     'dept-procurement': ['proc-cycle', 'proc-savings', 'proc-supplier', 'proc-budget', 'proc-spare-parts', 'proc-inventory', 'proc-contracts'],
@@ -457,6 +458,7 @@ function showView(viewName, isPopState) {
         'dept-sales': 'sales',
         'dept-ops': 'operations',
         'dept-fleet': 'fleet',
+        'dept-maintenance': 'maintenance',
         'dept-hr': 'hr',
         'dept-it': 'hr',
         'dept-procurement': 'hr',
@@ -651,7 +653,7 @@ function applyKpiFilters(viewName) {
 
     let isService = viewName.startsWith('service-') || ['contracts', 'hajj', 'leasing'].includes(viewName);
     let isDept = viewName.startsWith('dept-');
-    let isTransportDept = ['contracts', 'hajj', 'leasing', 'dept-finance', 'dept-commercial', 'dept-sales', 'dept-ops', 'dept-hr', 'dept-it', 'dept-procurement', 'dept-hse', 'dept-strategy', 'dept-audit', 'dept-fleet', 'dept-tourism'].includes(viewName);
+    let isTransportDept = ['contracts', 'hajj', 'leasing', 'dept-finance', 'dept-commercial', 'dept-sales', 'dept-ops', 'dept-hr', 'dept-it', 'dept-procurement', 'dept-hse', 'dept-strategy', 'dept-audit', 'dept-fleet', 'dept-maintenance', 'dept-tourism'].includes(viewName);
 
     sectorChartContainer.classList.remove('hidden');
     const execPanel = document.getElementById('executive-top-panel');
@@ -720,6 +722,7 @@ function applyKpiFilters(viewName) {
         else if (viewName === 'dept-commercial') sectorTitle = isEn ? 'Commercial Department' : 'الادارة التجارية';
         else if (viewName === 'dept-sales') sectorTitle = isEn ? 'Sales Department' : 'إدارة المبيعات';
         else if (viewName === 'dept-fleet') sectorTitle = isEn ? 'Fleet Department' : 'ادارة الاسطول';
+        else if (viewName === 'dept-maintenance') sectorTitle = isEn ? 'Maintenance Department' : 'إدارة الصيانة';
         else if (viewName === 'dept-hr') sectorTitle = isEn ? 'Human Resources Department' : 'إدارة الموارد البشرية';
         else if (viewName === 'dept-it') sectorTitle = isEn ? 'Information Technology Department' : 'إدارة تقنية المعلومات';
         else if (viewName === 'dept-procurement') sectorTitle = isEn ? 'Procurement & Support Services' : 'إدارة المشتريات والخدمات المساندة';
@@ -865,6 +868,12 @@ function applyKpiFilters(viewName) {
                 badge = isEn ? 'Fleet Department' : 'إدارة الأسطول';
                 title = isEn ? 'Fleet Department - Operational Analysis' : 'ادارة الاسطول - التحليل التشغيلي';
                 desc = isEn ? 'Monitoring daily fleet readiness, seat utilization, and periodic maintenance.' : 'متابعة جاهزية أسطول الحافلات اليومية ونسب استغلال المقاعد وجداول الصيانة الدورية.';
+                backAction = deptBackAction;
+                backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
+            } else if (viewName === 'dept-maintenance') {
+                badge = isEn ? 'Maintenance Department' : 'إدارة الصيانة';
+                title = isEn ? 'Maintenance Department - Operational Analysis' : 'إدارة الصيانة - التحليل التشغيلي';
+                desc = isEn ? 'Monitoring work orders, breakdowns, spare parts cost, and fleet maintenance readiness.' : 'أوامر الصيانة والأعطال، قطع الغيار المستهلكة، ومؤشرات جاهزية الأسطول.';
                 backAction = deptBackAction;
                 backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
             } else if (viewName === 'dept-hr') {
@@ -1696,7 +1705,11 @@ document.addEventListener("DOMContentLoaded", function() {
         } catch (e) { console.error(e); }
     }
 
-    // Hide unauthorized elements based on RBAC mapping
+    // Hide unauthorized elements based on RBAC mapping. Wrapped defensively: this must never be
+    // able to stop the hash-based view restoration below from running - a thrown error here used to
+    // silently strand the page on the overview screen even when the requested department's data had
+    // already loaded correctly.
+    try {
     const allowedDepts = window.RAWAHEL_DATA.allowedDepts;
     const isTransportationManager = window.RAWAHEL_DATA.isTransportationManager;
     const isPilgrimServicesManager = window.RAWAHEL_DATA.isPilgrimServicesManager;
@@ -1729,6 +1742,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     'dept-sales': 'sales',
                     'dept-ops': 'operations',
                     'dept-fleet': 'fleet',
+                    'dept-maintenance': 'maintenance',
                     'dept-hr': 'hr',
                     'dept-it': 'hr',
                     'dept-procurement': 'hr',
@@ -1772,15 +1786,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const savedLang = localStorage.getItem('lang') || 'ar';
     if (window.applyLanguage) window.applyLanguage(savedLang);
-    
+    } catch (e) {
+        console.error('[app.js] RBAC/language setup failed (view restoration continues regardless):', e);
+    }
+
     // Restore active page view on initial load using URL hash
-    const initialHash = window.location.hash.replace('#', '');
-    if (initialHash) {
-        history.replaceState({ view: initialHash }, "", "#" + initialHash);
-        showView(initialHash, true);
-    } else {
-        history.replaceState({ view: 'overview' }, "", "#overview");
-        showView('overview', true);
+    try {
+        const initialHash = window.location.hash.replace('#', '');
+        if (initialHash) {
+            history.replaceState({ view: initialHash }, "", "#" + initialHash);
+            showView(initialHash, true);
+        } else {
+            history.replaceState({ view: 'overview' }, "", "#overview");
+            showView('overview', true);
+        }
+    } catch (e) {
+        console.error('[app.js] Initial view restoration failed:', e);
     }
 });
 

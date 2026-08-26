@@ -1,7 +1,7 @@
 @model project.Pages.IndexModel
 
-<!-- Sales Department KPI Cards (7 Executive KPIs, computed server-side by NewFeature from the real
-     uploaded customer roster + fleet capacity Excel data - no fabricated/illustrative sales figures) -->
+<!-- Sales Department KPI Cards (10 Executive KPIs, computed server-side by NewFeature from the real
+     uploaded customer roster + fleet capacity + daily operations Excel data - no fabricated/illustrative sales figures) -->
 
 <!-- 1. Active Customers (عدد العملاء النشطين - آخر سنة مالية مرفوعة) -->
 <div id="card-sales-active-customers" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
@@ -83,6 +83,42 @@
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-sales-fleet-seats">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">متوسط/حافلة: <span id="target-val-sales-fleet-seats">--</span></span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-fleet-seats-sub">إجمالي مقاعد الأسطول</span>
+    </div>
+</div>
+
+<!-- 8. Average Seats per Bus (متوسط سعة المقعدية للحافلة) - capacity context, informational -->
+<div id="card-sales-avg-seats" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-avg-seats-title">متوسط سعة المقعدية للحافلة</span>
+        <span id="flag-sales-avg-seats" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">من ملف الأسطول</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-avg-seats">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-avg-seats-sub">مقعد/حافلة</span>
+    </div>
+</div>
+
+<!-- 9. Churned Customers (عملاء تم فقدهم مقارنة بالعام السابق) - derived metric, no fabricated target -->
+<div id="card-sales-churned" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-churned-title">عملاء تم فقدهم</span>
+        <span id="flag-sales-churned" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-churned">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-churned-sub">مقارنة بالعام السابق</span>
+    </div>
+</div>
+
+<!-- 10. Latest Daily Operations Count (آخر يوم تشغيل - عدد العمليات) - informational, no target -->
+<div id="card-sales-daily-ops" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-daily-ops-title">عدد العمليات - آخر يوم تشغيل</span>
+        <span id="flag-sales-daily-ops" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-daily-ops">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">التاريخ: <span id="target-val-sales-daily-ops">--</span></span>
     </div>
 </div>

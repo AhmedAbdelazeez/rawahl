@@ -135,29 +135,43 @@
     }
 
     // ───────── Render Orchestrator ─────────
+    // Each renderer is isolated: one department's render throwing (e.g. a missing chart canvas on
+    // the current view) must never prevent every renderer listed after it from running. Previously
+    // these ran as one flat unguarded sequence, so a single early exception (renderCharts is a
+    // repeat offender - see console errors on views without a chart element) silently blocked Fleet,
+    // Sales and every other renderer below it, even though the underlying data was fine.
+    function safeRender(name, fn) {
+        try {
+            fn();
+        } catch (e) {
+            console.error(`[PortalIntegration] ${name} failed:`, e);
+        }
+    }
+
     function renderAll() {
         if (!portalData || !kpiData) return;
 
-        renderDynamicProjectCards();
-        renderPortalKpiCards();
-        renderCharts();
-        updateOverviewCounters();
-        updateExistingFleetKpis();
-        updateTickerWithPortalData();
-        renderProjectKpiDashboard();
-        renderComplianceKpis();
-        renderOperationalAuditKpis();
-        renderHrKpis();
-        renderItKpis();
-        renderHseKpis();
-        renderProcurementKpis();
-        renderStrategyKpis();
-        renderFinanceKpis();
-        renderCommercialKpis();
-        renderTourismKpis();
-        renderOperationsKpis();
-        renderFleetIndicators();
-        renderSalesKpis();
+        safeRender('renderDynamicProjectCards', renderDynamicProjectCards);
+        safeRender('renderPortalKpiCards', renderPortalKpiCards);
+        safeRender('renderCharts', renderCharts);
+        safeRender('updateOverviewCounters', updateOverviewCounters);
+        safeRender('updateExistingFleetKpis', updateExistingFleetKpis);
+        safeRender('updateTickerWithPortalData', updateTickerWithPortalData);
+        safeRender('renderProjectKpiDashboard', renderProjectKpiDashboard);
+        safeRender('renderComplianceKpis', renderComplianceKpis);
+        safeRender('renderOperationalAuditKpis', renderOperationalAuditKpis);
+        safeRender('renderHrKpis', renderHrKpis);
+        safeRender('renderItKpis', renderItKpis);
+        safeRender('renderHseKpis', renderHseKpis);
+        safeRender('renderProcurementKpis', renderProcurementKpis);
+        safeRender('renderStrategyKpis', renderStrategyKpis);
+        safeRender('renderFinanceKpis', renderFinanceKpis);
+        safeRender('renderCommercialKpis', renderCommercialKpis);
+        safeRender('renderTourismKpis', renderTourismKpis);
+        safeRender('renderOperationsKpis', renderOperationsKpis);
+        safeRender('renderFleetIndicators', renderFleetIndicators);
+        safeRender('renderSalesKpis', renderSalesKpis);
+        safeRender('renderMaintenanceDeptKpis', renderMaintenanceDeptKpis);
     }
 
 
@@ -619,6 +633,110 @@
         }
     }
 
+    // Maintenance Department's own 6 KPI cards (dm-* ids) - reuses the same maintenanceKpiData
+    // already fetched for the Fleet department's MTTR/parts-cost cards above, no extra API call.
+    function renderMaintenanceDeptKpis() {
+        if (!maintenanceKpiData) return;
+        const m = maintenanceKpiData;
+        const isEn = document.documentElement.lang === 'en';
+
+        setTextIfExists('val-dm-mttr', m.meanTimeToRepairHours.toFixed(1) + (isEn ? ' hrs' : ' ساعة'));
+        updateKpiFlagElementInverse('flag-dm-mttr', m.meanTimeToRepairHours, 3.0);
+
+        setTextIfExists('val-dm-breakdowns', m.totalBreakdowns ?? 0);
+
+        setTextIfExists('val-dm-availability', (m.fleetAvailabilityRate ?? 0).toFixed(1) + '%');
+        updateKpiFlagElement('flag-dm-availability', m.fleetAvailabilityRate, 90);
+
+        setTextIfExists('val-dm-parts-cost', formatCurrency(m.totalSparePartsCost));
+
+        setTextIfExists('val-dm-backlog', (m.maintenanceBacklogRate ?? 0).toFixed(1) + '%');
+        updateKpiFlagElementInverse('flag-dm-backlog', m.maintenanceBacklogRate, 10);
+
+        setTextIfExists('val-dm-active-rate', (m.activeBusesRate ?? 0).toFixed(1) + '%');
+        updateKpiFlagElementInverse('flag-dm-active-rate', m.activeBusesRate, 10);
+
+        const container = document.getElementById('dm-top-breakdowns');
+        if (container) {
+            const items = m.topBreakdownLocations || [];
+            if (items.length === 0) {
+                container.innerHTML = '<span class="text-xs text-slate-400 font-bold">لا توجد بيانات مواقع أعطال بعد (متاحة فقط من تقارير الفروع الميدانية).</span>';
+            } else {
+                container.innerHTML = items.map(loc =>
+                    `<div class="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
+                        <span class="text-xs font-bold text-slate-700">${loc.location}</span>
+                        <span class="text-xs font-black text-[#b0841a]">${loc.breakdownCount} ${isEn ? 'breakdowns' : 'عطل'} (${loc.sharePercentage.toFixed(1)}%)</span>
+                    </div>`
+                ).join('');
+            }
+        }
+    }
+
+    // Maintenance work-orders table (paginated, date-filterable) - lives inside the same
+    // card-dm-workorders block that showView() moves into the sector grid alongside the KPI cards.
+    const maintWorkOrdersState = { page: 1, pageSize: 10, fromDate: '', toDate: '' };
+    const maintStatusLabels = ['معلق', 'قيد التحليل', 'بانتظار قطع الغيار', 'مكتمل'];
+
+    function loadMaintenanceWorkOrders() {
+        const body = document.getElementById('dm-wo-table-body');
+        if (!body) return;
+
+        let url = '/api/dashboard-data/maintenance-workorders?page=' + maintWorkOrdersState.page + '&pageSize=' + maintWorkOrdersState.pageSize;
+        if (maintWorkOrdersState.fromDate) url += '&fromDate=' + maintWorkOrdersState.fromDate;
+        if (maintWorkOrdersState.toDate) url += '&toDate=' + maintWorkOrdersState.toDate;
+
+        fetch(url)
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data || !data.items || data.items.length === 0) {
+                    body.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400 font-bold">لا توجد بيانات</td></tr>';
+                    setTextIfExists('dm-wo-page-info', '0 من 0');
+                    return;
+                }
+                body.innerHTML = data.items.map(o =>
+                    `<tr class="border-t border-slate-100">
+                        <td class="p-3 font-bold">${o.vehiclePlate || '--'}</td>
+                        <td class="p-3">${o.date ? new Date(o.date).toLocaleDateString('ar-SA') : '--'}</td>
+                        <td class="p-3">${o.odometer ?? '--'}</td>
+                        <td class="p-3">${o.breakdownDescription || '--'}</td>
+                        <td class="p-3">${o.technicianName || '--'}</td>
+                        <td class="p-3">${maintStatusLabels[o.status] || '--'}</td>
+                    </tr>`
+                ).join('');
+                setTextIfExists('dm-wo-page-info', 'صفحة ' + data.page + ' من ' + (data.totalPages || 1) + ' (' + data.totalCount + ' سجل)');
+            })
+            .catch(e => console.error('Failed to load maintenance work orders', e));
+    }
+
+    function initMaintenanceWorkOrdersControls() {
+        const applyBtn = document.getElementById('dm-wo-filter-apply');
+        if (!applyBtn || applyBtn.dataset.wired) return; // guard against re-wiring on every renderAll
+        applyBtn.dataset.wired = 'true';
+
+        applyBtn.addEventListener('click', () => {
+            maintWorkOrdersState.fromDate = document.getElementById('dm-wo-from').value;
+            maintWorkOrdersState.toDate = document.getElementById('dm-wo-to').value;
+            maintWorkOrdersState.page = 1;
+            loadMaintenanceWorkOrders();
+        });
+        document.getElementById('dm-wo-filter-reset').addEventListener('click', () => {
+            document.getElementById('dm-wo-from').value = '';
+            document.getElementById('dm-wo-to').value = '';
+            maintWorkOrdersState.fromDate = '';
+            maintWorkOrdersState.toDate = '';
+            maintWorkOrdersState.page = 1;
+            loadMaintenanceWorkOrders();
+        });
+        document.getElementById('dm-wo-prev').addEventListener('click', () => {
+            if (maintWorkOrdersState.page > 1) { maintWorkOrdersState.page--; loadMaintenanceWorkOrders(); }
+        });
+        document.getElementById('dm-wo-next').addEventListener('click', () => {
+            maintWorkOrdersState.page++; loadMaintenanceWorkOrders();
+        });
+
+        loadMaintenanceWorkOrders();
+    }
+
     // 5 new Fleet indicators computed from the real Vehicle table (Fleet Details bulk upload)
     function renderFleetIndicators() {
         if (!fleetIndicatorsData) return;
@@ -638,9 +756,10 @@
         setTextIfExists('val-fleet-avg-capacity', (d.averageCapacityPerBusActual ?? 0).toFixed(1) + (isEn ? ' seats/bus' : ' مقعد/حافلة'));
     }
 
-    // Sales Department: 7 executive KPIs computed by NewFeature from the real uploaded customer
-    // roster and fleet capacity data. Fields with no genuine business target (growth rate, top
-    // segment, fleet capacity) are rendered as informational figures rather than fabricated targets.
+    // Sales Department: 10 executive KPIs computed by NewFeature from the real uploaded customer
+    // roster, fleet capacity, and daily operations data. Fields with no genuine business target
+    // (growth rate, top segment, fleet capacity, churn, daily ops) are rendered as informational
+    // figures rather than fabricated targets.
     function renderSalesKpis() {
         if (!salesKpiData) return;
         const d = salesKpiData;
@@ -678,12 +797,20 @@
         setTextIfExists('val-sales-top-segment', d.topCustomerSegment || (isEn ? 'N/A' : '--'));
         setTextIfExists('target-val-sales-top-segment', d.topCustomerSegmentSharePercent ? d.topCustomerSegmentSharePercent.toFixed(1) + '%' : '--');
 
-        // 6 & 7. Fleet capacity context - informational, no fabricated target
+        // 6, 7 & 8. Fleet capacity context - informational, no fabricated target
         setTextIfExists('val-sales-fleet-buses', d.hasFleetData ? (d.totalFleetBuses ?? 0) : '--');
         setTextIfExists('val-sales-fleet-seats', d.hasFleetData ? (d.totalFleetSeats ?? 0) : '--');
-        setTextIfExists('target-val-sales-fleet-seats', d.hasFleetData ? (d.averageSeatsPerBus ?? 0).toFixed(1) : '--');
+        setTextIfExists('val-sales-avg-seats', d.hasFleetData ? (d.averageSeatsPerBus ?? 0).toFixed(1) : '--');
 
-        ['flag-sales-active-customers', 'flag-sales-top-segment', 'flag-sales-fleet-buses', 'flag-sales-fleet-seats'].forEach(id => {
+        // 9. Churned customers - derived metric, no fabricated target
+        setTextIfExists('val-sales-churned', d.hasCustomerData ? (d.churnedCustomersActual ?? 0) : '--');
+
+        // 10. Latest daily operations count - informational
+        setTextIfExists('val-sales-daily-ops', d.hasDailyOperationsData ? (d.latestDailyOperationsCount ?? 0) : '--');
+        setTextIfExists('target-val-sales-daily-ops', d.hasDailyOperationsData && d.latestDailyOperationsDate ? new Date(d.latestDailyOperationsDate).toLocaleDateString(isEn ? 'en-US' : 'ar-SA') : '--');
+
+        ['flag-sales-active-customers', 'flag-sales-top-segment', 'flag-sales-fleet-buses', 'flag-sales-fleet-seats',
+         'flag-sales-churned', 'flag-sales-daily-ops'].forEach(id => {
             const el = document.getElementById(id);
             if (el && el.innerText === '--') {
                 el.innerText = isEn ? 'ℹ️ Info' : 'ℹ️ معلومة';
@@ -2189,53 +2316,19 @@
         updateKpiFlagElement('flag-tourism-active-guides', tourismKpiData.activeTourGuidesActual, tourismKpiData.activeTourGuidesTarget);
     }
 
+    // 6 basic counts/rates, all straight from real Trip records - no illustrative targets, no
+    // metric the source dispatch sheets can't actually support.
     function renderOperationsKpis() {
         if (!operationsKpiData) return;
-
         const isEn = document.documentElement.lang === 'en';
 
-        // Bind values
-        setTextIfExists('val-ops-plan-adherence', operationsKpiData.planAdherenceActual.toFixed(1) + '%');
-        setTextIfExists('val-ops-fleet-util', operationsKpiData.fleetUtilizationActual.toFixed(1) + '%');
-        setTextIfExists('val-ops-breakdown-response', operationsKpiData.avgBreakdownResponseActual.toFixed(1) + (isEn ? ' mins' : ' دقيقة'));
-        setTextIfExists('val-ops-violations', operationsKpiData.violationsCountActual);
-        setTextIfExists('val-ops-passenger-satisfaction', operationsKpiData.passengerSatisfactionActual.toFixed(1) + '%');
-        setTextIfExists('val-ops-scheduled-trips', operationsKpiData.scheduledTripsActual);
-        setTextIfExists('val-ops-fuel-efficiency', operationsKpiData.fuelEfficiencyActual.toFixed(1) + '%');
-
-        // Bind targets
-        setTextIfExists('target-val-ops-plan-adherence', operationsKpiData.planAdherenceTarget + '%');
-        setTextIfExists('target-val-ops-fleet-util', operationsKpiData.fleetUtilizationTarget + '%');
-        setTextIfExists('target-val-ops-breakdown-response', operationsKpiData.avgBreakdownResponseTarget + (isEn ? ' mins' : ' دقيقة'));
-        setTextIfExists('target-val-ops-violations', operationsKpiData.violationsCountTarget);
-        setTextIfExists('target-val-ops-passenger-satisfaction', operationsKpiData.passengerSatisfactionTarget + '%');
-        setTextIfExists('target-val-ops-scheduled-trips', operationsKpiData.scheduledTripsTarget);
-        setTextIfExists('target-val-ops-fuel-efficiency', operationsKpiData.fuelEfficiencyTarget + '%');
-
-        // Update flags
-        updateKpiFlagElement('flag-ops-plan-adherence', operationsKpiData.planAdherenceActual, operationsKpiData.planAdherenceTarget);
-        updateKpiFlagElement('flag-ops-fleet-util', operationsKpiData.fleetUtilizationActual, operationsKpiData.fleetUtilizationTarget);
-        updateKpiFlagElementInverse('flag-ops-breakdown-response', operationsKpiData.avgBreakdownResponseActual, operationsKpiData.avgBreakdownResponseTarget);
-        updateKpiFlagElementInverse('flag-ops-violations', operationsKpiData.violationsCountActual, operationsKpiData.violationsCountTarget);
-        updateKpiFlagElement('flag-ops-passenger-satisfaction', operationsKpiData.passengerSatisfactionActual, operationsKpiData.passengerSatisfactionTarget);
-        updateKpiFlagElement('flag-ops-scheduled-trips', operationsKpiData.scheduledTripsActual, operationsKpiData.scheduledTripsTarget);
-        updateKpiFlagElement('flag-ops-fuel-efficiency', operationsKpiData.fuelEfficiencyActual, operationsKpiData.fuelEfficiencyTarget);
-
-        // ── Real Trip-based KPIs ──
-        setTextIfExists('val-ops-otp', operationsKpiData.onTimePerformanceActual.toFixed(1) + '%');
-        setTextIfExists('val-ops-total-trips', operationsKpiData.totalTripsExecutedActual);
-        setTextIfExists('val-ops-active-drivers', operationsKpiData.activeDriversCountActual);
-        setTextIfExists('val-ops-fuel-odometer', operationsKpiData.fuelOdometerEfficiencyActual.toFixed(2) + (isEn ? ' km/L' : ' كم/لتر'));
-
-        setTextIfExists('target-val-ops-otp', operationsKpiData.onTimePerformanceTarget + '%');
-        setTextIfExists('target-val-ops-total-trips', operationsKpiData.totalTripsExecutedTarget);
-        setTextIfExists('target-val-ops-active-drivers', operationsKpiData.activeDriversCountTarget);
-        setTextIfExists('target-val-ops-fuel-odometer', operationsKpiData.fuelOdometerEfficiencyTarget.toFixed(2) + (isEn ? ' km/L' : ' كم/لتر'));
-
-        updateKpiFlagElement('flag-ops-otp', operationsKpiData.onTimePerformanceActual, operationsKpiData.onTimePerformanceTarget);
-        updateKpiFlagElement('flag-ops-total-trips', operationsKpiData.totalTripsExecutedActual, operationsKpiData.totalTripsExecutedTarget);
-        updateKpiFlagElement('flag-ops-active-drivers', operationsKpiData.activeDriversCountActual, operationsKpiData.activeDriversCountTarget);
-        updateKpiFlagElement('flag-ops-fuel-odometer', operationsKpiData.fuelOdometerEfficiencyActual, operationsKpiData.fuelOdometerEfficiencyTarget);
+        setTextIfExists('val-ops-total-trips', operationsKpiData.totalTrips);
+        setTextIfExists('val-ops-cancelled-trips', operationsKpiData.cancelledTrips);
+        setTextIfExists('val-ops-cancellation-rate', operationsKpiData.cancellationRatePercent.toFixed(1) + '%');
+        setTextIfExists('val-ops-active-drivers', operationsKpiData.activeDriversCount);
+        setTextIfExists('val-ops-vehicles-deployed', operationsKpiData.vehiclesDeployedCount);
+        setTextIfExists('val-ops-clients-served', operationsKpiData.clientsServedCount);
+        setTextIfExists('val-ops-avg-trips-day', operationsKpiData.averageTripsPerDay.toFixed(1) + (isEn ? '/day' : ' رحلة/يوم'));
     }
 
 
@@ -2243,10 +2336,12 @@
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             loadPortalData();
+            initMaintenanceWorkOrdersControls();
             startAutoRefresh();
         });
     } else {
         loadPortalData();
+        initMaintenanceWorkOrdersControls();
         startAutoRefresh();
     }
 

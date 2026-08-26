@@ -361,3 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Real company/customer data submissions and generated extraction scratch files - never commit
+# actual customer/employee data (names, national IDs, phone numbers) to source control.
+project/OneDrive_2_8-21-2026/
+project/scratch/
+project/temp_excel_reader/
+*.pdf
+*.docx

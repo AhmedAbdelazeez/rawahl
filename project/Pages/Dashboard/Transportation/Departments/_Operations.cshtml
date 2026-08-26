@@ -1,134 +1,71 @@
 @model project.Pages.IndexModel
 
-<!-- Operations Department KPI Cards (7 Live KPIs) -->
-<!-- 1. Plan Adherence -->
-<div id="card-ops-plan-adherence" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-plan-adherence-title">الالتزام بالخطة التشغيلية</span>
-        <span id="flag-ops-plan-adherence" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ops-plan-adherence">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-plan-adherence">--</span></span>
-    </div>
-</div>
+<!-- Operations Department KPI Cards (6 basic KPIs, computed directly from real uploaded trip/
+     dispatch data - no illustrative targets, no metric the source data can't actually support) -->
 
-<!-- 2. Fleet Utilization -->
-<div id="card-ops-fleet-util" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-fleet-util-title">معدل استغلال الأسطول</span>
-        <span id="flag-ops-fleet-util" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ops-fleet-util">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-fleet-util">--</span></span>
-    </div>
-</div>
-
-<!-- 3. Avg Breakdown Response -->
-<div id="card-ops-breakdown-response" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-breakdown-response-title">زمن الاستجابة للأعطال</span>
-        <span id="flag-ops-breakdown-response" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ops-breakdown-response">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-breakdown-response">--</span></span>
-    </div>
-</div>
-
-<!-- 4. Operational Violations -->
-<div id="card-ops-violations" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-violations-title">المخالفات التشغيلية</span>
-        <span id="flag-ops-violations" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ops-violations">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-violations">--</span></span>
-    </div>
-</div>
-
-<!-- 5. Passenger Satisfaction -->
-<div id="card-ops-passenger-satisfaction" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-passenger-satisfaction-title">معدل رضا الركاب</span>
-        <span id="flag-ops-passenger-satisfaction" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ops-passenger-satisfaction">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-passenger-satisfaction">--</span></span>
-    </div>
-</div>
-
-<!-- 6. Scheduled Trips -->
-<div id="card-ops-scheduled-trips" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-scheduled-trips-title">الرحلات اليومية المجدولة</span>
-        <span id="flag-ops-scheduled-trips" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ops-scheduled-trips">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-scheduled-trips">--</span></span>
-    </div>
-</div>
-
-<!-- 7. Fuel Efficiency Index -->
-<div id="card-ops-fuel-efficiency" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-fuel-efficiency-title">نسبة استهلاك الوقود المثالية</span>
-        <span id="flag-ops-fuel-efficiency" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ops-fuel-efficiency">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-fuel-efficiency">--</span></span>
-    </div>
-</div>
-
-<!-- 8. On-Time Performance (OTP) Rate -->
-<div id="card-ops-otp" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-otp-title">معدل الالتزام بالمواعيد (OTP)</span>
-        <span id="flag-ops-otp" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ops-otp">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-otp">--</span></span>
-    </div>
-</div>
-
-<!-- 9. Total Trips Executed -->
+<!-- 1. Total Trips -->
 <div id="card-ops-total-trips" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-total-trips-title">إجمالي الرحلات المنفذة</span>
-        <span id="flag-ops-total-trips" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-total-trips-title">إجمالي الرحلات المسجلة</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-ops-total-trips">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-total-trips">--</span></span>
     </div>
 </div>
 
-<!-- 10. Active Drivers Count -->
+<!-- 2. Cancelled Trips + Cancellation Rate -->
+<div id="card-ops-cancelled-trips" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-cancelled-trips-title">الرحلات الملغاة</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-cancelled-trips">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">معدل الإلغاء: <span id="val-ops-cancellation-rate">--</span></span>
+    </div>
+</div>
+
+<!-- 3. Active Drivers -->
 <div id="card-ops-active-drivers" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-active-drivers-title">عدد السائقين النشطين</span>
-        <span id="flag-ops-active-drivers" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-ops-active-drivers">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-active-drivers">--</span></span>
     </div>
 </div>
 
-<!-- 11. Fuel / Odometer Efficiency (Km per Liter) -->
-<div id="card-ops-fuel-odometer" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 4. Vehicles Deployed -->
+<div id="card-ops-vehicles-deployed" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-fuel-odometer-title">كفاءة الوقود / العداد (كم لكل لتر)</span>
-        <span id="flag-ops-fuel-odometer" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-vehicles-deployed-title">عدد الحافلات المستخدمة</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-ops-fuel-odometer">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-ops-fuel-odometer">--</span></span>
+        <span class="text-3xl font-black text-slate-900" id="val-ops-vehicles-deployed">--</span>
+    </div>
+</div>
+
+<!-- 5. Clients Served -->
+<div id="card-ops-clients-served" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-clients-served-title">عدد العملاء المخدومين</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-clients-served">--</span>
+    </div>
+</div>
+
+<!-- 6. Average Trips per Day -->
+<div id="card-ops-avg-trips-day" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-avg-trips-day-title">متوسط الرحلات اليومية</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-avg-trips-day">--</span>
     </div>
 </div>

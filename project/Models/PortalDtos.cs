@@ -166,7 +166,7 @@ namespace project.Models
         public string Make { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
         public int Year { get; set; }
-        public decimal Capacity { get; set; }
+        public decimal? Capacity { get; set; }
         public int Status { get; set; }
     }
 
@@ -506,44 +506,17 @@ namespace project.Models
         public int ActiveTourGuidesTarget { get; set; }
     }
 
+    // Mirrors NewFeature's OperationsKpisDto: six plain counts/rates computed straight from real
+    // Trip records, no illustrative targets and no metric the source dispatch sheets can't support.
     public class PortalOperationsKpisDto
     {
-        public double PlanAdherenceActual { get; set; }
-        public double PlanAdherenceTarget { get; set; }
-
-        public double FleetUtilizationActual { get; set; }
-        public double FleetUtilizationTarget { get; set; }
-
-        public double AvgBreakdownResponseActual { get; set; }
-        public double AvgBreakdownResponseTarget { get; set; }
-
-        public int ViolationsCountActual { get; set; }
-        public int ViolationsCountTarget { get; set; }
-
-        public double PassengerSatisfactionActual { get; set; }
-        public double PassengerSatisfactionTarget { get; set; }
-
-        public int ScheduledTripsActual { get; set; }
-        public int ScheduledTripsTarget { get; set; }
-
-        public double FuelEfficiencyActual { get; set; }
-        public double FuelEfficiencyTarget { get; set; }
-
-        // On-Time Performance (OTP) Rate (%) - computed from real Trip records
-        public double OnTimePerformanceActual { get; set; }
-        public double OnTimePerformanceTarget { get; set; }
-
-        // Total Trips Executed - from real Trip records
-        public int TotalTripsExecutedActual { get; set; }
-        public int TotalTripsExecutedTarget { get; set; }
-
-        // Active Drivers Count - distinct drivers with at least one trip
-        public int ActiveDriversCountActual { get; set; }
-        public int ActiveDriversCountTarget { get; set; }
-
-        // Fuel/Odometer Efficiency (Km per Liter)
-        public double FuelOdometerEfficiencyActual { get; set; }
-        public double FuelOdometerEfficiencyTarget { get; set; }
+        public int TotalTrips { get; set; }
+        public int CancelledTrips { get; set; }
+        public double CancellationRatePercent { get; set; }
+        public int ActiveDriversCount { get; set; }
+        public int VehiclesDeployedCount { get; set; }
+        public int ClientsServedCount { get; set; }
+        public double AverageTripsPerDay { get; set; }
     }
 
     public class PortalMaintenanceKpisDto
@@ -555,11 +528,19 @@ namespace project.Models
         public double ActiveBusesRate { get; set; }
         public double MaintenanceBacklogRate { get; set; }
         public List<PortalBusBreakdownFrequencyDto> TopFrequentBreakdowns { get; set; } = new();
+        public List<PortalBreakdownLocationDto> TopBreakdownLocations { get; set; } = new();
     }
 
     public class PortalBusBreakdownFrequencyDto
     {
         public string VehiclePlate { get; set; } = string.Empty;
         public int BreakdownCount { get; set; }
+    }
+
+    public class PortalBreakdownLocationDto
+    {
+        public string Location { get; set; } = string.Empty;
+        public int BreakdownCount { get; set; }
+        public double SharePercentage { get; set; }
     }
 }
