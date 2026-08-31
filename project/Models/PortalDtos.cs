@@ -336,6 +336,13 @@ namespace project.Models
 
         public double AvgTasksPerEmployeeActual { get; set; }
         public double AvgTasksPerEmployeeTarget { get; set; }
+
+        // Employee Retention Rate (نسبة بقاء الموظفين) breakdown - the cohort behind the headline
+        // RetentionRateActual above, so the dashboard can show what the percentage is measured over.
+        public int ActiveEmployeesActual { get; set; }
+        public int LeaversCountActual { get; set; }
+        public double TurnoverRateActual { get; set; }
+        public double TurnoverRateTarget { get; set; }
     }
 
     public class PortalItKpisDto
@@ -456,6 +463,17 @@ namespace project.Models
 
         public decimal WorkingCapitalActual { get; set; }
         public decimal WorkingCapitalTarget { get; set; }
+
+        // Plain revenue/expense figures the Finance department cards actually show. Unlike the
+        // EBITDA/ROA/working-capital fields above, each of these comes straight out of the uploaded
+        // ledger (date, statement, revenue-or-expense, category, amount) with no balance-sheet data.
+        public decimal TotalExpensesActual { get; set; }
+        public decimal NetProfitActual { get; set; }
+        public double ExpenseToRevenueRatioActual { get; set; }
+        public int TransactionsCountActual { get; set; }
+        public decimal AverageMonthlyRevenueActual { get; set; }
+        public string TopExpenseCategoryName { get; set; } = "--";
+        public decimal TopExpenseCategoryAmount { get; set; }
     }
 
     public class PortalCommercialKpisDto
@@ -517,6 +535,8 @@ namespace project.Models
         public int VehiclesDeployedCount { get; set; }
         public int ClientsServedCount { get; set; }
         public double AverageTripsPerDay { get; set; }
+        public int? RegisteredDriversCount { get; set; }
+        public double? SchedulingSuccessRatePercent { get; set; }
     }
 
     public class PortalMaintenanceKpisDto

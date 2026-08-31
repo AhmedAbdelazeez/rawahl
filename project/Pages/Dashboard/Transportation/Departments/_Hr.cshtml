@@ -1,10 +1,16 @@
 @model project.Pages.IndexModel
 
+<!-- Human Resources Department - Operational Analysis
+     8 basic indicators, every one of them computable from the employee roster uploaded through the
+     ERP's HR template (اسم الموظف / القسم / المسمى الوظيفي / رقم الجوال / تاريخ التعيين / الجنسية /
+     حالة الموظف / الراتب / التقييم). "متوسط المهام لكل موظف" was dropped: it reads from the task
+     module, not from the roster, so it stayed empty for every employee the sheet creates. -->
+
 <div id="grid-support-hr" class="hidden">
-    <!-- 1. Employee Retention Rate -->
+    <!-- 1. Employee Retention Rate (نسبة بقاء الموظفين) -->
     <div id="card-hr-ret" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
         <div class="flex justify-between items-start mb-2">
-            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-ret-label">نسبة استبقاء الموظفين</span>
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-ret-label">نسبة بقاء الموظفين</span>
             <span id="flag-hr-ret" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
         </div>
         <div class="my-2 flex flex-col items-center justify-center">
@@ -13,7 +19,52 @@
         </div>
     </div>
 
-    <!-- 2. Saudization Rate -->
+    <!-- 2. Total Employees -->
+    <div id="card-hr-count" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-count-label">إجمالي الموظفين</span>
+            <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">كشف الموظفين</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-count">--</span>
+        </div>
+    </div>
+
+    <!-- 3. Active Employees -->
+    <div id="card-hr-active" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-active-label">الموظفون على رأس العمل</span>
+            <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">كشف الموظفين</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-active">--</span>
+        </div>
+    </div>
+
+    <!-- 4. Leavers -->
+    <div id="card-hr-leavers" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-leavers-label">عدد المغادرين</span>
+            <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">كشف الموظفين</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-leavers">--</span>
+        </div>
+    </div>
+
+    <!-- 5. Turnover Rate -->
+    <div id="card-hr-turnover" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-turnover-label">معدل دوران الموظفين</span>
+            <span id="flag-hr-turnover" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        </div>
+        <div class="my-2 flex flex-col items-center justify-center">
+            <span class="text-3xl font-black text-slate-900" id="val-hr-turnover">--%</span>
+            <span class="text-[10px] text-slate-500 font-bold mt-1.5">الحد الأقصى: <span id="target-val-hr-turnover">10%</span></span>
+        </div>
+    </div>
+
+    <!-- 6. Saudization Rate -->
     <div id="card-hr-saudization" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
         <div class="flex justify-between items-start mb-2">
             <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-saudization-label">نسبة التوطين والسعودة</span>
@@ -25,19 +76,7 @@
         </div>
     </div>
 
-    <!-- 3. Total Employee Count -->
-    <div id="card-hr-count" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-        <div class="flex justify-between items-start mb-2">
-            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-count-label">إجمالي عدد الموظفين</span>
-            <span id="flag-hr-count" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-        </div>
-        <div class="my-2 flex flex-col items-center justify-center">
-            <span class="text-3xl font-black text-slate-900" id="val-hr-count">--</span>
-            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-count">20</span></span>
-        </div>
-    </div>
-
-    <!-- 4. Average Salary -->
+    <!-- 7. Average Salary -->
     <div id="card-hr-growth" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
         <div class="flex justify-between items-start mb-2">
             <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-growth-label">متوسط رواتب الموظفين</span>
@@ -49,19 +88,7 @@
         </div>
     </div>
 
-    <!-- 5. Average Assigned Tasks per Employee -->
-    <div id="card-hr-absence" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-        <div class="flex justify-between items-start mb-2">
-            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-absence-label">متوسط المهام لكل موظف</span>
-            <span id="flag-hr-absence" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-        </div>
-        <div class="my-2 flex flex-col items-center justify-center">
-            <span class="text-3xl font-black text-slate-900" id="val-hr-absence">--</span>
-            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-absence">4.0</span></span>
-        </div>
-    </div>
-
-    <!-- 6. Average Employee Rating -->
+    <!-- 8. Average Employee Rating -->
     <div id="card-hr-training" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
         <div class="flex justify-between items-start mb-2">
             <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-training-label">متوسط تقييم أداء الموظفين</span>
@@ -70,18 +97,6 @@
         <div class="my-2 flex flex-col items-center justify-center">
             <span class="text-3xl font-black text-slate-900" id="val-hr-training">--</span>
             <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-training">4.0</span></span>
-        </div>
-    </div>
-
-    <!-- 7. Average Evaluation Score -->
-    <div id="card-hr-appraisal" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-        <div class="flex justify-between items-start mb-2">
-            <span class="text-[11px] font-black text-slate-800" data-i18n="val-hr-appraisal-label">متوسط نتائج التقييمات</span>
-            <span id="flag-hr-appraisal" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-        </div>
-        <div class="my-2 flex flex-col items-center justify-center">
-            <span class="text-3xl font-black text-slate-900" id="val-hr-appraisal">--%</span>
-            <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-hr-appraisal">80%</span></span>
         </div>
     </div>
 </div>

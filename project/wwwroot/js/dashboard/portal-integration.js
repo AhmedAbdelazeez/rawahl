@@ -1546,16 +1546,10 @@
 
         const config = getKpiSetting(key);
         const defaultTargets = {
-            'comp-ops-rate': { target: 95, excellentMin: 95, goodMin: 85 },
-            'comp-violations-count': { target: 0, excellentMax: 0, goodMax: 3 },
+            'comp-open-violations': { target: 0, excellentMax: 0, goodMax: 3 },
             'comp-closure-rate': { target: 95, excellentMin: 95, goodMin: 85 },
             'comp-resolution-time': { target: 5, excellentMax: 5, goodMax: 8 },
-            'comp-contract-rate': { target: 95, excellentMin: 95, goodMin: 85 },
-            'comp-policies-rate': { target: 95, excellentMin: 95, goodMin: 85 },
-            'comp-audit-results': { target: 90, excellentMin: 90, goodMin: 80 },
-            'comp-critical-findings': { target: 0, excellentMax: 0, goodMax: 2 },
-            'comp-monthly-rate': { target: 95, excellentMin: 95, goodMin: 85 },
-            'comp-improvement-rate': { target: 90, excellentMin: 90, goodMin: 80 }
+            'comp-critical-violations': { target: 0, excellentMax: 0, goodMax: 2 }
         };
 
         const activeConfig = config || defaultTargets[key] || { target: 90, excellentMin: 90, goodMin: 80 };
@@ -1591,140 +1585,71 @@
         }
     }
 
+    // 8 basic indicators, every one a direct count/sum over the violations log uploaded through
+    // the ERP's Compliance template. The rate-style metrics that used to live here (contractual
+    // compliance, policy adherence, internal-audit passing, continuous improvement, and the monthly
+    // index averaged from them) read from tables that template doesn't feed, so they were removed
+    // rather than left reporting seeded figures.
     function renderComplianceKpis() {
         if (!complianceKpiData) return;
 
-        const violationsCount = complianceKpiData.registeredViolationsCountActual || 0;
+        const totalViolations = complianceKpiData.registeredViolationsCountActual || 0;
+        const openViolations = complianceKpiData.openViolationsCount || 0;
+        const closedViolations = complianceKpiData.closedViolationsCount || 0;
         const closureRate = complianceKpiData.violationsClosureRateActual || 0;
         const resolutionTime = complianceKpiData.averageViolationResolutionTimeActual || 0;
-        const contractRate = complianceKpiData.contractualComplianceRateActual || 0;
-        const policiesRate = complianceKpiData.policyAdherenceRateActual || 0;
-        const auditResults = complianceKpiData.internalAuditPassingRateActual || 0;
-        const criticalFindings = complianceKpiData.criticalAuditFindingsActual || 0;
-        const monthlyRate = complianceKpiData.monthlyOverallComplianceIndexActual || 0;
-        const improvementRate = complianceKpiData.continuousImprovementRateActual || 0;
-        const opsRate = Math.round((contractRate + policiesRate) / 2.0);
+        const criticalViolations = complianceKpiData.criticalViolationsCount || 0;
+        const totalFines = complianceKpiData.totalFinesAmount || 0;
+        const departmentsCount = complianceKpiData.departmentsWithViolationsCount || 0;
 
-        const opsTarget = getKpiTarget('comp-ops-rate', 95);
-        const violationsTarget = getKpiTarget('comp-violations-count', 0);
+        const openTarget = getKpiTarget('comp-open-violations', 0);
         const closureTarget = getKpiTarget('comp-closure-rate', 95);
         const resolutionTarget = getKpiTarget('comp-resolution-time', 5);
-        const contractTarget = getKpiTarget('comp-contract-rate', 95);
-        const policiesTarget = getKpiTarget('comp-policies-rate', 95);
-        const auditTarget = getKpiTarget('comp-audit-results', 90);
-        const criticalTarget = getKpiTarget('comp-critical-findings', 0);
-        const monthlyTarget = getKpiTarget('comp-monthly-rate', 95);
-        const improvementTarget = getKpiTarget('comp-improvement-rate', 90);
+        const criticalTarget = getKpiTarget('comp-critical-violations', 0);
 
-        setTextIfExists('val-comp-ops-rate', opsRate + '%');
-        setTextIfExists('val-comp-violations-count', violationsCount);
+        setTextIfExists('val-comp-total-violations', totalViolations);
+        setTextIfExists('val-comp-open-violations', openViolations);
+        setTextIfExists('val-comp-closed-violations', closedViolations);
         setTextIfExists('val-comp-closure-rate', closureRate + '%');
         setTextIfExists('val-comp-resolution-time', resolutionTime + ' يوم');
-        setTextIfExists('val-comp-contract-rate', contractRate + '%');
-        setTextIfExists('val-comp-policies-rate', policiesRate + '%');
-        setTextIfExists('val-comp-audit-results', auditResults + '%');
-        setTextIfExists('val-comp-critical-findings', criticalFindings);
-        setTextIfExists('val-comp-monthly-rate', monthlyRate + '%');
-        setTextIfExists('val-comp-improvement-rate', improvementRate + '%');
+        setTextIfExists('val-comp-critical-violations', criticalViolations);
+        setTextIfExists('val-comp-total-fines', formatCurrency(totalFines));
+        setTextIfExists('val-comp-departments-count', departmentsCount);
 
-        // Set target displays dynamically
-        setTextIfExists('target-val-comp-ops-rate', opsTarget + '%');
-        setTextIfExists('target-val-comp-violations-count', violationsTarget);
+        setTextIfExists('target-val-comp-open-violations', openTarget);
         setTextIfExists('target-val-comp-closure-rate', closureTarget + '%');
         setTextIfExists('target-val-comp-resolution-time', resolutionTarget + ' أيام');
-        setTextIfExists('target-val-comp-contract-rate', contractTarget + '%');
-        setTextIfExists('target-val-comp-policies-rate', policiesTarget + '%');
-        setTextIfExists('target-val-comp-audit-results', auditTarget + '%');
-        setTextIfExists('target-val-comp-critical-findings', criticalTarget);
-        setTextIfExists('target-val-comp-monthly-rate', monthlyTarget + '%');
-        setTextIfExists('target-val-comp-improvement-rate', improvementTarget + '%');
+        setTextIfExists('target-val-comp-critical-violations', criticalTarget);
 
-        updateKpiStatusFromConfig('flag-comp-ops-rate', opsRate, 'comp-ops-rate', false);
-        updateKpiStatusFromConfig('flag-comp-violations-count', violationsCount, 'comp-violations-count', true);
-        updateKpiStatusFromConfig('flag-comp-closure-rate', closureRate, 'comp-closure-rate', false);
-        updateKpiStatusFromConfig('flag-comp-resolution-time', resolutionTime, 'comp-resolution-time', true);
-        updateKpiStatusFromConfig('flag-comp-contract-rate', contractRate, 'comp-contract-rate', false);
-        updateKpiStatusFromConfig('flag-comp-policies-rate', policiesRate, 'comp-policies-rate', false);
-        updateKpiStatusFromConfig('flag-comp-audit-results', auditResults, 'comp-audit-results', false);
-        updateKpiStatusFromConfig('flag-comp-critical-findings', criticalFindings, 'comp-critical-findings', true);
-        updateKpiStatusFromConfig('flag-comp-monthly-rate', monthlyRate, 'comp-monthly-rate', false);
-        updateKpiStatusFromConfig('flag-comp-improvement-rate', improvementRate, 'comp-improvement-rate', false);
+        updateKpiFlagElementInverse('flag-comp-open-violations', openViolations, openTarget);
+        updateKpiFlagElement('flag-comp-closure-rate', closureRate, closureTarget);
+        updateKpiFlagElementInverse('flag-comp-resolution-time', resolutionTime, resolutionTarget);
+        updateKpiFlagElementInverse('flag-comp-critical-violations', criticalViolations, criticalTarget);
 
-        // Check visibility of the compliance department container
+        // Charts are only built while the department view is actually on screen: Chart.js sizes
+        // itself from the laid-out canvas, and one drawn inside a hidden container comes out
+        // zero-sized and never recovers.
         const viewDeptCompliance = document.getElementById('view-dept-compliance');
-        const isVisible = viewDeptCompliance && !viewDeptCompliance.classList.contains('hidden');
-        if (!isVisible) {
-            return; // Skip rendering charts if the tab is hidden
-        }
+        if (!viewDeptCompliance || viewDeptCompliance.classList.contains('hidden')) return;
 
         const isEn = document.documentElement.lang === 'en';
         const fontName = isEn ? 'Outfit' : 'Tajawal';
 
-        // 1. Update complianceDistributionChart (Doughnut)
+        // 1. Violations by severity - the backend already groups the uploaded log for us.
         const distCtx = document.getElementById('complianceDistributionChart');
         if (distCtx) {
-            // Safely destroy existing chart via Chart.js API
             const existingDistChart = Chart.getChart(distCtx);
-            if (existingDistChart) {
-                existingDistChart.destroy();
-            }
+            if (existingDistChart) existingDistChart.destroy();
 
-            let excellentCount = 0;
-            let goodCount = 0;
-            let poorCount = 0;
-
-            const defaultTargets = {
-                'comp-ops-rate': { target: 95, excellentMin: 95, goodMin: 85 },
-                'comp-violations-count': { target: 0, excellentMax: 0, goodMax: 3 },
-                'comp-closure-rate': { target: 95, excellentMin: 95, goodMin: 85 },
-                'comp-resolution-time': { target: 5, excellentMax: 5, goodMax: 8 },
-                'comp-contract-rate': { target: 95, excellentMin: 95, goodMin: 85 },
-                'comp-policies-rate': { target: 95, excellentMin: 95, goodMin: 85 },
-                'comp-audit-results': { target: 90, excellentMin: 90, goodMin: 80 },
-                'comp-critical-findings': { target: 0, excellentMax: 0, goodMax: 2 },
-                'comp-monthly-rate': { target: 95, excellentMin: 95, goodMin: 85 },
-                'comp-improvement-rate': { target: 90, excellentMin: 90, goodMin: 80 }
-            };
-
-            const checkStatus = (val, key, isInverse) => {
-                const config = getKpiSetting(key) || defaultTargets[key] || { target: 90, excellentMin: 90, goodMin: 80 };
-                if (isInverse) {
-                    const excellentMax = config.excellentMax !== undefined ? config.excellentMax : config.target;
-                    const goodMax = config.goodMax !== undefined ? config.goodMax : (excellentMax + 3);
-
-                    if (val <= excellentMax) excellentCount++;
-                    else if (val <= goodMax) goodCount++;
-                    else poorCount++;
-                } else {
-                    const excellentMin = config.excellentMin !== undefined ? config.excellentMin : config.target;
-                    const goodMin = config.goodMin !== undefined ? config.goodMin : (excellentMin - 10);
-
-                    if (val >= excellentMin) excellentCount++;
-                    else if (val >= goodMin) goodCount++;
-                    else poorCount++;
-                }
-            };
-
-            checkStatus(opsRate, 'comp-ops-rate', false);
-            checkStatus(violationsCount, 'comp-violations-count', true);
-            checkStatus(closureRate, 'comp-closure-rate', false);
-            checkStatus(resolutionTime, 'comp-resolution-time', true);
-            checkStatus(contractRate, 'comp-contract-rate', false);
-            checkStatus(policiesRate, 'comp-policies-rate', false);
-            checkStatus(auditResults, 'comp-audit-results', false);
-            checkStatus(criticalFindings, 'comp-critical-findings', true);
-            checkStatus(monthlyRate, 'comp-monthly-rate', false);
-            checkStatus(improvementRate, 'comp-improvement-rate', false);
-
-            const distData = [excellentCount, goodCount, poorCount];
+            const bySeverity = complianceKpiData.violationsBySeverity || [];
 
             window.complianceDistributionChartInstance = new Chart(distCtx.getContext('2d'), {
                 type: 'doughnut',
                 data: {
-                    labels: isEn ? ['Excellent 🟢', 'Good 🟡', 'Poor 🔴'] : ['ممتاز 🟢', 'جيد 🟡', 'ضعيف 🔴'],
+                    labels: bySeverity.map(point => point.label),
                     datasets: [{
-                        data: distData,
-                        backgroundColor: ['#10b981', '#f59e0b', '#f43f5e'],
+                        data: bySeverity.map(point => point.value),
+                        backgroundColor: bySeverity.map(point => point.color || '#94a3b8'),
                         borderWidth: 1
                     }]
                 },
@@ -1741,62 +1666,29 @@
             });
         }
 
-        // 2. Render Comparison Bar Chart (Actual vs Target)
+        // 2. Actual vs target, limited to the four indicators that have a target at all. The
+        //    remaining four cards are raw counts/sums with nothing meaningful to compare against.
         const compComparisonCtx = document.getElementById('compliance-chart-comparison');
         if (compComparisonCtx) {
-            // Safely destroy existing chart via Chart.js API
             const existingCompChart = Chart.getChart(compComparisonCtx);
-            if (existingCompChart) {
-                existingCompChart.destroy();
-            }
+            if (existingCompChart) existingCompChart.destroy();
 
             complianceChartComparison = new Chart(compComparisonCtx.getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: [
-                        'الالتزام التشغيلي',
-                        'المخالفات المسجلة',
-                        'إغلاق المخالفات',
-                        'زمن الحل (أيام)',
-                        'الالتزام بالعقود',
-                        'السياسات والإجراءات',
-                        'نتائج التدقيق',
-                        'الملاحظات الحرجة',
-                        'الامتثال الشهري',
-                        'التحسين المستمر'
-                    ],
+                    labels: isEn
+                        ? ['Closure rate (%)', 'Resolution time (days)', 'Open violations', 'Critical violations']
+                        : ['نسبة الإغلاق (%)', 'زمن المعالجة (أيام)', 'المخالفات المفتوحة', 'المخالفات الحرجة'],
                     datasets: [
                         {
-                            label: 'الفعلي',
-                            data: [
-                                opsRate,
-                                violationsCount,
-                                closureRate,
-                                resolutionTime,
-                                contractRate,
-                                policiesRate,
-                                auditResults,
-                                criticalFindings,
-                                monthlyRate,
-                                improvementRate
-                            ],
+                            label: isEn ? 'Actual' : 'الفعلي',
+                            data: [closureRate, resolutionTime, openViolations, criticalViolations],
                             backgroundColor: '#b0841a',
                             borderRadius: 4
                         },
                         {
-                            label: 'المستهدف التشغيلي',
-                            data: [
-                                opsTarget,
-                                violationsTarget,
-                                closureTarget,
-                                resolutionTarget,
-                                contractTarget,
-                                policiesTarget,
-                                auditTarget,
-                                criticalTarget,
-                                monthlyTarget,
-                                improvementTarget
-                            ],
+                            label: isEn ? 'Target' : 'المستهدف',
+                            data: [closureTarget, resolutionTarget, openTarget, criticalTarget],
                             backgroundColor: '#cbd5e1',
                             borderRadius: 4
                         }
@@ -1813,12 +1705,8 @@
                         }
                     },
                     scales: {
-                        x: {
-                            ticks: { font: { family: fontName, size: 9, weight: '700' } }
-                        },
-                        y: {
-                            ticks: { font: { family: fontName, size: 9 } }
-                        }
+                        x: { ticks: { font: { family: fontName, size: 9, weight: '700' } } },
+                        y: { ticks: { font: { family: fontName, size: 9 } } }
                     }
                 }
             });
@@ -1873,65 +1761,43 @@
         renderHrKpis();
     }
 
+    // 8 basic indicators off the employee roster uploaded through the ERP's HR template. The
+    // headline card is Employee Retention Rate (نسبة بقاء الموظفين), measured over the cohort that
+    // was already on the payroll twelve months ago; turnover is its complement over that same
+    // cohort, so the two cards always agree. "متوسط المهام لكل موظف" was dropped - it reads from
+    // the task module rather than the roster, so it stayed at zero for every uploaded employee.
     function renderHrKpis() {
         if (!hrKpiData) return;
 
-        // Dynamically align targets in app.js config
-        if (typeof defaultSettings !== 'undefined') {
-            defaultSettings['hr-ret'].target = hrKpiData.retentionRateTarget;
-            defaultSettings['hr-saudization'].target = hrKpiData.saudizationRateTarget;
-            defaultSettings['hr-count'].target = hrKpiData.totalEmployeesTarget;
-            defaultSettings['hr-growth'].target = Number(hrKpiData.avgSalaryTarget);
-            defaultSettings['hr-absence'].target = hrKpiData.avgTasksPerEmployeeTarget;
-            defaultSettings['hr-training'].target = hrKpiData.avgRatingTarget;
-            defaultSettings['hr-appraisal'].target = hrKpiData.avgEvaluationTarget;
-            
-            defaultSettings['hr-ret'].excellentMin = hrKpiData.retentionRateTarget * 0.95;
-            defaultSettings['hr-ret'].goodMin = hrKpiData.retentionRateTarget * 0.8;
-            defaultSettings['hr-saudization'].excellentMin = hrKpiData.saudizationRateTarget * 0.95;
-            defaultSettings['hr-saudization'].goodMin = hrKpiData.saudizationRateTarget * 0.8;
-            defaultSettings['hr-count'].excellentMin = hrKpiData.totalEmployeesTarget * 0.95;
-            defaultSettings['hr-count'].goodMin = hrKpiData.totalEmployeesTarget * 0.8;
-            defaultSettings['hr-growth'].excellentMin = Number(hrKpiData.avgSalaryTarget) * 0.95;
-            defaultSettings['hr-growth'].goodMin = Number(hrKpiData.avgSalaryTarget) * 0.8;
-            
-            defaultSettings['hr-absence'].excellentMin = hrKpiData.avgTasksPerEmployeeTarget * 0.95;
-            defaultSettings['hr-absence'].goodMin = hrKpiData.avgTasksPerEmployeeTarget * 0.8;
-            delete defaultSettings['hr-absence'].excellentMax;
-            delete defaultSettings['hr-absence'].goodMax;
-            
-            defaultSettings['hr-training'].excellentMin = hrKpiData.avgRatingTarget * 0.95;
-            defaultSettings['hr-training'].goodMin = hrKpiData.avgRatingTarget * 0.8;
-            defaultSettings['hr-appraisal'].excellentMin = hrKpiData.avgEvaluationTarget * 0.95;
-            defaultSettings['hr-appraisal'].goodMin = hrKpiData.avgEvaluationTarget * 0.8;
-        }
+        const retentionTarget = hrKpiData.retentionRateTarget || 90;
+        const turnoverTarget = hrKpiData.turnoverRateTarget || 10;
+        const saudizationTarget = hrKpiData.saudizationRateTarget || 35;
+        const salaryTarget = Number(hrKpiData.avgSalaryTarget) || 0;
+        const ratingTarget = hrKpiData.avgRatingTarget || 4;
 
         // Bind values
         setTextIfExists('val-hr-ret', hrKpiData.retentionRateActual + '%');
-        setTextIfExists('val-hr-saudization', hrKpiData.saudizationRateActual + '%');
         setTextIfExists('val-hr-count', hrKpiData.totalEmployeesActual);
-        setTextIfExists('val-hr-growth', hrKpiData.avgSalaryActual.toLocaleString(undefined, {minimumFractionDigits: 0}) + ' SAR');
-        setTextIfExists('val-hr-absence', hrKpiData.avgTasksPerEmployeeActual);
+        setTextIfExists('val-hr-active', hrKpiData.activeEmployeesActual);
+        setTextIfExists('val-hr-leavers', hrKpiData.leaversCountActual);
+        setTextIfExists('val-hr-turnover', hrKpiData.turnoverRateActual + '%');
+        setTextIfExists('val-hr-saudization', hrKpiData.saudizationRateActual + '%');
+        setTextIfExists('val-hr-growth', formatCurrency(hrKpiData.avgSalaryActual));
         setTextIfExists('val-hr-training', hrKpiData.avgRatingActual);
-        setTextIfExists('val-hr-appraisal', hrKpiData.avgEvaluationActual + '%');
 
         // Bind targets
-        setTextIfExists('target-val-hr-ret', hrKpiData.retentionRateTarget + '%');
-        setTextIfExists('target-val-hr-saudization', hrKpiData.saudizationRateTarget + '%');
-        setTextIfExists('target-val-hr-count', hrKpiData.totalEmployeesTarget);
-        setTextIfExists('target-val-hr-growth', hrKpiData.avgSalaryTarget.toLocaleString(undefined, {minimumFractionDigits: 0}) + ' SAR');
-        setTextIfExists('target-val-hr-absence', hrKpiData.avgTasksPerEmployeeTarget);
-        setTextIfExists('target-val-hr-training', hrKpiData.avgRatingTarget);
-        setTextIfExists('target-val-hr-appraisal', hrKpiData.avgEvaluationTarget + '%');
+        setTextIfExists('target-val-hr-ret', retentionTarget + '%');
+        setTextIfExists('target-val-hr-turnover', turnoverTarget + '%');
+        setTextIfExists('target-val-hr-saudization', saudizationTarget + '%');
+        setTextIfExists('target-val-hr-growth', formatCurrency(salaryTarget));
+        setTextIfExists('target-val-hr-training', ratingTarget);
 
         // Update flags
-        updateKpiStatusFromConfig('flag-hr-ret', hrKpiData.retentionRateActual, 'hr-ret', false);
-        updateKpiStatusFromConfig('flag-hr-saudization', hrKpiData.saudizationRateActual, 'hr-saudization', false);
-        updateKpiStatusFromConfig('flag-hr-count', hrKpiData.totalEmployeesActual, 'hr-count', false);
-        updateKpiStatusFromConfig('flag-hr-growth', hrKpiData.avgSalaryActual, 'hr-growth', false);
-        updateKpiStatusFromConfig('flag-hr-absence', hrKpiData.avgTasksPerEmployeeActual, 'hr-absence', false);
-        updateKpiStatusFromConfig('flag-hr-training', hrKpiData.avgRatingActual, 'hr-training', false);
-        updateKpiStatusFromConfig('flag-hr-appraisal', hrKpiData.avgEvaluationActual, 'hr-appraisal', false);
+        updateKpiFlagElement('flag-hr-ret', hrKpiData.retentionRateActual, retentionTarget);
+        updateKpiFlagElementInverse('flag-hr-turnover', hrKpiData.turnoverRateActual, turnoverTarget);
+        updateKpiFlagElement('flag-hr-saudization', hrKpiData.saudizationRateActual, saudizationTarget);
+        updateKpiFlagElement('flag-hr-growth', hrKpiData.avgSalaryActual, salaryTarget);
+        updateKpiFlagElement('flag-hr-training', hrKpiData.avgRatingActual, ratingTarget);
     }
 
     async function refreshItKpis() {
@@ -2217,37 +2083,35 @@
         isAvailable: () => portalData !== null
     };
 
+    // 8 basic indicators off the ledger uploaded through the ERP's Finance template. EBITDA margin,
+    // ROA, operating cash flow and working capital were removed from this view: they need asset,
+    // liability and depreciation figures a revenue/expense ledger doesn't carry, and were being
+    // derived from a hard-coded assumed asset base rather than from anything uploaded.
     function renderFinanceKpis() {
         if (!financeKpiData) return;
 
-        const isEn = document.documentElement.lang === 'en';
+        const marginTarget = financeKpiData.netProfitMarginTarget || 15;
+        const expenseRatioTarget = getKpiTarget('fin-expense-ratio', 85);
+        const topExpenseName = financeKpiData.topExpenseCategoryName || '--';
 
         // Bind values
         setTextIfExists('val-total-revenue', formatCurrency(financeKpiData.totalRevenueActual));
-        setTextIfExists('val-ebitda-margin', financeKpiData.ebitdaMarginActual.toFixed(1) + '%');
+        setTextIfExists('val-total-expenses', formatCurrency(financeKpiData.totalExpensesActual));
+        setTextIfExists('val-net-profit', formatCurrency(financeKpiData.netProfitActual));
         setTextIfExists('val-net-profit-margin', financeKpiData.netProfitMarginActual.toFixed(1) + '%');
-        setTextIfExists('val-operating-cashflow', formatCurrency(financeKpiData.operatingCashFlowActual));
-        setTextIfExists('val-roa', financeKpiData.returnOnAssetsActual.toFixed(1) + '%');
-        setTextIfExists('val-budget-variance', financeKpiData.budgetVarianceRateActual.toFixed(1) + '%');
-        setTextIfExists('val-working-capital', formatCurrency(financeKpiData.workingCapitalActual));
+        setTextIfExists('val-expense-ratio', financeKpiData.expenseToRevenueRatioActual.toFixed(1) + '%');
+        setTextIfExists('val-avg-monthly-revenue', formatCurrency(financeKpiData.averageMonthlyRevenueActual));
+        setTextIfExists('val-top-expense', formatCurrency(financeKpiData.topExpenseCategoryAmount));
+        setTextIfExists('val-top-expense-name', topExpenseName);
+        setTextIfExists('val-transactions-count', financeKpiData.transactionsCountActual);
 
         // Bind targets
-        setTextIfExists('target-val-total-revenue', formatCurrency(financeKpiData.totalRevenueTarget));
-        setTextIfExists('target-val-ebitda-margin', financeKpiData.ebitdaMarginTarget + '%');
-        setTextIfExists('target-val-net-profit-margin', financeKpiData.netProfitMarginTarget + '%');
-        setTextIfExists('target-val-operating-cashflow', formatCurrency(financeKpiData.operatingCashFlowTarget));
-        setTextIfExists('target-val-roa', financeKpiData.returnOnAssetsTarget + '%');
-        setTextIfExists('target-val-budget-variance', financeKpiData.budgetVarianceRateTarget + '%');
-        setTextIfExists('target-val-working-capital', formatCurrency(financeKpiData.workingCapitalTarget));
+        setTextIfExists('target-val-net-profit-margin', marginTarget + '%');
+        setTextIfExists('target-val-expense-ratio', expenseRatioTarget + '%');
 
         // Update flags
-        updateKpiFlagElement('flag-total-revenue', financeKpiData.totalRevenueActual, financeKpiData.totalRevenueTarget);
-        updateKpiFlagElement('flag-ebitda-margin', financeKpiData.ebitdaMarginActual, financeKpiData.ebitdaMarginTarget);
-        updateKpiFlagElement('flag-net-profit-margin', financeKpiData.netProfitMarginActual, financeKpiData.netProfitMarginTarget);
-        updateKpiFlagElement('flag-operating-cashflow', financeKpiData.operatingCashFlowActual, financeKpiData.operatingCashFlowTarget);
-        updateKpiFlagElement('flag-roa', financeKpiData.returnOnAssetsActual, financeKpiData.returnOnAssetsTarget);
-        updateKpiFlagElementInverse('flag-budget-variance', financeKpiData.budgetVarianceRateActual, financeKpiData.budgetVarianceRateTarget);
-        updateKpiFlagElement('flag-working-capital', financeKpiData.workingCapitalActual, financeKpiData.workingCapitalTarget);
+        updateKpiFlagElement('flag-net-profit-margin', financeKpiData.netProfitMarginActual, marginTarget);
+        updateKpiFlagElementInverse('flag-expense-ratio', financeKpiData.expenseToRevenueRatioActual, expenseRatioTarget);
     }
 
     function renderCommercialKpis() {
@@ -2329,6 +2193,9 @@
         setTextIfExists('val-ops-vehicles-deployed', operationsKpiData.vehiclesDeployedCount);
         setTextIfExists('val-ops-clients-served', operationsKpiData.clientsServedCount);
         setTextIfExists('val-ops-avg-trips-day', operationsKpiData.averageTripsPerDay.toFixed(1) + (isEn ? '/day' : ' رحلة/يوم'));
+        setTextIfExists('val-ops-registered-drivers', operationsKpiData.registeredDriversCount ?? '--');
+        setTextIfExists('val-ops-scheduling-rate', operationsKpiData.schedulingSuccessRatePercent != null
+            ? operationsKpiData.schedulingSuccessRatePercent.toFixed(1) + '%' : '--');
     }
 
 

@@ -1,16 +1,12 @@
 // Main Application Dashboard Logic, Routing, Filters, and Simulator
 // Default Settings threshold configurations
 const defaultSettings = {
-    'comp-ops-rate': { target: 95, excellentMin: 95, goodMin: 90 },
-    'comp-violations-count': { target: 0, excellentMax: 0, goodMax: 3 },
+    // Compliance - only the four indicators that have a target; the other four cards on the
+    // department view are raw counts/sums with nothing to compare against.
+    'comp-open-violations': { target: 0, excellentMax: 0, goodMax: 3 },
     'comp-closure-rate': { target: 95, excellentMin: 95, goodMin: 90 },
     'comp-resolution-time': { target: 5, excellentMax: 3, goodMax: 5 },
-    'comp-contract-rate': { target: 95, excellentMin: 95, goodMin: 90 },
-    'comp-policies-rate': { target: 95, excellentMin: 95, goodMin: 90 },
-    'comp-audit-results': { target: 90, excellentMin: 90, goodMin: 80 },
-    'comp-critical-findings': { target: 0, excellentMax: 0, goodMax: 1 },
-    'comp-monthly-rate': { target: 95, excellentMin: 95, goodMin: 90 },
-    'comp-improvement-rate': { target: 90, excellentMin: 90, goodMin: 80 },
+    'comp-critical-violations': { target: 0, excellentMax: 0, goodMax: 1 },
 
     'rev-growth': { target: 150, excellentMin: 142.5, goodMin: 112.5 },
     'ebitda': { target: 35, excellentMin: 33.25, goodMin: 26.25 },
@@ -26,9 +22,11 @@ const defaultSettings = {
     'hr-saudization': { target: 35, excellentMin: 33.25, goodMin: 26.25 },
     'hr-count': { target: 1500, excellentMin: 1500, goodMin: 1200 },
     'hr-growth': { target: 10, excellentMin: 10, goodMin: 5 },
-    'hr-absence': { target: 3.0, excellentMax: 3.0, goodMax: 5.0 },
-    'hr-training': { target: 25, excellentMin: 25, goodMin: 20 },
-    'hr-appraisal': { target: 95, excellentMin: 95, goodMin: 90 },
+    'hr-turnover': { target: 10, excellentMax: 10, goodMax: 15 },
+    'hr-training': { target: 4, excellentMin: 4, goodMin: 3 },
+    // Finance department view - the two indicators there that have a target.
+    'net-profit-margin': { target: 15, excellentMin: 15, goodMin: 10 },
+    'expense-ratio': { target: 85, excellentMax: 85, goodMax: 92 },
     'it-autom': { target: 80, excellentMin: 76.0, goodMin: 60.0 },
     'it-uptime': { target: 99.9, excellentMin: 99.9, goodMin: 99.0 },
     'it-ticket-time': { target: 2, excellentMax: 2, goodMax: 4 },
@@ -225,7 +223,7 @@ function evaluateFlag(key, value) {
     if (!config) return 'excellent';
 
     let isInverse = false;
-    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-violations-count' || key === 'comp-resolution-time' || key === 'comp-critical-findings' || key === 'tourism-cancel-rate' || key === 'tourism-lead-time' || key === 'ops-breakdown-response' || key === 'ops-violations' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-absence', 'it-ticket-time', 'it-incidents', 'proc-cycle', 'mohu-exp-5', 'mohu-exp-9', 'mohu-exp-10', 'mohu-comp-1', 'mohu-comp-8'].includes(key)) isInverse = true;
+    if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || key === 'comp-open-violations' || key === 'comp-resolution-time' || key === 'comp-critical-violations' || key === 'expense-ratio' || key === 'tourism-cancel-rate' || key === 'tourism-lead-time' || key === 'ops-breakdown-response' || key === 'ops-violations' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-turnover', 'it-ticket-time', 'it-incidents', 'proc-cycle', 'mohu-exp-5', 'mohu-exp-9', 'mohu-exp-10', 'mohu-comp-1', 'mohu-comp-8'].includes(key)) isInverse = true;
 
     if (isInverse) {
         if (value <= config.excellentMax) return 'excellent';
@@ -262,7 +260,7 @@ function applyFlagStyle(flagId, key, value) {
 
 // Mappings for SPA view sectors
 const sectorMapping = {
-    'dept-compliance': ['comp-ops-rate', 'comp-violations-count', 'comp-closure-rate', 'comp-resolution-time', 'comp-contract-rate', 'comp-policies-rate', 'comp-audit-results', 'comp-critical-findings', 'comp-monthly-rate', 'comp-improvement-rate'],
+    'dept-compliance': ['comp-total-violations', 'comp-open-violations', 'comp-closed-violations', 'comp-closure-rate', 'comp-resolution-time', 'comp-critical-violations', 'comp-total-fines', 'comp-departments-count'],
 
     'contracts': ['new-contracts', 'cust-ret', 'audit-comp', 'contracts-renewal-rate', 'contracts-turnaround-time', 'contracts-legal-disputes'],
     'hajj': ['fleet-ready', 'ops-plan', 'nps', 'hajj-driver-adherence', 'hajj-fuel-efficiency', 'hajj-safety-training-rate'],
@@ -274,15 +272,15 @@ const sectorMapping = {
     'service-leasing': ['rental-fleet-utilization', 'rental-revenue-per-bus', 'rental-contract-satisfaction', 'rental-maintenance-adherence', 'rental-safety-compliance', 'rental-active-contracts'],
 
     'dept-tourism': ['tourism-hotel-occupancy', 'tourism-cancel-rate', 'tourism-guest-rating', 'tourism-tours-completed', 'tourism-revpar', 'tourism-lead-time', 'tourism-active-guides'],
-    'dept-ops': ['ops-total-trips', 'ops-cancelled-trips', 'ops-active-drivers', 'ops-vehicles-deployed', 'ops-clients-served', 'ops-avg-trips-day'],
+    'dept-ops': ['ops-total-trips', 'ops-cancelled-trips', 'ops-active-drivers', 'ops-vehicles-deployed', 'ops-clients-served', 'ops-avg-trips-day', 'ops-registered-drivers', 'ops-scheduling-rate'],
     'dept-commercial': ['customer-retention', 'new-contracts', 'contract-renewal-rate', 'contract-turnaround', 'legal-disputes', 'customer-acquisition-cost', 'contract-value-growth'],
     'dept-sales': ['sales-active-customers', 'sales-new-customers', 'sales-retention', 'sales-growth', 'sales-top-segment', 'sales-fleet-buses', 'sales-fleet-seats', 'sales-avg-seats', 'sales-churned', 'sales-daily-ops'],
     'dept-fleet': ['fleet-total', 'fleet-available', 'fleet-active', 'fleet-maintenance', 'fleet-inactive', 'fleet-util', 'fleet-ready', 'fleet-total-trips', 'fleet-completed-trips', 'fleet-maint-rate', 'fleet-mttr', 'fleet-parts-cost', 'fleet-total-seating', 'fleet-avg-age', 'fleet-modernization', 'fleet-type-variety', 'fleet-avg-capacity'],
     'dept-maintenance': ['dm-mttr', 'dm-breakdowns', 'dm-availability', 'dm-parts-cost', 'dm-backlog', 'dm-active-rate', 'dm-workorders'],
-    'dept-hr': ['hr-ret', 'hr-saudization', 'hr-count', 'hr-growth', 'hr-absence', 'hr-training', 'hr-appraisal'],
+    'dept-hr': ['hr-ret', 'hr-count', 'hr-active', 'hr-leavers', 'hr-turnover', 'hr-saudization', 'hr-growth', 'hr-training'],
     'dept-it': ['it-autom', 'it-uptime', 'it-ticket-time', 'it-incidents', 'it-satisfaction', 'it-backup', 'it-projects'],
     'dept-procurement': ['proc-cycle', 'proc-savings', 'proc-supplier', 'proc-budget', 'proc-spare-parts', 'proc-inventory', 'proc-contracts'],
-    'dept-finance': ['total-revenue', 'ebitda-margin', 'net-profit-margin', 'operating-cashflow', 'roa', 'budget-variance', 'working-capital'],
+    'dept-finance': ['total-revenue', 'total-expenses', 'net-profit', 'net-profit-margin', 'expense-ratio', 'avg-monthly-revenue', 'top-expense', 'transactions-count'],
     'dept-strategy': ['strat-goals', 'strat-init', 'risk-handling', 'gov-maturity', 'strat-goals-achieve', 'strat-milestones', 'strat-budget'],
     'dept-audit': ['audit-plan-execution', 'operational-compliance-rate', 'total-audited-processes', 'passed-processes-count', 'critical-findings-count', 'recommendations-count', 'risk-mitigation-rate'],
     'dept-hse': ['hse-ltifr', 'hse-accidents', 'audit-comp'],
@@ -298,16 +296,14 @@ const sectorMapping = {
 };
 
 const cardOriginalGrids = {
-    'comp-ops-rate': 'grid-compliance',
-    'comp-violations-count': 'grid-compliance',
+    'comp-total-violations': 'grid-compliance',
+    'comp-open-violations': 'grid-compliance',
+    'comp-closed-violations': 'grid-compliance',
     'comp-closure-rate': 'grid-compliance',
     'comp-resolution-time': 'grid-compliance',
-    'comp-contract-rate': 'grid-compliance',
-    'comp-policies-rate': 'grid-compliance',
-    'comp-audit-results': 'grid-compliance',
-    'comp-critical-findings': 'grid-compliance',
-    'comp-monthly-rate': 'grid-compliance',
-    'comp-improvement-rate': 'grid-compliance',
+    'comp-critical-violations': 'grid-compliance',
+    'comp-total-fines': 'grid-compliance',
+    'comp-departments-count': 'grid-compliance',
 
     'rev-growth': 'grid-finance',
     'ebitda': 'grid-finance',
@@ -320,12 +316,13 @@ const cardOriginalGrids = {
     'fleet-ready': 'grid-ops',
     'fleet-util': 'grid-ops',
     'hr-ret': 'grid-support-hr',
-    'hr-saudization': 'grid-support-hr',
     'hr-count': 'grid-support-hr',
+    'hr-active': 'grid-support-hr',
+    'hr-leavers': 'grid-support-hr',
+    'hr-turnover': 'grid-support-hr',
+    'hr-saudization': 'grid-support-hr',
     'hr-growth': 'grid-support-hr',
-    'hr-absence': 'grid-support-hr',
     'hr-training': 'grid-support-hr',
-    'hr-appraisal': 'grid-support-hr',
     'it-autom': 'grid-support-it',
     'it-uptime': 'grid-support-it',
     'it-ticket-time': 'grid-support-it',
@@ -1022,7 +1019,7 @@ function buildSectorChart(sectorKey) {
                 const targetVal = kpiSettings[key] ? kpiSettings[key].target : 0;
                 const unit = valText.replace(/[0-9.,\-+]/g, '').trim();
 
-                const isInverse = ['hse-ltifr', 'hse-accidents', 'visa-processing-time', 'hotel-cancel-rate', 'comp-violations-count', 'comp-resolution-time', 'comp-critical-findings', 'visa-data-error-rate', 'visa-complaints-rate', 'hotel-overbooking-incidents', 'meal-waste-percentage', 'hospitality-complaints', 'ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-turnover', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key);
+                const isInverse = ['hse-ltifr', 'hse-accidents', 'visa-processing-time', 'hotel-cancel-rate', 'comp-open-violations', 'comp-resolution-time', 'comp-critical-violations', 'expense-ratio', 'visa-data-error-rate', 'visa-complaints-rate', 'hotel-overbooking-incidents', 'meal-waste-percentage', 'hospitality-complaints', 'ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-turnover', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key);
                 let achievement = 100;
                 if (isInverse) {
                     if (targetVal === 0) {
@@ -1254,13 +1251,9 @@ window.simulateKpiData = function(initial) {
     safeSetText('val-fleet-ready', fleetReady + '%');
     safeSetText('val-fleet-util', fleetUtil + '%');
     
-    safeSetText('val-hr-ret', hrRet + '%');
-    safeSetText('val-hr-saudization', saudization + '%');
-    safeSetText('val-hr-count', '1,420' + (isEn ? ' employees' : ' موظف'));
-    safeSetText('val-hr-growth', '8.5%');
-    safeSetText('val-hr-absence', '2.8%');
-    safeSetText('val-hr-training', '24' + (isEn ? ' hrs' : ' ساعة'));
-    safeSetText('val-hr-appraisal', '92%');
+    // HR department cards (retention, headcount, leavers, turnover, saudization, salary, rating)
+    // are written by portal-integration.js from the live ERP employee roster - the simulator must
+    // not overwrite them with demo figures.
 
     safeSetText('val-it-autom', itAutom + '%');
     safeSetText('val-it-uptime', '99.5%');
@@ -1378,13 +1371,7 @@ window.simulateKpiData = function(initial) {
     trackFlag('ops-plan', opsPlan);
     trackFlag('fleet-ready', fleetReady);
     trackFlag('fleet-util', fleetUtil);
-    trackFlag('hr-ret', hrRet);
-    trackFlag('hr-saudization', saudization);
-    trackFlag('hr-count', 1420);
-    trackFlag('hr-growth', 8.5);
-    trackFlag('hr-absence', 2.8);
-    trackFlag('hr-training', 24);
-    trackFlag('hr-appraisal', 92);
+
     trackFlag('it-autom', itAutom);
     trackFlag('hse-ltifr', ltifr);
     trackFlag('hse-accidents', accidents);
@@ -1438,16 +1425,7 @@ window.simulateKpiData = function(initial) {
     trackFlag('rental-maintenance-adherence', rentalMaintenanceAdherence);
     trackFlag('rental-safety-compliance', rentalSafetyCompliance);
     trackFlag('rental-active-contracts', rentalActiveContracts);
-    trackFlag('comp-ops-rate', 94.5);
-    trackFlag('comp-violations-count', 14);
-    trackFlag('comp-closure-rate', 92.8);
-    trackFlag('comp-resolution-time', 3.2);
-    trackFlag('comp-contract-rate', 97.5);
-    trackFlag('comp-policies-rate', 95.0);
-    trackFlag('comp-audit-results', 91.5);
-    trackFlag('comp-critical-findings', 2);
-    trackFlag('comp-monthly-rate', 94.0);
-    trackFlag('comp-improvement-rate', 88.5);
+    // Compliance flags come from the live violations log via portal-integration.js.
 
     // 20 new KPIs track flags
     trackFlag('ops-d-15', opsD15);
@@ -1484,13 +1462,7 @@ window.simulateKpiData = function(initial) {
         applyFlagStyle('flag-fleet-ready', 'fleet-ready', fleetReady);
         applyFlagStyle('flag-fleet-util', 'fleet-util', fleetUtil);
         
-        applyFlagStyle('flag-hr-ret', 'hr-ret', hrRet);
-        applyFlagStyle('flag-hr-saudization', 'hr-saudization', saudization);
-        applyFlagStyle('flag-hr-count', 'hr-count', 1420);
-        applyFlagStyle('flag-hr-growth', 'hr-growth', 8.5);
-        applyFlagStyle('flag-hr-absence', 'hr-absence', 2.8);
-        applyFlagStyle('flag-hr-training', 'hr-training', 24);
-        applyFlagStyle('flag-hr-appraisal', 'hr-appraisal', 92);
+
 
         applyFlagStyle('flag-it-autom', 'it-autom', itAutom);
         applyFlagStyle('flag-it-uptime', 'it-uptime', 99.5);
@@ -1560,16 +1532,7 @@ window.simulateKpiData = function(initial) {
         applyFlagStyle('flag-rental-maintenance-adherence', 'rental-maintenance-adherence', rentalMaintenanceAdherence);
         applyFlagStyle('flag-rental-safety-compliance', 'rental-safety-compliance', rentalSafetyCompliance);
         applyFlagStyle('flag-rental-active-contracts', 'rental-active-contracts', rentalActiveContracts);
-        applyFlagStyle('flag-comp-ops-rate', 'comp-ops-rate', 94.5);
-        applyFlagStyle('flag-comp-violations-count', 'comp-violations-count', 14);
-        applyFlagStyle('flag-comp-closure-rate', 'comp-closure-rate', 92.8);
-        applyFlagStyle('flag-comp-resolution-time', 'comp-resolution-time', 3.2);
-        applyFlagStyle('flag-comp-contract-rate', 'comp-contract-rate', 97.5);
-        applyFlagStyle('flag-comp-policies-rate', 'comp-policies-rate', 95.0);
-        applyFlagStyle('flag-comp-audit-results', 'comp-audit-results', 91.5);
-        applyFlagStyle('flag-comp-critical-findings', 'comp-critical-findings', 2);
-        applyFlagStyle('flag-comp-monthly-rate', 'comp-monthly-rate', 94.0);
-        applyFlagStyle('flag-comp-improvement-rate', 'comp-improvement-rate', 88.5);
+
 
         // 20 new KPIs flags style apply
         applyFlagStyle('flag-ops-d-15', 'ops-d-15', opsD15);

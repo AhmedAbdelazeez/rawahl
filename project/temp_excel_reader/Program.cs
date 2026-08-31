@@ -1,93 +1,50 @@
-using MiniExcelLibs;
-using System;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
+using ClosedXML.Excel;
 
-namespace temp_excel_reader
+string outDir = @"C:\Users\Ahmed-Abdelaziz\source\repos\NewFeature\NewFeature";
+
+// ---- Template 1: Official Drivers roster ----
+using (var wb = new XLWorkbook())
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-            try
-            {
-                string onedrivePath = @"..\OneDrive_2_8-21-2026";
-                string outputPath = @"..\scratch\onedrive_sheets_summary.txt";
-                
-                using (var writer = new StreamWriter(outputPath, false, System.Text.Encoding.UTF8))
-                {
-                    writer.WriteLine("=== ONEDRIVE SHEETS SUMMARY ===");
-                    writer.WriteLine($"Generated at: {DateTime.Now}");
-                    writer.WriteLine();
+    var ws = wb.Worksheets.Add("السائقين الرسميين");
+    string[] headers = { "number", "Employee", "IqamaNoForBank", "نهاية كارت التشغيل", "تاريخ انتهاء الرخصة",
+        "Arabic Name", "Employee Name", "Nationality Id", "مكان العمل", "مشاركة الحج", "عمود2" };
+    for (int i = 0; i < headers.Length; i++) ws.Cell(1, i + 1).Value = headers[i];
 
-                    var files = Directory.GetFiles(onedrivePath, "*.*", SearchOption.AllDirectories)
-                        .Where(f => (f.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase) || 
-                                     f.EndsWith(".xltx", StringComparison.OrdinalIgnoreCase)) &&
-                                    !f.Contains("Z IGNORE ME"))
-                        .OrderBy(f => f)
-                        .ToList();
+    object[][] rows = {
+        new object[] { 1, "R100001", "2200000001", "05-10-2026", "", "مثال اسم السائق الأول", "EXAMPLE DRIVER ONE", "مصري", "سائق حافله", "", "" },
+        new object[] { 2, "R100002", "2200000002", "05-10-2026", "12-08-2027", "مثال اسم السائق الثاني", "EXAMPLE DRIVER TWO", "سعودي", "سائق حافله", "", "" },
+    };
+    for (int r = 0; r < rows.Length; r++)
+        for (int c = 0; c < rows[r].Length; c++)
+            ws.Cell(r + 2, c + 1).Value = XLCellValue.FromObject(rows[r][c]);
 
-                    writer.WriteLine($"Found {files.Count} Excel files.");
-                    writer.WriteLine();
-
-                    foreach (var file in files)
-                    {
-                        writer.WriteLine(new string('=', 80));
-                        writer.WriteLine($"FILE: {Path.GetRelativePath(onedrivePath, file)}");
-                        writer.WriteLine(new string('=', 80));
-
-                        try
-                        {
-                            var sheets = MiniExcel.GetSheetNames(file);
-                            writer.WriteLine($"Sheets: {string.Join(", ", sheets)}");
-                            writer.WriteLine();
-
-                            foreach (var sheet in sheets)
-                            {
-                                writer.WriteLine($"  --- Sheet: {sheet} ---");
-                                var rows = MiniExcel.Query(file, useHeaderRow: false, sheetName: sheet).ToList();
-                                writer.WriteLine($"  Total Rows: {rows.Count}");
-                                
-                                if (rows.Count == 0)
-                                {
-                                    writer.WriteLine("  No data.");
-                                    writer.WriteLine();
-                                    continue;
-                                }
-
-                                int previewCount = Math.Min(rows.Count, 5);
-                                writer.WriteLine($"  Previewing first {previewCount} rows:");
-                                for (int i = 0; i < previewCount; i++)
-                                {
-                                    var row = (IDictionary<string, object>)rows[i];
-                                    var parts = new List<string>();
-                                    foreach (var kvp in row)
-                                    {
-                                        if (kvp.Value != null && !string.IsNullOrWhiteSpace(kvp.Value.ToString()))
-                                        {
-                                            parts.Add($"[{kvp.Key}]: '{kvp.Value}'");
-                                        }
-                                    }
-                                    writer.WriteLine($"    Row {i + 1}: {string.Join(" | ", parts)}");
-                                }
-                                writer.WriteLine();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            writer.WriteLine($"  Error reading file: {ex.Message}");
-                        }
-                        writer.WriteLine();
-                    }
-                }
-                Console.WriteLine("Done! Check scratch/onedrive_sheets_summary.txt");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception: {ex.Message}");
-            }
-        }
-    }
+    ws.Columns().AdjustToContents();
+    wb.SaveAs(Path.Combine(outDir, "wwwroot", "templates", "Operations_Drivers_Template.xlsx"));
+    wb.SaveAs(Path.Combine(outDir, "Templates", "Operations_Drivers_Template.xlsx"));
 }
+
+// ---- Template 2: Route Scheduling ----
+using (var wb = new XLWorkbook())
+{
+    var ws = wb.Worksheets.Add("ورقة1");
+    string[] headers = { "تاريخ التنفيذ", "رقم أمر الايجار", "وقت التنفيذ", "مرجع العميل", "المنفذ", "طلب العميل",
+        "أسم العميل", "كود الاتجاة", "اسم الصنف", "ملاحظات", "نوع الحافلة", "نوع الحافلة2", "مكان التشغيل",
+        "العدد القابل للجدولة", "الجدولة" };
+    for (int i = 0; i < headers.Length; i++) ws.Cell(1, i + 1).Value = headers[i];
+
+    object[][] rows = {
+        new object[] { "8/20/2026", "00099999_33", "0:00:00", "مثال مرجع", "متعدد", "خارجي", "شركة مثال للسياحة", "L100",
+            "مثال اسم الصنف", "", "CityYT2020", "CityYT2020", "المدينة", 1, 1 },
+        new object[] { "8/20/2026", "00099998_33", "0:00:00", "مثال مرجع 2", "داخلى", "صلوات", "شركة مثال أخرى", "L101",
+            "صلوات صباحية", "", "CityYT2020", "CityYT2020", "Salawat", 2, "غير مجدول" },
+    };
+    for (int r = 0; r < rows.Length; r++)
+        for (int c = 0; c < rows[r].Length; c++)
+            ws.Cell(r + 2, c + 1).Value = XLCellValue.FromObject(rows[r][c]);
+
+    ws.Columns().AdjustToContents();
+    wb.SaveAs(Path.Combine(outDir, "wwwroot", "templates", "Operations_RouteSchedule_Template.xlsx"));
+    wb.SaveAs(Path.Combine(outDir, "Templates", "Operations_RouteSchedule_Template.xlsx"));
+}
+
+Console.WriteLine("Templates written.");

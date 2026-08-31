@@ -1,13 +1,14 @@
 @model project.Pages.IndexModel
 
-<!-- Operations Department KPI Cards (6 basic KPIs, computed directly from real uploaded trip/
-     dispatch data - no illustrative targets, no metric the source data can't actually support) -->
+<!-- Operations Department KPI Cards (8 basic KPIs, computed directly from real uploaded trip/
+     dispatch, drivers roster and route-scheduling data - no illustrative targets, no metric the
+     source data can't actually support) -->
 
 <!-- 1. Total Trips -->
 <div id="card-ops-total-trips" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-total-trips-title">إجمالي الرحلات المسجلة</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">سجل التشغيل</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-ops-total-trips">--</span>
@@ -18,7 +19,7 @@
 <div id="card-ops-cancelled-trips" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-cancelled-trips-title">الرحلات الملغاة</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">سجل التشغيل</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-ops-cancelled-trips">--</span>
@@ -30,7 +31,7 @@
 <div id="card-ops-active-drivers" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-active-drivers-title">عدد السائقين النشطين</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200">سجل التشغيل</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-ops-active-drivers">--</span>
@@ -41,7 +42,7 @@
 <div id="card-ops-vehicles-deployed" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-vehicles-deployed-title">عدد الحافلات المستخدمة</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">سجل التشغيل</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-ops-vehicles-deployed">--</span>
@@ -52,7 +53,7 @@
 <div id="card-ops-clients-served" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-clients-served-title">عدد العملاء المخدومين</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">سجل التشغيل</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-ops-clients-served">--</span>
@@ -63,9 +64,31 @@
 <div id="card-ops-avg-trips-day" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-avg-trips-day-title">متوسط الرحلات اليومية</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل التشغيل</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">سجل التشغيل</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-ops-avg-trips-day">--</span>
+    </div>
+</div>
+
+<!-- 7. Registered Drivers (from official drivers compliance roster) -->
+<div id="card-ops-registered-drivers" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-registered-drivers-title">عدد السائقين المسجلين رسمياً</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">قائمة السائقين</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-registered-drivers">--</span>
+    </div>
+</div>
+
+<!-- 8. Scheduling Success Rate (from route scheduling requests) -->
+<div id="card-ops-scheduling-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-ops-scheduling-rate-title">معدل نجاح الجدولة</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-200">جدولة الخطوط</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-ops-scheduling-rate">--</span>
     </div>
 </div>
