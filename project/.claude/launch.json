@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "NewFeature",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "C:\\Users\\Ahmed-Abdelaziz\\source\\repos\\NewFeature\\NewFeature\\NewFeature.csproj", "--launch-profile", "https"],
+      "port": 7015,
+      "url": "https://localhost:7015"
+    },
+    {
+      "name": "Dashboard",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "C:\\Users\\Ahmed-Abdelaziz\\source\\repos\\project\\project\\project.csproj", "--launch-profile", "https"],
+      "port": 7290,
+      "url": "https://localhost:7290"
+    }
+  ]
+}

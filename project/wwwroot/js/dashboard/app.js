@@ -636,6 +636,15 @@ function showView(viewName, isPopState) {
         viewKpiDashboard.classList.remove('hidden');
         applyKpiFilters(viewName);
     }
+
+    // AOS measures each [data-aos] element's position when it initializes, but every view
+    // container starts out with the "hidden" class - a display:none ancestor collapses layout,
+    // so AOS records a bogus position and the element can be stuck permanently invisible
+    // (opacity: 0, class "aos-init" but never "aos-animate") once its view is shown. Refreshing
+    // after the newly-shown view is un-hidden makes AOS re-measure real positions.
+    if (window.AOS) {
+        setTimeout(() => AOS.refresh(), 60);
+    }
 }
 
 // Move card elements dynamically inside views
@@ -1126,7 +1135,7 @@ function calculateSectorAvg(sectorKey) {
             const config = kpiSettings[key];
             if (config) {
                 let ratio = 100;
-                if (key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-turnover', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key)) {
+                if (config.target === 0 || key === 'hse-ltifr' || key === 'hse-accidents' || key === 'visa-processing-time' || key === 'hotel-cancel-rate' || ['ops-d-15', 'ops-d-16', 'ops-d-17', 'ops-d-20', 'ops-d-21', 'ops-d-22', 'ops-d-23', 'ops-d-29', 'hse-d-15', 'critical-findings-count', 'hr-turnover', 'it-ticket-time', 'it-incidents', 'proc-cycle'].includes(key)) {
                     ratio = val <= config.target ? 100 : Math.max(0, 100 - (val - config.target) * 40);
                 } else {
                     ratio = (val / config.target) * 100;
@@ -1561,7 +1570,7 @@ window.simulateKpiData = function(initial) {
         applyFlagStyle('summary-flag-ebitda', 'ebitda', ebitda);
         applyFlagStyle('summary-flag-fleet-ready', 'fleet-ready', fleetReady);
         applyFlagStyle('summary-flag-nps', 'nps', nps);
-        applyFlagStyle('summary-flag-saudization', 'saudization', saudization);
+        applyFlagStyle('summary-flag-saudization', 'hr-saudization', saudization);
         applyFlagStyle('summary-flag-hse-accidents', 'hse-accidents', accidents);
     };
     applyFlags();
@@ -1597,7 +1606,7 @@ window.simulateKpiData = function(initial) {
     safeSetText('target-val-ebitda-sum', kpiSettings['ebitda'].target + '%');
     safeSetText('target-val-fleet-ready-sum', kpiSettings['fleet-ready'].target + '%');
     safeSetText('target-val-nps-sum', kpiSettings['nps'].target);
-    safeSetText('target-val-saudization-sum', kpiSettings['saudization'].target + '%');
+    safeSetText('target-val-saudization-sum', kpiSettings['hr-saudization'].target + '%');
     safeSetText('target-val-hse-accidents-sum', kpiSettings['hse-accidents'].target);
 
     // Summing flags on overview panel

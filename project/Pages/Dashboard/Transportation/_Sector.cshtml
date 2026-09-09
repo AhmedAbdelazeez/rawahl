@@ -219,8 +219,8 @@
              </div>
         </div>
 
-        <!-- Commercial Department -->
-        <div onclick="showView('dept-commercial')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+        <!-- Commercial Department (hidden 2026-09-05 per request; remove "hidden" to re-enable) -->
+        <div onclick="showView('dept-commercial')" class="hidden glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
              <div class="flex justify-between items-start">
                  <div>
                      <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -273,6 +273,42 @@
              </div>
         </div>
 
+        <!-- Maintenance Department (إدارة الصيانة) -->
+        <div onclick="showView('dept-maintenance')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-screwdriver-wrench text-[#b0841a] text-base"></i>
+                         <span>إدارة الصيانة</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed">أوامر الصيانة والأعطال، قطع الغيار المستهلكة، ومؤشرات جاهزية الأسطول.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black">6 مؤشرات أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">MAINTENANCE</span>
+             </div>
+        </div>
+
+        <!-- Storage Department (إدارة التخزين) -->
+        <a href="/Dashboard/Storage" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+             <div class="flex justify-between items-start">
+                 <div>
+                     <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                         <i class="fa-solid fa-warehouse text-[#b0841a] text-base"></i>
+                         <span>إدارة التخزين</span>
+                     </h3>
+                     <p class="text-[10px] text-slate-500 font-semibold mt-2 leading-relaxed">مخزون قطع الغيار والمستلزمات، حدود إعادة الطلب، ودقة الجرد الدوري.</p>
+                 </div>
+                 <span class="w-8 h-8 rounded-full bg-[#b0841a]/10 text-[#b0841a] flex items-center justify-center text-xs font-bold shrink-0 shadow-inner group-hover:bg-[#b0841a] group-hover:text-white transition-colors"><i class="fa-solid fa-arrow-left ltr:rotate-180"></i></span>
+             </div>
+             <div class="mt-4 flex justify-between items-end border-t border-slate-100 pt-3">
+                 <span class="text-[9px] text-[#b0841a] font-black">5 مؤشرات أداء</span>
+                 <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-black border border-slate-200">STORAGE</span>
+             </div>
+        </a>
+
         <!-- Human Resources Department -->
         <div onclick="showView('dept-hr')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
              <div class="flex justify-between items-start">
@@ -291,8 +327,8 @@
              </div>
         </div>
 
-        <!-- IT Department -->
-        <div onclick="showView('dept-it')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+        <!-- IT Department (hidden 2026-09-05 per request; remove "hidden" to re-enable) -->
+        <div onclick="showView('dept-it')" class="hidden glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
              <div class="flex justify-between items-start">
                   <div>
                       <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -309,8 +345,8 @@
              </div>
         </div>
 
-        <!-- Procurement Department -->
-        <div onclick="showView('dept-procurement')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+        <!-- Procurement Department (hidden 2026-09-05 per request; remove "hidden" to re-enable) -->
+        <div onclick="showView('dept-procurement')" class="hidden glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
              <div class="flex justify-between items-start">
                   <div>
                       <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -327,8 +363,8 @@
              </div>
         </div>
 
-        <!-- Financial Department -->
-        <div onclick="showView('dept-finance')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+        <!-- Financial Department (hidden 2026-09-05 per request; remove "hidden" to re-enable) -->
+        <div onclick="showView('dept-finance')" class="hidden glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
              <div class="flex justify-between items-start">
                  <div>
                      <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -345,8 +381,8 @@
              </div>
         </div>
 
-        <!-- Strategy & Performance Department -->
-        <div onclick="showView('dept-strategy')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+        <!-- Strategy & Performance Department (hidden 2026-09-05 per request; remove "hidden" to re-enable) -->
+        <div onclick="showView('dept-strategy')" class="hidden glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
              <div class="flex justify-between items-start">
                  <div>
                      <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -363,8 +399,8 @@
              </div>
         </div>
 
-        <!-- Internal Audit Department -->
-        <div onclick="showView('dept-audit')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+        <!-- Internal Audit Department (hidden 2026-09-05 per request; remove "hidden" to re-enable) -->
+        <div onclick="showView('dept-audit')" class="hidden glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
              <div class="flex justify-between items-start">
                  <div>
                      <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -381,8 +417,8 @@
              </div>
         </div>
 
-        <!-- HSE Safety & Auditing -->
-        <div onclick="showView('dept-hse')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+        <!-- HSE Safety & Auditing (hidden 2026-09-05 per request; remove "hidden" to re-enable) -->
+        <div onclick="showView('dept-hse')" class="hidden glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
              <div class="flex justify-between items-start">
                  <div>
                      <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -435,8 +471,8 @@
               </div>
         </div>
 
-        <!-- Tourism Department -->
-        <div onclick="showView('dept-tourism')" class="glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
+        <!-- Tourism Department (hidden 2026-09-05 per request; remove "hidden" to re-enable) -->
+        <div onclick="showView('dept-tourism')" class="hidden glass-card p-5 rounded-2xl cursor-pointer flex flex-col justify-between h-44 group bg-white hover:border-[#b0841a]">
              <div class="flex justify-between items-start">
                  <div>
                      <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">

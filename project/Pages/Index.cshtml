@@ -40,8 +40,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Outfit:wght@400;500;700;900&display=swap" rel="stylesheet">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- AOS Library for animations -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- AOS Library for animations (self-hosted - see note by the <script> tag below) -->
+    <link href="~/lib/aos/aos.css" rel="stylesheet">
 
     <!-- Modular Stylesheets -->
     <link rel="stylesheet" href="~/css/dashboard/common.css" asp-append-version="true" />
@@ -171,8 +171,11 @@
         };
     </script>
 
-    <!-- AOS animation library script -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- AOS animation library script (self-hosted: if this fails to load from an external CDN,
+         every element with data-aos="..." stays permanently invisible - its own CSS sets
+         opacity:0 and nothing but this script ever adds the .aos-animate class that reveals it -
+         which looks exactly like a blank page even though the HTML rendered fine.) -->
+    <script src="~/lib/aos/aos.js" asp-append-version="true"></script>
 
     <!-- Modular Script loaders -->
     <script src="~/js/dashboard/common.js" asp-append-version="true"></script>
