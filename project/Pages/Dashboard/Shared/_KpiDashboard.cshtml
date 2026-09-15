@@ -32,10 +32,29 @@
                     <h2 id="service-banner-title" class="text-lg font-black mt-2 text-slate-800">اسم الخدمة - التحليل التشغيلي</h2>
                     <p id="service-banner-desc" class="text-slate-500 text-xs leading-relaxed font-semibold mt-1">وصف تفصيلي للخدمة وأدائها ومؤشراتها الرئيسية.</p>
                 </div>
-                <button id="service-banner-back-btn" onclick="showView('transportation-services')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-arrow-right"></i>
-                    <span id="service-banner-back-text">العودة للخدمات</span>
-                </button>
+                <div class="flex items-center gap-2 shrink-0">
+                    <div class="relative">
+                        <button id="export-report-btn" onclick="toggleExportMenu(event)" type="button" class="px-4 py-2 bg-[#b0841a]/10 hover:bg-[#b0841a]/20 border border-[#b0841a]/30 text-xs font-black rounded-xl text-[#b0841a] flex items-center gap-1.5 transition cursor-pointer">
+                            <i class="fa-solid fa-file-export"></i>
+                            <span data-i18n="export-report">تصدير التقرير</span>
+                            <i class="fa-solid fa-chevron-down text-[8px]"></i>
+                        </button>
+                        <div id="export-report-menu" class="hidden absolute top-full mt-2 end-0 w-52 bg-white rounded-xl border border-slate-200 shadow-lg py-1.5 z-50 text-start">
+                            <button type="button" onclick="handleExportReport('excel')" class="w-full text-start px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-file-excel text-emerald-600"></i>
+                                <span data-i18n="export-excel">تصدير إكسل (Excel)</span>
+                            </button>
+                            <button type="button" onclick="handleExportReport('pdf')" class="w-full text-start px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-file-pdf text-rose-600"></i>
+                                <span data-i18n="export-pdf">تصدير PDF</span>
+                            </button>
+                        </div>
+                    </div>
+                    <button id="service-banner-back-btn" onclick="showView('transportation-services')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-black rounded-xl text-slate-800 flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span id="service-banner-back-text">العودة للخدمات</span>
+                    </button>
+                </div>
             </div>
         </div>
     </section>

@@ -99,6 +99,7 @@
     <!-- Razor Bindings to window.RAWAHEL_DATA Bridge object for cached scripts -->
     <script>
         window.RAWAHEL_DATA = {
+            userName: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.UserArabicDisplayName)),
             allowedDepts: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AllowedDepartmentCodes)),
             isTransportationManager: @Model.IsTransportationManager.ToString().ToLower(),
             isPilgrimServicesManager: @Model.IsPilgrimServicesManager.ToString().ToLower(),
@@ -184,5 +185,6 @@
     <script src="~/js/dashboard/mohu-api.js" asp-append-version="true"></script>
     <script src="~/js/dashboard/portal-integration.js" asp-append-version="true"></script>
     <script src="~/js/dashboard/app.js" asp-append-version="true"></script>
+    <script src="~/js/dashboard/export-report.js" asp-append-version="true"></script>
 </body>
 </html>
