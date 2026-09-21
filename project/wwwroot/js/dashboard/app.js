@@ -272,15 +272,15 @@ const sectorMapping = {
     'service-leasing': ['rental-fleet-utilization', 'rental-revenue-per-bus', 'rental-contract-satisfaction', 'rental-maintenance-adherence', 'rental-safety-compliance', 'rental-active-contracts'],
 
     'dept-tourism': ['tourism-hotel-occupancy', 'tourism-cancel-rate', 'tourism-guest-rating', 'tourism-tours-completed', 'tourism-revpar', 'tourism-lead-time', 'tourism-active-guides'],
-    'dept-ops': ['ops-total-trips', 'ops-cancelled-trips', 'ops-active-drivers', 'ops-vehicles-deployed', 'ops-clients-served', 'ops-avg-trips-day', 'ops-registered-drivers', 'ops-scheduling-rate'],
+    'dept-ops': ['ops-total-orders', 'ops-rental-orders', 'ops-clients-served', 'ops-buses-deployed', 'ops-drivers-assigned', 'ops-completion-rate', 'ops-planned-km', 'ops-actual-km', 'ops-diesel', 'ops-avg-orders-day', 'ops-top-directions'],
     'dept-commercial': ['customer-retention', 'new-contracts', 'contract-renewal-rate', 'contract-turnaround', 'legal-disputes', 'customer-acquisition-cost', 'contract-value-growth'],
     'dept-sales': ['sales-active-customers', 'sales-new-customers', 'sales-retention', 'sales-growth', 'sales-top-segment', 'sales-fleet-buses', 'sales-fleet-seats', 'sales-avg-seats', 'sales-churned', 'sales-daily-ops'],
     'dept-fleet': ['fleet-total', 'fleet-available', 'fleet-active', 'fleet-maintenance', 'fleet-inactive', 'fleet-util', 'fleet-ready', 'fleet-total-trips', 'fleet-completed-trips', 'fleet-maint-rate', 'fleet-mttr', 'fleet-parts-cost', 'fleet-total-seating', 'fleet-avg-age', 'fleet-modernization', 'fleet-type-variety', 'fleet-avg-capacity'],
-    'dept-maintenance': ['dm-mttr', 'dm-breakdowns', 'dm-availability', 'dm-parts-cost', 'dm-backlog', 'dm-active-rate', 'dm-workorders'],
+    'dept-maintenance': ['dm-total', 'dm-completed', 'dm-mttr', 'dm-waiting-parts', 'dm-in-progress', 'dm-backlog', 'dm-vehicles', 'dm-technicians', 'dm-workorders'],
     'dept-hr': ['hr-ret', 'hr-count', 'hr-active', 'hr-leavers', 'hr-turnover', 'hr-saudization', 'hr-growth', 'hr-training'],
     'dept-it': ['it-autom', 'it-uptime', 'it-ticket-time', 'it-incidents', 'it-satisfaction', 'it-backup', 'it-projects'],
     'dept-procurement': ['proc-cycle', 'proc-savings', 'proc-supplier', 'proc-budget', 'proc-spare-parts', 'proc-inventory', 'proc-contracts'],
-    'dept-finance': ['total-revenue', 'total-expenses', 'net-profit', 'net-profit-margin', 'expense-ratio', 'avg-monthly-revenue', 'top-expense', 'transactions-count'],
+    'dept-finance': ['total-revenue', 'cost-of-sales', 'gross-profit', 'operating-expenses', 'total-expenses', 'net-profit', 'net-profit-margin', 'expense-ratio', 'cash-balance', 'receivables', 'fin-detail'],
     'dept-strategy': ['strat-goals', 'strat-init', 'risk-handling', 'gov-maturity', 'strat-goals-achieve', 'strat-milestones', 'strat-budget'],
     'dept-audit': ['audit-plan-execution', 'operational-compliance-rate', 'total-audited-processes', 'passed-processes-count', 'critical-findings-count', 'recommendations-count', 'risk-mitigation-rate'],
     'dept-hse': ['hse-ltifr', 'hse-accidents', 'audit-comp'],
@@ -879,7 +879,7 @@ function applyKpiFilters(viewName) {
             } else if (viewName === 'dept-maintenance') {
                 badge = isEn ? 'Maintenance Department' : 'إدارة الصيانة';
                 title = isEn ? 'Maintenance Department - Operational Analysis' : 'إدارة الصيانة - التحليل التشغيلي';
-                desc = isEn ? 'Monitoring work orders, breakdowns, spare parts cost, and fleet maintenance readiness.' : 'أوامر الصيانة والأعطال، قطع الغيار المستهلكة، ومؤشرات جاهزية الأسطول.';
+                desc = isEn ? 'Monitoring internal work orders, repair time, technician load, and maintenance backlog.' : 'أوامر العمل الداخلية، زمن الإصلاح، الفنيون المشاركون، ونسبة الأعمال المتراكمة.';
                 backAction = deptBackAction;
                 backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
             } else if (viewName === 'dept-hr') {
@@ -979,7 +979,15 @@ function applyKpiFilters(viewName) {
     // Show/Hide cards dynamically
     kpisContainer.classList.add('hidden');
     sectorGrid.classList.remove('hidden');
-    sectorGrid.innerHTML = '';
+
+    // Whatever the previous view left in the sector grid is parked back in the hidden template
+    // container first. Step 1 above only restores cards that appear in cardOriginalGrids, so
+    // clearing the grid outright used to *delete* every card belonging to a department that isn't
+    // listed there (Maintenance, Storage, ...) - navigating away from such a department once meant
+    // its cards never came back until a full page reload.
+    while (sectorGrid.firstChild) {
+        kpisContainer.appendChild(sectorGrid.firstChild);
+    }
 
     document.querySelectorAll('[id^="card-"]').forEach(card => {
         const cardId = card.id.replace('card-', '');
@@ -1631,15 +1639,7 @@ window.simulateKpiData = function(initial) {
     const radialPath = document.getElementById('radial-progress-path');
     if (radialPath) radialPath.setAttribute('stroke-dasharray', `${overallAvg}, 100`);
 
-    // Ticker feeds values update
-    safeSetText('ticker-total-perf', overallAvg + '%');
-    safeSetText('ticker-total-perf-dup', overallAvg + '%');
-    safeSetText('ticker-rev-growth', currentRevenue + ' ' + sarUnit);
-    safeSetText('ticker-rev-growth-dup', currentRevenue + ' ' + sarUnit);
-    safeSetText('ticker-ebitda', ebitda + '%');
-    safeSetText('ticker-ebitda-dup', ebitda + '%');
-    safeSetText('ticker-fleet-ready', fleetReady + '%');
-    safeSetText('ticker-fleet-ready-dup', fleetReady + '%');
+    // The news ticker is built from live KPI data in portal-integration.js (updateTickerWithPortalData).
 
     if (typeof Chart !== 'undefined' && window.flagsPieChart) {
         try {

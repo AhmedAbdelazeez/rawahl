@@ -441,39 +441,36 @@ namespace project.Models
         public double StrategicBudgetEfficiencyTarget { get; set; }
     }
 
+    // Mirrors the ERP's FinanceKpisDto: ten indicators, each a sum over the uploaded account
+    // balances grouped by the account's own chart-of-accounts classification, reported for the
+    // latest reporting date on file. EBITDA margin, return on assets, operating cash flow, working
+    // capital and budget variance were removed with the old revenue/expense ledger - they needed
+    // depreciation, cash-flow and budget figures the approved Finance template does not carry.
     public class PortalFinanceKpisDto
     {
-        public decimal TotalRevenueActual { get; set; }
-        public decimal TotalRevenueTarget { get; set; }
+        // Which reporting date these figures describe; null when nothing has been uploaded yet.
+        public DateTime? AsOfDate { get; set; }
 
-        public double EbitdaMarginActual { get; set; }
-        public double EbitdaMarginTarget { get; set; }
+        public decimal TotalRevenue { get; set; }
+        public decimal CostOfSales { get; set; }
+        public decimal GrossProfit { get; set; }
+        public double GrossProfitMarginPercent { get; set; }
+        public decimal OperatingExpenses { get; set; }
+        public decimal TotalExpenses { get; set; }
+        public decimal NetProfit { get; set; }
+        public double NetProfitMarginPercent { get; set; }
+        public double ExpenseToRevenueRatioPercent { get; set; }
+        public decimal CashAndEquivalents { get; set; }
+        public decimal TradeReceivables { get; set; }
+        public decimal TotalAssets { get; set; }
+        public decimal TotalLiabilities { get; set; }
 
-        public double NetProfitMarginActual { get; set; }
-        public double NetProfitMarginTarget { get; set; }
-
-        public decimal OperatingCashFlowActual { get; set; }
-        public decimal OperatingCashFlowTarget { get; set; }
-
-        public double ReturnOnAssetsActual { get; set; }
-        public double ReturnOnAssetsTarget { get; set; }
-
-        public double BudgetVarianceRateActual { get; set; }
-        public double BudgetVarianceRateTarget { get; set; }
-
-        public decimal WorkingCapitalActual { get; set; }
-        public decimal WorkingCapitalTarget { get; set; }
-
-        // Plain revenue/expense figures the Finance department cards actually show. Unlike the
-        // EBITDA/ROA/working-capital fields above, each of these comes straight out of the uploaded
-        // ledger (date, statement, revenue-or-expense, category, amount) with no balance-sheet data.
-        public decimal TotalExpensesActual { get; set; }
-        public decimal NetProfitActual { get; set; }
-        public double ExpenseToRevenueRatioActual { get; set; }
-        public int TransactionsCountActual { get; set; }
-        public decimal AverageMonthlyRevenueActual { get; set; }
         public string TopExpenseCategoryName { get; set; } = "--";
         public decimal TopExpenseCategoryAmount { get; set; }
+
+        public int AccountsInChart { get; set; }
+        public int BalancesLoaded { get; set; }
+        public int UnclassifiedBalances { get; set; }
     }
 
     public class PortalCommercialKpisDto
@@ -526,41 +523,61 @@ namespace project.Models
 
     // Mirrors NewFeature's OperationsKpisDto: six plain counts/rates computed straight from real
     // Trip records, no illustrative targets and no metric the source dispatch sheets can't support.
+    // Mirrors the ERP's OperationsKpisDto: ten indicators over the approved dispatch log (one
+    // row per bus assigned to a rental order on a day). The drivers-roster headcount and the
+    // route-scheduling success rate were removed along with those two uploads - the department
+    // now works from one template.
     public class PortalOperationsKpisDto
     {
-        public int TotalTrips { get; set; }
-        public int CancelledTrips { get; set; }
-        public double CancellationRatePercent { get; set; }
-        public int ActiveDriversCount { get; set; }
-        public int VehiclesDeployedCount { get; set; }
+        public int TotalDispatchOrders { get; set; }
+        public int RentalOrdersCount { get; set; }
         public int ClientsServedCount { get; set; }
-        public double AverageTripsPerDay { get; set; }
-        public int? RegisteredDriversCount { get; set; }
-        public double? SchedulingSuccessRatePercent { get; set; }
+        public int BusesDeployedCount { get; set; }
+        public int DriversAssignedCount { get; set; }
+        public int CompletedOrdersCount { get; set; }
+        public double CompletionRatePercent { get; set; }
+        public double TotalPlannedKm { get; set; }
+        public double TotalActualKm { get; set; }
+        public double TotalDieselLiters { get; set; }
+        public double AverageOrdersPerDay { get; set; }
+
+        public List<PortalOperationsDirectionUsageDto> TopDirections { get; set; } = new();
     }
 
+    public class PortalOperationsDirectionUsageDto
+    {
+        public string Direction { get; set; } = string.Empty;
+        public string? DirectionName { get; set; }
+        public int OrdersCount { get; set; }
+        public double SharePercentage { get; set; }
+    }
+
+    // Mirrors the ERP's MaintenanceKpisDto: eight indicators over the approved "Internal work
+    // orders" sheet. Spare-parts cost and breakdown-location share were removed - that sheet
+    // carries neither a parts column nor a location column.
     public class PortalMaintenanceKpisDto
     {
+        public int TotalWorkOrders { get; set; }
+        public int CompletedWorkOrders { get; set; }
+        public double CompletionRatePercent { get; set; }
         public double MeanTimeToRepairHours { get; set; }
-        public int TotalBreakdowns { get; set; }
+        public int WaitingPartsCount { get; set; }
+        public int InProgressCount { get; set; }
+        public double MaintenanceBacklogRate { get; set; }
+        public int VehiclesServicedCount { get; set; }
+        public int ActiveTechniciansCount { get; set; }
+
+        // Not shown on the Maintenance cards, but the Fleet department cards use both.
         public double FleetAvailabilityRate { get; set; }
         public decimal TotalSparePartsCost { get; set; }
-        public double ActiveBusesRate { get; set; }
-        public double MaintenanceBacklogRate { get; set; }
+
         public List<PortalBusBreakdownFrequencyDto> TopFrequentBreakdowns { get; set; } = new();
-        public List<PortalBreakdownLocationDto> TopBreakdownLocations { get; set; } = new();
     }
 
     public class PortalBusBreakdownFrequencyDto
     {
         public string VehiclePlate { get; set; } = string.Empty;
+        public string? BusNumber { get; set; }
         public int BreakdownCount { get; set; }
-    }
-
-    public class PortalBreakdownLocationDto
-    {
-        public string Location { get; set; } = string.Empty;
-        public int BreakdownCount { get; set; }
-        public double SharePercentage { get; set; }
     }
 }

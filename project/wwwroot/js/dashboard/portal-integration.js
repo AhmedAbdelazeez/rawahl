@@ -129,6 +129,7 @@
             hideLoadingStates();
             showLiveIndicator(false);
             showErrorBanner(err.message);
+            showTickerError();
         } finally {
             isLoading = false;
         }
@@ -635,37 +636,40 @@
 
     // Maintenance Department's own 6 KPI cards (dm-* ids) - reuses the same maintenanceKpiData
     // already fetched for the Fleet department's MTTR/parts-cost cards above, no extra API call.
+    // Eight indicators, all from the ERP's approved "Internal work orders" sheet.
     function renderMaintenanceDeptKpis() {
         if (!maintenanceKpiData) return;
         const m = maintenanceKpiData;
         const isEn = document.documentElement.lang === 'en';
 
-        setTextIfExists('val-dm-mttr', m.meanTimeToRepairHours.toFixed(1) + (isEn ? ' hrs' : ' ساعة'));
+        setTextIfExists('val-dm-total', formatNumber(m.totalWorkOrders ?? 0));
+
+        setTextIfExists('val-dm-completed', formatNumber(m.completedWorkOrders ?? 0));
+        setTextIfExists('val-dm-completion-rate', (m.completionRatePercent ?? 0).toFixed(1) + '%');
+        updateKpiFlagElement('flag-dm-completion', m.completionRatePercent, 90);
+
+        setTextIfExists('val-dm-mttr', (m.meanTimeToRepairHours ?? 0).toFixed(1) + (isEn ? ' hrs' : ' ساعة'));
         updateKpiFlagElementInverse('flag-dm-mttr', m.meanTimeToRepairHours, 3.0);
 
-        setTextIfExists('val-dm-breakdowns', m.totalBreakdowns ?? 0);
-
-        setTextIfExists('val-dm-availability', (m.fleetAvailabilityRate ?? 0).toFixed(1) + '%');
-        updateKpiFlagElement('flag-dm-availability', m.fleetAvailabilityRate, 90);
-
-        setTextIfExists('val-dm-parts-cost', formatCurrency(m.totalSparePartsCost));
+        setTextIfExists('val-dm-waiting-parts', formatNumber(m.waitingPartsCount ?? 0));
+        setTextIfExists('val-dm-in-progress', formatNumber(m.inProgressCount ?? 0));
 
         setTextIfExists('val-dm-backlog', (m.maintenanceBacklogRate ?? 0).toFixed(1) + '%');
         updateKpiFlagElementInverse('flag-dm-backlog', m.maintenanceBacklogRate, 10);
 
-        setTextIfExists('val-dm-active-rate', (m.activeBusesRate ?? 0).toFixed(1) + '%');
-        updateKpiFlagElementInverse('flag-dm-active-rate', m.activeBusesRate, 10);
+        setTextIfExists('val-dm-vehicles', formatNumber(m.vehiclesServicedCount ?? 0));
+        setTextIfExists('val-dm-technicians', formatNumber(m.activeTechniciansCount ?? 0));
 
         const container = document.getElementById('dm-top-breakdowns');
         if (container) {
-            const items = m.topBreakdownLocations || [];
+            const items = m.topFrequentBreakdowns || [];
             if (items.length === 0) {
-                container.innerHTML = '<span class="text-xs text-slate-400 font-bold">لا توجد بيانات مواقع أعطال بعد (متاحة فقط من تقارير الفروع الميدانية).</span>';
+                container.innerHTML = '<span class="text-xs text-slate-400 font-bold">لا توجد أوامر عمل بعد. ارفع نموذج أوامر العمل الداخلية في نظام ERP.</span>';
             } else {
-                container.innerHTML = items.map(loc =>
+                container.innerHTML = items.map(bus =>
                     `<div class="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
-                        <span class="text-xs font-bold text-slate-700">${loc.location}</span>
-                        <span class="text-xs font-black text-[#b0841a]">${loc.breakdownCount} ${isEn ? 'breakdowns' : 'عطل'} (${loc.sharePercentage.toFixed(1)}%)</span>
+                        <span class="text-xs font-bold text-slate-700">${bus.busNumber || bus.vehiclePlate}</span>
+                        <span class="text-xs font-black text-[#b0841a]">${bus.breakdownCount} ${isEn ? 'work orders' : 'أمر عمل'}</span>
                     </div>`
                 ).join('');
             }
@@ -689,17 +693,18 @@
             .then(r => r.ok ? r.json() : null)
             .then(data => {
                 if (!data || !data.items || data.items.length === 0) {
-                    body.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400 font-bold">لا توجد بيانات</td></tr>';
+                    body.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-400 font-bold">لا توجد بيانات</td></tr>';
                     setTextIfExists('dm-wo-page-info', '0 من 0');
                     return;
                 }
                 body.innerHTML = data.items.map(o =>
                     `<tr class="border-t border-slate-100">
-                        <td class="p-3 font-bold">${o.vehiclePlate || '--'}</td>
+                        <td class="p-3 font-bold">${o.workOrderNumber || '--'}</td>
+                        <td class="p-3">${o.busNumber || o.vehiclePlate || '--'}</td>
                         <td class="p-3">${o.date ? new Date(o.date).toLocaleDateString('ar-SA') : '--'}</td>
                         <td class="p-3">${o.odometer ?? '--'}</td>
                         <td class="p-3">${o.breakdownDescription || '--'}</td>
-                        <td class="p-3">${o.technicianName || '--'}</td>
+                        <td class="p-3">${[o.technicianName, o.technicianName2, o.technicianName3, o.technicianName4].filter(Boolean).join('، ') || '--'}</td>
                         <td class="p-3">${maintStatusLabels[o.status] || '--'}</td>
                     </tr>`
                 ).join('');
@@ -1096,24 +1101,130 @@
     }
 
     // ───────── 7. Ticker Update ─────────
-    function updateTickerWithPortalData() {
-        const ticker = document.querySelector('.ticker');
-        if (!ticker || !kpiData) return;
+    // ───────── Live news ticker ─────────
+    // Built entirely from the KPI payloads loaded above and rebuilt on every auto-refresh. An item is
+    // only included when its department actually has data (e.g. Finance once a balances sheet has
+    // been uploaded), so the ticker never shows a placeholder, a "--", or a figure nobody uploaded.
+    function tickerItem(icon, label, parts) {
+        const body = parts.filter(Boolean).join(' <span class="text-slate-500 mx-1">—</span> ');
+        return `<div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid ${icon} me-1.5"></i> ${label}:</span> <span class="ms-1">${body}</span></div>`;
+    }
 
-        const portalItems = `
-            <span class="ticker__item"><span class="text-[#b0841a] font-black ml-2">📊 المشاريع:</span> <span class="text-emerald-700 font-bold">${kpiData.totalProjects} مشروع</span> — <span class="text-sky-400">${kpiData.activeProjects} نشط</span></span>
-            <span class="ticker__item"><span class="text-[#b0841a] font-black ml-2">🚛 الأسطول:</span> <span class="text-emerald-700 font-bold">${kpiData.totalVehicles} مركبة</span> — استغلال <span class="text-sky-400">${(kpiData.fleetUtilizationRate || 0).toFixed(1)}%</span></span>
-            <span class="ticker__item"><span class="text-[#b0841a] font-black ml-2">🛣️ الرحلات:</span> <span class="text-emerald-700 font-bold">${kpiData.totalTrips} رحلة</span> — إنجاز <span class="text-sky-400">${(kpiData.tripCompletionRate || 0).toFixed(1)}%</span></span>
-            <span class="ticker__item"><span class="text-[#b0841a] font-black ml-2">✅ المهام:</span> <span class="text-emerald-700 font-bold">${kpiData.doneTasks}/${kpiData.totalTasks}</span> — <span class="text-sky-400">${(kpiData.taskCompletionRate || 0).toFixed(1)}%</span></span>
-        `;
+    const hi = v => `<span class="text-[#b0841a] font-black">${v}</span>`;
+    const good = v => `<span class="text-emerald-700 font-black">${v}</span>`;
+    const pct = v => (Number(v) || 0).toFixed(1) + '%';
 
-        // Append portal items to the ticker if not already added
-        if (!ticker.querySelector('.portal-ticker-items')) {
-            const portalSpan = document.createElement('span');
-            portalSpan.className = 'portal-ticker-items';
-            portalSpan.innerHTML = portalItems;
-            ticker.appendChild(portalSpan);
+    function buildTickerItems() {
+        const isEn = document.documentElement.lang === 'en';
+        const items = [];
+
+        const f = financeKpiData;
+        if (f && f.balancesLoaded > 0) {
+            const asOf = f.asOfDate ? new Date(f.asOfDate).toLocaleDateString(isEn ? 'en-GB' : 'ar-SA') : '';
+            items.push(tickerItem('fa-sack-dollar',
+                (isEn ? 'Finance' : 'المالية') + (asOf ? ` (${isEn ? 'as of' : 'كما في'} ${asOf})` : ''), [
+                `${isEn ? 'Revenue' : 'الإيرادات'} ${good(formatCurrency(f.totalRevenue))}`,
+                `${isEn ? 'Net profit' : 'صافي الربح'} ${hi(formatCurrency(f.netProfit))} (${isEn ? 'margin' : 'هامش'} ${pct(f.netProfitMarginPercent)})`,
+                `${isEn ? 'Cash' : 'النقد'} ${hi(formatCurrency(f.cashAndEquivalents))}`
+            ]));
         }
+
+        const o = operationsKpiData;
+        if (o && o.totalDispatchOrders > 0) {
+            items.push(tickerItem('fa-route', isEn ? 'Operations' : 'العمليات', [
+                `${hi(formatNumber(o.totalDispatchOrders))} ${isEn ? 'dispatch orders' : 'أمر تشغيل'} ${isEn ? 'for' : 'لـ'} ${hi(formatNumber(o.clientsServedCount))} ${isEn ? 'clients' : 'عميل'}`,
+                `${isEn ? 'completion' : 'نسبة الإنجاز'} ${good(pct(o.completionRatePercent))}`,
+                `${hi(formatNumber(o.busesDeployedCount))} ${isEn ? 'buses' : 'حافلة'} ${isEn ? 'and' : 'و'} ${hi(formatNumber(o.driversAssignedCount))} ${isEn ? 'drivers' : 'سائق'}`
+            ]));
+        }
+
+        const m = maintenanceKpiData;
+        if (m && m.totalWorkOrders > 0) {
+            items.push(tickerItem('fa-screwdriver-wrench', isEn ? 'Maintenance' : 'الصيانة', [
+                `${hi(formatNumber(m.totalWorkOrders))} ${isEn ? 'work orders' : 'أمر عمل'}`,
+                `${isEn ? 'completed' : 'مكتمل'} ${good(pct(m.completionRatePercent))}`,
+                `${isEn ? 'avg repair time' : 'متوسط زمن الإصلاح'} ${hi((m.meanTimeToRepairHours || 0).toFixed(1) + (isEn ? ' hrs' : ' ساعة'))}`,
+                m.waitingPartsCount > 0 ? `${hi(formatNumber(m.waitingPartsCount))} ${isEn ? 'waiting for parts' : 'متوقف على قطع غيار'}` : null
+            ]));
+        }
+
+        const k = kpiData;
+        if (k && k.totalVehicles > 0) {
+            items.push(tickerItem('fa-bus-simple', isEn ? 'Fleet' : 'الأسطول', [
+                `${hi(formatNumber(k.totalVehicles))} ${isEn ? 'buses' : 'حافلة'}`,
+                `${isEn ? 'availability' : 'الجاهزية'} ${good(pct(k.fleetAvailabilityRate))}`,
+                k.maintenanceVehicles > 0 ? `${hi(formatNumber(k.maintenanceVehicles))} ${isEn ? 'in maintenance' : 'قيد الصيانة'}` : null
+            ]));
+        }
+
+        const s = salesKpiData;
+        if (s && s.hasCustomerData) {
+            items.push(tickerItem('fa-handshake', isEn ? 'Sales' : 'المبيعات', [
+                `${hi(formatNumber(s.totalActiveCustomersActual))} ${isEn ? 'active customers' : 'عميل نشط'}`,
+                s.newCustomersActual > 0 ? `${hi(formatNumber(s.newCustomersActual))} ${isEn ? 'new' : 'جديد'}` : null,
+                `${isEn ? 'retention' : 'الاحتفاظ'} ${good(pct(s.customerRetentionRateActual))}`
+            ]));
+        }
+
+        const h = hrKpiData;
+        if (h && h.totalEmployeesActual > 0) {
+            items.push(tickerItem('fa-users', isEn ? 'HR' : 'الموارد البشرية', [
+                `${hi(formatNumber(h.totalEmployeesActual))} ${isEn ? 'employees' : 'موظف'}`,
+                `${isEn ? 'Saudization' : 'التوطين'} ${good(pct(h.saudizationRateActual))}`,
+                `${isEn ? 'retention' : 'الاحتفاظ'} ${good(pct(h.retentionRateActual))}`
+            ]));
+        }
+
+        const c = complianceKpiData;
+        if (c && c.registeredViolationsCountActual > 0) {
+            items.push(tickerItem('fa-scale-balanced', isEn ? 'Compliance' : 'الامتثال', [
+                `${hi(formatNumber(c.openViolationsCount))} ${isEn ? 'open of' : 'مخالفة مفتوحة من'} ${hi(formatNumber(c.registeredViolationsCountActual))}`,
+                `${isEn ? 'closure rate' : 'نسبة الإغلاق'} ${good(pct(c.violationsClosureRateActual))}`
+            ]));
+        }
+
+        if (k && k.totalProjects > 0) {
+            items.push(tickerItem('fa-diagram-project', isEn ? 'Projects' : 'المشاريع', [
+                `${hi(formatNumber(k.totalProjects))} ${isEn ? 'projects' : 'مشروع'}، ${hi(formatNumber(k.activeProjects))} ${isEn ? 'active' : 'نشط'}`,
+                `${isEn ? 'avg progress' : 'متوسط التقدم'} ${good(pct(k.averageProjectProgress))}`
+            ]));
+        }
+
+        if (k && k.totalTasks > 0) {
+            items.push(tickerItem('fa-list-check', isEn ? 'Tasks' : 'المهام', [
+                `${hi(formatNumber(k.doneTasks) + '/' + formatNumber(k.totalTasks))} ${isEn ? 'done' : 'منجزة'}`,
+                k.overdueTasks > 0 ? `${hi(formatNumber(k.overdueTasks))} ${isEn ? 'overdue' : 'متأخرة'}` : null
+            ]));
+        }
+
+        return items;
+    }
+
+    function setTickerContent(html, itemCount) {
+        const track = document.getElementById('ticker-track');
+        const dup = document.getElementById('ticker-track-dup');
+        if (!track || !dup) return;
+        track.innerHTML = html;
+        dup.innerHTML = html;
+
+        // Same reading speed however many departments have data: ~8s per item, 30s minimum.
+        const container = document.getElementById('ticker-container');
+        if (container) container.style.animationDuration = Math.max(30, itemCount * 8) + 's';
+    }
+
+    function updateTickerWithPortalData() {
+        const items = buildTickerItems();
+        const isEn = document.documentElement.lang === 'en';
+        if (items.length === 0) {
+            setTickerContent(`<div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-circle-info me-1.5"></i> ${isEn ? 'No KPI data uploaded yet.' : 'لا توجد بيانات مؤشرات مرفوعة بعد.'}</span></div>`, 1);
+            return;
+        }
+        setTickerContent(items.join(''), items.length);
+    }
+
+    function showTickerError() {
+        const isEn = document.documentElement.lang === 'en';
+        setTickerContent(`<div class="ticker__item"><span class="text-gold-brand"><i class="fa-solid fa-triangle-exclamation me-1.5"></i> ${isEn ? 'Live KPIs are temporarily unavailable.' : 'تعذّر تحميل المؤشرات الحية مؤقتاً.'}</span></div>`, 1);
     }
 
     // ───────── UI State Helpers ─────────
@@ -1181,7 +1292,8 @@
 
     function formatNumber(num) {
         if (num == null) return '—';
-        return new Intl.NumberFormat('ar-SA').format(num);
+        // Arabic-Indic digits in Arabic, Latin digits in English - matching the rest of the page.
+        return new Intl.NumberFormat(document.documentElement.lang === 'en' ? 'en-US' : 'ar-SA').format(num);
     }
 
     function formatCurrency(num) {
@@ -2072,6 +2184,7 @@
         renderCommercialKpis: renderCommercialKpis,
         renderTourismKpis: renderTourismKpis,
         renderOperationsKpis: renderOperationsKpis,
+        refreshTicker: () => { if (kpiData) updateTickerWithPortalData(); },
         renderSalesKpis: renderSalesKpis,
         hasSalesData: () => salesKpiData !== null,
         getSalesKpiData: () => salesKpiData,
@@ -2089,29 +2202,39 @@
     // derived from a hard-coded assumed asset base rather than from anything uploaded.
     function renderFinanceKpis() {
         if (!financeKpiData) return;
+        const f = financeKpiData;
 
-        const marginTarget = financeKpiData.netProfitMarginTarget || 15;
+        const marginTarget = getKpiTarget('fin-net-margin', 15);
         const expenseRatioTarget = getKpiTarget('fin-expense-ratio', 85);
-        const topExpenseName = financeKpiData.topExpenseCategoryName || '--';
 
-        // Bind values
-        setTextIfExists('val-total-revenue', formatCurrency(financeKpiData.totalRevenueActual));
-        setTextIfExists('val-total-expenses', formatCurrency(financeKpiData.totalExpensesActual));
-        setTextIfExists('val-net-profit', formatCurrency(financeKpiData.netProfitActual));
-        setTextIfExists('val-net-profit-margin', financeKpiData.netProfitMarginActual.toFixed(1) + '%');
-        setTextIfExists('val-expense-ratio', financeKpiData.expenseToRevenueRatioActual.toFixed(1) + '%');
-        setTextIfExists('val-avg-monthly-revenue', formatCurrency(financeKpiData.averageMonthlyRevenueActual));
-        setTextIfExists('val-top-expense', formatCurrency(financeKpiData.topExpenseCategoryAmount));
-        setTextIfExists('val-top-expense-name', topExpenseName);
-        setTextIfExists('val-transactions-count', financeKpiData.transactionsCountActual);
+        setTextIfExists('val-fin-asof', f.asOfDate
+            ? new Date(f.asOfDate).toLocaleDateString('ar-SA')
+            : 'لم تُرفع أرصدة بعد');
 
-        // Bind targets
+        setTextIfExists('val-total-revenue', formatCurrency(f.totalRevenue));
+        setTextIfExists('val-cost-of-sales', formatCurrency(f.costOfSales));
+        setTextIfExists('val-gross-profit', formatCurrency(f.grossProfit));
+        setTextIfExists('val-gross-margin', (f.grossProfitMarginPercent ?? 0).toFixed(1) + '%');
+        setTextIfExists('val-operating-expenses', formatCurrency(f.operatingExpenses));
+        setTextIfExists('val-total-expenses', formatCurrency(f.totalExpenses));
+        setTextIfExists('val-net-profit', formatCurrency(f.netProfit));
+        setTextIfExists('val-net-profit-margin', (f.netProfitMarginPercent ?? 0).toFixed(1) + '%');
+        setTextIfExists('val-expense-ratio', (f.expenseToRevenueRatioPercent ?? 0).toFixed(1) + '%');
+        setTextIfExists('val-cash-balance', formatCurrency(f.cashAndEquivalents));
+        setTextIfExists('val-receivables', formatCurrency(f.tradeReceivables));
+
+        setTextIfExists('val-top-expense', formatCurrency(f.topExpenseCategoryAmount));
+        setTextIfExists('val-top-expense-name', f.topExpenseCategoryName || '--');
+
+        setTextIfExists('val-fin-accounts', formatNumber(f.accountsInChart ?? 0));
+        setTextIfExists('val-fin-balances', formatNumber(f.balancesLoaded ?? 0));
+        setTextIfExists('val-fin-unclassified', formatNumber(f.unclassifiedBalances ?? 0));
+
         setTextIfExists('target-val-net-profit-margin', marginTarget + '%');
         setTextIfExists('target-val-expense-ratio', expenseRatioTarget + '%');
 
-        // Update flags
-        updateKpiFlagElement('flag-net-profit-margin', financeKpiData.netProfitMarginActual, marginTarget);
-        updateKpiFlagElementInverse('flag-expense-ratio', financeKpiData.expenseToRevenueRatioActual, expenseRatioTarget);
+        updateKpiFlagElement('flag-net-profit-margin', f.netProfitMarginPercent, marginTarget);
+        updateKpiFlagElementInverse('flag-expense-ratio', f.expenseToRevenueRatioPercent, expenseRatioTarget);
     }
 
     function renderCommercialKpis() {
@@ -2180,24 +2303,71 @@
         updateKpiFlagElement('flag-tourism-active-guides', tourismKpiData.activeTourGuidesActual, tourismKpiData.activeTourGuidesTarget);
     }
 
-    // 6 basic counts/rates, all straight from real Trip records - no illustrative targets, no
-    // metric the source dispatch sheets can't actually support.
+    // Ten counts, distinct-counts and sums over the ERP's approved dispatch log - no illustrative
+    // targets, and no metric the source sheet can't support.
     function renderOperationsKpis() {
         if (!operationsKpiData) return;
+        const o = operationsKpiData;
         const isEn = document.documentElement.lang === 'en';
 
-        setTextIfExists('val-ops-total-trips', operationsKpiData.totalTrips);
-        setTextIfExists('val-ops-cancelled-trips', operationsKpiData.cancelledTrips);
-        setTextIfExists('val-ops-cancellation-rate', operationsKpiData.cancellationRatePercent.toFixed(1) + '%');
-        setTextIfExists('val-ops-active-drivers', operationsKpiData.activeDriversCount);
-        setTextIfExists('val-ops-vehicles-deployed', operationsKpiData.vehiclesDeployedCount);
-        setTextIfExists('val-ops-clients-served', operationsKpiData.clientsServedCount);
-        setTextIfExists('val-ops-avg-trips-day', operationsKpiData.averageTripsPerDay.toFixed(1) + (isEn ? '/day' : ' رحلة/يوم'));
-        setTextIfExists('val-ops-registered-drivers', operationsKpiData.registeredDriversCount ?? '--');
-        setTextIfExists('val-ops-scheduling-rate', operationsKpiData.schedulingSuccessRatePercent != null
-            ? operationsKpiData.schedulingSuccessRatePercent.toFixed(1) + '%' : '--');
+        setTextIfExists('val-ops-total-orders', formatNumber(o.totalDispatchOrders ?? 0));
+        setTextIfExists('val-ops-rental-orders', formatNumber(o.rentalOrdersCount ?? 0));
+        setTextIfExists('val-ops-clients-served', formatNumber(o.clientsServedCount ?? 0));
+        setTextIfExists('val-ops-buses-deployed', formatNumber(o.busesDeployedCount ?? 0));
+        setTextIfExists('val-ops-drivers-assigned', formatNumber(o.driversAssignedCount ?? 0));
+
+        setTextIfExists('val-ops-completion-rate', (o.completionRatePercent ?? 0).toFixed(1) + '%');
+        setTextIfExists('val-ops-completed-orders', formatNumber(o.completedOrdersCount ?? 0));
+        updateKpiFlagElement('flag-ops-completion-rate', o.completionRatePercent, 95);
+
+        setTextIfExists('val-ops-planned-km', formatNumber(Math.round(o.totalPlannedKm ?? 0)));
+        setTextIfExists('val-ops-actual-km', formatNumber(Math.round(o.totalActualKm ?? 0)));
+        setTextIfExists('val-ops-diesel', formatNumber(Math.round(o.totalDieselLiters ?? 0)));
+        setTextIfExists('val-ops-avg-orders-day', (o.averageOrdersPerDay ?? 0).toFixed(1) + (isEn ? '/day' : ' أمر/يوم'));
+
+        const container = document.getElementById('ops-top-directions');
+        if (container) {
+            const items = o.topDirections || [];
+            if (items.length === 0) {
+                container.innerHTML = '<span class="text-xs text-slate-400 font-bold">لا توجد أوامر تشغيل بعد. ارفع نموذج أوامر التشغيل في نظام ERP.</span>';
+            } else {
+                container.innerHTML = items.map(d =>
+                    `<div class="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
+                        <span class="text-xs font-bold text-slate-700">${d.directionName || d.direction}</span>
+                        <span class="text-xs font-black text-[#b0841a]">${formatNumber(d.ordersCount)} (${(d.sharePercentage ?? 0).toFixed(1)}%)</span>
+                    </div>`
+                ).join('');
+            }
+        }
     }
 
+
+    // ───────── Auto-refresh ─────────
+    // The init block below has always called this, but the function itself was missing, so every
+    // page load threw a ReferenceError here: the 60-second refresh never ran, and because the throw
+    // happened inside the DOMContentLoaded handler it also aborted whatever followed it.
+    function startAutoRefresh() {
+        stopAutoRefresh();
+        refreshTimer = setInterval(loadPortalData, REFRESH_INTERVAL_MS);
+
+        // A hidden tab has nothing to repaint, so the polling is parked while it is in the
+        // background and the data is refreshed once on the way back.
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopAutoRefresh();
+            } else if (refreshTimer === null) {
+                loadPortalData();
+                refreshTimer = setInterval(loadPortalData, REFRESH_INTERVAL_MS);
+            }
+        });
+    }
+
+    function stopAutoRefresh() {
+        if (refreshTimer !== null) {
+            clearInterval(refreshTimer);
+            refreshTimer = null;
+        }
+    }
 
     // ───────── Initialize on DOM Ready ─────────
     if (document.readyState === 'loading') {

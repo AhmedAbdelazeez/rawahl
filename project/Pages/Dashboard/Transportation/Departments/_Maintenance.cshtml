@@ -1,8 +1,36 @@
 @model project.Pages.IndexModel
 
-<!-- Maintenance Department KPI Cards -->
+<!-- Maintenance Department - Workshop Analysis
+     8 indicators, every one of them read off the ERP's approved "Internal work orders" sheet
+     (رقم امر العمل / رقم الحافلة / العداد / وصف العطل / تاريخ وساعة الدخول والخروج / أربعة فنيين /
+     الحالة / المشرف / ملاحظات). Spare-parts cost and the breakdown-location breakdown were removed:
+     the approved sheet carries neither a parts column nor a location column, so both were reporting
+     figures no uploaded file actually supports. -->
 
-<!-- 1. Mean Time To Repair -->
+<!-- 1. إجمالي أوامر العمل -->
+<div id="card-dm-total" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">إجمالي أوامر العمل</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل الورشة</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-dm-total">--</span>
+    </div>
+</div>
+
+<!-- 2. أوامر العمل المكتملة + نسبة الإنجاز -->
+<div id="card-dm-completed" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">أوامر العمل المكتملة</span>
+        <span id="flag-dm-completion" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-dm-completed">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">نسبة الإنجاز: <span id="val-dm-completion-rate">--</span></span>
+    </div>
+</div>
+
+<!-- 3. متوسط زمن الإصلاح -->
 <div id="card-dm-mttr" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800">متوسط زمن الإصلاح (MTTR)</span>
@@ -14,44 +42,32 @@
     </div>
 </div>
 
-<!-- 2. Total Breakdowns -->
-<div id="card-dm-breakdowns" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 4. أوامر متوقفة على قطع غيار -->
+<div id="card-dm-waiting-parts" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800">إجمالي الأعطال المسجلة</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">سجل الورشة</span>
+        <span class="text-[11px] font-black text-slate-800">متوقفة على قطع غيار</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">سجل الورشة</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-dm-breakdowns">--</span>
+        <span class="text-3xl font-black text-slate-900" id="val-dm-waiting-parts">--</span>
     </div>
 </div>
 
-<!-- 3. Fleet Availability Rate -->
-<div id="card-dm-availability" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 5. أوامر جاري العمل عليها -->
+<div id="card-dm-in-progress" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800">نسبة جاهزية الأسطول</span>
-        <span id="flag-dm-availability" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800">جاري العمل عليها</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">سجل الورشة</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-dm-availability">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: 90%</span>
+        <span class="text-3xl font-black text-slate-900" id="val-dm-in-progress">--</span>
     </div>
 </div>
 
-<!-- 4. Total Spare Parts Cost -->
-<div id="card-dm-parts-cost" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800">تكلفة قطع الغيار</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">تراكمي</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-dm-parts-cost">--</span>
-    </div>
-</div>
-
-<!-- 5. Maintenance Backlog Rate -->
+<!-- 6. نسبة الأعمال المتراكمة -->
 <div id="card-dm-backlog" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800">نسبة الأعطال المتراكمة</span>
+        <span class="text-[11px] font-black text-slate-800">نسبة الأعمال المتراكمة</span>
         <span id="flag-dm-backlog" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
@@ -60,23 +76,34 @@
     </div>
 </div>
 
-<!-- 6. Active Buses Under Maintenance Rate -->
-<div id="card-dm-active-rate" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 7. الحافلات التي دخلت الورشة -->
+<div id="card-dm-vehicles" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800">نسبة الحافلات قيد الصيانة حاليًا</span>
-        <span id="flag-dm-active-rate" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800">حافلات دخلت الورشة</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200">سجل الورشة</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-dm-active-rate">--</span>
+        <span class="text-3xl font-black text-slate-900" id="val-dm-vehicles">--</span>
     </div>
 </div>
 
-<!-- Top Breakdown Buses + Work Orders table - a single card- wrapper so showView()'s generic
-     card mover (which only picks up elements whose id starts with "card-") relocates the whole
-     block into #sector-kpis-grid together, same as the 6 KPI cards above. -->
+<!-- 8. الفنيون المشاركون -->
+<div id="card-dm-technicians" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">الفنيون المشاركون</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">سجل الورشة</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-dm-technicians">--</span>
+    </div>
+</div>
+
+<!-- Top breakdown buses + work orders table - a single card- wrapper so showView()'s generic card
+     mover (which only picks up elements whose id starts with "card-") relocates the whole block
+     into #sector-kpis-grid together, same as the 8 KPI cards above. -->
 <div id="card-dm-workorders" class="col-span-full grid grid-cols-1 gap-5">
     <div class="glass-card p-5 rounded-2xl">
-        <h3 class="text-sm font-black mb-3 text-slate-800"><i class="fa-solid fa-location-dot text-[#b0841a]"></i> أكثر المواقع تكرارًا للأعطال (من تقارير الفروع)</h3>
+        <h3 class="text-sm font-black mb-3 text-slate-800"><i class="fa-solid fa-bus text-[#b0841a]"></i> أكثر الحافلات تكرارًا للأعطال</h3>
         <div id="dm-top-breakdowns" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             <span class="text-xs text-slate-400 font-bold">جاري التحميل...</span>
         </div>
@@ -99,11 +126,12 @@
         <table class="w-full text-xs">
             <thead class="bg-slate-50 text-slate-500 font-black">
                 <tr>
-                    <td class="p-3">رقم اللوحة</td>
+                    <td class="p-3">رقم أمر العمل</td>
+                    <td class="p-3">رقم الحافلة</td>
                     <td class="p-3">التاريخ</td>
                     <td class="p-3">العداد</td>
                     <td class="p-3">وصف العطل</td>
-                    <td class="p-3">الفني</td>
+                    <td class="p-3">الفنيون</td>
                     <td class="p-3">الحالة</td>
                 </tr>
             </thead>

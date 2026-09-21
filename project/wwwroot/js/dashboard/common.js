@@ -213,7 +213,7 @@ const translations = {
         'dept-tourism-title': 'ادارة السياحة',
         'dept-tourism-desc': 'تنظيم وإدارة البرامج السياحية والرحلات وحجوزات الفنادق لزوار بيت الله الحرام.',
         'dept-ops-title': 'ادارة العمليات',
-        'dept-ops-desc': 'الالتزام بالخطة التشغيلية اليومية للحافلات، وتوجيه المسارات، ومتابعة الرحلات التشغيلية.',
+        'dept-ops-desc': 'أوامر التشغيل والإيجار، الحافلات والسائقون، الكيلومترات والديزل ونسبة الإنجاز.',
         'dept-commercial-title': 'الادارة التجارية',
         'dept-commercial-desc': 'متابعة الفرع التجاري ومبيعات وعقود النقل التخصصي ورضا العملاء NPS ونسب الاحتفاظ بالشركاء.',
         'dept-sales-title': 'إدارة المبيعات',
@@ -260,7 +260,7 @@ const translations = {
         'val-proc-inventory-label': 'دقة الجرد السنوي والمستمر',
         'val-proc-contracts-label': 'عقود التوريد النشطة الموقعة',
         'dept-finance-title': 'الادارة المالية',
-        'dept-finance-desc': 'الإيرادات والربحية والتدفقات النقدية التشغيلية والعائد الكلي على الأصول المالية.',
+        'dept-finance-desc': 'الإيرادات والتكاليف والربحية، والنقد والذمم المدينة من أرصدة شجرة الحسابات.',
         'dept-strategy-title': 'والاستراتيجية والاداء',
         'dept-strategy-desc': 'تحقيق الأهداف الاستراتيجية، مبادرات مكتب إدارة المشاريع PMO، ومتابعة نضج الأداء المؤسسي.',
         'dept-audit-title': 'التدقيق الداخلي',
@@ -474,7 +474,7 @@ const translations = {
         'dept-tourism-title': 'Tourism Department',
         'dept-tourism-desc': 'Organizing and managing tourism programs, trips, and hotel bookings for visitors.',
         'dept-ops-title': 'Operations Department',
-        'dept-ops-desc': 'Commitment to the daily bus operational plan, route routing, and operational trip monitoring.',
+        'dept-ops-desc': 'Dispatch and rental orders, buses and drivers, kilometres, diesel and completion rate.',
         'dept-commercial-title': 'Commercial Department',
         'dept-commercial-desc': 'Monitoring the commercial branch, specialized transport sales and contracts, customer satisfaction NPS, and partner retention rates.',
         'dept-sales-title': 'Sales Department',
@@ -546,7 +546,7 @@ const translations = {
         'val-strat-milestones-label': 'On-Time PMO Milestones Completion',
         'val-strat-budget-label': 'Strategic Budget Utilization',
         'dept-finance-title': 'Financial Department',
-        'dept-finance-desc': 'Revenues, profitability, operating cash flows, and overall return on financial assets.',
+        'dept-finance-desc': 'Revenue, costs and profitability, plus cash and receivables, from the chart-of-accounts balances.',
         'dept-strategy-title': 'Strategy & Performance Department',
         'dept-strategy-desc': 'Achieving strategic objectives, PMO initiatives, and monitoring institutional performance maturity.',
         'dept-audit-title': 'Internal Audit Department',
@@ -637,6 +637,11 @@ function applyLanguage(lang) {
         if (dictionary[key]) el.innerText = dictionary[key];
     });
     
+    // The live news ticker is generated text, not data-i18n markup, so it is rebuilt in the new language.
+    if (window.PortalIntegration && typeof window.PortalIntegration.refreshTicker === 'function') {
+        window.PortalIntegration.refreshTicker();
+    }
+
     const langTextEl = document.getElementById('langToggleText');
     if (langTextEl) langTextEl.innerText = lang === 'en' ? 'العربية (AR)' : 'English (EN)';
     
