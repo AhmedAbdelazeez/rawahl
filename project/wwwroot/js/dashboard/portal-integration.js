@@ -2196,10 +2196,12 @@
         isAvailable: () => portalData !== null
     };
 
-    // 8 basic indicators off the ledger uploaded through the ERP's Finance template. EBITDA margin,
-    // ROA, operating cash flow and working capital were removed from this view: they need asset,
-    // liability and depreciation figures a revenue/expense ledger doesn't carry, and were being
-    // derived from a hard-coded assumed asset base rather than from anything uploaded.
+    // 10 indicators off the two Finance uploads (chart of accounts + monthly trial balance), each
+    // grouped by the account's own COA classification. Profitability accumulates year to date; cash,
+    // receivables and payables are the closing position at the latest reporting date. EBITDA margin,
+    // ROA, operating cash flow and working capital stay out of this view: they need depreciation and
+    // cash-flow figures the templates don't carry, and were being derived from a hard-coded assumed
+    // asset base rather than from anything uploaded.
     function renderFinanceKpis() {
         if (!financeKpiData) return;
         const f = financeKpiData;
@@ -2207,8 +2209,14 @@
         const marginTarget = getKpiTarget('fin-net-margin', 15);
         const expenseRatioTarget = getKpiTarget('fin-expense-ratio', 85);
 
+        // Two period labels, because the cards describe two different periods: the balance-sheet
+        // cards are the closing position at asOfDate, the profitability cards accumulate from
+        // periodFrom to that date.
         setTextIfExists('val-fin-asof', f.asOfDate
             ? new Date(f.asOfDate).toLocaleDateString('ar-SA')
+            : 'لم تُرفع أرصدة بعد');
+        setTextIfExists('val-fin-period', f.periodFrom && f.asOfDate
+            ? new Date(f.periodFrom).toLocaleDateString('ar-SA') + ' — ' + new Date(f.asOfDate).toLocaleDateString('ar-SA')
             : 'لم تُرفع أرصدة بعد');
 
         setTextIfExists('val-total-revenue', formatCurrency(f.totalRevenue));
@@ -2222,13 +2230,18 @@
         setTextIfExists('val-expense-ratio', (f.expenseToRevenueRatioPercent ?? 0).toFixed(1) + '%');
         setTextIfExists('val-cash-balance', formatCurrency(f.cashAndEquivalents));
         setTextIfExists('val-receivables', formatCurrency(f.tradeReceivables));
+        setTextIfExists('val-payables', formatCurrency(f.payablesAndAccruals));
 
+        setTextIfExists('val-top-revenue', formatCurrency(f.topRevenueStreamAmount));
+        setTextIfExists('val-top-revenue-name', f.topRevenueStreamName || '--');
         setTextIfExists('val-top-expense', formatCurrency(f.topExpenseCategoryAmount));
         setTextIfExists('val-top-expense-name', f.topExpenseCategoryName || '--');
 
         setTextIfExists('val-fin-accounts', formatNumber(f.accountsInChart ?? 0));
         setTextIfExists('val-fin-balances', formatNumber(f.balancesLoaded ?? 0));
         setTextIfExists('val-fin-unclassified', formatNumber(f.unclassifiedBalances ?? 0));
+        setTextIfExists('val-fin-unclassified-expense', formatCurrency(f.unclassifiedExpenseAmount));
+        setTextIfExists('val-fin-branches', (f.branches && f.branches.length) ? f.branches.join(' / ') : '--');
 
         setTextIfExists('target-val-net-profit-margin', marginTarget + '%');
         setTextIfExists('target-val-expense-ratio', expenseRatioTarget + '%');

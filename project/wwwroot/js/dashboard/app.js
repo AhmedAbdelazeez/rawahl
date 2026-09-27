@@ -280,7 +280,7 @@ const sectorMapping = {
     'dept-hr': ['hr-ret', 'hr-count', 'hr-active', 'hr-leavers', 'hr-turnover', 'hr-saudization', 'hr-growth', 'hr-training'],
     'dept-it': ['it-autom', 'it-uptime', 'it-ticket-time', 'it-incidents', 'it-satisfaction', 'it-backup', 'it-projects'],
     'dept-procurement': ['proc-cycle', 'proc-savings', 'proc-supplier', 'proc-budget', 'proc-spare-parts', 'proc-inventory', 'proc-contracts'],
-    'dept-finance': ['total-revenue', 'cost-of-sales', 'gross-profit', 'operating-expenses', 'total-expenses', 'net-profit', 'net-profit-margin', 'expense-ratio', 'cash-balance', 'receivables', 'fin-detail'],
+    'dept-finance': ['total-revenue', 'cost-of-sales', 'gross-profit', 'total-expenses', 'net-profit', 'net-profit-margin', 'expense-ratio', 'cash-balance', 'receivables', 'payables', 'fin-detail'],
     'dept-strategy': ['strat-goals', 'strat-init', 'risk-handling', 'gov-maturity', 'strat-goals-achieve', 'strat-milestones', 'strat-budget'],
     'dept-audit': ['audit-plan-execution', 'operational-compliance-rate', 'total-audited-processes', 'passed-processes-count', 'critical-findings-count', 'recommendations-count', 'risk-mitigation-rate'],
     'dept-hse': ['hse-ltifr', 'hse-accidents', 'audit-comp'],

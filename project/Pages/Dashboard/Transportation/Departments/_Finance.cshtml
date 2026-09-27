@@ -1,13 +1,19 @@
 @model project.Pages.IndexModel
 
 <!-- Finance Department - Operational Analysis
-     10 indicators, every one of them a sum over the account balances uploaded through the ERP's
-     approved Finance template, grouped by each account's own chart-of-accounts classification
-     (7000 revenue, 71xx cost of sales, 72xx operating costs, 5xxx assets, 6xxx liabilities). The
-     figures describe the latest reporting date on file, because a trial balance is a snapshot -
-     adding twelve of them together would report a number that never appeared on any statement.
+     10 indicators, every one of them a sum over the figures uploaded through the ERP's two Finance
+     templates (the chart of accounts, then the monthly trial balance), grouped by each account's
+     own classification: 7000 revenue, 71xx cost of sales, 72xx operating costs, and the COA's own
+     Arabic Mapping column for the balance-sheet cards (نقد في الصندوق ولدى البنوك، ذمم مدينة
+     بالصافي، ذمم دائنة، مصاريف مستحقة).
+
+     Two periods are shown side by side on purpose, because an income statement and a balance sheet
+     do not measure the same thing: the profitability cards accumulate every month uploaded for the
+     latest financial year (year to date), while the cash/receivables/payables cards are the closing
+     position at the latest reporting date. Each card says which one it is.
+
      EBITDA margin, return on assets, operating cash flow and working capital were removed: they
-     need depreciation and cash-flow data the template doesn't carry, and were being derived from a
+     need depreciation and cash-flow data the templates don't carry, and were being derived from a
      hard-coded assumed asset base rather than from anything uploaded. -->
 
 <!-- 1. إجمالي الإيرادات -->
@@ -18,7 +24,7 @@
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-total-revenue">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">كما في: <span id="val-fin-asof">--</span></span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">من بداية السنة: <span id="val-fin-period">--</span></span>
     </div>
 </div>
 
@@ -45,25 +51,16 @@
     </div>
 </div>
 
-<!-- 4. المصروفات التشغيلية والعمومية -->
-<div id="card-operating-expenses" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800">المصروفات التشغيلية والعمومية</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">7200+</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-operating-expenses">--</span>
-    </div>
-</div>
-
-<!-- 5. إجمالي المصروفات -->
+<!-- 4. إجمالي المصروفات (with the operating/general share of it on the same card, so the tenth
+     slot can carry a balance-sheet figure the finance team asked for) -->
 <div id="card-total-expenses" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800" data-i18n="card-total-expenses-title">إجمالي المصروفات</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">أرصدة الحسابات</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">من بداية السنة</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-total-expenses">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">تشغيلية وعمومية: <span id="val-operating-expenses">--</span></span>
     </div>
 </div>
 
@@ -102,32 +99,54 @@
     </div>
 </div>
 
-<!-- 9. النقد وما في حكمه -->
+<!-- 8. النقد وما في حكمه (closing position, not a year-to-date total) -->
 <div id="card-cash-balance" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800">النقد وما في حكمه</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">5000</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">نقد في الصندوق ولدى البنوك</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-cash-balance">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">كما في: <span id="val-fin-asof">--</span></span>
     </div>
 </div>
 
-<!-- 10. الذمم المدينة -->
+<!-- 9. الذمم المدينة -->
 <div id="card-receivables" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
         <span class="text-[11px] font-black text-slate-800">الذمم المدينة</span>
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">5200</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">ذمم مدينة بالصافي</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-receivables">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">مستحقة على العملاء</span>
     </div>
 </div>
 
-<!-- Top expense item + upload coverage, so an empty dashboard can be told apart from one whose
-     upload simply hasn't happened yet. Wrapped in a card- element so showView()'s generic card
+<!-- 10. الذمم الدائنة والمستحقات -->
+<div id="card-payables" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800">الذمم الدائنة والمستحقات</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">ذمم دائنة + مصاريف مستحقة</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-payables">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5">التزامات على الشركة</span>
+    </div>
+</div>
+
+<!-- Where the money comes from and goes to, plus upload coverage - so an empty dashboard can be
+     told apart from one whose upload simply hasn't happened yet, and so miscoded accounts surface
+     instead of quietly shrinking a KPI. Wrapped in a card- element so showView()'s generic card
      mover relocates it into #sector-kpis-grid alongside the 10 KPI cards above. -->
-<div id="card-fin-detail" class="col-span-full grid grid-cols-1 lg:grid-cols-2 gap-5">
+<div id="card-fin-detail" class="col-span-full grid grid-cols-1 lg:grid-cols-3 gap-5">
+    <div class="glass-card p-5 rounded-2xl">
+        <h3 class="text-sm font-black mb-3 text-slate-800"><i class="fa-solid fa-sack-dollar text-[#b0841a]"></i> أكبر مصدر إيراد</h3>
+        <div class="flex items-baseline gap-3">
+            <span class="text-2xl font-black text-slate-900" id="val-top-revenue">--</span>
+            <span class="text-xs font-bold text-slate-500" id="val-top-revenue-name">--</span>
+        </div>
+    </div>
     <div class="glass-card p-5 rounded-2xl">
         <h3 class="text-sm font-black mb-3 text-slate-800"><i class="fa-solid fa-arrow-trend-up text-[#b0841a]"></i> أعلى بند مصروف</h3>
         <div class="flex items-baseline gap-3">
@@ -137,19 +156,24 @@
     </div>
     <div class="glass-card p-5 rounded-2xl">
         <h3 class="text-sm font-black mb-3 text-slate-800"><i class="fa-solid fa-database text-[#b0841a]"></i> تغطية البيانات المرفوعة</h3>
-        <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="grid grid-cols-2 gap-2 text-center">
             <div class="bg-slate-50 rounded-lg px-3 py-2">
                 <div class="text-[10px] font-bold text-slate-500">حسابات الشجرة</div>
                 <div class="text-lg font-black text-slate-900" id="val-fin-accounts">--</div>
             </div>
             <div class="bg-slate-50 rounded-lg px-3 py-2">
-                <div class="text-[10px] font-bold text-slate-500">أرصدة محمّلة</div>
+                <div class="text-[10px] font-bold text-slate-500">أرصدة آخر تاريخ</div>
                 <div class="text-lg font-black text-slate-900" id="val-fin-balances">--</div>
             </div>
             <div class="bg-slate-50 rounded-lg px-3 py-2">
-                <div class="text-[10px] font-bold text-slate-500">غير مصنفة</div>
+                <div class="text-[10px] font-bold text-slate-500">حسابات خارج الشجرة</div>
                 <div class="text-lg font-black text-slate-900" id="val-fin-unclassified">--</div>
             </div>
+            <div class="bg-slate-50 rounded-lg px-3 py-2">
+                <div class="text-[10px] font-bold text-slate-500">مصروف غير مصنف</div>
+                <div class="text-lg font-black text-slate-900" id="val-fin-unclassified-expense">--</div>
+            </div>
         </div>
+        <div class="text-[10px] text-slate-500 font-bold mt-3">الفروع: <span id="val-fin-branches">--</span></div>
     </div>
 </div>

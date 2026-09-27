@@ -441,15 +441,23 @@ namespace project.Models
         public double StrategicBudgetEfficiencyTarget { get; set; }
     }
 
-    // Mirrors the ERP's FinanceKpisDto: ten indicators, each a sum over the uploaded account
-    // balances grouped by the account's own chart-of-accounts classification, reported for the
-    // latest reporting date on file. EBITDA margin, return on assets, operating cash flow, working
-    // capital and budget variance were removed with the old revenue/expense ledger - they needed
-    // depreciation, cash-flow and budget figures the approved Finance template does not carry.
+    // Mirrors the ERP's FinanceKpisDto: ten indicators, each a sum over the figures uploaded through
+    // the ERP's two Finance templates, grouped by the account's own chart-of-accounts
+    // classification. Profitability accumulates year to date; the balance-sheet figures are the
+    // closing position at AsOfDate, because an income statement and a balance sheet do not measure
+    // the same thing. EBITDA margin, return on assets, operating cash flow, working capital and
+    // budget variance stay out - they need depreciation, cash-flow and budget figures the approved
+    // templates do not carry.
     public class PortalFinanceKpisDto
     {
-        // Which reporting date these figures describe; null when nothing has been uploaded yet.
+        // The latest reporting date on file; the balance-sheet figures describe this date. Null when
+        // nothing has been uploaded yet.
         public DateTime? AsOfDate { get; set; }
+
+        // The financial year the profitability figures accumulate over, and the earliest month of it
+        // actually uploaded.
+        public int? FiscalYear { get; set; }
+        public DateTime? PeriodFrom { get; set; }
 
         public decimal TotalRevenue { get; set; }
         public decimal CostOfSales { get; set; }
@@ -460,17 +468,23 @@ namespace project.Models
         public decimal NetProfit { get; set; }
         public double NetProfitMarginPercent { get; set; }
         public double ExpenseToRevenueRatioPercent { get; set; }
+
         public decimal CashAndEquivalents { get; set; }
         public decimal TradeReceivables { get; set; }
+        public decimal PayablesAndAccruals { get; set; }
         public decimal TotalAssets { get; set; }
         public decimal TotalLiabilities { get; set; }
 
+        public string TopRevenueStreamName { get; set; } = "--";
+        public decimal TopRevenueStreamAmount { get; set; }
         public string TopExpenseCategoryName { get; set; } = "--";
         public decimal TopExpenseCategoryAmount { get; set; }
 
         public int AccountsInChart { get; set; }
         public int BalancesLoaded { get; set; }
         public int UnclassifiedBalances { get; set; }
+        public decimal UnclassifiedExpenseAmount { get; set; }
+        public List<string> Branches { get; set; } = new();
     }
 
     public class PortalCommercialKpisDto
