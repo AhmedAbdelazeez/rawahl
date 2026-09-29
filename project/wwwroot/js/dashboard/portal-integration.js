@@ -761,67 +761,48 @@
         setTextIfExists('val-fleet-avg-capacity', (d.averageCapacityPerBusActual ?? 0).toFixed(1) + (isEn ? ' seats/bus' : ' مقعد/حافلة'));
     }
 
-    // Sales Department: 10 executive KPIs computed by NewFeature from the real uploaded customer
-    // roster, fleet capacity, and daily operations data. Fields with no genuine business target
-    // (growth rate, top segment, fleet capacity, churn, daily ops) are rendered as informational
-    // figures rather than fabricated targets.
+    // Sales Department: 9 simple indicators computed by NewFeature from the three Sales templates
+    // (customer roster, fleet capacity, daily operations). Only the scheduling coverage has a
+    // target (every requested bus scheduled); the rest are plain counts shown as they are.
     function renderSalesKpis() {
         if (!salesKpiData) return;
         const d = salesKpiData;
         const isEn = document.documentElement.lang === 'en';
+        const num = v => (v === null || v === undefined) ? '--' : Number(v).toLocaleString('en-US');
+        const pctText = v => (v === null || v === undefined) ? '--' : Number(v).toFixed(1) + '%';
 
-        // 1. Active customers (vs previous year's count, shown as context - not a pass/fail target)
-        setTextIfExists('val-sales-active-customers', d.totalActiveCustomersActual ?? 0);
-        setTextIfExists('target-val-sales-active-customers', d.hasCustomerData && d.totalActiveCustomersTarget ? d.totalActiveCustomersTarget : '--');
+        // Customer roster - latest fiscal year
+        setTextIfExists('val-sales-active-customers', d.hasCustomerData ? num(d.activeCustomers) : '--');
+        setTextIfExists('sub-sales-active-customers', d.hasCustomerData ? d.latestFiscalYear : '--');
 
-        // 2. New customers vs illustrative target
-        setTextIfExists('val-sales-new-customers', d.newCustomersActual ?? 0);
-        setTextIfExists('target-val-sales-new-customers', d.newCustomersTarget ?? '--');
-        updateKpiFlagElement('flag-sales-new-customers', d.newCustomersActual, d.newCustomersTarget);
+        const hasPrevious = d.hasCustomerData && d.newCustomers !== null && d.newCustomers !== undefined;
+        setTextIfExists('val-sales-new-customers', hasPrevious ? num(d.newCustomers) : '--');
+        setTextIfExists('sub-sales-new-customers', !d.hasCustomerData ? '--'
+            : hasPrevious
+                ? (isEn ? `Not on the previous year's list (${num(d.previousYearCustomers)} customers)` : `غير موجودين في السنة السابقة (${num(d.previousYearCustomers)} عميل)`)
+                : (isEn ? 'Needs two fiscal years uploaded' : 'يحتاج رفع سنتين ماليتين للمقارنة'));
 
-        // 3. Customer retention rate vs illustrative target
-        setTextIfExists('val-sales-retention', d.hasCustomerData ? (d.customerRetentionRateActual ?? 0).toFixed(1) + '%' : '--');
-        setTextIfExists('target-val-sales-retention', (d.customerRetentionRateTarget ?? 0) + '%');
-        if (d.hasCustomerData) updateKpiFlagElement('flag-sales-retention', d.customerRetentionRateActual, d.customerRetentionRateTarget);
+        setTextIfExists('val-sales-top-segment', d.hasCustomerData && d.topCustomerGroup ? d.topCustomerGroup : '--');
+        setTextIfExists('sub-sales-top-segment', d.hasCustomerData ? pctText(d.topCustomerGroupSharePercent) : '--');
 
-        // 4. YoY customer growth - derived metric, null when there's no prior-year roster to compare
-        if (d.customerGrowthYoYPercent === null || d.customerGrowthYoYPercent === undefined) {
-            setTextIfExists('val-sales-growth', isEn ? 'N/A' : 'غير متاح');
-        } else {
-            const growth = d.customerGrowthYoYPercent;
-            setTextIfExists('val-sales-growth', (growth >= 0 ? '+' : '') + growth.toFixed(1) + '%');
-            const flagEl = document.getElementById('flag-sales-growth');
-            if (flagEl) {
-                if (growth > 0) { flagEl.innerText = isEn ? '🟢 Growing' : '🟢 نمو'; flagEl.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200'; }
-                else if (growth === 0) { flagEl.innerText = isEn ? '🟡 Flat' : '🟡 ثابت'; flagEl.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200'; }
-                else { flagEl.innerText = isEn ? '🔴 Declining' : '🔴 تراجع'; flagEl.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200'; }
-            }
+        // Fleet capacity - current snapshot
+        setTextIfExists('val-sales-fleet-buses', d.hasFleetData ? num(d.totalFleetBuses) : '--');
+        setTextIfExists('val-sales-fleet-seats', d.hasFleetData ? num(d.totalFleetSeats) : '--');
+
+        // Daily operations - latest execution date
+        const ops = d.hasDailyOperationsData;
+        setTextIfExists('val-sales-requested', ops ? num(d.latestRequestedBuses) : '--');
+        setTextIfExists('sub-sales-orders', ops ? num(d.latestOrdersCount) : '--');
+        setTextIfExists('sub-sales-ops-date', ops && d.latestOperationsDate
+            ? new Date(d.latestOperationsDate).toLocaleDateString('en-GB') : '--');
+        setTextIfExists('val-sales-scheduled', ops ? num(d.latestScheduledBuses) : '--');
+
+        setTextIfExists('val-sales-coverage', ops ? pctText(d.schedulingCoveragePercent) : '--');
+        if (ops && d.schedulingCoveragePercent !== null && d.schedulingCoveragePercent !== undefined) {
+            updateKpiFlagElement('flag-sales-coverage', d.schedulingCoveragePercent, 100);
         }
 
-        // 5. Top customer segment - informational
-        setTextIfExists('val-sales-top-segment', d.topCustomerSegment || (isEn ? 'N/A' : '--'));
-        setTextIfExists('target-val-sales-top-segment', d.topCustomerSegmentSharePercent ? d.topCustomerSegmentSharePercent.toFixed(1) + '%' : '--');
-
-        // 6, 7 & 8. Fleet capacity context - informational, no fabricated target
-        setTextIfExists('val-sales-fleet-buses', d.hasFleetData ? (d.totalFleetBuses ?? 0) : '--');
-        setTextIfExists('val-sales-fleet-seats', d.hasFleetData ? (d.totalFleetSeats ?? 0) : '--');
-        setTextIfExists('val-sales-avg-seats', d.hasFleetData ? (d.averageSeatsPerBus ?? 0).toFixed(1) : '--');
-
-        // 9. Churned customers - derived metric, no fabricated target
-        setTextIfExists('val-sales-churned', d.hasCustomerData ? (d.churnedCustomersActual ?? 0) : '--');
-
-        // 10. Latest daily operations count - informational
-        setTextIfExists('val-sales-daily-ops', d.hasDailyOperationsData ? (d.latestDailyOperationsCount ?? 0) : '--');
-        setTextIfExists('target-val-sales-daily-ops', d.hasDailyOperationsData && d.latestDailyOperationsDate ? new Date(d.latestDailyOperationsDate).toLocaleDateString(isEn ? 'en-US' : 'ar-SA') : '--');
-
-        ['flag-sales-active-customers', 'flag-sales-top-segment', 'flag-sales-fleet-buses', 'flag-sales-fleet-seats',
-         'flag-sales-churned', 'flag-sales-daily-ops'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el && el.innerText === '--') {
-                el.innerText = isEn ? 'ℹ️ Info' : 'ℹ️ معلومة';
-                el.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200';
-            }
-        });
+        setTextIfExists('val-sales-utilization', ops && d.hasFleetData ? pctText(d.fleetUtilizationPercent) : '--');
     }
 
     function updateKpiFlagElement(elementId, value, target) {
@@ -1158,11 +1139,11 @@
         }
 
         const s = salesKpiData;
-        if (s && s.hasCustomerData) {
+        if (s && (s.hasCustomerData || s.hasDailyOperationsData)) {
             items.push(tickerItem('fa-handshake', isEn ? 'Sales' : 'المبيعات', [
-                `${hi(formatNumber(s.totalActiveCustomersActual))} ${isEn ? 'active customers' : 'عميل نشط'}`,
-                s.newCustomersActual > 0 ? `${hi(formatNumber(s.newCustomersActual))} ${isEn ? 'new' : 'جديد'}` : null,
-                `${isEn ? 'retention' : 'الاحتفاظ'} ${good(pct(s.customerRetentionRateActual))}`
+                s.hasCustomerData ? `${hi(formatNumber(s.activeCustomers))} ${isEn ? 'customers' : 'عميل'}` : null,
+                s.newCustomers > 0 ? `${hi(formatNumber(s.newCustomers))} ${isEn ? 'new' : 'جديد'}` : null,
+                s.schedulingCoveragePercent != null ? `${isEn ? 'scheduling' : 'تغطية الجدولة'} ${good(pct(s.schedulingCoveragePercent))}` : null
             ]));
         }
 

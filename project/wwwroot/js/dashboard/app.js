@@ -274,7 +274,7 @@ const sectorMapping = {
     'dept-tourism': ['tourism-hotel-occupancy', 'tourism-cancel-rate', 'tourism-guest-rating', 'tourism-tours-completed', 'tourism-revpar', 'tourism-lead-time', 'tourism-active-guides'],
     'dept-ops': ['ops-total-orders', 'ops-rental-orders', 'ops-clients-served', 'ops-buses-deployed', 'ops-drivers-assigned', 'ops-completion-rate', 'ops-planned-km', 'ops-actual-km', 'ops-diesel', 'ops-avg-orders-day', 'ops-top-directions'],
     'dept-commercial': ['customer-retention', 'new-contracts', 'contract-renewal-rate', 'contract-turnaround', 'legal-disputes', 'customer-acquisition-cost', 'contract-value-growth'],
-    'dept-sales': ['sales-active-customers', 'sales-new-customers', 'sales-retention', 'sales-growth', 'sales-top-segment', 'sales-fleet-buses', 'sales-fleet-seats', 'sales-avg-seats', 'sales-churned', 'sales-daily-ops'],
+    'dept-sales': ['sales-active-customers', 'sales-new-customers', 'sales-top-segment', 'sales-fleet-buses', 'sales-fleet-seats', 'sales-requested', 'sales-scheduled', 'sales-coverage', 'sales-utilization'],
     'dept-fleet': ['fleet-total', 'fleet-available', 'fleet-active', 'fleet-maintenance', 'fleet-inactive', 'fleet-util', 'fleet-ready', 'fleet-total-trips', 'fleet-completed-trips', 'fleet-maint-rate', 'fleet-mttr', 'fleet-parts-cost', 'fleet-total-seating', 'fleet-avg-age', 'fleet-modernization', 'fleet-type-variety', 'fleet-avg-capacity'],
     'dept-maintenance': ['dm-total', 'dm-completed', 'dm-mttr', 'dm-waiting-parts', 'dm-in-progress', 'dm-backlog', 'dm-vehicles', 'dm-technicians', 'dm-workorders'],
     'dept-hr': ['hr-ret', 'hr-count', 'hr-active', 'hr-leavers', 'hr-turnover', 'hr-saudization', 'hr-growth', 'hr-training'],
@@ -861,7 +861,7 @@ function applyKpiFilters(viewName) {
             } else if (viewName === 'dept-sales') {
                 badge = isEn ? 'Sales Department' : 'إدارة المبيعات';
                 title = isEn ? 'Sales Department - Operational Analysis' : 'إدارة المبيعات - التحليل التشغيلي';
-                desc = isEn ? 'Monitoring the customer base, year-over-year growth, top customer segments, and available fleet capacity.' : 'متابعة قاعدة العملاء ونموها السنوي، وأكبر شرائح العملاء، والسعة الاستيعابية المتاحة للأسطول.';
+                desc = isEn ? 'Customers and new customers, fleet size and seats, and buses requested vs scheduled in daily operations.' : 'عدد العملاء والعملاء الجدد، حجم الأسطول ومقاعده، والحافلات المطلوبة والمجدولة في التشغيل اليومي.';
                 backAction = deptBackAction;
                 backText = isEn ? 'Back to Departments' : 'العودة للإدارات';
             } else if (viewName === 'dept-ops') {

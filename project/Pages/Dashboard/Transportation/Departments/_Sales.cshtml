@@ -1,124 +1,114 @@
 @model project.Pages.IndexModel
 
-<!-- Sales Department KPI Cards (10 Executive KPIs, computed server-side by NewFeature from the real
-     uploaded customer roster + fleet capacity + daily operations Excel data - no fabricated/illustrative sales figures) -->
+<!-- Sales Department - 9 simple indicators, three per ERP template (each template has its own page in
+     NewFeature: قائمة العملاء / الطاقة الاستيعابية / التشغيل اليومي). Every figure is a count, a sum or
+     one ratio over the uploaded rows; the badge on each card names the file it comes from.
+     Retention, churn, YoY growth and average seats were dropped to keep the section simple. -->
 
-<!-- 1. Active Customers (عدد العملاء النشطين - آخر سنة مالية مرفوعة) -->
+<!-- 1. عدد العملاء (آخر سنة مالية) -->
 <div id="card-sales-active-customers" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-active-customers-title">عدد العملاء النشطين</span>
-        <span id="flag-sales-active-customers" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-active-customers-title">عدد العملاء</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200" data-i18n="badge-sales-customers">قائمة العملاء</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-sales-active-customers">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">العام السابق: <span id="target-val-sales-active-customers">--</span></span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5"><span data-i18n="lbl-sales-fiscal-year">السنة المالية</span>: <span id="sub-sales-active-customers">--</span></span>
     </div>
 </div>
 
-<!-- 2. New Customers (عملاء جدد هذا العام) -->
+<!-- 2. عملاء جدد (غير موجودين في السنة السابقة) -->
 <div id="card-sales-new-customers" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-new-customers-title">عملاء جدد هذا العام</span>
-        <span id="flag-sales-new-customers" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-new-customers-title">عملاء جدد</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200" data-i18n="badge-sales-customers">قائمة العملاء</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-sales-new-customers">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-sales-new-customers">--</span></span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" id="sub-sales-new-customers">--</span>
     </div>
 </div>
 
-<!-- 3. Customer Retention Rate (معدل الاحتفاظ بالعملاء) -->
-<div id="card-sales-retention" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-retention-title">معدل الاحتفاظ بالعملاء</span>
-        <span id="flag-sales-retention" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-sales-retention">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">المستهدف: <span id="target-val-sales-retention">--</span></span>
-    </div>
-</div>
-
-<!-- 4. Customer Growth YoY (نمو قاعدة العملاء مقارنة بالعام السابق) - derived metric, no fabricated target -->
-<div id="card-sales-growth" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
-    <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-growth-title">نمو قاعدة العملاء (سنوي)</span>
-        <span id="flag-sales-growth" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
-    </div>
-    <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-sales-growth">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-growth-sub">مقارنة بالعام السابق</span>
-    </div>
-</div>
-
-<!-- 5. Top Customer Segment (أكبر شريحة عملاء) - informational, no target -->
+<!-- 3. أكبر فئة عملاء -->
 <div id="card-sales-top-segment" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-top-segment-title">أكبر شريحة عملاء</span>
-        <span id="flag-sales-top-segment" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-top-segment-title">أكبر فئة عملاء</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200" data-i18n="badge-sales-customers">قائمة العملاء</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-xl font-black text-slate-900 text-center" id="val-sales-top-segment">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">الحصة: <span id="target-val-sales-top-segment">--</span></span>
+        <span class="text-2xl font-black text-slate-900 text-center" id="val-sales-top-segment">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5"><span data-i18n="lbl-sales-share">من العملاء</span>: <span id="sub-sales-top-segment">--</span></span>
     </div>
 </div>
 
-<!-- 6. Total Fleet Buses (إجمالي عدد الحافلات المتاحة) - capacity context, informational -->
+<!-- 4. إجمالي الحافلات -->
 <div id="card-sales-fleet-buses" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-fleet-buses-title">إجمالي عدد الحافلات</span>
-        <span id="flag-sales-fleet-buses" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-fleet-buses-title">إجمالي الحافلات</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200" data-i18n="badge-sales-fleet">الطاقة الاستيعابية</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-sales-fleet-buses">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-fleet-buses-sub">السعة المتاحة للبيع والتشغيل</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-fleet-buses-sub">حافلة متاحة للبيع والتشغيل</span>
     </div>
 </div>
 
-<!-- 7. Total Fleet Seats (إجمالي السعة الاستيعابية بالمقاعد) - capacity context, informational -->
+<!-- 5. إجمالي المقاعد -->
 <div id="card-sales-fleet-seats" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-fleet-seats-title">إجمالي السعة الاستيعابية</span>
-        <span id="flag-sales-fleet-seats" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-fleet-seats-title">إجمالي المقاعد</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200" data-i18n="badge-sales-fleet">الطاقة الاستيعابية</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
         <span class="text-3xl font-black text-slate-900" id="val-sales-fleet-seats">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-fleet-seats-sub">إجمالي مقاعد الأسطول</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-fleet-seats-sub">مقعد في كامل الأسطول</span>
     </div>
 </div>
 
-<!-- 8. Average Seats per Bus (متوسط سعة المقعدية للحافلة) - capacity context, informational -->
-<div id="card-sales-avg-seats" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 6. الطلبات والحافلات المطلوبة (آخر يوم تشغيل) -->
+<div id="card-sales-requested" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-avg-seats-title">متوسط سعة المقعدية للحافلة</span>
-        <span id="flag-sales-avg-seats" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">من ملف الأسطول</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-requested-title">الحافلات المطلوبة</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200" data-i18n="badge-sales-ops">التشغيل اليومي</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-sales-avg-seats">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-avg-seats-sub">مقعد/حافلة</span>
+        <span class="text-3xl font-black text-slate-900" id="val-sales-requested">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5"><span id="sub-sales-orders">--</span> <span data-i18n="lbl-sales-orders">طلب</span> · <span id="sub-sales-ops-date">--</span></span>
     </div>
 </div>
 
-<!-- 9. Churned Customers (عملاء تم فقدهم مقارنة بالعام السابق) - derived metric, no fabricated target -->
-<div id="card-sales-churned" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 7. الحافلات المجدولة (آخر يوم تشغيل) -->
+<div id="card-sales-scheduled" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-churned-title">عملاء تم فقدهم</span>
-        <span id="flag-sales-churned" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-scheduled-title">الحافلات المجدولة</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200" data-i18n="badge-sales-ops">التشغيل اليومي</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-sales-churned">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-churned-sub">مقارنة بالعام السابق</span>
+        <span class="text-3xl font-black text-slate-900" id="val-sales-scheduled">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-scheduled-sub">آخر يوم تشغيل مرفوع</span>
     </div>
 </div>
 
-<!-- 10. Latest Daily Operations Count (آخر يوم تشغيل - عدد العمليات) - informational, no target -->
-<div id="card-sales-daily-ops" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+<!-- 8. نسبة تغطية الجدولة = المجدولة ÷ المطلوبة -->
+<div id="card-sales-coverage" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
     <div class="flex justify-between items-start mb-2">
-        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-daily-ops-title">عدد العمليات - آخر يوم تشغيل</span>
-        <span id="flag-sales-daily-ops" class="text-[9px] font-bold px-2 py-0.5 rounded-full">--</span>
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-coverage-title">نسبة تغطية الجدولة</span>
+        <span id="flag-sales-coverage" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">--</span>
     </div>
     <div class="my-2 flex flex-col items-center justify-center">
-        <span class="text-3xl font-black text-slate-900" id="val-sales-daily-ops">--</span>
-        <span class="text-[10px] text-slate-500 font-bold mt-1.5">التاريخ: <span id="target-val-sales-daily-ops">--</span></span>
+        <span class="text-3xl font-black text-slate-900" id="val-sales-coverage">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-coverage-sub">المجدولة ÷ المطلوبة · المستهدف 100%</span>
+    </div>
+</div>
+
+<!-- 9. نسبة استغلال الأسطول = المجدولة ÷ إجمالي الحافلات -->
+<div id="card-sales-utilization" class="glass-card p-5 rounded-2xl flex flex-col justify-between h-40">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-[11px] font-black text-slate-800" data-i18n="card-sales-utilization-title">نسبة استغلال الأسطول</span>
+        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200" data-i18n="badge-sales-ops-fleet">التشغيل + الأسطول</span>
+    </div>
+    <div class="my-2 flex flex-col items-center justify-center">
+        <span class="text-3xl font-black text-slate-900" id="val-sales-utilization">--</span>
+        <span class="text-[10px] text-slate-500 font-bold mt-1.5" data-i18n="card-sales-utilization-sub">المجدولة ÷ إجمالي الحافلات</span>
     </div>
 </div>
